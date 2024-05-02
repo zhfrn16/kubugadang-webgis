@@ -43,7 +43,7 @@ jobs:
           name: php-app
           path: release.zip
 
-  deploy:
+ deploy:
     runs-on: ubuntu-latest
     needs: build
     environment:
@@ -66,4 +66,4 @@ jobs:
           app-name: 'wisatasumpu'
           slot-name: 'production'
           package: .
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_2487b583722642099f4da2ea1b8c36f5 }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_a09e00d2e77c4dc4afc6e8fe8e713ebb }}
