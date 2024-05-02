@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -43,9 +43,7 @@ jobs:
     environment:
       name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
-
+    
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
@@ -54,7 +52,7 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-     
+      
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
@@ -62,3 +60,4 @@ jobs:
           app-name: 'wisatasumpu'
           slot-name: 'production'
           package: .
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_f1596a9a9954446491e88ecd2c39c2b4 }}
