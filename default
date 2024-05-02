@@ -3,11 +3,15 @@ server {
         #proxy_cache_valid 200 1s;
     listen 8080;
     listen [::]:8080;
-    root /home/site/wwwroot/public; # changed for Laravel
+
+    absolute redirect off;
+
+    root /home/site/wwwroot/public;
     index  index.php index.html index.htm;
     server_name  example.com www.example.com; 
 
-    location / {            
+    location / { 
+        index  index.php index.html index.htm;
         try_files $uri $uri/ /index.php?$args; # changed for Laravel
     }
 
