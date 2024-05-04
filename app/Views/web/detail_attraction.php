@@ -15,7 +15,7 @@
                     <div class="row align-items-center">
                         <div class="col">
                             <h4 class="card-title text-center">Attraction Information</h4>
-                        </div>>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
