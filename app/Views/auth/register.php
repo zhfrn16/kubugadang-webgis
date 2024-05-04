@@ -4,69 +4,65 @@
 <?= $this->section('content'); ?>
 <div class="row justify-content-center align-items-center h-100" style="background-color: #2d499d">
     <div class="col-xl-4 col-lg-5 col-10">
+
         <div class="card">
-            <div class="card-content">
-                <div id="auth-left">
+            <h2 class="card-header" style="text-align: center;"><?= lang('Auth.register') ?></h2>
+            <div class="card-body">
 
-                    <!-- <div class="auth-logo">
-                        <a href="<?//= base_url(); ?>"><img src="<?//= base_url('media/icon/logo.svg'); ?>" alt="Logo" /></a>
-                    </div> -->
+                <?= view('Myth\Auth\Views\_message_block') ?>
 
-                    <h1 class="auth-title text-center"><?= lang('Auth.register') ?></h1>
-                    <!-- <p class="auth-subtitle mb-4 text-center">
-                        Input your data to register to our website.
-                    </p> -->
+                <form action="<?= url_to('register') ?>" method="post">
+                    <?= csrf_field() ?>
 
-                    <?= view('Myth\Auth\Views\_message_block') ?>
-
-                    <form action="<?= url_to('register') ?>" method="post">
-                        <?= csrf_field() ?>
-
-                        <div class="form-group position-relative has-icon-left mb-3">
-                            <input type="email" class="form-control <?php if (session('errors.email')) : ?>is-invalid<?php endif ?>" placeholder="<?= lang('Auth.email') ?>" name="email" value="<?= old('email') ?>" />
-                            <div class="form-control-icon">
-                                <i class="bi bi-envelope"></i>
-                            </div>
+                    <div class="form-group">
+                        <label for="email"><?= lang('Auth.email') ?></label>
+                        <input type="email" class="form-control <?php if (session('errors.email')) : ?>is-invalid<?php endif ?>" name="email" aria-describedby="emailHelp" placeholder="<?= lang('Auth.email') ?>" value="<?= old('email') ?>" required>
+                        <small id="emailHelp" class="form-text text-muted"><?= lang('Auth.weNeverShare') ?></small>
+                        <div class="invalid-feedback">
+                            Please enter a valid email address with Gmail domain.
                         </div>
-
-                        <div class="form-group position-relative has-icon-left mb-3">
-                            <input type="text" class="form-control <?php if (session('errors.username')) : ?>is-invalid<?php endif ?>" placeholder="<?= lang('Auth.username') ?>" name="username" value="<?= old('username') ?>" />
-                            <div class="form-control-icon">
-                                <i class="bi bi-person"></i>
-                            </div>
-                        </div>
-
-                        <div class="form-group position-relative has-icon-left mb-3">
-                            <input type="password" class="form-control <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>" placeholder="<?= lang('Auth.password') ?>" name="password" autocomplete="off" />
-                            <div class="form-control-icon">
-                                <i class="bi bi-shield-lock"></i>
-                            </div>
-                        </div>
-
-                        <div class="form-group position-relative has-icon-left mb-3">
-                            <input type="password" class="form-control <?php if (session('errors.pass_confirm')) : ?>is-invalid<?php endif ?>" placeholder="<?= lang('Auth.repeatPassword') ?>" name="pass_confirm" autocomplete="off" />
-                            <div class="form-control-icon">
-                                <i class="bi bi-shield-lock"></i>
-                            </div>
-                        </div>
-
-                        <button class="btn btn-primary btn-block shadow mt-3" type="submit">
-                            <?= lang('Auth.register') ?>
-                        </button>
-                        
-
-                    </form>
-
-                    <div class="text-center mt-4 text-lg">
-                        <p class="text-gray-600">
-                            <?= lang('Auth.alreadyRegistered') ?>
-                            <a class="font-bold" href="<?= url_to('login') ?>"><?= lang('Auth.signIn') ?></a>
-                        </p>
                     </div>
 
-                </div>
+                    <script>
+                        document.querySelector('form').addEventListener('submit', function(event) {
+                            const emailInput = document.querySelector('input[name="email"]');
+                            const emailValue = emailInput.value.trim();
+                            const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+                            if (!emailRegex.test(emailValue)) {
+                                emailInput.classList.add('is-invalid');
+                                event.preventDefault();
+                            }
+                        });
+                    </script>
+
+                    <div class="form-group">
+                        <label for="username"><?= lang('Auth.username') ?></label>
+                        <input type="text" class="form-control <?php if (session('errors.username')) : ?>is-invalid<?php endif ?>" name="username" placeholder="<?= lang('Auth.username') ?>" value="<?= old('username') ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password"><?= lang('Auth.password') ?></label>
+                        <input type="password" name="password" class="form-control <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>" placeholder="<?= lang('Auth.password') ?>" autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pass_confirm"><?= lang('Auth.repeatPassword') ?></label>
+                        <input type="password" name="pass_confirm" class="form-control <?php if (session('errors.pass_confirm')) : ?>is-invalid<?php endif ?>" placeholder="<?= lang('Auth.repeatPassword') ?>" autocomplete="off">
+                    </div>
+
+                    <br>
+
+                    <button type="submit" class="btn btn-primary btn-block"><?= lang('Auth.register') ?></button>
+                </form>
+
+
+                <hr>
+
+                <p><?= lang('Auth.alreadyRegistered') ?> <a href="<?= url_to('login') ?>"><?= lang('Auth.signIn') ?></a></p>
             </div>
         </div>
+
     </div>
 </div>
 

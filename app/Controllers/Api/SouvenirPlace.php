@@ -11,6 +11,7 @@ class SouvenirPlace extends ResourceController
 {
     use ResponseTrait;
 
+    protected $souvenirPlaceModel;
     protected $gallerySouvenirPlaceModel;
 
     public function __construct()
