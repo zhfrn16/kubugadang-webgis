@@ -146,10 +146,16 @@ class AttractionModel extends Model
         return $query;
     }
 
-    function get_object(){
-        $query = $this->db->table($this->table)->select('name')->get;
-        return $query;  
+    public function get_object($id=null)
+    {
+        $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
+        $query = $this->db->table($this->table)
+            ->select("id, name, {$coords}")
+            ->where('id', $id)
+            ->get();
+        return $query;
     }
+
 
     function get_attraction(){
 
