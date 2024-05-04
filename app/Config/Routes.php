@@ -32,7 +32,7 @@ $routes->set404Override();
  * Route Definitions
  * --------------------------------------------------------------------
  */
-
+$routes->get('/api/dbCheck', 'Home::dbCheck');
 $routes->get('/', 'Home::landingPage');
 $routes->get('/403', 'Home::error403');
 $routes->get('/login', 'Web\Admin::login');
@@ -54,11 +54,8 @@ $routes->group('web', function ($routes) {
 $routes->group('web', ['namespace' => 'App\Controllers\Web'], function ($routes) {
 
     $routes->get('/', 'Sumpu::index');
-
-
     $routes->get('package/extend/(:any)', 'Package::extend/$1', ['filter' => 'login']);
     $routes->post('detailreservation/addextend/(:any)', 'DetailReservation::addextend/$1', ['filter' => 'login']);
-
     $routes->get('package/custom/(:any)', 'Package::custom/$1', ['filter' => 'login']);
 
     $routes->presenter('attraction');
@@ -146,7 +143,6 @@ $routes->group('web', ['namespace' => 'App\Controllers\Web'], function ($routes)
 // Dashboard
 $routes->group('dashboard', ['namespace' => 'App\Controllers\Web', 'filter' => 'role:admin, master'], function ($routes) {
     $routes->get('/', 'Dashboard::index');
-    $routes->get('gtp', 'Dashboard::gtp');
     $routes->get('sumpu', 'Dashboard::sumpu');
     $routes->get('users', 'Dashboard::users');
     $routes->get('attraction', 'Dashboard::attraction');
@@ -188,7 +184,6 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers\Web', 'filter' => '
 
     $routes->resource('village');
     $routes->resource('users');
-    $routes->presenter('gtp');
     $routes->presenter('sumpu');
     $routes->presenter('attraction');
     $routes->presenter('event');
@@ -239,7 +234,6 @@ $routes->group('upload', ['namespace' => 'App\Controllers\Web'], function ($rout
 
 // API
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes) {
-    $routes->resource('gtp');
     $routes->resource('sumpu');
     $routes->get('custombooking/(:segment)', 'Reservation::custombooking/$1');
     $routes->get('tersedia', 'Reservation::tersedia');
@@ -268,6 +262,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->post('villages', 'Village::getDataKK');
     $routes->post('rumah', 'Homestay::getData');
     $routes->post('home', 'Homestay::getData');
+    $routes->post('attraction', 'Attraction::getData');
     $routes->post('culinary', 'CulinaryPlace::getData');
     $routes->post('traditional', 'TraditionalHouse::getData');
     $routes->post('souvenir', 'SouvenirPlace::getData');
