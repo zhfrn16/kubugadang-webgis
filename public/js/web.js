@@ -1378,102 +1378,6 @@ function digitTracking() {
   });
 }
 
-// Estuaria/Talao Attraction
-function digitTalao() {
-  const digitasi = new google.maps.Data();
-  $.ajax({
-    url: baseUrl + "/api/village",
-    type: "POST",
-    data: {
-      digitasi: "A0002",
-    },
-    dataType: "json",
-    success: function (response) {
-      const data = response.data;
-      digitasi.addGeoJson(data);
-      digitasi.setStyle({
-        fillColor: "#0001ff",
-        strokeWeight: 0.5,
-        strokeColor: "#ffffff",
-        fillOpacity: 0.1,
-        clickable: false,
-      });
-      digitasi.setMap(map);
-    },
-  });
-}
-
-function digitEstuaria() {
-  const digitasi = new google.maps.Data();
-  $.ajax({
-    url: baseUrl + "/api/village",
-    type: "POST",
-    data: {
-      digitasi: "A0004",
-    },
-    dataType: "json",
-    success: function (response) {
-      const data = response.data;
-      digitasi.addGeoJson(data);
-      digitasi.setStyle({
-        fillColor: "#FF0000",
-        strokeWeight: 0.8,
-        strokeColor: "#FF0000",
-        fillOpacity: 0.2,
-        clickable: false,
-      });
-      digitasi.setMap(map);
-    },
-  });
-}
-
-function digitPieh() {
-  const digitasi = new google.maps.Data();
-  $.ajax({
-    url: baseUrl + "/api/village",
-    type: "POST",
-    data: {
-      digitasi: "A0005",
-    },
-    dataType: "json",
-    success: function (response) {
-      const data = response.data;
-      digitasi.addGeoJson(data);
-      digitasi.setStyle({
-        fillColor: "#FF0000",
-        strokeWeight: 0.8,
-        strokeColor: "#FF0000",
-        fillOpacity: 0.2,
-        clickable: false,
-      });
-      digitasi.setMap(map);
-    },
-  });
-}
-
-function digitMakam() {
-  const digitasi = new google.maps.Data();
-  $.ajax({
-    url: baseUrl + "/api/village",
-    type: "POST",
-    data: {
-      digitasi: "A0006",
-    },
-    dataType: "json",
-    success: function (response) {
-      const data = response.data;
-      digitasi.addGeoJson(data);
-      digitasi.setStyle({
-        fillColor: "#FF0000",
-        strokeWeight: 0.8,
-        strokeColor: "#FF0000",
-        fillOpacity: 0.2,
-        clickable: false,
-      });
-      digitasi.setMap(map);
-    },
-  });
-}
 
 // Display marker for loaded object
 function objectMarker(id, lat, lng, status, homestay_status, anim = true) {
@@ -1544,6 +1448,8 @@ function objectMarkerRoute(id, lat, lng, anim = true) {
     icon = baseUrl + "/media/icon/marker_sumpu.png";
   } else if (id.substring(0, 2) === "AT") {
     icon = baseUrl + "/media/icon/attraction.png";
+    const idattraction = id;
+    digitAttraction(idattraction);
   }else if (id.substring(0, 2) === "EV") {
     icon = baseUrl + "/media/icon/event.png";
   } else if (id.substring(0, 1) === "P") {
@@ -1591,6 +1497,85 @@ function objectMarkerRoute(id, lat, lng, anim = true) {
   });
   markerArray[id] = marker;
 }
+
+function objectMarkerRouteNumber(id, lat, lng, anim = true, labelNumber) {
+  google.maps.event.clearListeners(map, "click");
+  let pos = new google.maps.LatLng(lat, lng);
+  if (id.substring(0, 3) === "SUM") {
+
+  } else if (id.substring(0, 2) === "AT") {
+    const idattraction = id;
+    digitAttraction(idattraction);
+  }else if (id.substring(0, 2) === "EV") {
+
+  } else if (id.substring(0, 1) === "P") {
+
+  } else if (id.substring(0, 2) === "HO") {
+    const idhomestay = id;
+    digitHomestay(idhomestay);
+  } else if (id.substring(0, 2) === "CP") {
+    const idculinary = id;
+    digitCulinary(idculinary);
+  } else if (id.substring(0, 2) === "TH") {
+    const idtraditional = id;
+    digitTraditional(idtraditional);
+  } else if (id.substring(0, 2) === "HO") {
+    const idrumah = id;
+    digitRumah(idrumah);
+  } else if (id.substring(0, 2) === "SP") {
+    const idsouvenir = id;
+    digitSouvenir(idsouvenir);
+  } else if (id.substring(0, 2) === "WP") {
+    const idworship = id;
+    digitWorship(idworship);
+  }
+
+  let marker = new google.maps.Marker({
+      position: pos,
+      label: {
+          text: labelNumber.toString(),
+          color: 'white',
+          fontWeight: 'bold'
+      },
+      map: map,
+  });
+
+  // Tambahkan event listener untuk marker
+  marker.addListener("click", () => {
+      infoWindow.close();
+      objectInfoWindowRoute(id);
+      infoWindow.open(map, marker);
+  });
+
+  // Tambahkan marker ke dalam markerArray jika diperlukan
+  markerArray[id] = marker;
+}
+
+function digitAttraction(idattraction) {
+  const digitasi = new google.maps.Data();
+
+  $.ajax({
+    url: baseUrl + "/api/attraction",
+    type: "POST",
+    data: {
+      digitasi: idattraction,
+    },
+    dataType: "json",
+    success: function (response) {
+      const data = response.data;
+      digitasi.addGeoJson(data);
+      digitasi.setStyle({
+        fillColor: "#ff6d4d",
+        strokeWeight: 0.3,
+        strokeColor: "#ffffff",
+        fillOpacity: 0.3,
+      });
+      digitasi.setMap(map);
+    },
+  });
+  // console.log(digitasi);
+}
+
 
 function objectMarkerRouteMobile(id, lat, lng, anim = true) {
   google.maps.event.clearListeners(map, "click");
