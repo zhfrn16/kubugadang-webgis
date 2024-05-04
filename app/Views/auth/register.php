@@ -59,7 +59,7 @@
 
                 <hr>
 
-                <p><?= lang('Auth.alreadyRegistered') ?> <a href="<?= url_to('login') ?>"><?= lang('Auth.signIn') ?></a></p>
+                <p><?= lang('Auth.alreadyRegistered') ?> <a href="<?= url_to('login') ?>"><?= lang('Auth.loginAction') ?></a></p>
             </div>
         </div>
 
