@@ -136,5 +136,44 @@ class Attraction extends ResourceController
         // dd($data);
         return view('maps/attraction', $data);
     }
+
+    public function getData()
+    {
+        $request = $this->request->getPost();
+        $digitasi = $request['digitasi'];
+
+        for($h=1; $h<20; $h++){
+            if ($h < 10) {
+                $value= 'AT00'.$h;
+            } elseif ($h > 9) {
+                $value= 'AT0'.$h;
+            }
+
+            if ($digitasi == $value) {
+                $digiProperty = $this->attractionModel->get_object($value)->getRowArray();
+                $geoJson = json_decode($this->attractionModel->get_geoJson($value)->getRowArray()['geoJson']);
+            } 
+        }
+        
+        $content = [
+            'type' => 'Feature',
+            'geometry' => $geoJson,
+            'properties' => [
+                'id' => $digiProperty['id'],
+                'name' => $digiProperty['name'],
+                'lat' => $digiProperty['lat'],
+                'lng' => $digiProperty['lng'],
+            ]
+        ];
+        $response = [
+            'data' => $content,
+            'status' => 200,
+            'message' => [
+                "Success"
+            ]
+        ];
+        return $this->respond($response);
+    }
+
     
 }
