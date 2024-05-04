@@ -66,13 +66,12 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- End of Carousel Section -->
 
                     <!-- Informasi Produk Section -->
-                    <div class="col-md-6 col-12">
+                    <div class="col-md-6 col-12" style="padding-left: 2rem;">
                         <br>
-                        <div class="row">
+                        <div class="row" style="margin-top: 0.5rem;">
                             <div class="col-12">
                                 <h5 style="text-align: left;"><?= esc($data['name']); ?></h5>
                             </div>
@@ -104,7 +103,7 @@
                                 </tbody>
                             </table>
                             <!-- Tombol Add to Cart dan Book Now -->
-                            <div class="col-12 mt-3">
+                            <div class="col-12 mb-3">
                                 <?php if (logged_in()) : ?>
                                     <a class="btn icon btn-outline-primary me-2" onclick="addToCart('<?= esc($data['id']); ?>');">
                                         <i class="fa fa-cart-plus"></i> Add to Cart
@@ -371,7 +370,7 @@
                                             $lng_now = isset($object['lng']) ? esc($object['lng']) : '';
                                             $objectid = isset($object['object_id']) ? esc($object['object_id']) : '';
                                         ?>
-                                            objectMarkerRoute("<?= $objectid; ?>", <?= $lat_now; ?>, <?= $lng_now; ?>, true, <?= $loop; ?>);
+                                            objectMarkerRouteNumber("<?= $objectid; ?>", <?= $lat_now; ?>, <?= $lng_now; ?>, true, <?= $loop; ?>);
 
                                             <?php
                                             if (1 < $loop) { ?>
