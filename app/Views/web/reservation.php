@@ -26,7 +26,7 @@
                         <div class="card-header">
                             <h5 class="card-title text-center">List Reservation</h5>
                         </div>
-                            <!-- <div class="row">
+                        <!-- <div class="row">
 
                             <div class="col-auto">
                                 <a href="<?= current_url(); ?>/new" class="btn btn-primary float-right"><i class="fa-solid fa-plus me-3"></i>New Reservation</a>
@@ -38,11 +38,11 @@
                                 <br>
                             </div>
                         </div> -->
-                            <br><br>
-                            <div class="card-body">
+                        <br><br>
+                        <div class="card-body">
 
                             <div class="table-responsive">
-                            <table class="table table-hover dt-head-center" id="table-manage">
+                                <table class="table table-hover dt-head-center" id="table-manage">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -64,7 +64,7 @@
                                                     <td><?= date('d F Y, H:i:s', strtotime($item['check_in'])); ?></td>
                                                     <td>
                                                         <?php $date = date('Y-m-d H:i'); ?>
-                                                        <?php if ($item['status'] == null) : ?>                                                            
+                                                        <?php if ($item['status'] == null) : ?>
                                                             <?php if ($item['custom'] == '1' || $item['custom'] != '1') : ?>
                                                                 <a href="#" class="btn-sm btn-warning float-center"><i>Waiting</i></a>
                                                             <?php endif; ?>
@@ -225,7 +225,7 @@
                                                                                                 <td> Status </td>
                                                                                                 <td> :
                                                                                                     <?php $date = date('Y-m-d H:i'); ?>
-                                                                                                    <?php if ($item['status'] == null) : ?>                                                                                                        
+                                                                                                    <?php if ($item['status'] == null) : ?>
                                                                                                         <?php if ($item['custom'] == '1' || $item['custom'] != '1') : ?>
                                                                                                             <a href="#" class="btn-sm btn-warning float-center"><i>Waiting</i></a>
                                                                                                         <?php endif; ?>

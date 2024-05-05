@@ -1319,7 +1319,7 @@ if ($detail['total_people'] < 11) {
                     </div>
                 <?php else : ?>
                     <div>
-                        <p>Rincian Pembayaran via Payment Gateway</p>
+                        <p>Payment Details via Midtrans Payment Gateway</p>
                         <?php if (substr($detail['deposit_check'], 0, 1) == "4") : ?>
                             <table class="table">
                                 <tbody>
@@ -1348,12 +1348,12 @@ if ($detail['total_people'] < 11) {
                                         <td><?= $detail['deposit'] ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Waktu Pembayaran:</td>
+                                        <td>Payment Time:</td>
                                         <td><?= $detail['deposit_date'] ?></td>
                                     </tr>
                                     <tr>
                                         <td>Status:</td>
-                                        <td><b class="btn btn-sm btn-success">Sudah Bayar</b></td>
+                                        <td><b class="btn btn-sm btn-success">Paid</b></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1392,7 +1392,7 @@ if ($detail['total_people'] < 11) {
                     </div>
                 <?php else : ?>
                     <div>
-                        <p>Rincian Pembayaran via Payment Gateway</p>
+                        <p>Payment Details via Midtrans Payment Gateway</p>
                         <?php if (substr($detail['payment_check'], 0, 1) == "4") : ?>
                             <table class="table">
                                 <tbody>
@@ -1421,12 +1421,12 @@ if ($detail['total_people'] < 11) {
                                         <td><?= $detail['fullpayment'] ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Waktu Pembayaran:</td>
+                                        <td>Payment Time:</td>
                                         <td><?= $detail['payment_date'] ?></td>
                                     </tr>
                                     <tr>
                                         <td>Status:</td>
-                                        <td><b class="btn btn-sm btn-success">Sudah Bayar</b></td>
+                                        <td><b class="btn btn-sm btn-success">Paid</b></td>
                                     </tr>
                                 </tbody>
                             </table>

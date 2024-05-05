@@ -84,46 +84,7 @@ class Reservation extends ResourcePresenter
      * @return mixed
      */
 
-    // public function payMidtrans()
-    // {
-
-    //     // Set your Merchant Server Key
-    //     \Midtrans\Config::$serverKey = 'SB-Mid-server-Of1IfaGcLxvAOT-blQIE63_G';
-    //     // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-    //     \Midtrans\Config::$isProduction = false;
-    //     // Set sanitization on (default)
-    //     \Midtrans\Config::$isSanitized = true;
-    //     // Set 3DS transaction for credit card to true
-    //     \Midtrans\Config::$is3ds = true;
-
-    //     $params = array(
-    //         'transaction_details' => array(
-    //             'order_id' => time(),
-    //             'gross_amount' => 10000,
-    //         ),
-    //         'customer_details' => array(
-    //             'first_name' => 'budi',
-    //             'last_name' => 'pratama',
-    //             'email' => 'budi.pra@example.com',
-    //             'phone' => '08111222333',
-    //         ),
-    //     );
-
-    //     $snapToken = \Midtrans\Snap::getSnapToken($params);
-    //     // $data['token'] = $snapToken;
-    //     // return view('web/pay_midtrans', $data);
-    //     $response = [
-    //         // 'datapackage' => $list_package,
-    //         'data' => $snapToken,
-    //         'status' => 200,
-    //         'message' => [
-    //             "Success get token"
-    //         ]
-    //     ];
-    //     // return response(['token' => $snapToken]);
-    //     return $this->respond($response);
-    // }
-
+ 
     public function index()
     {
         $user = user()->username;
@@ -254,43 +215,6 @@ class Reservation extends ResourcePresenter
     }
 
 
-    // public function custombooking($id)
-    // {
-    //     $package = $this->packageModel->get_package_by_id_custom($id)->getRowArray();
-
-    //     $homestay_id = 'RG001';
-    //     $homestay = $this->homestayModel->get_homestay_by_id($homestay_id)->getRowArray();
-    //     if (empty($homestay)) {
-    //         return redirect()->to(substr(current_url(), 0, -strlen($homestay_id)));
-    //     }
-    //     $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($homestay_id)->getResultArray();
-
-    //     $list_gallery = $this->galleryHomestayModel->get_gallery($homestay_id)->getResultArray();
-    //     $galleries = array();
-    //     foreach ($list_gallery as $gallery) {
-    //         $galleries[] = $gallery['url'];
-    //     }
-    //     $homestay['gallery'] = $galleries;
-
-    //     $list_unit = $this->unitHomestayModel->get_unit_homestay_with_gallery($homestay_id)->getResultArray();       
-    //     // $list_gallery_unit = $this->galleryUnitModel->get_gallery($homestay_id)->getResultArray();
-
-
-    //     $data = [
-    //         'title' => 'Reservation',
-    //         'data' => $package,
-    //         'datahome' => $homestay,
-    //         'facilityhome' => $list_facility_rumah,
-    //         'unit' => $list_unit,
-    //         // 'gallery_unit' => $list_gallery_unit,
-    //         'folderhome' => 'homestay',
-    //         'folder' => 'package'
-    //     ];
-
-
-    //     return view('web/reservation-package-custom-form', $data);
-    // }
-
     public function custombooking($id)
     {
         $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
@@ -377,87 +301,7 @@ class Reservation extends ResourcePresenter
      *
      * @return mixed
      */
-    // public function create()
-    // {
-    //     $request = $this->request->getPost();
-
-    //     $id = $this->reservationModel->get_new_id();
-    //     $date = date('Y-m-d H:i');
-    //     $requestData = [
-    //         'id' => $id,
-    //         'user_id' => user()->id,
-    //         'package_id' => $request['package'],
-    //         'request_date' => $date,
-    //         'total_people' => $request['total_people'],
-    //         'check_in' => $request['check_in'] . ' ' . $request['time_check_in'],
-    //         // 'check_out' => $request['check_out'].' '.$request['time_check_out'],
-    //         'total_price' => $request['total_price'],
-    //         'deposit' => $request['deposit'],
-    //         'note' => $request['note']
-    //     ];
-    //     // dd($requestData);
-    //     foreach ($requestData as $key => $value) {
-    //         if (empty($value)) {
-    //             unset($requestData[$key]);
-    //         }
-    //     }
-
-    //     $addRe = $this->reservationModel->add_new_reservation($requestData);
-
-    //     if ($addRe) {
-    //         return redirect()->to(base_url('web/detailreservation/addhome/' . $id));
-    //     } else {
-    //         return redirect()->back()->withInput();
-    //     }
-    // }
-
-    // public function create()
-    // {
-    //     $request = $this->request->getPost();
-
-    //     $id = $this->reservationModel->get_new_id();
-    //     $date = date('Y-m-d H:i');
-    //     $requestData = [
-    //         'id' => $id,
-    //         'user_id' => user()->id,
-    //         'package_id' => $request['package_id'],
-    //         'request_date' => $date,
-    //         'total_people' => $request['total_people'],
-    //         'check_in' => $request['check_in'] . ' ' . $request['time_check_in'],
-    //         'total_price' => $request['total_price'],
-    //         'deposit' => $request['deposit'],
-    //         'note' => $request['note']
-    //     ];
-
-    //     // Remove empty values from the request data
-    //     $requestData = array_filter($requestData);
-
-    //     // Add reservation
-    //     $addRe = $this->reservationModel->add_new_reservation($requestData);
-
-    //     // Add detail reservation
-    //     if (isset($request['homestays'])) {
-    //         $homestays = $request['homestays'];
-
-    //         foreach ($homestays as $homestay) {
-    //             $detailData = [
-    //                 'reservation_id' => $id,
-    //                 'homestay_id' => $homestay['homestay_id'],
-    //                 'unit_type' => $homestay['unit_type'],
-    //                 'unit_number' => $homestay['unit_number'],
-    //             ];
-
-    //             $this->detailReservationModel->addDetailReservation($detailData);
-    //         }
-    //     }
-
-    //     if ($addRe) {
-    //         return redirect()->to(base_url('web/detailreservation/' . $id));
-    //     } else {
-    //         return redirect()->back()->withInput();
-    //     }
-    // }
-
+  
     public function edit($id = null)
     {
         $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
@@ -485,28 +329,7 @@ class Reservation extends ResourcePresenter
         return view('web/reservation-form', $data);
     }
 
-    // public function update($id = null)
-    // {
-    //     $request = $this->request->getPost();
-    //     $requestData = [
-    //         'id' => $id,
-    //         'name' => $request['name'],
-    //     ];
-    //     foreach ($requestData as $key => $value) {
-    //         if (empty($value)) {
-    //             unset($requestData[$key]);
-    //         }
-    //     }
-
-    //     $updateSP = $this->servicePackageModel->update_servicePackage($id, $requestData);
-
-    //     if ($updateSP) {
-    //         return redirect()->to(base_url('dashboard/servicepackage') . '/' . $id);
-    //     } else {
-    //         return redirect()->back()->withInput();
-    //     }
-    // }
-
+  
 
 
     public function updateDepositCheck()
@@ -1237,34 +1060,7 @@ class Reservation extends ResourcePresenter
     }
 
 
-    // public function updateDepositCheck() {
-    //     // Terima data dari permintaan cURL
-    //     $data = json_decode(file_get_contents('php://input'), true);
-
-    //     // Cek apakah data yang diterima valid
-    //     if (!empty($data['id']) && isset($data['deposit_check'])) {
-    //         // Panggil model reservation
-    //         // $this->load->model('Reservation_model');
-
-    //         // Panggil metode untuk memperbarui deposit_check
-    //         $reservation_id = $data['id'];
-    //         $deposit_check = $data['deposit_check'];
-    //         $result = $this->reservationModel->updateDepositCheck($reservation_id, $deposit_check);
-
-    //         // Kirim respons berdasarkan hasil pembaruan
-    //         if ($result) {
-    //             http_response_code(200);
-    //             echo json_encode(array("message" => "Deposit check berhasil diperbarui."));
-    //         } else {
-    //             http_response_code(500);
-    //             echo json_encode(array("message" => "Gagal memperbarui deposit check."));
-    //         }
-    //     } else {
-    //         // Kirim respons jika data tidak lengkap
-    //         http_response_code(400);
-    //         echo json_encode(array("message" => "Gagal memperbarui deposit check. Data tidak lengkap."));
-    //     }
-    // }
+   
 
 
     public function uploaddeposit($id = null)

@@ -2,10 +2,8 @@
 
 namespace App\Controllers\Web;
 
-use App\Models\GtpModel;
 use App\Models\SumpuModel;
 use Myth\Auth\Models\UserModel;
-use App\Models\GalleryGtpModel;
 use App\Models\GallerySumpuModel;
 use App\Models\AttractionModel;
 use App\Models\EventModel;
@@ -47,9 +45,7 @@ class Dashboard extends BaseController
 
     public function __construct()
     {
-        $this->gtpModel = new GtpModel();
         $this->sumpuModel = new SumpuModel();
-        $this->galleryGtpModel = new GalleryGtpModel();
         $this->gallerySumpuModel = new GallerySumpuModel();
         $this->userModel = new UserModel();
         $this->attractionModel = new AttractionModel();

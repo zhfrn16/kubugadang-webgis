@@ -66,26 +66,25 @@ function initMapLP(lat = -0.5242972, lng = 100.492333, mobile = false) {
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
   if (!mobile) {
-      map = new google.maps.Map(document.getElementById("googlemaps"), {
-          zoom: 18,
-          center: center,
-          mapTypeId: 'roadmap',
-      });
+    map = new google.maps.Map(document.getElementById("googlemaps"), {
+      zoom: 18,
+      center: center,
+      mapTypeId: "roadmap",
+    });
   } else {
-      map = new google.maps.Map(document.getElementById("googlemaps"), {
-          zoom: 18,
-          center: center,
-          mapTypeControl: false,
-      });
+    map = new google.maps.Map(document.getElementById("googlemaps"), {
+      zoom: 18,
+      center: center,
+      mapTypeControl: false,
+    });
   }
   var rendererOptions = {
-      map: map
-  }
-  map.set('styles', customStyled);
+    map: map,
+  };
+  map.set("styles", customStyled);
   directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
   digitVillage();
 }
-
 
 // Initialize and add the map
 function initMap(lat = -0.54145013, lng = 100.48094882) {
@@ -1378,7 +1377,6 @@ function digitTracking() {
   });
 }
 
-
 // Display marker for loaded object
 function objectMarker(id, lat, lng, status, homestay_status, anim = true) {
   google.maps.event.clearListeners(map, "click");
@@ -1386,8 +1384,8 @@ function objectMarker(id, lat, lng, status, homestay_status, anim = true) {
   let marker = new google.maps.Marker();
 
   let icon;
- if (id.substring(0, 3) === "SUM") {
-    icon = baseUrl + "/media/icon/marker_sumpu.png";  
+  if (id.substring(0, 3) === "SUM") {
+    icon = baseUrl + "/media/icon/marker_sumpu.png";
   } else if (id.substring(0, 2) === "AT") {
     icon = baseUrl + "/media/icon/attraction.png";
   } else if (id.substring(0, 2) === "EV") {
@@ -1450,7 +1448,7 @@ function objectMarkerRoute(id, lat, lng, anim = true) {
     icon = baseUrl + "/media/icon/attraction.png";
     const idattraction = id;
     digitAttraction(idattraction);
-  }else if (id.substring(0, 2) === "EV") {
+  } else if (id.substring(0, 2) === "EV") {
     icon = baseUrl + "/media/icon/event.png";
   } else if (id.substring(0, 1) === "P") {
     icon = baseUrl + "/media/icon/package.png";
@@ -1502,14 +1500,11 @@ function objectMarkerRouteNumber(id, lat, lng, anim = true, labelNumber) {
   google.maps.event.clearListeners(map, "click");
   let pos = new google.maps.LatLng(lat, lng);
   if (id.substring(0, 3) === "SUM") {
-
   } else if (id.substring(0, 2) === "AT") {
     const idattraction = id;
     digitAttraction(idattraction);
-  }else if (id.substring(0, 2) === "EV") {
-
+  } else if (id.substring(0, 2) === "EV") {
   } else if (id.substring(0, 1) === "P") {
-
   } else if (id.substring(0, 2) === "HO") {
     const idhomestay = id;
     digitHomestay(idhomestay);
@@ -1531,20 +1526,20 @@ function objectMarkerRouteNumber(id, lat, lng, anim = true, labelNumber) {
   }
 
   let marker = new google.maps.Marker({
-      position: pos,
-      label: {
-          text: labelNumber.toString(),
-          color: 'white',
-          fontWeight: 'bold'
-      },
-      map: map,
+    position: pos,
+    label: {
+      text: labelNumber.toString(),
+      color: "white",
+      fontWeight: "bold",
+    },
+    map: map,
   });
 
   // Tambahkan event listener untuk marker
   marker.addListener("click", () => {
-      infoWindow.close();
-      objectInfoWindowRoute(id);
-      infoWindow.open(map, marker);
+    infoWindow.close();
+    objectInfoWindowRoute(id);
+    infoWindow.open(map, marker);
   });
 
   // Tambahkan marker ke dalam markerArray jika diperlukan
@@ -1576,14 +1571,13 @@ function digitAttraction(idattraction) {
   // console.log(digitasi);
 }
 
-
 function objectMarkerRouteMobile(id, lat, lng, anim = true) {
   google.maps.event.clearListeners(map, "click");
   let pos = new google.maps.LatLng(lat, lng);
   let marker = new google.maps.Marker();
 
   let icon;
-  if (id.substring(0, 3) === "GTP") {
+  if (id.substring(0, 3) === "SUM") {
     icon = baseUrl + "/media/icon/marker_sumpu.png";
   } else if (id.substring(0, 1) === "A") {
     if (id === "A0001" || id === "A0004") {
@@ -4243,7 +4237,7 @@ function getLegend() {
   };
 
   const title = '<p class="fw-bold fs-6">Legend</p>';
-  $('#legend').append(title);
+  $("#legend").append(title);
 
   for (key in icons) {
     const type = icons[key];

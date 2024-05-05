@@ -168,8 +168,7 @@
                         Desa Wisata <br><span class="text-primary">Kampuang Minang <br>Nagari Sumpu</span>
                     </h1>
                     <p class="mb-4">
-                        Kampuang Minang Nagari Sumpu is located in Nagari Sumpur, South Batipuh District, Tanah Datar Regency, West Sumatra, just north of Lake Singkarak, which is fed by the Batang Sumpu stream. To get to Kampuang Minang Nagari Sumpu, it is estimated to travel from Minangkabau International Airport for about 2 hours. In Kampuang Minang Nagari Sumpu there are cultural tours with about 70 gadang houses and several historical sites. Of the many gadang houses, there are 3 gadang houses that have been used as homestays for tourists visiting Kampuang Minang Nagari Sumpu.
-                    </p>
+                    Kampuang Minang Nagari Sumpu is located in Nagari Sumpur, South Batipuh District, Tanah Datar Regency, West Sumatra, north of Lake Singkarak, which is fed by Batang Sumpu. To get to Kampuang Minang Nagari Sumpu, it is estimated to take about 2 hours from Minangkabau International Airport. In Kampuang Minang Nagari Sumpu there are cultural tours with about 70 traditional houses called Rumah Gadang and several historical sites. Out of the many Rumah Gadang, there are 3 Rumah Gadang that have been used as a homestay for the tourists who visit Kampuang Minang Nagari Sumpu.                    </p>
                     <h5 class="mb-3">
                         <a href="#map" class="text-reset" onclick="showMap('aNT');">
                             <i class="far fa-check-circle text-primary me-3"></i>Nature Tourism

@@ -67,6 +67,7 @@ class Package extends ResourceController
             }
         }
 
+
         $response = [
             'data' => $contents,
             'status' => 200,
@@ -140,7 +141,7 @@ class Package extends ResourceController
             $homestay_name = $package['homestay_name'];
             $lat = $package['lat'];
             $lng = $package['lng'];
-            
+
             $packageData = $this->packageModel->get_package_by_id($id)->getRowArray();
             // $packageData = $this->packageModel->get_detail_mypackage_explore($user_id, $id)->getResultArray();
 
