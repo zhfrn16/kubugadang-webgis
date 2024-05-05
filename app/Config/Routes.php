@@ -39,7 +39,7 @@ $routes->get('/login', 'Web\Admin::login');
 $routes->get('/register', 'Web\Admin::register');
 $routes->get('/failedlogin', 'Web\Admin::failedlogin');
 // $routes->get('/login', 'Login::index');
-$routes->get('/login/proses', 'Login::proses');
+$routes->get('/login/google-callback', 'Login::callback');
 
 $routes->group('web', function ($routes) {
     $routes->group('profile', function ($routes) {

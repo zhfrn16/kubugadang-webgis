@@ -35,7 +35,7 @@ class Admin extends BaseController
         $this->googleClient = new Google_Client();
         $this->googleClient->setClientId('392583878097-0qcl7pq6gls21h8vgr4tr468id64p6n8.apps.googleusercontent.com');
         $this->googleClient->setClientSecret('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');
-        $this->googleClient->setRedirectUri(base_url('login/proses'));
+        $this->googleClient->setRedirectUri(base_url('login/google-callback'));
         $this->googleClient->addScope('email');
         $this->googleClient->addScope('profile');
     }

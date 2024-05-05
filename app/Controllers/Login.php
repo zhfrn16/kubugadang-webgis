@@ -38,7 +38,7 @@ class Login extends BaseController
 
         $this->googleClient->setClientId('392583878097-0qcl7pq6gls21h8vgr4tr468id64p6n8.apps.googleusercontent.com');
         $this->googleClient->setClientSecret('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');
-        $this->googleClient->setRedirectUri(base_url('login/proses'));
+        $this->googleClient->setRedirectUri(base_url('login/google-callback'));
         $this->googleClient->addScope('email');
         $this->googleClient->addScope('profile');
     }
@@ -54,7 +54,7 @@ class Login extends BaseController
         return view('login/index', $data);
     }
 
-    public function proses()
+    public function callback()
     {
         $token = $this->googleClient->fetchAccessTokenWithAuthCode($this->request->getVar('code'));
         if (!isset($token['error'])) {
@@ -128,8 +128,7 @@ class Login extends BaseController
 
                 $saveNewAccount = $this->users->save($row);
 
-                $emailaccount = $data->email;
-                ;
+                $emailaccount = $data->email;;
                 if ($saveNewAccount) {
                     $findId = $this->users->get_id_profil($emailaccount)->getRowArray();
                     $id = $findId['id'];
