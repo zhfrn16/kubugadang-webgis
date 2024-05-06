@@ -181,7 +181,8 @@ class Email extends BaseConfig
         //     '127.0.0.1',
         //     'localhost'
         // );
-        $localhosts = array(                        
+        $localhosts = array(               
+            '127.0.0.1',         
             'wisatasumpu.azurewebsites.net'
         );
         // $protocol = 'smtp';
