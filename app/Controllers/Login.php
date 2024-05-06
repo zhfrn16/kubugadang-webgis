@@ -182,7 +182,10 @@ class Login extends BaseController
                 $this->googleClient->setAccessToken($token['access_token']);
                 
                 // Dapatkan data pengguna dari layanan Google OAuth2
+                // $googleService = new \Google_Service_Oauth2($this->googleClient);
                 $googleService = new \Google_Service_Oauth2($this->googleClient);
+                $serviceName = $googleService::class;
+                                
                 $data = $googleService->userinfo->get();
                 
                 // Proses data pengguna untuk disimpan ke dalam database
