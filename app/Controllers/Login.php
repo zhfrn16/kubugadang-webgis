@@ -54,114 +54,223 @@ class Login extends BaseController
         return view('login/index', $data);
     }
 
+    // public function callback()
+    // {
+    //     $token = $this->googleClient->fetchAccessTokenWithAuthCode($this->request->getVar('code'));
+    //     if (!isset($token['error'])) {
+    //         $this->googleClient->setAccessToken($token['access_token']);
+    //         $googleService = new \Google_Service_Oauth2($this->googleClient);
+    //         $data = $googleService->userinfo->get();
+
+    //         $nameWithoutSpace = str_replace(' ', '', $data->name);
+    //         // Data login untuk disimpan ke dalam database
+    //         $row = [
+    //             'email' => $data->email,
+    //             'username' => $nameWithoutSpace . $data->id,
+    //             'fullname' => $data->name,
+    //             'user_image' => $data->picture,
+    //             'active' => '1',
+
+    //         ];
+
+
+    //         $requestData = [
+    //             'email' => $data->email,
+    //         ];
+
+    //         $checkExistingData = $this->users->checkIfDataExists($requestData);
+    //         // $emailaccount = $nameWithoutSpace . $data->id;
+    //         $emailaccount = $data->email;
+
+    //         $findId = $this->users->get_id_profil($emailaccount)->getRowArray();
+    //         // $password_hash = $findId['password_hash'];
+    //         $currentDateTime = date("Y-m-d H:i:s");
+    //         if ($checkExistingData && $findId['password_hash'] == null) {
+
+    //             $id = $findId['id'];
+    //             $dataaccount = [
+    //                 'email' => $data->email,
+    //                 'username' => $nameWithoutSpace . $data->id,
+    //                 'fullname' => $data->name,
+    //                 // 'user_image' => $data->picture,
+    //                 'updated_at' => $currentDateTime,
+
+    //             ];
+    //             $updateRole = $this->users->update_account_users($id, $dataaccount);
+
+    //             $ipAddress = $this->request->getIPAddress();
+
+    //             // Data login untuk disimpan ke dalam database
+    //             $dataLogins = [
+    //                 'ip_address' => $ipAddress,
+    //                 'email'      => $data->email,
+    //                 'user_id' => $id,
+    //                 'date' => date('Y-m-d H:i:s'),
+    //                 'success'   => 1,
+    //             ];
+    //             $updateLogins = $this->users->addUserToAuthLogins($id, $dataLogins);
+
+    //             if ($updateLogins) {
+
+    //                 // session()->set('LoggedUserData', $row);
+    //                 // var_dump(session()->getFlashdata('LoggedUserData'));
+    //                 // Redirect ke halaman utama
+    //                 // session()->set($row);
+    //                 $findId = $this->users->get_profil($id)->getRowArray();
+
+    //                 $this->session->set('LoggedUserData', $findId);
+
+    //                 return redirect()->to(site_url('/'));
+    //                 // return view('login/berhasil');
+    //             }
+    //         } else if ($checkExistingData && $findId['password_hash'] != null) {
+    //             return redirect()->to(site_url('/failedlogin'));
+    //         } else {
+
+    //             $saveNewAccount = $this->users->save($row);
+
+    //             $emailaccount = $data->email;;
+    //             if ($saveNewAccount) {
+    //                 $findId = $this->users->get_id_profil($emailaccount)->getRowArray();
+    //                 $id = $findId['id'];
+    //                 $groupId = 2;
+    //                 // $data = [
+    //                 //     'group_id' => 2,
+    //                 //     'user_id' => $id,
+    //                 // ];
+    //                 if ($findId) {
+    //                     // $updateRole = $this->users->update_role_api($id, $data);
+    //                     $updateRole = $this->users->addUserToGroup($id, $groupId);
+
+    //                     if ($updateRole) {
+
+    //                         // return view('login/berhasil');
+    //                         // session()->set($row);
+    //                         // return redirect()->to(site_url('/web'));
+
+    //                         $findId = $this->users->get_profil($id)->getRowArray();
+
+    //                         $this->session->set('LoggedUserData', $findId);
+
+    //                         return redirect()->to(site_url('/'));
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+
+    //         // session()->set($row);
+    //         // return redirect()->to(site_url('/'));
+    //         // var_dump($row);
+    //     }
+    // }
+
     public function callback()
-    {
-        $token = $this->googleClient->fetchAccessTokenWithAuthCode($this->request->getVar('code'));
-        if (!isset($token['error'])) {
-            $this->googleClient->setAccessToken($token['access_token']);
-            $googleService = new \Google_Service_Oauth2($this->googleClient);
-            $data = $googleService->userinfo->get();
-
-            $nameWithoutSpace = str_replace(' ', '', $data->name);
-            // Data login untuk disimpan ke dalam database
-            $row = [
-                'email' => $data->email,
-                'username' => $nameWithoutSpace . $data->id,
-                'fullname' => $data->name,
-                'user_image' => $data->picture,
-                'active' => '1',
-
-            ];
-
-
-            $requestData = [
-                'email' => $data->email,
-            ];
-
-            $checkExistingData = $this->users->checkIfDataExists($requestData);
-            // $emailaccount = $nameWithoutSpace . $data->id;
-            $emailaccount = $data->email;
-
-            $findId = $this->users->get_id_profil($emailaccount)->getRowArray();
-            // $password_hash = $findId['password_hash'];
-            $currentDateTime = date("Y-m-d H:i:s");
-            if ($checkExistingData && $findId['password_hash'] == null) {
-
-                $id = $findId['id'];
-                $dataaccount = [
+{
+    try {
+        // Ambil kode otorisasi dari permintaan
+        $code = $this->request->getVar('code');
+        
+        // Pastikan kode otorisasi tersedia
+        if ($code) {
+            // Dapatkan token akses menggunakan kode otorisasi
+            $token = $this->googleClient->fetchAccessTokenWithAuthCode($code);
+            
+            // Pastikan token akses diperoleh dengan sukses
+            if (!isset($token['error'])) {
+                // Setel token akses ke klien Google
+                $this->googleClient->setAccessToken($token['access_token']);
+                
+                // Dapatkan data pengguna dari layanan Google OAuth2
+                $googleService = new \Google_Service_Oauth2($this->googleClient);
+                $data = $googleService->userinfo->get();
+                
+                // Proses data pengguna untuk disimpan ke dalam database
+                $nameWithoutSpace = str_replace(' ', '', $data->name);
+                $row = [
                     'email' => $data->email,
                     'username' => $nameWithoutSpace . $data->id,
                     'fullname' => $data->name,
-                    // 'user_image' => $data->picture,
-                    'updated_at' => $currentDateTime,
-
+                    'user_image' => $data->picture,
+                    'active' => '1',
                 ];
-                $updateRole = $this->users->update_account_users($id, $dataaccount);
 
-                $ipAddress = $this->request->getIPAddress();
+                // Cek apakah data pengguna sudah ada di database
+                $requestData = ['email' => $data->email];
+                $checkExistingData = $this->users->checkIfDataExists($requestData);
+                $emailaccount = $data->email;
 
-                // Data login untuk disimpan ke dalam database
-                $dataLogins = [
-                    'ip_address' => $ipAddress,
-                    'email'      => $data->email,
-                    'user_id' => $id,
-                    'date' => date('Y-m-d H:i:s'),
-                    'success'   => 1,
-                ];
-                $updateLogins = $this->users->addUserToAuthLogins($id, $dataLogins);
+                // Dapatkan id profil jika data pengguna sudah ada
+                $findId = $this->users->get_id_profil($emailaccount)->getRowArray();
+                $currentDateTime = date("Y-m-d H:i:s");
 
-                if ($updateLogins) {
-
-                    // session()->set('LoggedUserData', $row);
-                    // var_dump(session()->getFlashdata('LoggedUserData'));
-                    // Redirect ke halaman utama
-                    // session()->set($row);
-                    $findId = $this->users->get_profil($id)->getRowArray();
-
-                    $this->session->set('LoggedUserData', $findId);
-
-                    return redirect()->to(site_url('/'));
-                    // return view('login/berhasil');
-                }
-            } else if ($checkExistingData && $findId['password_hash'] != null) {
-                return redirect()->to(site_url('/failedlogin'));
-            } else {
-
-                $saveNewAccount = $this->users->save($row);
-
-                $emailaccount = $data->email;;
-                if ($saveNewAccount) {
-                    $findId = $this->users->get_id_profil($emailaccount)->getRowArray();
+                if ($checkExistingData && $findId['password_hash'] == null) {
+                    // Update data pengguna jika belum memiliki password
                     $id = $findId['id'];
-                    $groupId = 2;
-                    // $data = [
-                    //     'group_id' => 2,
-                    //     'user_id' => $id,
-                    // ];
-                    if ($findId) {
-                        // $updateRole = $this->users->update_role_api($id, $data);
-                        $updateRole = $this->users->addUserToGroup($id, $groupId);
+                    $dataaccount = [
+                        'email' => $data->email,
+                        'username' => $nameWithoutSpace . $data->id,
+                        'fullname' => $data->name,
+                        'updated_at' => $currentDateTime,
+                    ];
+                    $updateRole = $this->users->update_account_users($id, $dataaccount);
 
-                        if ($updateRole) {
+                    // Tambahkan data login ke dalam log auth
+                    $ipAddress = $this->request->getIPAddress();
+                    $dataLogins = [
+                        'ip_address' => $ipAddress,
+                        'email'      => $data->email,
+                        'user_id' => $id,
+                        'date' => date('Y-m-d H:i:s'),
+                        'success'   => 1,
+                    ];
+                    $updateLogins = $this->users->addUserToAuthLogins($id, $dataLogins);
 
-                            // return view('login/berhasil');
-                            // session()->set($row);
-                            // return redirect()->to(site_url('/web'));
+                    if ($updateLogins) {
+                        // Set session pengguna dan redirect ke halaman utama
+                        $findId = $this->users->get_profil($id)->getRowArray();
+                        $this->session->set('LoggedUserData', $findId);
+                        return redirect()->to(site_url('/'));
+                    }
+                } else if ($checkExistingData && $findId['password_hash'] != null) {
+                    // Handle jika data pengguna sudah ada dengan password
+                    return redirect()->to(site_url('/failedlogin'));
+                } else {
+                    // Simpan data pengguna baru jika belum ada
+                    $saveNewAccount = $this->users->save($row);
 
-                            $findId = $this->users->get_profil($id)->getRowArray();
+                    if ($saveNewAccount) {
+                        // Dapatkan id profil pengguna baru
+                        $findId = $this->users->get_id_profil($emailaccount)->getRowArray();
+                        $id = $findId['id'];
+                        $groupId = 2;
 
-                            $this->session->set('LoggedUserData', $findId);
+                        if ($findId) {
+                            // Tambahkan pengguna ke dalam grup
+                            $updateRole = $this->users->addUserToGroup($id, $groupId);
 
-                            return redirect()->to(site_url('/'));
+                            if ($updateRole) {
+                                // Set session pengguna dan redirect ke halaman utama
+                                $findId = $this->users->get_profil($id)->getRowArray();
+                                $this->session->set('LoggedUserData', $findId);
+                                return redirect()->to(site_url('/'));
+                            }
                         }
                     }
                 }
+            } else {
+                // Tangani jika terjadi galat saat mengambil token akses
+                $errorMessage = $token['error_description'] ?? 'Unknown error';
+                return redirect()->to(site_url('/error?message=' . urlencode($errorMessage)));
             }
-
-
-            // session()->set($row);
-            // return redirect()->to(site_url('/'));
-            // var_dump($row);
+        } else {
+            // Tangani jika kode otorisasi tidak tersedia
+            return redirect()->to(site_url('/error?message=Authorization code is missing'));
         }
+    } catch (\Exception $e) {
+        // Tangani galat umum yang terjadi
+        return redirect()->to(site_url('/error?message=' . urlencode($e->getMessage())));
     }
+}
+
 }
