@@ -73,6 +73,9 @@ class Login extends BaseController
 
             ];
 
+            // Dump data akun dan token
+            dd($data, $token);
+
             $requestData = [
                 'email' => $data->email,
             ];
