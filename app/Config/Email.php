@@ -176,9 +176,12 @@ class Email extends BaseConfig
         parent::__construct();
 
         // Cek apakah lingkungan adalah localhost
-        $localhosts = array(
-            '::1',
-            '127.0.0.1',
+        // $localhosts = array(
+        //     '::1',
+        //     '127.0.0.1',
+        //     'localhost'
+        // );
+        $localhosts = array(                        
             'wisatasumpu.azurewebsites.net'
         );
         // $protocol = 'smtp';
