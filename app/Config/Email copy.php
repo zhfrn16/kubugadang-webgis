@@ -33,6 +33,8 @@ class Email extends BaseConfig
      *
      * @var string
      */
+
+    
     public $protocol = 'smtp';
 
     /**
@@ -167,26 +169,4 @@ class Email extends BaseConfig
      * @var bool
      */
     public $DSN = false;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        // Cek apakah lingkungan adalah localhost
-        $localhosts = array(
-            '::1',
-            '127.0.0.1',
-            'wisatasumpu.azurewebsites.net'
-        );
-        // $protocol = 'smtp';
-        if (in_array($_SERVER['REMOTE_ADDR'], $localhosts)) {
-            $protocol = 'smtp';
-        }
-
-        // Setel protocol berdasarkan pengecekan sebelumnya
-        $this->protocol = $protocol;
-    }
 }
