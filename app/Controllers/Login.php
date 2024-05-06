@@ -6,7 +6,9 @@ use App\Controllers\BaseController;
 use App\Models\AccountModel;
 use CodeIgniter\Session\Session;
 use Google\Client as Google_Client;
+use \AllowDynamicProperties;
 
+#[AllowDynamicProperties]
 class Login extends BaseController
 {
     protected $googleClient;
