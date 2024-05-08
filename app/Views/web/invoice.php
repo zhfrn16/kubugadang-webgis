@@ -194,7 +194,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
     <p><u>TRANSFER VIA</u></p>
     <p>Bank Syariah Mandiri (BSI) - Kode 451: IDR<br />A/C : 12345678<br />A/N : Kampuang Minang Nagari Sumpu</p>
 <?php elseif ($detail['type_of_payment'] == 2) : ?>
-    <p><u>TRANSFER VIA PAYMENT GATEWAY MIDTRANS</u></p>
+    <p><u>TRANSFER VIA MIDTRANS PAYMENT GATEWAY</u></p>
 <?php endif; ?>
 
 <table cellpadding="0">
@@ -262,7 +262,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
             <th width="20%" style="background-color:#FFC436">: Waiting</th>
         <?php elseif ($detail['status'] == 1) : ?>
             <th width="20%" style="background-color:#B6E388">: Accepted</th>
-        <?php elseif ($detail['status'] == 0) : ?>
+        <?php elseif ($detail['status'] != 1) : ?>
             <th width="10%" style="background-color:#FFD3B0">: Rejected </th>
             <th><i style="background-color:#FFFFFF"> (because <?= esc($detail['feedback']); ?>)</i></th>
         <?php endif; ?>
