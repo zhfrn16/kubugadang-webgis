@@ -481,14 +481,14 @@ class Reservation extends ResourcePresenter
                                 $unit_type = $booking['unit_type'];
                                 $unit_number = $booking['unit_number'];
                                 $reservation_id = $booking['reservation_id'];
-                                // $accomodationType = $booking['accomodation_type'];
+                                $unit_guest = $booking['unit_guest'];
 
 
                                 if ($datareservation['cancel'] == '0') {
                                     $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
                                     $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                                 } else if ($datareservation['cancel'] == '1') {
-                                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
+                                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $reservation_id)->getRowArray();
                                     $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                                 }
 
@@ -847,14 +847,14 @@ class Reservation extends ResourcePresenter
                                 $unit_type = $booking['unit_type'];
                                 $unit_number = $booking['unit_number'];
                                 $reservation_id = $booking['reservation_id'];
-                                // $accomodationType = $booking['accomodation_type'];
+                                $unit_guest = $booking['unit_guest'];
 
 
                                 if ($datareservation['cancel'] == '0') {
                                     $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $reservation_id)->getRowArray();
                                     $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $reservation_id)->getRow();
                                 } else if ($datareservation['cancel'] == '1') {
-                                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $reservation_id)->getRowArray();
+                                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $reservation_id)->getRowArray();
                                     $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $reservation_id)->getRow();
                                 }
 
@@ -1403,14 +1403,14 @@ class Reservation extends ResourcePresenter
                                 $unit_type = $booking['unit_type'];
                                 $unit_number = $booking['unit_number'];
                                 $reservation_id = $booking['reservation_id'];
-                                // $accomodationType = $booking['accomodation_type'];
+                                $unit_guest = $booking['unit_guest'];
 
 
                                 if ($datareservation['cancel'] == '0') {
-                                    $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $reservation_id)->getRowArray();
+                                    $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $reservation_id)->getRowArray();
                                     $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $reservation_id)->getRow();
                                 } else if ($datareservation['cancel'] == '1') {
-                                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $reservation_id)->getRowArray();
+                                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $reservation_id)->getRowArray();
                                     $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $reservation_id)->getRow();
                                 }
 

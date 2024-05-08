@@ -166,7 +166,6 @@ class PdfController extends ResourcePresenter
 
         // $unit_booking= $this->detailReservationModel->get_unit_homestay_dtbooking($id)->getResultArray();
 
-        // dd($booking_unit);
         if (!empty($booking_unit)) {
             $data_unit_booking = array();
             $data_price = array();
@@ -183,32 +182,30 @@ class PdfController extends ResourcePresenter
                     $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                     $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                 } else if ($datareservation['cancel'] == '1') {
-                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
+                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                     $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                 }
 
-               if ($total_price_homestay->total_people < 11) {
+                if ($total_price_homestay->total_people < 11) {
                     $calculatePrice = 250000;
                 } else if ($total_price_homestay->total_people > 10) {
                     $calculatePrice = 200000;
                 }
-                $calculatedPrice = $calculatePrice*$unit_guest;
+                $calculatedPrice = $calculatePrice * $unit_guest;
 
 
                 // $priceUnit = $total_price_homestay->price;
-                $calculatedPriceUnit[] = $calculatePrice*$unit_guest;
+                $calculatedPriceUnit[] = $calculatePrice * $unit_guest;
                 // $calculated_unit_price = $calculatePrice*$total_price_homestay->unit_guest;
             }
 
             // $data_price = $total;
             $data_price = $calculatedPriceUnit;
 
-            // dd($data_price);
             // $accomodation_type = $accomodationType;
 
             $tphom = array_sum($data_price);
-            $tph = $tphom * $dayhome;
-            // $tph = array_sum($data_price);
+            $tph = $tphom;
             $data_unit_booking = $unit_booking;
         } else {
             $data_unit_booking = [];

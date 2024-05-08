@@ -170,7 +170,6 @@ class DetailReservationModel extends Model
             ->where('unit_homestay.unit_type', $unit_type)
             ->where('unit_homestay.homestay_id', $homestay_id)
             ->where('detail_reservation.reservation_id', $reservation_id)
-            ->where('reservation.id', $reservation_id)
             ->get();
 
         return $query;

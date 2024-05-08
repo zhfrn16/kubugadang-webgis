@@ -440,6 +440,11 @@ if ($detail['total_people'] < 11) {
                                     <a href="<?= base_url('/web/generatepdf/'); ?>/<?= esc($detail['id']); ?>" class="btn btn-outline-success"><i class="fa-solid fa-download me-3"></i>Download Invoice</a>
                                 </div>
                             <?php endif; ?>
+                            <?php if ($detail['cancel'] == '1' && $detail['account_refund'] == null) : ?>
+                                <div class="col-auto">
+                                    <a href="<?= base_url('/web/generatepdf/'); ?>/<?= esc($detail['id']); ?>" class="btn btn-outline-success"><i class="fa-solid fa-download me-3"></i>Download Invoice</a>
+                                </div>
+                            <?php endif; ?>
                             <?php if ($detail['deposit_check'] == '200') : ?>
                                 <div class="gallery col-auto btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#depositModal"><i class="fa fa-money me-3"></i>
                                     <b>Proof of Deposit</b>

@@ -107,6 +107,7 @@ $routes->group('web', ['namespace' => 'App\Controllers\Web'], function ($routes)
     $routes->presenter('reservation', ['filter' => 'login']);
     $routes->resource('reservation', ['filter' => 'login']);
 
+    $routes->get('showreservation', 'DetailReservation::showreservation');
     $routes->post('detailreservation/addcustom', 'DetailReservation::addcustom', ['filter' => 'login']);
     $routes->post('detailreservation/createday/(:segment)', 'DetailReservation::createday/$1');
     $routes->post('detailreservation/createactivity/(:segment)', 'DetailReservation::createactivity/$1');

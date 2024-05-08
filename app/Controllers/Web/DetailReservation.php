@@ -604,7 +604,7 @@ class DetailReservation extends ResourcePresenter
                     $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                     $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                 } else if ($datareservation['cancel'] == '1') {
-                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
+                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                     $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                 }
 
@@ -613,11 +613,11 @@ class DetailReservation extends ResourcePresenter
                 } else if ($total_price_homestay->total_people > 10) {
                     $calculatePrice = 200000;
                 }
-                $calculatedPrice = $calculatePrice*$unit_guest;
+                $calculatedPrice = $calculatePrice * $unit_guest;
 
 
                 // $priceUnit = $total_price_homestay->price;
-                $calculatedPriceUnit[] = $calculatePrice*$unit_guest;
+                $calculatedPriceUnit[] = $calculatePrice * $unit_guest;
                 // $calculated_unit_price = $calculatePrice*$total_price_homestay->unit_guest;
             }
 
@@ -755,6 +755,203 @@ class DetailReservation extends ResourcePresenter
         }
     }
 
+    public function showreservation($id = null)
+    {
+        $id = 'R0029'; 
+        $contents = $this->packageModel->get_list_package_distinct()->getResultArray();
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+
+        $datareservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
+        $datatourismvillage = $this->sumpuModel->get_sumpu()->getResultArray();
+        $package_reservation = $datareservation['package_id'];
+
+        //detail package 
+        $package = $this->packageModel->get_package_by_id($package_reservation)->getRowArray();
+        $serviceinclude = $this->detailServicePackageModel->get_service_include_by_id($package_reservation)->getResultArray();
+        $serviceexclude = $this->detailServicePackageModel->get_service_exclude_by_id($package_reservation)->getResultArray();
+        $detailPackage = $this->detailPackageModel->get_detailPackage_by_id($package_reservation)->getResultArray();
+        $getday = $this->packageDayModel->get_day_by_package($package_reservation)->getResultArray();
+        $combinedData = $this->detailPackageModel->getCombinedData($package_reservation);
+
+        if (!empty($getday)) {
+            $day = max($getday);
+            $daypack = $day['day'];
+            $dayhome = $day['day'] - 1;
+        } else {
+            $day = 1;
+            $daypack = 1;
+            $dayhome = 0;
+        }
+
+        //data homestay homestay
+        $list_unit = $this->unitHomestayModel->get_unit_homestay_all()->getResultArray();
+
+        if ($datareservation['cancel'] == '0') {
+            $booking_unit = $this->detailReservationModel->get_unit_homestay_bookingnya($id)->getResultArray();
+        } else if ($datareservation['cancel'] == '1') {
+            $booking_unit = $this->backupDetailReservationModel->get_unit_homestay_bookingnya($id)->getResultArray();
+        }
+        
+        
+        if (!empty($booking_unit)) {
+            $data_unit_booking = array();
+            $data_price = array();
+            foreach ($booking_unit as $booking) {
+                $date = $booking['date'];
+                $homestay_id = $booking['homestay_id'];
+                $unit_type = $booking['unit_type'];
+                $unit_number = $booking['unit_number'];
+                $reservation_id = $booking['reservation_id'];
+                $unit_guest = $booking['unit_guest'];
+
+
+                if ($datareservation['cancel'] == '0') {
+                    $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
+                    $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
+                } else if ($datareservation['cancel'] == '1') {
+                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
+                    $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
+                }
+
+                if ($total_price_homestay->total_people < 11) {
+                    $calculatePrice = 250000;
+                } else if ($total_price_homestay->total_people > 10) {
+                    $calculatePrice = 200000;
+                }
+                $calculatedPrice = $calculatePrice * $unit_guest;
+
+
+                // $priceUnit = $total_price_homestay->price;
+                $calculatedPriceUnit[] = $calculatePrice * $unit_guest;
+                // $calculated_unit_price = $calculatePrice*$total_price_homestay->unit_guest;
+            }
+
+            // $data_price = $total;
+            $data_price = $calculatedPriceUnit;
+
+            // $accomodation_type = $accomodationType;
+
+            $tphom = array_sum($data_price);
+            $tph = $tphom;
+            $data_unit_booking = $unit_booking;
+        } else {
+            $data_unit_booking = [];
+            $tph = '0';
+        }
+
+        // $check_in = "2023-10-29 11:51:00";
+        $check_in = $datareservation['check_in'];
+        if (!empty($getday)) {
+            $totday = max($getday);
+            $day = $totday['day'] - 1;
+        } else {
+            $totday = 1;
+            $day = $totday - 1;
+        }
+
+        // $token_of_deposit = $datareservation['token_of_deposit'];
+
+        $datareservation['fullpayment'] = $datareservation['total_price'] - $datareservation['deposit'];
+
+
+        // Ubah $check_in menjadi objek DateTime untuk mempermudah perhitungan
+        $check_in_datetime = new DateTime($check_in);
+
+        if ($day == '0') {
+            $check_out = $check_in_datetime->format('Y-m-d') . ' 18:00:00';
+        } else {
+            // Tambahkan jumlah hari
+            $check_in_datetime->modify('+' . $day . ' days');
+            // Atur waktu selalu menjadi 12:00:00
+            $check_out = $check_in_datetime->format('Y-m-d') . ' 12:00:00';
+        }
+
+        if (empty($datareservation)) {
+            return redirect()->to('web/detailreservation');
+        }
+        $date = date('Y-m-d');
+
+        $requestDate = $datareservation['request_date'];
+        $request_date_datetime = new DateTime($requestDate);
+
+        $timeDifference = $check_in_datetime->diff($request_date_datetime);
+        $days = $timeDifference->d;
+
+        if ($days >= 3) {
+            $batas_dp_dt = $check_in_datetime->modify('-' . '3' . ' days');
+            $batas_dp = $batas_dp_dt->format('Y-m-d H:i:s');
+
+            $batas_cancel_dt = $check_in_datetime->modify('-' . '3' . ' days');
+            $batas_cancel = $batas_cancel_dt->format('Y-m-d H:i:s');
+        } elseif ($days < 3) {
+            $batas_dp_dt = $request_date_datetime->modify('+12 hours');
+            $batas_dp = $batas_dp_dt->format('Y-m-d H:i:s');
+
+            $batas_cancel_dt = $request_date_datetime->modify('+12 hours');
+            $batas_cancel = $batas_cancel_dt->format('Y-m-d H:i:s');
+        }
+
+        $name_admin_confirm = $datareservation['admin_confirm'];
+        $getAdminC = $this->accountModel->get_profil_admin($datareservation['admin_confirm'])->getRowArray();
+        if ($getAdminC != null) {
+            $datareservation['name_admin_confirm'] = $getAdminC['username'];
+        } else {
+            $datareservation['name_admin_confirm'] = 'adm';
+        }
+
+        $name_admin_refund = $datareservation['admin_refund'];
+        $getAdminR = $this->accountModel->get_profil_admin($datareservation['admin_refund'])->getRowArray();
+        if ($getAdminR != null) {
+            $datareservation['name_admin_refund'] = $getAdminR['username'];
+        } else {
+            $datareservation['name_admin_refund'] = 'adm';
+        }
+
+        $admin_deposit_check = $datareservation['admin_deposit_check'];
+        $getAdminDP = $this->accountModel->get_profil_admin($datareservation['admin_deposit_check'])->getRowArray();
+        if ($getAdminDP != null) {
+            $datareservation['name_admin_deposit_check'] = $getAdminDP['username'];
+        } else {
+            $datareservation['name_admin_deposit_check'] = 'adm';
+        }
+
+
+
+        $admin_payment_check = $datareservation['admin_payment_check'];
+        $getAdminFP = $this->accountModel->get_profil_admin($datareservation['admin_payment_check'])->getRowArray();
+        if ($getAdminFP != null) {
+            $datareservation['name_admin_payment_check'] = $getAdminFP['username'];
+        } else {
+            $datareservation['name_admin_payment_check'] = 'adm';
+        }
+
+        $data = [
+            //data package
+            // 'data_package' => $package,
+            // 'serviceinclude' => $serviceinclude,
+            // 'serviceexclude' => $serviceexclude,
+            // 'day' => $getday,
+            // 'daypack' => $daypack,
+            // 'activity' => $combinedData,
+
+            // //data homestay homestay
+            'detail' => $datareservation,
+            'list_unit' => $list_unit,
+            'date' => $date,
+            'check_out' => $check_out,
+            'batas_dp' => $batas_dp,
+            'batas_cancel' => $batas_cancel,
+            'dayhome' => $dayhome,
+            'data_unit' => $booking_unit,
+            'booking' => $data_unit_booking,
+            'price_home' => $tph,
+            // 'accomodation_type' => $accomodation_type,
+
+        ];
+        dd($data);
+        
+    }
+
     public function confirm($id = null)
     {
         $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
@@ -806,7 +1003,7 @@ class DetailReservation extends ResourcePresenter
                     $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                     $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                 } else if ($datareservation['cancel'] == '1') {
-                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
+                    $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                     $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                 }
 
@@ -815,11 +1012,11 @@ class DetailReservation extends ResourcePresenter
                 } else if ($total_price_homestay->total_people > 10) {
                     $calculatePrice = 200000;
                 }
-                $calculatedPrice = $calculatePrice*$unit_guest;
+                $calculatedPrice = $calculatePrice * $unit_guest;
 
 
                 // $priceUnit = $total_price_homestay->price;
-                $calculatedPriceUnit[] = $calculatePrice*$unit_guest;
+                $calculatedPriceUnit[] = $calculatePrice * $unit_guest;
                 // $calculated_unit_price = $calculatePrice*$total_price_homestay->unit_guest;
             }
 
@@ -831,7 +1028,6 @@ class DetailReservation extends ResourcePresenter
             $tphom = array_sum($data_price);
             $tph = $tphom;
             $data_unit_booking = $unit_booking;
-           
         } else {
             $data_unit_booking = [];
             $tph = '0';
@@ -1086,7 +1282,7 @@ class DetailReservation extends ResourcePresenter
                         $data_unit_booking = array();
                         $data_price = array();
                         foreach ($booking_unit as $booking) {
-                     
+
                             $date = $booking['date'];
                             $homestay_id = $booking['homestay_id'];
                             $unit_type = $booking['unit_type'];
@@ -1099,29 +1295,29 @@ class DetailReservation extends ResourcePresenter
                                 $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                                 $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                             } else if ($datareservation['cancel'] == '1') {
-                                $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
+                                $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                                 $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                             }
-            
-                           if ($total_price_homestay->total_people < 11) {
+
+                            if ($total_price_homestay->total_people < 11) {
                                 $calculatePrice = 250000;
                             } else if ($total_price_homestay->total_people > 10) {
                                 $calculatePrice = 200000;
                             }
-                            $calculatedPrice = $calculatePrice*$unit_guest;
-            
-            
+                            $calculatedPrice = $calculatePrice * $unit_guest;
+
+
                             // $priceUnit = $total_price_homestay->price;
-                            $calculatedPriceUnit[] = $calculatePrice*$unit_guest;
+                            $calculatedPriceUnit[] = $calculatePrice * $unit_guest;
                             // $calculated_unit_price = $calculatePrice*$total_price_homestay->unit_guest;
                         }
-            
+
                         // $data_price = $total;
                         $data_price = $calculatedPriceUnit;
-            
+
                         // dd($data_price);
                         // $accomodation_type = $accomodationType;
-            
+
                         $tphom = array_sum($data_price);
                         $tph = $tphom * $dayhome;
                         // $tph = array_sum($data_price);
@@ -1299,7 +1495,7 @@ class DetailReservation extends ResourcePresenter
                 }
             } else if ($statusreservasi == 2) {
 
-                      $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+                $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
                 if ($villageEmailData) {
                     $villageName = $villageEmailData['name'];
 
@@ -1387,7 +1583,7 @@ class DetailReservation extends ResourcePresenter
                         $data_unit_booking = array();
                         $data_price = array();
                         foreach ($booking_unit as $booking) {
-                     
+
                             $date = $booking['date'];
                             $homestay_id = $booking['homestay_id'];
                             $unit_type = $booking['unit_type'];
@@ -1400,29 +1596,29 @@ class DetailReservation extends ResourcePresenter
                                 $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                                 $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                             } else if ($datareservation['cancel'] == '1') {
-                                $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
+                                $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                                 $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                             }
-            
-                           if ($total_price_homestay->total_people < 11) {
+
+                            if ($total_price_homestay->total_people < 11) {
                                 $calculatePrice = 250000;
                             } else if ($total_price_homestay->total_people > 10) {
                                 $calculatePrice = 200000;
                             }
-                            $calculatedPrice = $calculatePrice*$unit_guest;
-            
-            
+                            $calculatedPrice = $calculatePrice * $unit_guest;
+
+
                             // $priceUnit = $total_price_homestay->price;
-                            $calculatedPriceUnit[] = $calculatePrice*$unit_guest;
+                            $calculatedPriceUnit[] = $calculatePrice * $unit_guest;
                             // $calculated_unit_price = $calculatePrice*$total_price_homestay->unit_guest;
                         }
-            
+
                         // $data_price = $total;
                         $data_price = $calculatedPriceUnit;
-            
+
                         // dd($data_price);
                         // $accomodation_type = $accomodationType;
-            
+
                         $tphom = array_sum($data_price);
                         $tph = $tphom * $dayhome;
                         // $tph = array_sum($data_price);
@@ -1535,7 +1731,7 @@ class DetailReservation extends ResourcePresenter
                     // Save the PDF to the server
                     file_put_contents($pdfFilePath, $pdfContent);
 
-                   
+
                     $email = \Config\Services::email();
                     $email->setTo($customerEmail);
                     $email->setSubject('Konfirmasi Reservasi Anda di ' . $villageName);
@@ -1606,14 +1802,13 @@ class DetailReservation extends ResourcePresenter
 
         if ($booking_unit != null) {
             foreach ($booking_unit as $data_unit) {
-                $date = $data_unit['date'];
+                $cancel_date = $data_unit['date'];
                 $unit_number = $data_unit['unit_number'];
                 $homestay_id = $data_unit['homestay_id'];
                 $unit_type = $data_unit['unit_type'];
                 $reservation_id = $data_unit['reservation_id'];
-                // $accomodation_type = $data_unit['accomodation_type'];
-                // $array = array('date' => $date, 'unit_number' => $unit_number, 'homestay_id' => $homestay_id, 'unit_type' => $unit_type, 'reservation_id' => $reservation_id, 'accomodation_type' => $accomodation_type);
-                $array = array('date' => $date, 'unit_number' => $unit_number, 'homestay_id' => $homestay_id, 'unit_type' => $unit_type, 'reservation_id' => $reservation_id);
+                $unit_guest = $data_unit['unit_guest'];
+                $array = array('date' => $cancel_date, 'unit_guest' => $unit_guest, 'unit_number' => $unit_number, 'homestay_id' => $homestay_id, 'unit_type' => $unit_type, 'reservation_id' => $reservation_id);
 
                 $addBDE = $this->backupDetailReservationModel->add_backup($array);
                 $deletefromDE = $this->detailReservationModel->where($array)->delete();
@@ -1628,11 +1823,295 @@ class DetailReservation extends ResourcePresenter
         $updateDR = $this->reservationModel->update_cancel($id, $requestData);
 
         if ($updateDR) {
-            session()->setFlashdata('success', 'Reservation has been canceled');
+            $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+            if ($villageEmailData) {
+                $villageName = $villageEmailData['name'];
+                $detail_reservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
+                $datecancel = $detail_reservation['cancel_date'];
+                $customerName = $detail_reservation['username'];
+                $customerEmail = $detail_reservation['email'];
+                $packageName = $detail_reservation['package_name'];
+                $cancel_date = strtotime($datecancel);
+                $request_cancel_date = date('Y-m-d', $cancel_date);
+                $cancel_time = strtotime($datecancel);
+                $request_cancel_time = date('H:i:s', $cancel_time);
 
-            return redirect()->back();
-        } else {
-            return redirect()->back()->withInput();
+                // create new PDF document
+                $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+                // set document information
+                $pdf->SetCreator(PDF_CREATOR);
+                $pdf->SetAuthor('Kampuang Minang Nagari Sumpu');
+                $pdf->SetTitle('PDF Invoice Kampuang Minang Nagari Sumpu');
+                $pdf->SetSubject('Kampuang Minang Nagari Sumpu');
+                $pdf->SetKeywords('TCPDF, PDF, invoice, pesonasumpu.online');
+
+
+                // set default header data
+                $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE . ' 001', PDF_HEADER_STRING, array(0, 64, 255), array(0, 64, 128));
+                $pdf->setFooterData(array(0, 64, 0), array(0, 64, 128));
+
+                // set header and footer fonts
+                $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+                $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+                // set default monospaced font
+                $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+                // set margins
+                $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+                $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+                $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+                // set auto page breaks
+                $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+                // set image scale factor
+                $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+                // set default font subsetting mode
+                $pdf->setFontSubsetting(true);
+
+                // Set font
+                // dejavusans is a UTF-8 Unicode font, if you only need to
+                // print standard ASCII chars, you can use core fonts like
+                // helvetica or times to reduce file size.
+                $pdf->SetFont('dejavusans', '', 14, '', true);
+
+
+                // Add a page
+                // This method has several options, check the source code documentation for more information.
+                $pdf->AddPage();
+
+                $contents = $this->packageModel->get_list_package_distinct()->getResultArray();
+                $datareservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
+                $package_id_reservation = $datareservation['package_id'];
+
+                //detail package 
+                $package = $this->packageModel->get_package_by_id($package_id_reservation)->getRowArray();
+                $serviceinclude = $this->detailServicePackageModel->get_service_include_by_id($package_id_reservation)->getResultArray();
+                $serviceexclude = $this->detailServicePackageModel->get_service_exclude_by_id($package_id_reservation)->getResultArray();
+                $detailPackage = $this->detailPackageModel->get_detailPackage_by_id($package_id_reservation)->getResultArray();
+                $getday = $this->packageDayModel->get_day_by_package($package_id_reservation)->getResultArray();
+                $combinedData = $this->detailPackageModel->getCombinedData($package_id_reservation);
+
+                if (!empty($getday)) {
+                    $day = max($getday);
+                    $daypack = $day['day'];
+                    $dayhome = $day['day'] - 1;
+                } else {
+                    $day = 1;
+                    $daypack = 1;
+                    $dayhome = 0;
+                }
+
+                //data homestay
+                $list_unit = $this->unitHomestayModel->get_unit_homestay_all()->getResultArray();
+                if ($datareservation['cancel'] == '0') {
+                    $booking_unit = $this->detailReservationModel->get_unit_homestay_bookingnya($id)->getResultArray();
+                } else if ($datareservation['cancel'] == '1') {
+                    $booking_unit = $this->backupDetailReservationModel->get_unit_homestay_bookingnya($id)->getResultArray();
+                }
+
+                // $unit_booking= $this->detailReservationModel->get_unit_homestay_dtbooking($id)->getResultArray();
+
+                // dd($booking_unit);
+                if (!empty($booking_unit)) {
+                    $data_unit_booking = array();
+                    $data_price = array();
+                    foreach ($booking_unit as $booking) {
+                        $date = $booking['date'];
+                        $homestay_id = $booking['homestay_id'];
+                        $unit_type = $booking['unit_type'];
+                        $unit_number = $booking['unit_number'];
+                        $reservation_id = $booking['reservation_id'];
+                        $unit_guest = $booking['unit_guest'];
+
+
+                        if ($datareservation['cancel'] == '0') {
+                            $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
+                            $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
+                        } else if ($datareservation['cancel'] == '1') {
+                            $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
+                            $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
+                        }
+
+                        $total[] = $total_price_homestay->price;
+                    }
+
+                    $data_price = $total;
+                    // dd($data_price);
+                    // $accomodation_type = $accomodationType;
+
+                    $tphom = array_sum($data_price);
+                    $tph = $tphom * $dayhome;
+                    // $tph = array_sum($data_price);
+                    $data_unit_booking = $unit_booking;
+                } else {
+                    $data_unit_booking = [];
+                    $tph = '0';
+                }
+
+                // $check_in = "2023-10-29 11:51:00";
+                $check_in = $datareservation['check_in'];
+                if (!empty($getday)) {
+                    $totday = max($getday);
+                    $day = $totday['day'] - 1;
+                } else {
+                    $totday = 1;
+                    $day = $totday - 1;
+                }
+
+                // Ubah $check_in menjadi objek DateTime 
+                $check_in_datetime = new DateTime($check_in);
+
+                if ($day == '0') {
+                    $check_out = $check_in_datetime->format('Y-m-d') . ' 18:00:00';
+                } else {
+                    // Tambahkan jumlah hari
+                    $check_in_datetime->modify('+' . $day . ' days');
+                    // Atur waktu selalu menjadi 12:00:00
+                    $check_out = $check_in_datetime->format('Y-m-d') . ' 12:00:00';
+                }
+
+
+                $name_admin_confirm = $datareservation['admin_confirm'];
+                $getAdminC = $this->accountModel->get_profil_admin($datareservation['admin_confirm'])->getRowArray();
+                if ($getAdminC != null) {
+                    $datareservation['name_admin_confirm'] = $getAdminC['username'];
+                } else {
+                    $datareservation['name_admin_confirm'] = 'adm';
+                }
+
+                $name_admin_refund = $datareservation['admin_refund'];
+                $getAdminR = $this->accountModel->get_profil_admin($datareservation['admin_refund'])->getRowArray();
+                if ($getAdminR != null) {
+                    $datareservation['name_admin_refund'] = $getAdminR['username'];
+                } else {
+                    $datareservation['name_admin_refund'] = 'adm';
+                }
+
+                $admin_deposit_check = $datareservation['admin_deposit_check'];
+                $getAdminDP = $this->accountModel->get_profil_admin($datareservation['admin_deposit_check'])->getRowArray();
+                if ($getAdminDP != null) {
+                    $datareservation['name_admin_deposit_check'] = $getAdminDP['username'];
+                } else {
+                    $datareservation['name_admin_deposit_check'] = 'adm';
+                }
+
+                $admin_payment_check = $datareservation['admin_payment_check'];
+                $getAdminFP = $this->accountModel->get_profil_admin($datareservation['admin_payment_check'])->getRowArray();
+                if ($getAdminFP != null) {
+                    $datareservation['name_admin_payment_check'] = $getAdminFP['username'];
+                } else {
+                    $datareservation['name_admin_payment_check'] = 'adm';
+                }
+
+                if (empty($datareservation)) {
+                    return redirect()->to('web/detailreservation');
+                }
+                $date = date('Y-m-d');
+
+                $user_id = $datareservation['user_id'];
+                $us = $this->userModel->get_users_by_id($user_id)->getRowArray();
+
+                $data = [
+                    //data package
+                    'data_package' => $package,
+                    'serviceinclude' => $serviceinclude,
+                    'serviceexclude' => $serviceexclude,
+                    'day' => $getday,
+                    'daypack' => $daypack,
+                    'activity' => $combinedData,
+                    'detail' => $datareservation,
+                    'customer' => $us,
+
+                    //data homestay
+                    'data' => $contents,
+                    'list_unit' => $list_unit,
+                    'date' => $date,
+                    'dayhome' => $dayhome,
+                    'check_out' => $check_out,
+                    'data_unit' => $booking_unit,
+                    'booking' => $data_unit_booking,
+                    'price_home' => $tph,
+                    // 'accomodation_type' => $accomodation_type,
+
+                ];
+                // return view('web/invoice', $data);
+
+                //view mengarah ke invoice.php
+                $html = view('web/invoice', $data);
+
+                // Print text using writeHTMLCell()
+                $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+                // Get the PDF content as a string
+                $pdfContent = $pdf->Output('', 'S'); // 'S' to return as a string
+
+                // Define the file path to save the PDF
+                $pdfFilePath = WRITEPATH . 'uploads/invoice_' . date('YmdHis') . '.pdf'; // Adjust the file path as needed
+
+                // Save the PDF to the server
+                file_put_contents($pdfFilePath, $pdfContent);
+
+                $email = \Config\Services::email();
+                $email->setTo($customerEmail);
+                $email->setSubject('Pengajuan Cancel Reservasi ' . $id);
+
+                $message = "<p>Yth. $customerName,</p>";
+                $message .= "<p>Pengajuan Cancel Anda telah disimpan dengan detail sebagai berikut:</p><br>";
+                $message .= "<p><span style='display: inline-block; width: 150px;'>ID Reservasi</span>: $id</p>";
+                $message .= "<p><span style='display: inline-block; width: 150px;'>Nama Paket</span>: $packageName</p>";
+                $message .= "<p><span style='display: inline-block; width: 150px;'>Tanggal Cancel</span>: $request_cancel_date</p>";
+                $message .= "<p><span style='display: inline-block; width: 150px;'>Waktu Cancel</span>: $request_cancel_time WIB</p>";
+                $message .= "<p><span style='display: inline-block; width: 150px;'>Status</span>: CANCEL</p><br>";
+                $message .= "<p>Reservasi telah kami batalkan.</p><br>";
+                $message .= "<p>Salam,</p>";
+                $message .= "<p>Pokdarwis $villageName</p>";
+
+                $email->setMessage($message);
+                $email->setMailType('html');
+
+                // Attach PDF to the email using the file path
+                $email->attach($pdfFilePath, 'invoice.pdf', 'application/pdf');
+
+                if ($email->send()) {
+
+                    $villageName = $villageEmailData['name'];
+                    $villageEmail = $villageEmailData['email'];
+
+                    $email2 = \Config\Services::email();
+                    $email2->setTo($villageEmail);
+                    $email2->setSubject('Pengajuan Cancel Reservasi ' . $id);
+
+                    $message = "<p>Halo Admin,</p>";
+                    $message .= "<p>Pengajuan Cancel dan Refund Reservasi $id telah disimpan dengan detail sebagai berikut:</p><br>";
+                    $message .= "<p><span style='display: inline-block; width: 150px;'>ID Reservasi</span>: $id</p>";
+                    $message .= "<p><span style='display: inline-block; width: 150px;'>Nama Paket</span>: $packageName</p>";
+                    $message .= "<p><span style='display: inline-block; width: 150px;'>Tanggal Cancel</span>: $request_cancel_date</p>";
+                    $message .= "<p><span style='display: inline-block; width: 150px;'>Waktu Cancel</span>: $request_cancel_time WIB</p>";
+                    $message .= "<p><span style='display: inline-block; width: 150px;'>Status</span>: CANCEL AND REFUND</p><br>";
+                    $message .= "<p>Reservasi telah dibatalkan.</p>";
+                    $message .= "<p>Terima kasih.</p>";
+
+                    $email2->setMessage($message);
+                    $email2->setMailType('html');
+                    $email2->attach($pdfFilePath, 'invoice.pdf', 'application/pdf');
+                    unlink($pdfFilePath); // Delete the PDF file from the server
+                    if ($email2->send()) {
+                    } else {
+                    }
+                } else {
+                }
+
+
+                session()->setFlashdata('success', 'Reservation has been canceled.');
+
+                return redirect()->back();
+            } else {
+                return redirect()->back()->withInput();
+            }
         }
     }
 
@@ -1647,9 +2126,8 @@ class DetailReservation extends ResourcePresenter
                 $homestay_id = $data_unit['homestay_id'];
                 $unit_type = $data_unit['unit_type'];
                 $reservation_id = $data_unit['reservation_id'];
-                // $accomodation_type = $data_unit['accomodation_type'];
-                // $array = array('date' => $date, 'unit_number' => $unit_number, 'homestay_id' => $homestay_id, 'unit_type' => $unit_type, 'reservation_id' => $reservation_id, 'accomodation_type' => $accomodation_type);
-                $array = array('date' => $date, 'unit_number' => $unit_number, 'homestay_id' => $homestay_id, 'unit_type' => $unit_type, 'reservation_id' => $reservation_id);
+                $unit_guest = $data_unit['unit_guest'];
+                $array = array('date' => $date, 'unit_guest' => $unit_guest, 'unit_number' => $unit_number, 'homestay_id' => $homestay_id, 'unit_type' => $unit_type, 'reservation_id' => $reservation_id);
 
                 $addBDE = $this->backupDetailReservationModel->add_backup($array);
                 $deletefromDE = $this->detailReservationModel->where($array)->delete();
@@ -1793,14 +2271,14 @@ class DetailReservation extends ResourcePresenter
                         $unit_type = $booking['unit_type'];
                         $unit_number = $booking['unit_number'];
                         $reservation_id = $booking['reservation_id'];
-                        // $accomodationType = $booking['accomodation_type'];
+                        $unit_guest = $booking['unit_guest'];
 
 
                         if ($datareservation['cancel'] == '0') {
-                            $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
+                            $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                             $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                         } else if ($datareservation['cancel'] == '1') {
-                            $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
+                            $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                             $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                         }
 
@@ -2162,14 +2640,14 @@ class DetailReservation extends ResourcePresenter
                             $unit_type = $booking['unit_type'];
                             $unit_number = $booking['unit_number'];
                             $reservation_id = $booking['reservation_id'];
-                            // $accomodationType = $booking['accomodation_type'];
+                            $unit_guest = $booking['unit_guest'];
 
 
                             if ($datareservation['cancel'] == '0') {
-                                $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
+                                $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                                 $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                             } else if ($datareservation['cancel'] == '1') {
-                                $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
+                                $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                                 $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                             }
 
@@ -2448,14 +2926,14 @@ class DetailReservation extends ResourcePresenter
                             $unit_type = $booking['unit_type'];
                             $unit_number = $booking['unit_number'];
                             $reservation_id = $booking['reservation_id'];
-                            // $accomodationType = $booking['accomodation_type'];
+                            $unit_guest = $booking['unit_guest'];
 
 
                             if ($datareservation['cancel'] == '0') {
-                                $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
+                                $unit_booking[] = $this->detailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                                 $total_price_homestay = $this->detailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                             } else if ($datareservation['cancel'] == '1') {
-                                $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $id)->getRowArray();
+                                $unit_booking[] = $this->backupDetailReservationModel->get_unit_homestay_booking_data($date, $homestay_id, $unit_type, $unit_number, $unit_guest, $id)->getRowArray();
                                 $total_price_homestay = $this->backupDetailReservationModel->get_price_homestay_booking($homestay_id, $unit_type, $unit_number, $id)->getRow();
                             }
 

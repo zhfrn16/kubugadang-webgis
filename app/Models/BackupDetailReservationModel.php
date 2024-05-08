@@ -10,7 +10,7 @@ class BackupDetailReservationModel extends Model
     protected $table = 'backup_detail_reservation';
     // protected $primaryKey = 'id';
     protected $returnType = 'array';
-    protected $allowedFields = ['date','unit_number','reservation_id','unit_type'];
+    protected $allowedFields = ['date','unit_number','reservation_id', 'unit_guest','unit_type'];
 
     // Dates
     protected $useTimestamps = true;
@@ -34,7 +34,7 @@ class BackupDetailReservationModel extends Model
     public function get_unit_homestay_bookingnya($reservation_id =  null)
     {
         $query = $this->db->table($this->table)
-            ->select('date, unit_number, homestay_id, unit_type, reservation_id')
+            ->select('date, unit_guest, unit_number, homestay_id, unit_type, reservation_id')
             ->where('reservation_id', $reservation_id)
             ->distinct()
             ->get();
@@ -63,21 +63,23 @@ class BackupDetailReservationModel extends Model
     //     return $query;
     // }
 
-    public function get_unit_homestay_booking_data($date=null,$homestay_id=null, $unit_type=null, $unit_number=null,$reservation_id=null)
+    public function get_unit_homestay_booking_data($date = null, $homestay_id = null, $unit_type = null, $unit_number = null, $unit_guest = null, $reservation_id = null)
     {
         $query = $this->db->table($this->table)
-        ->select('*')
-        ->join('unit_homestay', 'backup_detail_reservation.homestay_id = unit_homestay.homestay_id', 'backup_detail_reservation.unit_number = unit_homestay.unit_number', 'backup_detail_reservation.unit_type = unit_homestay.unit_type')
-        ->join('homestay', 'homestay.id = backup_detail_reservation.homestay_id', 'inner')
-        ->join('homestay_unit_type', 'homestay_unit_type.id = backup_detail_reservation.unit_type', 'inner')
-        ->where('backup_detail_reservation.date', $date)
-        ->where('unit_homestay.unit_number', $unit_number)
-        ->where('unit_homestay.unit_type', $unit_type)
-        ->where('unit_homestay.homestay_id', $homestay_id)
-        ->where('backup_detail_reservation.reservation_id', $reservation_id)
-        ->get();
+            ->select('*, backup_detail_reservation.unit_guest as unit_guest_number')
+            ->join('unit_homestay', 'backup_detail_reservation.homestay_id = unit_homestay.homestay_id', 'backup_detail_reservation.unit_number = unit_homestay.unit_number', 'backup_detail_reservation.unit_type = unit_homestay.unit_type')
+            ->join('homestay', 'homestay.id = backup_detail_reservation.homestay_id', 'inner')
+            ->join('homestay_unit_type', 'homestay_unit_type.id = backup_detail_reservation.unit_type', 'inner')
+            ->where('backup_detail_reservation.date', $date)
+            ->where('unit_homestay.unit_number', $unit_number)
+            ->where('unit_homestay.unit_type', $unit_type)
+            ->where('unit_homestay.homestay_id', $homestay_id)
+            ->where('backup_detail_reservation.reservation_id', $reservation_id)
+            ->where('backup_detail_reservation.unit_guest', $unit_guest)
+            ->get();
         return $query;
     }
+
 
     
     // public function get_unit_homestay_booking_data_reservation($homestay_id=null, $unit_type=null, $unit_number=null,$reservation_id=null)
@@ -102,10 +104,11 @@ class BackupDetailReservationModel extends Model
     public function get_price_homestay_booking($homestay_id=null, $unit_type=null, $unit_number=null,$reservation_id=null)
     {
         $query = $this->db->table($this->table)
-            ->select('price')
+            ->select('price, unit_guest, total_people')
             ->join('unit_homestay', 'backup_detail_reservation.homestay_id = unit_homestay.homestay_id', 'backup_detail_reservation.unit_number = unit_homestay.unit_number', 'backup_detail_reservation.unit_type = unit_homestay.unit_type')
             ->join('homestay', 'homestay.id = backup_detail_reservation.homestay_id', 'inner')
             ->join('homestay_unit_type', 'homestay_unit_type.id = backup_detail_reservation.unit_type', 'inner')
+            ->join('reservation', 'reservation.id = backup_detail_reservation.reservation_id', 'inner')
             ->where('unit_homestay.unit_number', $unit_number)
             ->where('unit_homestay.unit_type', $unit_type)
             ->where('unit_homestay.homestay_id', $homestay_id)
