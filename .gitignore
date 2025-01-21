@@ -64,6 +64,8 @@ writable/debugbar/*
 
 php_errors.log
 
+app/Controllers/Web/Admin.php
+
 #-------------------------
 # User Guide Temp Files
 #-------------------------
