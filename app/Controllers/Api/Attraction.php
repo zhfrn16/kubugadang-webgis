@@ -37,6 +37,18 @@ class Attraction extends ResourceController
         ];
         return $this->respond($response);
     }
+    public function attractionLSA()
+    {
+        $contents = $this->attractionModel->get_list_attractionLSA()->getResult();
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success get list of Attraction Lake Singkarak Tourism"
+            ]
+        ];
+        return $this->respond($response);
+    }
     public function attractionNT()
     {
         $contents = $this->attractionModel->get_list_attractionNT()->getResult();
@@ -170,6 +182,50 @@ class Attraction extends ResourceController
             'status' => 200,
             'message' => [
                 "Success"
+            ]
+        ];
+        return $this->respond($response);
+    }
+
+    public function findlsaAll()
+    {
+        // $request = $this->request->getPost();
+        $contents = $this->attractionModel->get_list_attractionLSA()->getResult();
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success find all attraction LSA"
+            ]
+        ];
+        return $this->respond($response);
+    }
+    public function findAll()
+    {
+        // $request = $this->request->getPost();
+        $contents = $this->attractionModel->get_list_attraction_without_lsa()->getResult();
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success find all attraction"
+            ]
+        ];
+        return $this->respond($response);
+    }
+
+    public function findByRadiuslsa()
+    {
+        $request = $this->request->getPost();
+        $contents = $this->attractionModel->get_lsa_by_radius($request)->getResult();
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success find Singkarak Lake Activity by radius"
             ]
         ];
         return $this->respond($response);

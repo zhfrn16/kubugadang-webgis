@@ -16582,13 +16582,13 @@ body .bi:before {
 .table.table-md tr th,
 .table.table-sm tr td,
 .table.table-sm tr th {
-  padding: 1rem;
+  padding: 0.5rem;
 }
 .table-lg.dataTable-table tr td,
 .table-lg.dataTable-table tr th,
 .table.table-lg tr td,
 .table.table-lg tr th {
-  padding: 1.3rem;
+  padding: 0.5rem;
 }
 .dataTable-container {
   overflow-x: auto;

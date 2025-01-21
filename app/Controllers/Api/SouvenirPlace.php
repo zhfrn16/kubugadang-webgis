@@ -57,6 +57,21 @@ class SouvenirPlace extends ResourceController
         return $this->respond($response);
     }
 
+    public function findAll()
+    {
+        $request = $this->request->getPost();
+        $contents = $this->souvenirPlaceModel->get_list_sp()->getResult();
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success find all souvenir place"
+            ]
+        ];
+        return $this->respond($response);
+    }
+
     public function findByRadius()
     {
         $request = $this->request->getPost();

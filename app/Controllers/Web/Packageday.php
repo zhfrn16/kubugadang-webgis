@@ -209,7 +209,7 @@ class PackageDay extends ResourcePresenter
 
         $requestData = [
             'package_id' => $id,
-            'day' => $request['day'],
+            'day' => $request['dayselect'],
             'activity' => $request['activity'],
             'activity_type' => $request['activity_type'],
             'object_id' => $request['object'],
@@ -299,22 +299,7 @@ class PackageDay extends ResourcePresenter
         }
     }
 
-    // public function delete($package_id = null, $day=null, $activity=null)
-    // {
-    //     $id=$package_id;
-    //     $deleteDP = $this->detailPackageModel->delete(['package_id' => $id]);
-
-    //     dd($deleteDP);
-    // if ($deleteDP) {
-    //     $response = [
-    //         'status' => 200,
-    //         'message' => [
-    //             "Success delete Activity Package Day"
-    //         ]
-    //     ];
-    //     return $this->respondDeleted($response);
-    // }
-    // }
+    
     public function deleteday($package_id = null, $day = null, $description = null)
     {
         $request = $this->request->getPost();
@@ -335,7 +320,7 @@ class PackageDay extends ResourcePresenter
             $deletePD = $this->packageDayModel->where($array2)->delete();
 
             if ($deletePD) {
-                session()->setFlashdata('success', 'Activity "' . $description . '" Successfully deleted.');
+                session()->setFlashdata('success', 'Day "' . $description . '" Successfully deleted.');
 
                 $package = $this->packageModel->get_package_by_id($package_id)->getRowArray();
                 $package_id = $package['id'];
@@ -358,7 +343,7 @@ class PackageDay extends ResourcePresenter
                     'activity' => $detailPackage
                 ];
 
-                return redirect()->to(base_url('dashboard/packageday') . '/' . $package_id);
+                return redirect()->to(base_url('dashboard/package/edit') . '/' . $package_id);
             }
         } else {
             $response = [
@@ -415,7 +400,7 @@ class PackageDay extends ResourcePresenter
             ];
 
             // endforeach;
-            return redirect()->to(base_url('dashboard/packageday') . '/' . $package_id);
+            return redirect()->to(base_url('dashboard/package/edit') . '/' . $package_id);
 
             // return view('dashboard/detail-package-form', $data, $package, $packageDay, $detailPackage);
 

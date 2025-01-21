@@ -138,6 +138,20 @@ class Homestay extends ResourceController
     return $this->respond($response);
 }
 
+public function findAll()
+    {
+        $request = $this->request->getPost();
+        $contents = $this->homestayModel->get_list_hm_api()->getResult();
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success find all homestay"
+            ]
+        ];
+        return $this->respond($response);
+    }
 
     public function findByRadius()
     {

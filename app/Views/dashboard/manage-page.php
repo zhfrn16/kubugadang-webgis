@@ -1,6 +1,9 @@
 <?php
 $uri = service('uri')->getSegments();
 $users = in_array('users', $uri);
+// $package = in_array('package', $uri);
+// $packagetype = in_array('packagetype', $uri);
+// $servicepackage = in_array('servicepackage', $uri);
 ?>
 
 <?= $this->extend('dashboard/layouts/main'); ?>
@@ -48,21 +51,49 @@ $users = in_array('users', $uri);
                                             <i class="fa-solid fa-circle-info"></i>
                                         </a>
                                         <?php if ($manage == 'Facility Type') : ?>
-                                            <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['type']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
+                                            <form action="<?= base_url('dashboard/facilitytype/deleteobject/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['type']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </form>
+                                        <?php elseif ($manage == 'Service') : ?>
+                                            <form action="<?= base_url('dashboard/servicepackage/deleteobject/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
+                                                <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </form>
                                         <?php elseif ($manage == 'Package Type') : ?>
-                                            <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['type_name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
+                                            <form action="<?= base_url('dashboard/packagetype/deleteobject/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['type_name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </form>
+                                        <?php elseif ($manage == 'Package') : ?>
+                                            <form action="<?= base_url('dashboard/package/deleteobject/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
+                                                <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </form>
                                         <?php else : ?>
-                                            <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
+                                            <!-- <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" href="<?= current_url() . '/delete' . '/' . esc($item['id']); ?>">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a> -->
                                         <?php endif; ?>
-                                        
-                                </td>
-                                <?php $i++ ?>
+
+                                    </td>
+                                    <?php $i++ ?>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>

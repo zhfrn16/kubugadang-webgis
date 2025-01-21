@@ -69,11 +69,7 @@
                             <?= lang('Auth.loginAction') ?>
                         </button>
 
-                        <a class="btn btn-danger btn-block shadow mt-3" href="<?= $link ?>" target="blank">
-                            Login with Google
-                        </a>
-
-
+                      
 
 
                     </form>
@@ -98,10 +94,7 @@
                             </p>
                         </div>
 
-                        <h6 class="auth-subtitle mb-4 text-center" style="margin-bottom: 0 !important;color:black"> OR </h6>
-                        <a class="btn btn-danger btn-block shadow mt-3" href="<?= $link ?>" target="blank">
-                            Sign up with Google
-                        </a>
+                      
                     <?php endif; ?>
 
 

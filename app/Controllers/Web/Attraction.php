@@ -4,6 +4,7 @@ namespace App\Controllers\Web;
 
 use App\Models\AttractionModel;
 use App\Models\GalleryAttractionModel;
+use App\Models\SumpuModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
 
@@ -11,6 +12,7 @@ class Attraction extends ResourcePresenter
 {
     protected $attractionModel;
     protected $galleryAttractionModel;
+    protected $sumpuModel;
 
     /**
      * Instance of the main Request object.
@@ -23,6 +25,7 @@ class Attraction extends ResourcePresenter
 
     public function __construct()
     {
+        $this->sumpuModel = new SumpuModel();
         $this->attractionModel = new AttractionModel();
         $this->galleryAttractionModel = new GalleryAttractionModel();
     }
@@ -51,6 +54,7 @@ class Attraction extends ResourcePresenter
     public function show($id = null)
     {
         $attraction = $this->attractionModel->get_attraction_by_id($id)->getRowArray();
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
 
         if (empty($attraction)) {
             return redirect()->to(substr(current_url(), 0, -strlen($id)));
@@ -66,6 +70,7 @@ class Attraction extends ResourcePresenter
         $data = [
             'title' => $attraction['name'],
             'data' => $attraction,
+            'data2' => $contents2,
             'folder' => 'attraction'
         ];
 

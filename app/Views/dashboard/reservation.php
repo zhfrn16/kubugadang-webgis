@@ -30,10 +30,10 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
                                             <th>ID</th>
                                             <th>Customer</th>
                                             <th>Package Name</th>
-                                            <th>Request Date</th>
-                                            <th>Check In</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th style="width: 140px;">Request Date</th>
+                                            <th style="width: 140px;">Check In</th>
+                                            <th style="width: 130px;">Status</th>
+                                            <th style="width: 80px;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="table-data">
@@ -47,7 +47,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
                                                     <td><?= esc($item['name']); ?></td>
                                                     <td><?= date('d F Y, h:i:s A', strtotime($item['request_date'])); ?></td>
                                                     <td><?= date('d F Y, h:i:s A', strtotime($item['check_in'])); ?></td>
-                                                    <td>
+                                                    <td style="text-align: center;">
                                                         <?php $date = date('Y-m-d H:i'); ?>
                                                         <?php if ($item['status'] == null) : ?>
                                                             <?php if ($item['custom'] == '1' || $item['custom'] != '1') : ?>
@@ -190,12 +190,11 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
                                                                         <div class="col-12  order-md-first order-last">
                                                                             <div class="row">
                                                                                 <div class="col-12">
-                                                                                    <br>
                                                                                     <table class="col-12">
                                                                                         <tbody>
                                                                                             <tr>
-                                                                                                <td> Status </td>
-                                                                                                <td>
+                                                                                            <td> Status </td>
+                                                                                            <td> :
                                                                                                     <?php $date = date('Y-m-d H:i'); ?>
                                                                                                     <?php if ($item['status'] == null) : ?>
                                                                                                         <?php if ($item['custom'] == '1' || $item['custom'] != '1') : ?>
@@ -298,38 +297,36 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
                                                                                             <tr>
                                                                                                 <?php if ($item['status'] == '1' || $item['status'] == '2') : ?>
                                                                                                     <td><i class="fa fa-level-down" aria-hidden="true"></i> Confirmation Date</td>
-                                                                                                    <td> : <?= esc(date('l, j F Y H:i:s', strtotime($item['confirmation_date']))); ?> (by admin <?= esc($item['name_admin_refund']); ?>)</td>
+                                                                                                    <td> : <?= esc(date('l, j F Y H:i:s', strtotime($item['confirmation_date']))); ?> (by <?= esc($item['name_admin_confirm']); ?>)</td>
                                                                                                 <?php endif; ?>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <?php if ($item['status'] == '1' || $item['status'] == '2') : ?>
                                                                                                     <td> Feedback admin</td>
-                                                                                                    <td> : <?= esc($item['feedback']); ?> (by admin <?= esc($item['name_admin_confirm']); ?>)</td>
+                                                                                                    <td> : <?= esc($item['feedback']); ?> (by <?= esc($item['name_admin_confirm']); ?>)</td>
                                                                                                 <?php endif; ?>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <?php if ($item['proof_of_deposit'] != null) : ?>
                                                                                                     <td><i class="fa fa-level-down" aria-hidden="true"></i> Deposit Payment
                                                                                                     <td>
-                                                                                                        : <?= esc(date('l, j F Y H:i:s', strtotime($item['deposit_date']))); ?> (by <?= esc(user()->username); ?>)
+                                                                                                        : <?= esc(date('l, j F Y H:i:s', strtotime($item['deposit_date']))); ?> (by <?= esc($item['username']); ?>)
                                                                                                     </td>
 
                                                     </td>
                                                 <?php endif; ?>
                                                 </tr>
                                                 <tr>
-                                                    <?php if ($item['proof_of_deposit'] != null) : ?>
+                                                    <?php if ($item['deposit_check'] != null) : ?>
                                                         <td>Status Deposit Payment
                                                         <td>
                                                             :
-                                                            <?php if ($item['deposit_check'] == null) : ?>
-                                                                We will check your proof of deposit
-                                                            <?php elseif ($item['deposit_check'] == 1) : ?>
-                                                                Thank you. The proof of deposit is correct
-                                                            <?php elseif ($item['deposit_check'] == 0) : ?>
-                                                                Sorry. The proof of deposit is incorrect
+                                                            <?php if ($item['deposit_check'] == '200') : ?>
+                                                                Thank you. The deposit has been received.
+                                                            <?php else : ?>
+                                                                Sorry, the deposit has not been received.
                                                             <?php endif; ?>
-                                                            (by admin <?= esc($item['name_admin_deposit_check']); ?>)
+                                                            (by Midtrans)
                                                         </td>
                                                         </td>
                                                     <?php endif; ?>
@@ -344,18 +341,16 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
                                                     <?php endif; ?>
                                                 </tr>
                                                 <tr>
-                                                    <?php if ($item['proof_of_payment'] != null) : ?>
+                                                    <?php if ($item['payment_check'] != null) : ?>
                                                         <td>Status FullPayment
                                                         <td>
                                                             :
-                                                            <?php if ($item['payment_check'] == null) : ?>
-                                                                We will check your proof of payment
-                                                            <?php elseif ($item['payment_check'] == 1) : ?>
-                                                                Thank you. The proof of payment is correct
-                                                            <?php elseif ($item['payment_check'] == 0) : ?>
-                                                                Sorry. The proof of payment is incorrect
+                                                            <?php if ($item['payment_check'] == '200') : ?>
+                                                                Thank you. The payment has been received.
+                                                            <?php else : ?>
+                                                                Sorry, the payment has not been received.
                                                             <?php endif; ?>
-                                                            (by admin <?= esc($item['name_admin_payment_check']); ?>)
+                                                            (by Midtrans)
                                                         </td>
                                                         </td>
                                                     <?php endif; ?>
@@ -379,7 +374,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
                                                     <?php elseif ($item['account_refund'] == null && $item['cancel'] == 1) : ?>
                                                         <td> Status Cancel
                                                         <td>
-                                                            : Admin will refund your payment (by admin <?= esc($item['name_admin_refund']); ?>)
+                                                            : Admin will refund your payment (by <?= esc($item['name_admin_refund']); ?>)
                                                         </td>
                                                         </td>
                                                     <?php endif; ?>
@@ -388,7 +383,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
                                                     <?php if ($item['refund_date'] != null) : ?>
                                                         <td><i class="fa fa-level-down" aria-hidden="true"></i> Refund Reservation
                                                         <td>
-                                                            : <?= esc(date('l, j F Y H:i:s', strtotime($item['refund_date']))); ?> (by adm<?= esc($item['admin_refund']); ?>)
+                                                            : <?= esc(date('l, j F Y H:i:s', strtotime($item['refund_date']))); ?> (by <?= esc($item['name_admin_refund']); ?>)
                                                         </td>
                                                         </td>
                                                     <?php endif; ?>
@@ -399,7 +394,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
                                                         <td>
                                                             :
                                                             <?php if ($item['refund_check'] == null) : ?>
-                                                                You must check the proof of refund (by admin <?= esc($item['name_admin_refund']); ?>)
+                                                                You must check the proof of refund (by <?= esc($item['name_admin_refund']); ?>)
                                                             <?php elseif ($item['refund_check'] == 1) : ?>
                                                                 Thank you. The proof of refund is correct (by <?= esc($item['username']); ?>)
                                                             <?php elseif ($item['refund_check'] == 0) : ?>
@@ -410,10 +405,22 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
                                                     <?php endif; ?>
                                                 </tr>
                                                 <tr>
-                                                    <?php if ($datenow <= $item['check_out'] && $item['review'] == null && $item['cancel'] == 0 && $item['status'] == 1) : ?>
+                                                <?php if ($datenow <= $item['check_out'] && $item['review'] == null && $item['cancel'] == 0 && $item['status'] == 1  && $item['deposit_check'] != 200 && $item['payment_check'] != 200) : ?>
                                                         <td> Reservation Progress
                                                         <td>
-                                                            : Reservation already, enjoy your trip
+                                                            : Waiting for deposit payment.
+                                                        </td>
+                                                        </td>
+                                                    <?php elseif ($datenow <= $item['check_out'] && $item['review'] == null && $item['cancel'] == 0 && $item['status'] == 1 && $item['deposit_check'] == 200 && $item['payment_check'] != 200) : ?>
+                                                        <td> Reservation Progress
+                                                        <td>
+                                                            : Waiting for full payment.
+                                                        </td>
+                                                        </td>
+                                                    <?php elseif ($datenow <= $item['check_out'] && $item['deposit_check'] == 200 && $item['payment_check'] == 200 && $item['review'] == null && $item['cancel'] == 0 && $item['status'] == 1) : ?>
+                                                        <td> Reservation Progress
+                                                        <td>
+                                                            : Already reserved, enjoy your trip.
                                                         </td>
                                                         </td>
                                                     <?php elseif ($datenow >= $item['check_out'] && $item['review'] != null && $item['cancel'] == 0 && $item['status'] == 1) : ?>

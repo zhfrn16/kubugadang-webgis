@@ -422,4 +422,32 @@ class Package extends ResourceController
 
         return $this->respondUpdated(['message' => 'Package price updated successfully']);
     }
+
+    public function listmobile()
+    {
+        $contents = $this->packageModel->get_list_package_default()->getResultArray();
+        foreach ($contents as &$package) {
+            $id = $package['id'];
+            $gallery = $this->galleryPackageModel->get_gallery($id)->getRowArray();
+
+            // Assuming you want to associate the gallery with each package
+            if (!empty($gallery)) {
+                foreach ($gallery as $item) {
+                    $package['gallery'] = $item;
+                }
+            } else {
+                $package['gallery'] = 'default.jpg';
+            }
+        }
+
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success get list of Package"
+            ]
+        ];
+        return $this->respond($response);
+    }
 }

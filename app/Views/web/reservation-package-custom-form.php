@@ -6,9 +6,6 @@ $edit = in_array('edit', $uri);
 <?= $this->extend('web/layouts/main'); ?>
 
 <?= $this->section('styles') ?>
-<link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
-<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/filepond-plugin-media-preview@1.0.11/dist/filepond-plugin-media-preview.min.css">
 <link rel="stylesheet" href="<?= base_url('assets/css/pages/form-element-select.css'); ?>">
 <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>
 
@@ -319,7 +316,8 @@ $edit = in_array('edit', $uri);
                                                     <div class="row g-4">
                                                         <div class="col-md-7">
                                                             <label for="total_people">Total People</label>
-                                                            <input type="number" id="total_people" name="total_people" class="form-control" min="1" required onchange="chooseHome(), unitTotal()">
+                                                            <input type="number" id="total_people" name="total_people" class="form-control" min="1" required onchange="checkChooseHome()">
+                                                            <!-- <input type="number" id="total_people" name="total_people" class="form-control" min="1" required onchange="chooseHome(), unitTotal()"> -->
                                                             <!-- <input type="number" id="total_people" name="total_people" class="form-control" min="1" required onclick="unitTotal()"> -->
                                                         </div>
                                                         <div class="col-md-5">
@@ -354,24 +352,27 @@ $edit = in_array('edit', $uri);
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header" id="headingTwo">
-                                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                                    Package Exclude
-                                                                </button>
-                                                            </h2>
-                                                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                                                <div class="accordion-body">
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                            <?php foreach ($serviceexclude as $ls) : ?>
-                                                                                <li><?= esc($ls['name']); ?></li>
-                                                                            <?php endforeach; ?>
+                                                        <?php if (!empty($serviceexclude)): ?>
+                                                            <div class="accordion-item">
+                                                                <h2 class="accordion-header" id="headingTwo">
+                                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                        Package Exclude
+                                                                    </button>
+                                                                </h2>
+                                                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                                    <div class="accordion-body">
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <?php foreach ($serviceexclude as $ls) : ?>
+                                                                                    <li><?= esc($ls['name']); ?></li>
+                                                                                <?php endforeach; ?>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        <?php endif; ?>
+
                                                         <div class="accordion-item">
                                                             <h2 class="accordion-header" id="headingThree">
                                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -380,19 +381,16 @@ $edit = in_array('edit', $uri);
                                                             </h2>
                                                             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                                                 <div class="accordion-body">
-                                                                    <p>
-                                                                        <?php foreach ($day as $d) : ?>
-                                                                            <b>Day <?= esc($d['day']); ?></b><br>
+                                                                    <?php foreach ($day as $d) : ?>
+                                                                        <b>Day <?= esc($d['day']); ?></b><br>
+                                                                        <ol>
                                                                             <?php foreach ($activity as $ac) : ?>
                                                                                 <?php if ($d['day'] == $ac['day']) : ?>
-                                                                                    <?= esc($ac['activity']); ?>. <?= esc($ac['name']); ?> : <?= esc($ac['description']); ?> <br>
+                                                                                    <li><?= esc($ac['name']); ?> : <?= esc($ac['description']); ?></li>
                                                                                 <?php endif; ?>
                                                                             <?php endforeach; ?>
-                                                                            <br>
-                                                                        <?php endforeach; ?>
-                                                                    </p>
-
-
+                                                                        </ol>
+                                                                    <?php endforeach; ?>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -416,7 +414,7 @@ $edit = in_array('edit', $uri);
                                                     <div class="row g-4">
                                                         <div class="col-md-7">
                                                             <label for="check_in">Check-in</label>
-                                                            <input type="date" id="check_in" name="check_in" min="<?= date('Y-m-d', strtotime('+3 days')); ?>" class="form-control" required onfocus="this.min='<?= date('Y-m-d', strtotime('+3 days')); ?>'" onclick="chooseHome(), unitTotal()">
+                                                            <input type="date" id="check_in" name="check_in" min="<?= date('Y-m-d', strtotime('+3 days')); ?>" class="form-control" required onfocus="this.min='<?= date('Y-m-d', strtotime('+3 days')); ?>'" onclick="validateDate(), chooseHome(), unitTotal()">
                                                         </div>
                                                         <div class="col-md-5">
                                                             <label for="check_in"></label>
@@ -444,6 +442,7 @@ $edit = in_array('edit', $uri);
                                                         <p>This package has a duration of more than one day so it requires you to book a homestay. And to support equalization of reservations, homestay units are automatically selected by the system.</p>
 
                                                         <div class="form-check">
+                                                            <!-- <input class="form-check-input" type="checkbox" name="accomodationType1" id="accomodationType1" onclick="chooseHome(), unitTotal()"> -->
                                                             <input class="form-check-input" type="checkbox" name="accomodationType1" id="accomodationType1">
                                                             <label class="form-check-label" for="accomodationType1" style="opacity: 1;">
                                                                 Yes, I Agree
@@ -473,7 +472,7 @@ $edit = in_array('edit', $uri);
 
                                     <!-- Your Step 1 Form Fields and HTML Here -->
                                     <!-- <input type="button" name="previous-step" class="form-control" value="Previous" /> -->
-                                    <input type="button" id="buttonStep1" name="next-step" class="next-step" value="Next" onclick="chooseHome(), unitTotal()"/>
+                                    <input type="button" id="buttonStep1" name="next-step" class="next-step" value="Next" onclick="chooseHome(), unitTotal()" />
                                     <input type="text" id="total_price_2" name="total_price_2" readonly class="form-control" style="font-weight: bold; color:black; background-color: transparent; border: 0px; width: unset !important; float: right; font-size: larger; text-align: right; margin-top: 12px; " min="1" required>
 
                                 </fieldset>
@@ -495,13 +494,23 @@ $edit = in_array('edit', $uri);
                                                 <input type="number" id="total_people_2" name="total_people_2" readonly class="form-control" min="1" required>
                                             </div>
 
-
-
                                         </div>
                                     </div>
 
-
-
+                                    <div class="table-responsive">
+                                        <table class="table table-hover dt-head-center" id="table-manage">
+                                            <thead>
+                                                <tr>
+                                                    <th style="padding-left: 20px;">#</th>
+                                                    <th>Date</th>
+                                                    <th>Homestay Name</th>
+                                                    <th style="width: 400px;">Unit Name</th>
+                                                    <th>Price</th>
+                                                    <th>Capacity</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
                                     <div class="row" id="result-container"></div>
 
 
@@ -605,24 +614,26 @@ $edit = in_array('edit', $uri);
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header" id="headingTwo">
-                                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                                    Package Exclude
-                                                                </button>
-                                                            </h2>
-                                                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                                                <div class="accordion-body">
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                            <?php foreach ($serviceexclude as $ls) : ?>
-                                                                                <li><?= esc($ls['name']); ?></li>
-                                                                            <?php endforeach; ?>
+                                                        <?php if (!empty($serviceexclude)): ?>
+                                                            <div class="accordion-item">
+                                                                <h2 class="accordion-header" id="headingTwo">
+                                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                        Package Exclude
+                                                                    </button>
+                                                                </h2>
+                                                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                                    <div class="accordion-body">
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <?php foreach ($serviceexclude as $ls) : ?>
+                                                                                    <li><?= esc($ls['name']); ?></li>
+                                                                                <?php endforeach; ?>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        <?php endif; ?>
                                                         <div class="accordion-item">
                                                             <h2 class="accordion-header" id="headingThree">
                                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -631,17 +642,16 @@ $edit = in_array('edit', $uri);
                                                             </h2>
                                                             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                                                 <div class="accordion-body">
-                                                                    <p>
-                                                                        <?php foreach ($day as $d) : ?>
-                                                                            <b>Day <?= esc($d['day']); ?></b><br>
+                                                                    <?php foreach ($day as $d) : ?>
+                                                                        <b>Day <?= esc($d['day']); ?></b><br>
+                                                                        <ol>
                                                                             <?php foreach ($activity as $ac) : ?>
                                                                                 <?php if ($d['day'] == $ac['day']) : ?>
-                                                                                    <?= esc($ac['activity']); ?>. <?= esc($ac['name']); ?> : <?= esc($ac['description']); ?> <br>
+                                                                                    <li><?= esc($ac['name']); ?> : <?= esc($ac['description']); ?></li>
                                                                                 <?php endif; ?>
                                                                             <?php endforeach; ?>
-                                                                            <br>
-                                                                        <?php endforeach; ?>
-                                                                    </p>
+                                                                        </ol>
+                                                                    <?php endforeach; ?>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -987,13 +997,64 @@ $edit = in_array('edit', $uri);
     accomodationType1.addEventListener('change', checkInputs);
 
     // Fungsi untuk memeriksa nilai input dan mengaktifkan/nonaktifkan tombol "Next"
+    function checkChooseHome() {
+        var totalPeopleValue = totalPeopleInput.value;
+        var checkInValue = checkInInput.value;
+        var timeCheckInValue = timeCheckInInput.value;
+        var selectedDate = new Date(checkInInput.value);
+        var today = new Date();
+        today.setDate(today.getDate() + 3);
+        var availableDate = today;
+
+        // Convert selected check-in date to a Date object
+        var selectedDate = new Date(checkInInput.value);
+
+        // Ganti kondisi di bawah sesuai kebutuhan Anda
+        if (totalPeopleValue !== '' && selectedDate >= availableDate && checkInValue !== '' && timeCheckInValue !== '' && readCheckbox.checked && accomodationType1.checked) {
+            chooseHome();
+            unitTotal();
+        }
+    }
+</script>
+
+<script>
+    // Memantau perubahan pada readCheckbox
+    document.getElementById('readCheckbox').addEventListener('change', function() {
+        // Mengatur properti checked dari readCheckbox2 sesuai dengan nilai checked dari readCheckbox
+        document.getElementById('readCheckbox2').checked = this.checked;
+    });
+    // Dapatkan elemen-elemen input yang diperlukan
+    var totalPeopleInput = document.getElementById('total_people');
+    var checkInInput = document.getElementById('check_in');
+    var timeCheckInInput = document.getElementById('time_check_in');
+    var readCheckbox = document.getElementById('readCheckbox');
+    var accomodationType1 = document.getElementById('accomodationType1');
+
+    // Dapatkan elemen tombol "Next"
+    var nextButton = document.querySelector('input[name="next-step"]');
+
+    // Tambahkan event listener untuk setiap perubahan pada input fields
+    totalPeopleInput.addEventListener('input', checkInputs);
+    checkInInput.addEventListener('input', checkInputs);
+    timeCheckInInput.addEventListener('input', checkInputs);
+    readCheckbox.addEventListener('change', checkInputs);
+    accomodationType1.addEventListener('change', checkInputs);
+
+    // Fungsi untuk memeriksa nilai input dan mengaktifkan/nonaktifkan tombol "Next"
     function checkInputs() {
         var totalPeopleValue = totalPeopleInput.value;
         var checkInValue = checkInInput.value;
         var timeCheckInValue = timeCheckInInput.value;
+        var selectedDate = new Date(checkInInput.value);
+        var today = new Date();
+        today.setDate(today.getDate() + 3);
+        var availableDate = today;
+
+        // Convert selected check-in date to a Date object
+        var selectedDate = new Date(checkInInput.value);
 
         // Ganti kondisi di bawah sesuai kebutuhan Anda
-        if (totalPeopleValue !== '' && checkInValue !== '' && timeCheckInValue !== '' && readCheckbox.checked && accomodationType1.checked) {
+        if (totalPeopleValue !== '' && selectedDate >= availableDate && checkInValue !== '' && timeCheckInValue !== '' && readCheckbox.checked && accomodationType1.checked) {
             nextButton.removeAttribute('disabled');
         } else {
             nextButton.setAttribute('disabled', 'disabled');
@@ -1212,12 +1273,12 @@ $edit = in_array('edit', $uri);
 <?= $this->endSection() ?>
 
 <?= $this->section('javascript') ?>
-<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-<script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>
-<script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
-<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/filepond-plugin-media-preview@1.0.11/dist/filepond-plugin-media-preview.min.js"></script>
-<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+<!-- <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script> -->
+<!-- <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script> -->
+<!-- <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script> -->
+<!-- <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/filepond-plugin-media-preview@1.0.11/dist/filepond-plugin-media-preview.min.js"></script> -->
+<!-- <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script> -->
 <script src="<?= base_url('assets/js/extensions/form-element-select.js'); ?>"></script>
 
 <?= $this->endSection() ?>

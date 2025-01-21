@@ -91,4 +91,20 @@ class Sumpu extends ResourceController
 
         return $this->respond($response);
     }
+
+    public function deleteannouncement($id = null)
+    {
+        
+        $deleteAN = $this->sumpuModel->delete_announcement($id);
+        if ($deleteAN) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete Announcement"
+                ]
+            ];
+            return $this->respondDeleted($response);
+        }
+    }
+
 }

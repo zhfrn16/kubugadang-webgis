@@ -10,7 +10,19 @@
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col-md-auto">
-                            <h5 class="card-title">Google Maps with Location</h5>
+                        <h4 class="card-title">Google Maps</h4>
+                            <div class="col-12 d-flex align-items-center gap-1">
+                                <!-- Checkbox 1 -->
+                                <div class="form-check" style="font-size: 14px;">
+                                    <input class="form-check-input" type="checkbox" id="check-label" value="check-label" onchange="checkLabel()">
+                                    <label class="form-check-label" for="check-label">Labels</label>
+                                </div>&nbsp;
+                                <!-- Checkbox 2 -->
+                                <div class="form-check" style="font-size: 14px;">
+                                    <input class="form-check-input" type="checkbox" id="check-terrain" value="check-terrain" onchange="checkTerrain()">
+                                    <label class="form-check-label" for="check-terrain">Terrain</label>
+                                </div>
+                            </div>
                         </div>
                         <?= $this->include('web/layouts/map-head'); ?>
                     </div>
@@ -32,10 +44,11 @@
                         <div class="card-body">
                             <div class="table-responsive overflow-auto" id="table-user" style="max-height: 450px !important;">
                                 <script>
-                                    clearMarker();
-                                    clearRadius();
-                                    clearRoute();
+                                    // clearMarker();
+                                    // clearRadius();
+                                    // clearRoute();
                                     // explorePackage();
+                                    objectMarker("SUM01", -0.52210813, 100.49432448);
                                 </script>
                                 <table class="table table-hover mb-0 table-lg">
                                     <thead>
@@ -50,11 +63,21 @@
                                             <tr onclick="window.location='<?= base_url('web/package/') . $package['data']['id']; ?>';" style="cursor: pointer;">
                                                 <td colspan="2" style="padding: 1rem;">
                                                     <div class="d-flex align-items-center">
-                                                        <img src="<?= base_url('media/photos/package/' . esc($package['data']['gallery'][0])); ?>" alt="<?= $package['title']; ?>" style="width: 50px; height: 50px; object-fit: cover; margin-right: 20px;">
+                                                        <?php
+                                                        // Tentukan URL foto default
+                                                        $defaultPhotoUrl = base_url('media/photos/package/default.jpg');
+
+                                                        // Periksa apakah foto tersedia atau tidak
+                                                        $imageUrl = !empty($package['data']['gallery'][0]) && file_exists('media/photos/package/' . esc($package['data']['gallery'][0]))
+                                                            ? base_url('media/photos/package/' . esc($package['data']['gallery'][0])) // Gunakan foto utama jika tersedia
+                                                            : $defaultPhotoUrl; // Gunakan foto default jika tidak tersedia
+                                                        ?>
+
+                                                        <img src="<?= $imageUrl; ?>" alt="<?= $package['title']; ?>" style="width: 50px; height: 50px; object-fit: cover; margin-right: 20px;">
                                                         <div>
                                                             <!-- <h6><?= $package['title']; ?> <br>Check In:<?= $package['check_in']; ?></h6> -->
-                                                            <h6 style="margin: 0px;"><?= $package['title']; ?></h6>
-                                                            <h6 style="margin: 0px;">Check In:<?= $package['check_in']; ?></h6><br>
+                                                            <h6><?= $package['title']; ?></h6>
+                                                            <h6>Check In:<?= $package['check_in']; ?></h6>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -64,13 +87,12 @@
                                                 <td colspan="2">
                                                     <div class="btn-group">
                                                         <?php foreach ($package['day'] as $day) : ?>
-                                                            <!-- <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="add<?= $day['day'], $package['data']['id']; ?>();">Day <?= $day['day']; ?></button> -->
-                                                            <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="add<?= $day['day'], $package['data']['id']; ?>(); addStartingPoint();">Day <?= $day['day']; ?></button>
+                                                            <!-- <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="add<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>();">Day <?= $day['day']; ?></button> -->
+                                                            <!-- <button id="btn-day-<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>" type="button" class="btn btn-primary btn-sm day-route-btn" aria-expanded="false" onclick="add<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>(); addStartingPoint();">Day <?= $day['day']; ?></button> -->
+                                                            <button id="btn-day-<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>" type="button" class="btn btn-primary btn-sm day-route-btn" aria-expanded="false" onclick="add<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>(); addStartingPoint();">Day <?= $day['day']; ?></button>
 
-                                                            <!-- <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="addDay<?= $day['day']; ?>()">Day <?= $day['day']; ?></button> -->
 
-
-                                                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                                                            <button id="btn-day-dropdown-<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>" type="button" class="btn btn-primary dropdown-toggle day-route-btn dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                                                                 <span class="visually-hidden">Toggle Dropdown</span>
                                                             </button>
                                                             <ul class="dropdown-menu">
@@ -93,7 +115,7 @@
                                                                     $activity0_lng = $package['lng'] ?? '100.49432448'; // Jika $activity1['lng'] null, gunakan $gerbang_desa_lng
 
                                                                     // Output tombol dengan koordinat yang telah ditentukan
-                                                                    echo '<li><button type="button" onclick="routeBetweenObjects(' . esc($activity0_lat) . ',' . esc($activity0_lng) . ',' . esc($activity1['lat']) . ', ' . esc($activity1['lng']) . ')" class="btn btn-outline-primary"><i class="fa fa-road"></i> Titik 0 ke 1</button></li>';
+                                                                    echo '<li><button type="button" onclick="routeBetweenObjects(' . esc($activity0_lat) . ',' . esc($activity0_lng) . ',' . esc($activity1['lat']) . ', ' . esc($activity1['lng']) . '); addOnly' . esc($day['day']) . ''  . esc($package['data']['id']) . ''  . esc($package['reservation_id']) . '()" class="btn btn-outline-primary"><i class="fa fa-road"></i> Titik 0 ke 1</button></li>';
                                                                 }
 
                                                                 ?>
@@ -106,7 +128,7 @@
                                                                     if (isset($activitiesForDay[$index + 1])) {
                                                                         $nextActivity = $activitiesForDay[$index + 1];
                                                                 ?>
-                                                                        <li><button type="button" onclick="routeBetweenObjects(<?= $currentActivity['lat'] ?>, <?= $currentActivity['lng'] ?>, <?= $nextActivity['lat'] ?>, <?= $nextActivity['lng'] ?>)" class="btn btn-outline-primary"><i class="fa fa-road"></i> Activity <?= esc($currentActivity['activity']); ?> ke <?= esc($nextActivity['activity']); ?></button></li>
+                                                                        <li><button type="button" onclick="routeBetweenObjects(<?= $currentActivity['lat'] ?>, <?= $currentActivity['lng'] ?>, <?= $nextActivity['lat'] ?>, <?= $nextActivity['lng'] ?>); addOnly<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>()" class="btn btn-outline-primary"><i class="fa fa-road"></i> Activity <?= esc($currentActivity['activity']); ?> ke <?= esc($nextActivity['activity']); ?></button></li>
                                                                 <?php
                                                                     }
                                                                 }
@@ -114,12 +136,15 @@
                                                             </ul>
 
                                                             <script>
+                                                                 routeArray = [];
+                                                                  markerArray = [];
+
                                                                 // Menambahkan titik 0 dan rute dari titik 0 ke aktivitas 1
                                                                 function addStartingPoint() {
                                                                     // Tambahkan marker untuk titik 0 dengan gambar dari folder Anda
                                                                     var image = {
                                                                         url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
-                                                                        scaledSize: new google.maps.Size(50, 50) // Sesuaikan dengan ukuran gambar Anda
+                                                                        scaledSize: new google.maps.Size(60, 60) // Sesuaikan dengan ukuran gambar Anda
                                                                     };
 
                                                                     var marker = new google.maps.Marker({
@@ -131,18 +156,42 @@
                                                                         },
                                                                         map: map,
                                                                         icon: image,
-                                                                        title: 'Gerbang Desa'
+                                                                        // title: 'Gerbang Desa'
+                                                                        title: 'Village Gatee'
                                                                     });
 
-                                                                    // Tambahkan infowindow
-                                                                    var infowindow = new google.maps.InfoWindow({
-                                                                        content: '<div style="line-height:1.35;font-weight:bold;overflow:hidden;white-space:nowrap;">Gerbang Desa</div>'
-                                                                    });
+                                                                    // // Tambahkan infowindow
+                                                                    // var infowindow = new google.maps.InfoWindow({
+                                                                    //     content: '<div style="line-height:1.35;font-weight:bold;overflow:hidden;white-space:nowrap;">Gerbang Desa</div>'
+                                                                    // });
+
+                                                                    // // Tampilkan infowindow saat marker diklik
+                                                                    // marker.addListener('click', function() {
+                                                                    //     infowindow.open(map, marker);
+                                                                    // });
+
+                                                                    let id = "marker_starting";
+
+                                                                    // Tambahkan infowindow untuk titik awal
+                                                                    let infowindow = new google.maps.InfoWindow();
+
+                                                                    // Gabungkan konten utama dan tombol dalam satu variabel
+                                                                    let content = `<div style="max-width:200px;max-height:300px;" class="text-center">
+                                                                                        <p class="fw-bold fs-6">Village Gate</p>
+                                                                                        <div class="text-center">
+                                                                                            <a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(${startLat}, ${startLng})">
+                                                                                                <i class="fa-solid fa-road"></i>
+                                                                                            </a>            
+                                                                                        </div>
+                                                                                    </div>
+                                                                                `;
 
                                                                     // Tampilkan infowindow saat marker diklik
                                                                     marker.addListener('click', function() {
+                                                                        infowindow.setContent(content);
                                                                         infowindow.open(map, marker);
                                                                     });
+                                                                    markerArray[id] = marker;
 
                                                                     // Temukan aktivitas 1
                                                                     <?php foreach ($package['activity'] as $activity) : ?>
@@ -160,9 +209,55 @@
 
 
                                                             <script>
-                                                                function add<?= $day['day'], $package['data']['id']; ?>() {
+                                                                function add<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>() {
+
+                                                                    clearRadius();
+                                                                    clearRoute();
+                                                                    clearMarker();
+
+                                                                    console.log('Reservation ID:', '<?= $package['reservation_id']; ?>');
+                                                                    console.log('Homestay Name:', '<?= $package['homestay_name']; ?>');
+
+                                                                    // Reset all buttons to their default color                                      
+                                                                    let buttons = document.querySelectorAll('.day-route-btn');
+                                                                    let dayDetails = document.querySelectorAll('.div-day-detail');
+                                                                    let allActivityRows = document.querySelectorAll('[id^="activity-row-"]');
+
+                                                                    buttons.forEach(function(button) {
+                                                                        button.style.backgroundColor = ''; // reset to default background color
+                                                                        button.style.color = ''; // reset to default text color
+                                                                    });
+
+                                                                    dayDetails.forEach(function(detailDiv) {
+                                                                        detailDiv.style.border = ''; // reset div border
+                                                                    });
+
+                                                                    allActivityRows.forEach(function(activityRow) {
+                                                                        activityRow.style.visibility = 'hidden'; // Sembunyikan semua activity row
+                                                                        activityRow.style.display = 'none'; // Pastikan elemen tidak terlihat
+                                                                    });
+
+                                                                    // Change the color of the clicked button
+                                                                    let currentButton0 = document.getElementById('activity-row-<?= $package['data']['id'], $package['reservation_id']; ?>');;
+                                                                    currentButton0.style.visibility = 'visible';
+                                                                    currentButton0.style.display = 'block';
+                                                                    let currentButton = document.getElementById('btn-day-<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>');
+                                                                    currentButton.style.fontWeight = 'bold';
+                                                                    currentButton.style.backgroundColor = 'white';
+                                                                    currentButton.style.color = '#435ebe';
+                                                                    let currentButton2 = document.getElementById('btn-day-dropdown-<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>');
+                                                                    currentButton2.style.backgroundColor = 'white';
+                                                                    currentButton2.style.color = '#435ebe';
+                                                                    let currentButton3 = document.getElementById('div-day-detail-<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>');
+                                                                    currentButton3.style.border = '1px solid #435ebe';
+                                                                    currentButton3.style.borderRadius = '5px';
+
+
                                                                     <?php $loop = 0; ?>
-                                                                    initMap();
+                                                                    clearRadius();
+                                                                    clearRoute();
+                                                                    clearMarker();
+                                                                    // initMap();
                                                                     map.setZoom(15);
 
                                                                     // Inisialisasi koordinat titik awal (gerbang desa)
@@ -172,12 +267,12 @@
                                                                     var startLat = <?= $package['lat'] ?? '-0.52210813'; ?>;
                                                                     var startLng = <?= $package['lng'] ?? '100.49432448'; ?>;
 
-                                                                    // var titleMarker = <?= $package['homestay_name'] ?? 'Gerbang Desa'; ?>;
+                                                                    // var titleMarker = <?= $package['homestay_name'] ?? 'Village Gate'; ?>;
 
                                                                     // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                                                     var image = {
                                                                         url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
-                                                                        scaledSize: new google.maps.Size(50, 50) // Sesuaikan dengan ukuran gambar Anda
+                                                                        scaledSize: new google.maps.Size(60, 60) // Sesuaikan dengan ukuran gambar Anda
                                                                     };
 
                                                                     var marker = new google.maps.Marker({
@@ -187,28 +282,48 @@
                                                                         },
                                                                         map: map,
                                                                         icon: image,
-                                                                        title: 'Gerbang Desa' // Judul marker
+                                                                        title: 'Start Point' // Judul marker
 
                                                                     });
 
-                                                                    <?php                                    
-                                                                    $titleMarker = isset($package['homestay_name']) ? 'Homestay: ' . $package['homestay_name'] : 'Gerbang Desa';
-                               
+                                                                    <?php
+                                                                    $titleMarker = isset($package['homestay_name']) ? 'Homestay: ' . $package['homestay_name'] : 'Village Gate';
+
                                                                     // $titleMarker = isset($package['homestay_name']) ? $package['homestay_name'] : 'Gerbang Desa';
                                                                     ?>
 
+                                                                    // // Tambahkan infowindow untuk titik awal
+                                                                    // var infowindow = new google.maps.InfoWindow({
+                                                                    //     // content: '<div style="line-height:1.35;overflow:hidden;white-space:nowrap;">Gerbang Desa</div>'
+                                                                    //     content: '<div style="line-height:1.35;font-weight:bold;overflow:hidden;white-space:nowrap;"><?= $titleMarker; ?></div>'
+                                                                    // });
+
+                                                                    // // Tampilkan infowindow saat marker diklik
+                                                                    // marker.addListener('click', function() {
+                                                                    //     infowindow.open(map, marker);
+                                                                    // });
+
+                                                                    let id = "marker_starting";
                                                                     // Tambahkan infowindow untuk titik awal
-                                                                    var infowindow = new google.maps.InfoWindow({
+                                                                    let infowindow = new google.maps.InfoWindow();
 
-
-                                                                        // content: '<div style="line-height:1.35;overflow:hidden;white-space:nowrap;">Gerbang Desa</div>'
-                                                                        content: '<div style="line-height:1.35;font-weight:bold;overflow:hidden;white-space:nowrap;"><?= $titleMarker; ?></div>'
-                                                                    });
+                                                                    // Gabungkan konten utama dan tombol dalam satu variabel
+                                                                    let content = `<div style="max-width:200px;max-height:300px;" class="text-center">
+                                                                                        <p class="fw-bold fs-6"><?=$titleMarker;?></p>
+                                                                                        <div class="text-center">
+                                                                                            <a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(${startLat}, ${startLng})">
+                                                                                                <i class="fa-solid fa-road"></i>
+                                                                                            </a>            
+                                                                                        </div>
+                                                                                    </div>
+                                                                                `;
 
                                                                     // Tampilkan infowindow saat marker diklik
                                                                     marker.addListener('click', function() {
+                                                                        infowindow.setContent(content);
                                                                         infowindow.open(map, marker);
                                                                     });
+                                                                    markerArray[id] = marker;
 
                                                                     <?php foreach ($activitiesForDay as $object) {
                                                                         $loop++;
@@ -239,6 +354,8 @@
                                                                             directionsService.route(request, function(response, status) {
                                                                                 if (status == google.maps.DirectionsStatus.OK) {
                                                                                     directionsDisplay.setDirections(response);
+                                                                                    directionsDisplay.setMap(map);
+                                                                                    routeArray.push(directionsDisplay);
                                                                                 } else {
                                                                                     window.alert('Directions request failed due to ' + status);
                                                                                 }
@@ -262,6 +379,8 @@
                                                                             directionsService<?= $loop; ?>.route(request<?= $loop; ?>, function(response, status) {
                                                                                 if (status == google.maps.DirectionsStatus.OK) {
                                                                                     directionsDisplay<?= $loop; ?>.setDirections(response);
+                                                                                    directionsDisplay<?= $loop; ?>.setMap(map);
+                                                                                    routeArray.push(directionsDisplay<?= $loop; ?>);
                                                                                 } else {
                                                                                     window.alert('Directions request failed due to ' + status);
                                                                                 }
@@ -273,6 +392,44 @@
                                                                         $lng_bef = $lng_now;
                                                                         ?>
                                                                     <?php } ?>
+                                                                }
+
+                                                                function addOnly<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>() {
+                                                                    // Reset all buttons to their default color                                      
+                                                                    let buttons = document.querySelectorAll('.day-route-btn');
+                                                                    let dayDetails = document.querySelectorAll('.div-day-detail');
+                                                                    let allActivityRows = document.querySelectorAll('[id^="activity-row-"]');
+
+                                                                    buttons.forEach(function(button) {
+                                                                        button.style.backgroundColor = ''; // reset to default background color
+                                                                        button.style.color = ''; // reset to default text color
+                                                                    });
+
+                                                                    dayDetails.forEach(function(detailDiv) {
+                                                                        detailDiv.style.border = ''; // reset div border
+                                                                    });
+                                                                    allActivityRows.forEach(function(activityRow) {
+                                                                        activityRow.style.visibility = 'hidden'; // Sembunyikan semua activity row
+                                                                        activityRow.style.display = 'none'; // Pastikan elemen tidak terlihat
+                                                                    });
+
+
+                                                                    // Change the color of the clicked button
+                                                                    let currentButton0 = document.getElementById('activity-row-<?= $package['data']['id'], $package['reservation_id']; ?>');
+                                                                    currentButton0.style.visibility = 'visible';
+                                                                    currentButton0.style.display = 'block';
+                                                                    let currentButton = document.getElementById('btn-day-<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>');
+                                                                    currentButton.style.fontWeight = 'bold';
+                                                                    currentButton.style.backgroundColor = 'white';
+                                                                    currentButton.style.color = '#435ebe';
+                                                                    let currentButton2 = document.getElementById('btn-day-dropdown-<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>');
+                                                                    currentButton2.style.backgroundColor = 'white';
+                                                                    currentButton2.style.color = '#435ebe';
+                                                                    let currentButton3 = document.getElementById('div-day-detail-<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>');
+                                                                    currentButton3.style.border = '1px solid #435ebe';
+                                                                    currentButton3.style.borderRadius = '5px';
+
+
                                                                 }
                                                             </script>
 
@@ -302,9 +459,44 @@
                 <?= $this->include('web/layouts/explore'); ?>
             </div>
         </div>
+
+        <?php foreach ($datapackage as $package) : ?>
+            <div class="row" id="activity-row-<?= $package['data']['id'], $package['reservation_id']; ?>" style="visibility: hidden;display:none;">
+                <div class="col-md-12 col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title text-center">Activity</h5>
+                        </div>
+                        <div class="card-body" style="padding-bottom: 0.5rem !important;">
+                            <div class="row">
+                                <div class="col">
+                                    <?php foreach ($package['day'] as $day) : ?>
+                                        <div id="div-day-detail-<?= $day['day'], $package['data']['id'], $package['reservation_id']; ?>" class="div-day-detail" style="padding: 5px;">
+                                            <b>Day <?= esc($day['day']); ?></b>
+                                            <ol>
+                                                <?php foreach ($package['activity'] as $ac) : ?>
+                                                    <?php if ($day['day'] == $ac['day']) : ?>
+                                                        <li><?= esc($ac['name']); ?> : <?= esc($ac['description']); ?></li>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
+                                            </ol>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <?php endforeach; ?>
+
         <!-- Direction section -->
         <?= $this->include('web/layouts/direction'); ?>
+
 </section>
+
 
 
 

@@ -92,12 +92,13 @@ class AccountModel extends Model
         return $query;
     }
 
-    public function get_list_owner_api() {
+    
+    public function get_list_admin_api() {
         $query = $this->db->table('users')
-            ->select('users.*')
+            ->select('users.*, auth_groups.name as role')
             ->join('auth_groups_users', 'auth_groups_users.user_id = users.id')
             ->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id')
-            ->where('auth_groups.id', '2')
+            ->where('auth_groups.id', '3')
             ->get();
         return $query;
     }
@@ -107,6 +108,7 @@ class AccountModel extends Model
             ->select('users.*, auth_groups.name as role')
             ->join('auth_groups_users', 'auth_groups_users.user_id = users.id')
             ->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id')
+            ->where('auth_groups.id', '2')
             ->get();
         return $query;
     }
@@ -163,7 +165,9 @@ class AccountModel extends Model
             'group_id' => $groupId,
         ];
 
-        return (bool) $this->db->table('auth_groups_users')->insert($data);
+        // return (bool) $this->db->table('auth_groups_users')->insert($data);
+        return $this->db->table('auth_groups_users')->insert($data);
+
     }
 
     public function addUserToAuthLogins($id, $dataLogins)
@@ -184,7 +188,20 @@ class AccountModel extends Model
         return (bool) $this->db->table('auth_logins')->insert($data);
     }
     
+    public function get_new_id()
+    {
+        $lastId = $this->db->table($this->table)->select('id')->orderBy('id', 'ASC')->get()->getLastRow('array');
+        if(empty($lastId)){
+            $id='1';
+        }else{
+        $count = $lastId['id'];
+        $id = sprintf($count + 1);
+        }
+        return $id;
+    }
+
     
+
     public function delete_user_api($id = null) {
         $query = $this->db->table('users')
             ->where('id', $id)

@@ -14,29 +14,31 @@
                     <?php endforeach; ?>
                 <?php endif; ?>
                 <!-- <h4>Desa Wisata Sumpu</h4> -->
-                <p class="text-subtitle text-muted">Tourism Village</p>
+                <h6>Tourism Village</h6>
             </div>
 
             <div class="col-12 col-md-6 order-md-2 order-first mb-md-0 mb-3">
 
                 <div class="float-end">
                     <?php if (logged_in()) : ?>
-                        <div class="btn-group mb-1">
-                            <div class="card mb-0">
-                                <div class="card-body py-3 px-4">
-                                    <div class="d-flex align-items-center">
+                        <?php if (!in_groups(['admin']) && !in_groups(['master'])) : ?>
+                            <div class="btn-group mb-1">
+                                <div class="card mb-0">
+                                    <div class="card-body py-3 px-4">
+                                        <div class="d-flex align-items-center">
 
-                                        <a href="<?= base_url('web/cart') ?>" class="btn btn-transparent me-3 position-relative" style="color: #000;padding: 0.7rem;margin-right: 0rem!important;">
-                                            <i class="fas fa-shopping-cart"></i>
+                                            <a href="<?= base_url('web/cart') ?>" class="btn btn-transparent me-3 position-relative" style="color: #000;padding: 0.7rem;margin-right: 0rem!important;">
+                                                <i class="fas fa-shopping-cart"></i>
 
-                                        </a>
+                                            </a>
 
+                                        </div>
                                     </div>
+
                                 </div>
 
                             </div>
-
-                        </div>
+                        <?php endif; ?>
                         <div class="btn-group mb-1">
                             <div class="dropdown">
                                 <a class="" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,8 +58,8 @@
                                     </div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="<?= base_url('web/profile'); ?>">My Profile</a>
-                                    <a class="dropdown-item" href="<?= base_url('logout'); ?>">Log Out</a>
+                                    <a class="dropdown-item" style="font-weight: bold;" href="<?= base_url('web/profile'); ?>">My Profile</a>
+                                    <a class="dropdown-item" style="font-weight: bold;" href="<?= base_url('logout'); ?>">Log Out</a>
                                 </div>
                             </div>
                         </div>

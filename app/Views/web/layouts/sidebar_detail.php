@@ -18,7 +18,7 @@ $uri3 = $uri[3] ?? '';
                     </div>
                     <div class="p-2 text-center">
                         <?php if (!empty(user()->fullname)) : ?>
-                            Hello, <span class="fw-bold"><?= user()->fullname; ?></span> <br> <span class="text-muted mb-0">@<?= user()->username; ?></span>
+                            Hello, <span class="fw-bold"><?= user()->fullname; ?></span> <br> <span class="fw-bold">@<?= user()->username; ?></span>
                         <?php else : ?>
                             Hello, <span class="fw-bold">@<?= user()->username; ?></span>
                         <?php endif; ?>

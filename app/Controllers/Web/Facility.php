@@ -3,6 +3,7 @@
 namespace App\Controllers\Web;
 
 use App\Models\FacilityModel;
+use App\Models\SumpuModel;
 use App\Models\GalleryFacilityModel;
 use App\Models\FacilityTypeModel;
 use CodeIgniter\RESTful\ResourcePresenter;
@@ -11,6 +12,7 @@ use CodeIgniter\Files\File;
 class Facility extends ResourcePresenter
 {
     protected $facilityModel;
+    protected $sumpuModel;
     protected $galleryFacilityModel;
     protected $facilityTypeModel;
 
@@ -26,6 +28,7 @@ class Facility extends ResourcePresenter
     public function __construct()
     {
         $this->facilityModel = new FacilityModel();
+        $this->sumpuModel = new SumpuModel();
         $this->galleryFacilityModel = new GalleryFacilityModel();
         $this->facilityTypeModel = new FacilityTypeModel();
     }
@@ -42,6 +45,7 @@ class Facility extends ResourcePresenter
     public function show($id = null)
     {
         $fc = $this->facilityModel->get_facility_by_id($id)->getRowArray();
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
 
         if (empty($fc)) {
             return redirect()->to(substr(current_url(), 0, -strlen($id)));
@@ -57,12 +61,14 @@ class Facility extends ResourcePresenter
         $data = [
             'title' => $fc['name'],
             'data' => $fc,
+            'data2' => $contents2,
             'folder' => 'facility'
         ];
 
         if (url_is('*dashboard*')) {
             return view('dashboard/detail_facility', $data);
         }
+        return view('web/detail_facility', $data);
     }
 
     /**

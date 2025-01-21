@@ -53,11 +53,7 @@
                                     <tr>
                                         <td class="fw-bold">Close</td>
                                         <td><?= esc($data['close']); ?></td>
-                                    </tr>
-                                    <!-- <tr>
-                                        <td class="fw-bold">Ticket Price</td>
-                                        <td><?= esc($data['ticket_price']); ?></td>
-                                    </tr> -->
+                                    </tr>                                   
                                 </tbody>
                             </table>
                         </div>

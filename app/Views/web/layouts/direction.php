@@ -9,7 +9,7 @@
                     <table class="table table-hover mb-0 table-lg">
                         <thead>
                         <tr>
-                            <th>Distance (m)</th>
+                            <th style="width: 150px;">Distance (m)</th>
                             <th>Steps</th>
                         </tr>
                         </thead>

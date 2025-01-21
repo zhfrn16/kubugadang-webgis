@@ -20,7 +20,7 @@ $uri3 = $uri[3] ?? '';
                     </div>
                     <div class="p-2 text-center">
                         <?php if (!empty(user()->fullname)) : ?>
-                            Hello, <span class="fw-bold"><?= user()->fullname; ?></span> <br> <span class="text-muted mb-0">@<?= user()->username; ?></span>
+                            Hello, <span class="fw-bold"><?= user()->fullname; ?></span> <br> <span class="fw-bold">@<?= user()->username; ?></span>
                         <?php else : ?>
                             Hello, <span class="fw-bold">@<?= user()->username; ?></span>
                         <?php endif; ?>
@@ -81,8 +81,7 @@ $uri3 = $uri[3] ?? '';
                     </li>
 
 
-
-                    <?php if (logged_in() && !in_groups(['admin'])) : ?>
+                    <?php if (logged_in() && !in_groups(['admin']) && !in_groups(['master'])) : ?>
                         <li class="sidebar-item <?= ($uri1 == 'reservation') || ($uri1 == 'detailreservation') ? 'active' : '' ?>">
                             <a href="<?= base_url('/web/reservation'); ?>" class="sidebar-link">
                                 <i class="fa-solid fa-calendar"></i><span>My Reservation</span>
@@ -90,10 +89,11 @@ $uri3 = $uri[3] ?? '';
                         </li>
                     <?php endif; ?>
 
+                   
 
                     <?php if (in_groups(['admin']) || in_groups(['master'])) : ?>
                         <li class="sidebar-item">
-                            <a href="<?= base_url('dashboard/sumpu'); ?>" class="sidebar-link">
+                            <a href="<?= base_url('dashboard/managereservation'); ?>" class="sidebar-link">
                                 <i class="bi bi-grid-fill"></i><span>Dashboard</span>
                             </a>
                         </li>

@@ -51,6 +51,7 @@ class Homestay extends ResourcePresenter
      */
     public function index()
     {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
         $contents = $this->homestayModel->get_list_homestay()->getResultArray();
 
         $data = [
@@ -167,6 +168,8 @@ class Homestay extends ResourcePresenter
      
     public function new()
     {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+
         $facility = $this->facilityHomestayModel->get_list_facility_homestay()->getResultArray();
         $id = $this->homestayModel->get_new_id();
 
@@ -174,6 +177,8 @@ class Homestay extends ResourcePresenter
             'title' => 'New Homestay',
             'homestay_id'=>$id,
             'facility' => $facility,
+            'data2' => $contents2,
+
         ];
         
         return view('dashboard/homestay-form', $data);
@@ -275,6 +280,8 @@ class Homestay extends ResourcePresenter
 
     public function edit($id = null)
     {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+
         $facility = $this->facilityHomestayModel->get_list_facility_homestay()->getResultArray();
 
         $homestay = $this->homestayModel->get_homestay_by_id($id)->getRowArray();
@@ -295,7 +302,8 @@ class Homestay extends ResourcePresenter
             'title' => 'Homestay',
             'data' => $homestay,
             'facility' => $facility,
-            'facility_homestay'=>$facilityHomestay
+            'facility_homestay'=>$facilityHomestay,
+            'data2' => $contents2,
 
         ];
 
@@ -349,6 +357,36 @@ class Homestay extends ResourcePresenter
         }
     }
 
+    public function deleteobject($id = null)
+    {
+        $request = $this->request->getPost();  
+
+        $id = $request['id'];    
+        $array1 = array('id' => $id);
+        $deleteHM = $this->homestayModel->where($array1)->delete();
+
+        if ($deleteHM) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete Homestay"
+                ]
+            ];
+            session()->setFlashdata('success', 'Homestay "' . $id . '" Deleted Successfully.');
+
+            return redirect()->to(base_url('dashboard/homestay'));
+
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "Homestay failed to delete"
+                ]
+            ];
+            return $this->failNotFound($response);
+        }
+
+    }
     
     // public function get_list_hm_api() {
     //     $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";

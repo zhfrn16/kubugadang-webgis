@@ -57,6 +57,21 @@ class WorshipPlace extends ResourceController
         return $this->respond($response);
     }
 
+    public function findAll()
+    {
+        $request = $this->request->getPost();
+        $contents = $this->worshipPlaceModel->get_list_wp()->getResult();
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success find all worship place"
+            ]
+        ];
+        return $this->respond($response);
+    }
+
     public function findByRadius()
     {
         $request = $this->request->getPost();

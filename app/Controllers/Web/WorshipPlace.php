@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Web;
 
+use App\Models\SumpuModel;
 use App\Models\WorshipPlaceModel;
 use App\Models\GalleryWorshipPlaceModel;
 use CodeIgniter\RESTful\ResourcePresenter;
@@ -11,12 +12,14 @@ class WorshipPlace extends ResourcePresenter
 {
     protected $worshipPlaceModel;
     protected $galleryWorshipPlaceModel;
+    protected $sumpuModel;
 
     protected $helpers = ['auth', 'url', 'filesystem'];
 
     public function __construct()
     {
         $this->worshipPlaceModel = new WorshipPlaceModel();
+        $this->sumpuModel = new SumpuModel();
         $this->galleryWorshipPlaceModel = new GalleryWorshipPlaceModel();
     }
 
@@ -51,6 +54,7 @@ class WorshipPlace extends ResourcePresenter
     public function show($id = null)
     {
         $wp = $this->worshipPlaceModel->get_wp_by_id($id)->getRowArray();
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
 
         if (empty($wp)) {
             return redirect()->to(substr(current_url(), 0, -strlen($id)));
@@ -66,6 +70,7 @@ class WorshipPlace extends ResourcePresenter
         $data = [
             'title' => $wp['name'],
             'data' => $wp,
+            'data2' => $contents2,
             'folder' => 'worship_place'
         ];
 

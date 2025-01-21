@@ -104,63 +104,200 @@ class UnitHomestayModel extends Model
         return $query;
     }
 
+    public function check_remaining($checkInDate)
+    {
+        $query = $this->db->query("
+        SELECT
+            SUM(subquery.unit_capacity - subquery.unit_guest) AS total_remaining
+        FROM (
+            SELECT
+                uh.homestay_id,
+                uh.unit_type,
+                uh.unit_number,
+                COUNT(dr.reservation_id) AS total_reservations,
+                AVG(dr.rating) AS avg_rating,
+                COALESCE(SUM(dr.unit_guest), 0) AS unit_guest,
+                uh.capacity AS unit_capacity,
+                CASE WHEN COUNT(dr.reservation_id) > 0 THEN 1 ELSE 0 END AS unit_has_booked
+            FROM
+                unit_homestay uh
+            LEFT JOIN
+                detail_reservation dr ON uh.homestay_id = dr.homestay_id
+                AND uh.unit_type = dr.unit_type
+                AND uh.unit_number = dr.unit_number
+                AND dr.date = ? 
+            GROUP BY
+                uh.homestay_id,
+                uh.unit_type,
+                uh.unit_number
+           HAVING 
+                NOT (uh.unit_type = 'T1' AND (uh.capacity - COALESCE(SUM(dr.unit_guest), 0)*2) <= 0) 
+                AND 
+                NOT (uh.unit_type = 'T2' AND (uh.capacity - COALESCE(SUM(dr.unit_guest), 0)) = 0) 
+            ) AS subquery
+    ", array($checkInDate));
+
+        return $query;
+    }
+
+    public function get_total_date_remaining($checkInDate, $checkOutDate)
+    {
+        $query = $this->db->query("
+        SELECT
+            SUM(subquery.unit_capacity - subquery.unit_guest) AS total_remaining
+        FROM (
+            SELECT
+                uh.homestay_id,
+                uh.unit_type,
+                uh.unit_number,
+                uh.unit_name,
+                uh.description,
+                uh.price,
+                uh.capacity,
+                gu.url,
+                COUNT(dr.reservation_id) AS total_reservations,
+                AVG(dr.rating) AS avg_rating,
+                COALESCE(SUM(dr.unit_guest), 0) AS unit_guest,
+                uh.capacity AS unit_capacity,
+                CASE WHEN COUNT(dr.reservation_id) > 0 THEN 1 ELSE 0 END AS unit_has_booked
+            FROM
+                unit_homestay uh
+            LEFT JOIN
+                detail_reservation dr ON uh.homestay_id = dr.homestay_id
+                AND uh.unit_type = dr.unit_type
+                AND uh.unit_number = dr.unit_number
+                AND dr.date BETWEEN ? AND ?
+            JOIN 
+                gallery_unit gu ON uh.homestay_id = gu.homestay_id
+                AND uh.unit_type = gu.unit_type
+                AND uh.unit_number = gu.unit_number
+            GROUP BY
+                uh.homestay_id,
+                uh.unit_type,
+                uh.unit_number,
+                gu.url
+           HAVING 
+                NOT (uh.unit_type = 'T1' AND (uh.capacity - COALESCE(SUM(dr.unit_guest), 0)*2) <= 0) 
+                AND 
+                NOT (uh.unit_type = 'T2' AND (uh.capacity - COALESCE(SUM(dr.unit_guest), 0)) = 0) 
+            ) AS subquery
+    ", array($checkInDate, $checkOutDate));
+
+        return $query;
+    }
+
+    public function get_total_remaining($checkInDate)
+    {
+        $query = $this->db->query("
+        SELECT
+            SUM(subquery.unit_capacity - subquery.unit_guest) AS total_remaining
+        FROM (
+            SELECT
+                uh.homestay_id,
+                uh.unit_type,
+                uh.unit_number,
+                uh.unit_name,
+                uh.description,
+                uh.price,
+                uh.capacity,
+                gu.url,
+                COUNT(dr.reservation_id) AS total_reservations,
+                AVG(dr.rating) AS avg_rating,
+                COALESCE(SUM(dr.unit_guest), 0) AS unit_guest,
+                uh.capacity AS unit_capacity,
+                CASE WHEN COUNT(dr.reservation_id) > 0 THEN 1 ELSE 0 END AS unit_has_booked
+            FROM
+                unit_homestay uh
+            LEFT JOIN
+                detail_reservation dr ON uh.homestay_id = dr.homestay_id
+                AND uh.unit_type = dr.unit_type
+                AND uh.unit_number = dr.unit_number
+                AND dr.date = ?
+            JOIN 
+                gallery_unit gu ON uh.homestay_id = gu.homestay_id
+                AND uh.unit_type = gu.unit_type
+                AND uh.unit_number = gu.unit_number
+            GROUP BY
+                uh.homestay_id,
+                uh.unit_type,
+                uh.unit_number,
+                gu.url
+           HAVING 
+                NOT (uh.unit_type = 'T1' AND (uh.capacity - COALESCE(SUM(dr.unit_guest), 0)*2) <= 0) 
+                AND 
+                NOT (uh.unit_type = 'T2' AND (uh.capacity - COALESCE(SUM(dr.unit_guest), 0)) = 0) 
+            ) AS subquery
+    ", array($checkInDate));
+
+        return $query;
+    }
 
     public function get_homestay_by_prioritas_real($checkInDate)
     {
         $query = $this->db->query("
+        SELECT
+            subquery.homestay_id,
+            subquery.unit_type,
+            subquery.unit_number,
+            subquery.unit_name,
+            subquery.description,
+            subquery.price,
+            subquery.capacity as room_capacity,
+            subquery.url,
+            subquery.total_reservations,
+            subquery.avg_rating,
+            subquery.unit_guest,
+            subquery.unit_capacity - subquery.unit_guest AS unit_remaining,
+            CASE WHEN EXISTS (
+                SELECT 1
+                FROM detail_reservation dr
+                WHERE dr.homestay_id = subquery.homestay_id
+                AND dr.date = ?
+            ) THEN 1 ELSE 0 END AS homestay_has_booked
+        FROM (
             SELECT
-                homestay_id,
-                unit_type,
-                unit_number,
-                unit_name,
-                description,
-                price,
-                capacity as room_capacity,
-                url,
-                total_reservations,
-                avg_rating,
-                unit_guest,
-                unit_capacity - unit_guest AS unit_remaining
-            FROM (
-                SELECT
-                    uh.homestay_id,
-                    uh.unit_type,
-                    uh.unit_number,
-                    uh.unit_name,
-                    uh.description,
-                    uh.price,
-                    uh.capacity,
-                    gu.url,
-                    COUNT(dr.reservation_id) AS total_reservations,
-                    AVG(dr.rating) AS avg_rating,
-                    COALESCE(SUM(dr.unit_guest), 0) AS unit_guest,
-                    COALESCE((uh.capacity), 0) AS unit_capacity
-                FROM
-                    unit_homestay uh
-                LEFT JOIN
-                    detail_reservation dr ON uh.homestay_id = dr.homestay_id
-                    AND uh.unit_type = dr.unit_type
-                    AND uh.unit_number = dr.unit_number
-                    AND dr.date = ?
-                JOIN 
-                        gallery_unit gu ON uh.homestay_id = gu.homestay_id
-                        AND uh.unit_type = dr.unit_type
-                        AND uh.unit_number = dr.unit_number
-                GROUP BY
-                    uh.homestay_id,
-                    uh.unit_type,
-                    uh.unit_number,
-                    gu.url
-                HAVING
-                    unit_capacity - unit_guest > 1
+                uh.homestay_id,
+                uh.unit_type,
+                uh.unit_number,
+                uh.unit_name,
+                uh.description,
+                uh.price,
+                uh.capacity,
+                gu.url,
+                COUNT(dr.reservation_id) AS total_reservations,
+                AVG(dr.rating) AS avg_rating,
+                COALESCE(SUM(dr.unit_guest), 0) AS unit_guest,
+                uh.capacity AS unit_capacity
+            FROM
+                unit_homestay uh
+            LEFT JOIN
+                detail_reservation dr ON uh.homestay_id = dr.homestay_id
+                AND uh.unit_type = dr.unit_type
+                AND uh.unit_number = dr.unit_number
+                AND dr.date = ?
+            JOIN 
+                gallery_unit gu ON uh.homestay_id = gu.homestay_id
+                AND uh.unit_type = gu.unit_type
+                AND uh.unit_number = gu.unit_number
+            GROUP BY
+                uh.homestay_id,
+                uh.unit_type,
+                uh.unit_number,
+                gu.url
+           HAVING 
+                NOT (uh.unit_type = 'T1' AND (uh.capacity - COALESCE(SUM(dr.unit_guest), 0)*2) <= 0) 
+                AND 
+                NOT (uh.unit_type = 'T2' AND (uh.capacity - COALESCE(SUM(dr.unit_guest), 0)) = 0) 
             ) AS subquery
-            ORDER BY            
-            total_reservations DESC,
-            homestay_id ASC
-        ", array($checkInDate));
+        ORDER BY            
+            homestay_has_booked DESC,    
+            homestay_id ASC,
+            total_reservations DESC
+    ", array($checkInDate, $checkInDate));
 
         return $query;
     }
+
 
 
 
@@ -175,32 +312,70 @@ class UnitHomestayModel extends Model
         return $query;
     }
 
+    // public function get_available_units()
+    // {
+    //     $currentYear = date('Y');
+
+    //     $query = $this->db->table('unit_homestay uh')
+    //         // ->select('uh.homestay_id, uh.unit_type, uh.unit_number, COUNT(dr.reservation_id) AS total_reservations')
+    //         ->select('uh.homestay_id, uh.unit_type, uh.unit_number, COUNT(CASE WHEN dr.unit_status IS NULL THEN dr.reservation_id END) AS total_reservations')
+    //         ->join('detail_reservation dr', 'uh.homestay_id = dr.homestay_id AND uh.unit_type = dr.unit_type AND uh.unit_number = dr.unit_number', 'left')
+    //         ->where("(YEAR(dr.date) = $currentYear OR dr.date IS NULL)", null, false)
+    //         ->groupBy('uh.homestay_id, uh.unit_type, uh.unit_number')
+    //         ->orderBy('total_reservations', 'ASC')
+    //         ->orderBy('homestay_id, unit_type, unit_number', 'ASC')
+
+    //         ->get();
+
+    //     return $query;
+    // }
+
+    // terbaru 2025
     public function get_available_units()
     {
         $currentYear = date('Y');
 
         $query = $this->db->table('unit_homestay uh')
             // ->select('uh.homestay_id, uh.unit_type, uh.unit_number, COUNT(dr.reservation_id) AS total_reservations')
-            ->select('uh.homestay_id, uh.unit_type, uh.unit_number, COUNT(CASE WHEN dr.unit_status IS NULL THEN dr.reservation_id END) AS total_reservations')
+            ->select('uh.homestay_id, uh.unit_type, uh.unit_number, COUNT(CASE WHEN dr.unit_status IS NOT NULL AND dr.date IS NOT NULL AND YEAR(dr.date) = ' . $this->db->escape($currentYear) . ' THEN dr.reservation_id ELSE NULL END) AS total_reservations')
             ->join('detail_reservation dr', 'uh.homestay_id = dr.homestay_id AND uh.unit_type = dr.unit_type AND uh.unit_number = dr.unit_number', 'left')
-            ->where("(YEAR(dr.date) = $currentYear OR dr.date IS NULL)", null, false)
             ->groupBy('uh.homestay_id, uh.unit_type, uh.unit_number')
             ->orderBy('total_reservations', 'ASC')
+            ->orderBy('homestay_id, unit_type, unit_number', 'ASC')
+
             ->get();
 
         return $query;
     }
+
+    // public function get_available_units_by_rating()
+    // {
+    //     $currentYear = date('Y');
+
+    //     $query = $this->db->table('unit_homestay uh')
+    //         ->select('uh.homestay_id, uh.unit_type, uh.unit_number,COUNT(CASE WHEN dr.unit_status IS NULL THEN dr.reservation_id END) AS total_reservations,COALESCE(AVG(dr.rating), 5,0) AS avg_rating')
+    //         // ->select('uh.homestay_id, uh.unit_type, uh.unit_number,COUNT(dr.reservation_id) AS total_reservations,COALESCE(AVG(dr.rating), 5,0) AS avg_rating')
+    //         ->join('detail_reservation dr', 'uh.homestay_id = dr.homestay_id AND uh.unit_type = dr.unit_type AND uh.unit_number = dr.unit_number', 'left')
+    //         ->where("(YEAR(dr.date) = $currentYear OR dr.date IS NULL)", null, false)
+    //         ->groupBy('uh.homestay_id, uh.unit_type, uh.unit_number')
+    //         // ->orderBy('total_reservations', 'ASC')
+    //         ->orderBy('avg_rating', 'DESC')
+    //         ->get();
+
+    //     return $query;
+    // }
+
+    //terbaru 2025
     public function get_available_units_by_rating()
     {
         $currentYear = date('Y');
 
         $query = $this->db->table('unit_homestay uh')
-            ->select('uh.homestay_id, uh.unit_type, uh.unit_number,COUNT(CASE WHEN dr.unit_status IS NULL THEN dr.reservation_id END) AS total_reservations,COALESCE(AVG(dr.rating), 5,0) AS avg_rating')
+            ->select('uh.homestay_id, uh.unit_type, uh.unit_number, COUNT(CASE WHEN dr.unit_status IS NOT NULL AND dr.date IS NOT NULL AND YEAR(dr.date) = ' . $this->db->escape($currentYear) . ' THEN dr.reservation_id ELSE NULL END) AS total_reservations, COALESCE(AVG(dr.rating), 5,0) AS avg_rating')
             // ->select('uh.homestay_id, uh.unit_type, uh.unit_number,COUNT(dr.reservation_id) AS total_reservations,COALESCE(AVG(dr.rating), 5,0) AS avg_rating')
             ->join('detail_reservation dr', 'uh.homestay_id = dr.homestay_id AND uh.unit_type = dr.unit_type AND uh.unit_number = dr.unit_number', 'left')
-            ->where("(YEAR(dr.date) = $currentYear OR dr.date IS NULL)", null, false)
             ->groupBy('uh.homestay_id, uh.unit_type, uh.unit_number')
-            ->orderBy('total_reservations', 'ASC')
+            // ->orderBy('total_reservations', 'ASC')
             ->orderBy('avg_rating', 'DESC')
             ->get();
 
@@ -267,7 +442,8 @@ class UnitHomestayModel extends Model
         $query = $this->db->table($this->table)
             ->select('unit_homestay.homestay_id, gallery_unit.url, unit_homestay.capacity as room_capacity, unit_homestay.unit_type, unit_homestay.description, unit_homestay.price, unit_homestay.unit_name, unit_homestay.unit_number, unit_homestay.capacity, COUNT(detail_reservation.reservation_id) AS total_reservations')
             ->join('homestay_unit_type', 'unit_homestay.unit_type = homestay_unit_type.id')
-            ->join('gallery_unit', 'unit_homestay.homestay_id = gallery_unit.homestay_id')
+            // ->join('gallery_unit', 'unit_homestay.homestay_id = gallery_unit.homestay_id')
+            ->join('gallery_unit', 'unit_homestay.homestay_id = gallery_unit.homestay_id AND unit_homestay.unit_type = gallery_unit.unit_type AND unit_homestay.unit_number = gallery_unit.unit_number')
             ->join('detail_reservation', 'unit_homestay.homestay_id = detail_reservation.homestay_id AND unit_homestay.unit_type = detail_reservation.unit_type AND unit_homestay.unit_number = detail_reservation.unit_number AND detail_reservation.date = ' . $this->db->escape($checkInDate), 'left')
             ->where('unit_homestay.homestay_id', $homestay_id)
             ->where('unit_homestay.unit_type', $unit_type)
@@ -278,6 +454,8 @@ class UnitHomestayModel extends Model
             ->groupby('unit_homestay.homestay_id, unit_homestay.unit_type, unit_homestay.unit_number, gallery_unit.url')
             ->orderby('unit_homestay.capacity', 'ASC')
             ->orderby('total_reservations', 'ASC')
+            ->orderBy('homestay_id, unit_type, unit_number', 'ASC')
+
             ->get();
 
         return $query;

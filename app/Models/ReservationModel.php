@@ -147,6 +147,15 @@ class ReservationModel extends Model
         return $query;
     }
 
+    public function get_reservation_price_by_id($id = null)
+    {
+        $query = $this->db->table('reservation')
+            ->select('total_price')        
+            ->where('id', $id)
+            ->get();
+        return $query;
+    }
+
     public function getReview($id = null)
     {
         $query = $this->db->table($this->table)
@@ -216,7 +225,7 @@ class ReservationModel extends Model
         if (empty($lastId)) {
             $id = 'R0001';
         } else {
-            $count = (int)substr($lastId['id'], 3);
+            $count = (int)substr($lastId['id'], 1);
             $id = sprintf('R%04d', $count + 1);
         }
         return $id;

@@ -57,6 +57,20 @@ class CulinaryPlace extends ResourceController
         return $this->respond($response);
     }
 
+    public function findAll()
+    {
+        $request = $this->request->getPost();
+        $contents = $this->culinaryPlaceModel->get_list_cp()->getResult();
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success find all culinary place"
+            ]
+        ];
+        return $this->respond($response);
+    }
     public function findByRadius()
     {
         $request = $this->request->getPost();

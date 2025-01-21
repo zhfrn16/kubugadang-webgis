@@ -3,12 +3,14 @@
 namespace App\Controllers\Web;
 
 use App\Models\PackageTypeModel;
+use App\Models\SumpuModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
 
 class PackageType extends ResourcePresenter
 {
     protected $packageTypeModel;
+    protected $sumpuModel;
 
     /**
      * Instance of the main Request object.
@@ -22,6 +24,8 @@ class PackageType extends ResourcePresenter
     public function __construct()
     {
         $this->packageTypeModel = new PackageTypeModel();
+        $this->sumpuModel = new SumpuModel();
+
     }
 
     /**
@@ -35,6 +39,8 @@ class PackageType extends ResourcePresenter
 
     public function show($id = null)
     {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+
         $pt = $this->packageTypeModel->get_package_type_by_id($id)->getRowArray();
 
         if (empty($pt)) {
@@ -44,6 +50,8 @@ class PackageType extends ResourcePresenter
         $data = [
             'title' => $pt['type_name'],
             'data' => $pt,
+            'data2' => $contents2,
+
         ];
 
         if (url_is('*dashboard*')) {
@@ -58,11 +66,14 @@ class PackageType extends ResourcePresenter
      */
     public function new()
     {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
         $packageType = $this->packageTypeModel->get_list_package_type()->getResultArray();
 
         $data = [
             'title' => 'New Package Type',
-            'package' => $packageType
+            'package' => $packageType,
+            'data2' => $contents2,
+
         ];
         return view('dashboard/package-type-form', $data);
     }
@@ -75,6 +86,7 @@ class PackageType extends ResourcePresenter
      */
     public function create()
     {
+        
         $request = $this->request->getPost();
 
         $id = $this->packageTypeModel->get_new_id();
@@ -101,6 +113,8 @@ class PackageType extends ResourcePresenter
 
     public function edit($id = null)
     {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+
         $pt = $this->packageTypeModel->get_package_type_by_id($id)->getRowArray();
 
         if (empty($pt)) {
@@ -112,7 +126,9 @@ class PackageType extends ResourcePresenter
         $data = [
             'title' => 'Edit Package Type',
             'data' => $pt,
-            'package' => $packageType
+            'package' => $packageType,
+            'data2' => $contents2,
+
         ];
         return view('dashboard/package-type-form', $data);
     }
@@ -137,6 +153,54 @@ class PackageType extends ResourcePresenter
             return redirect()->to(base_url('dashboard/packagetype') . '/' . $id);
         } else {
             return redirect()->back()->withInput();
+        }
+    }
+
+    public function deleteobject($id = null)
+    {
+        $request = $this->request->getPost();  
+
+        $id = $request['id'];    
+        $array1 = array('id' => $id);
+        $deleteDP = $this->packageTypeModel->where($array1)->delete();
+
+        if ($deleteDP) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete Package Type"
+                ]
+            ];
+            session()->setFlashdata('success', 'Package Type "' . $id . '" Deleted Successfully.');
+
+            return redirect()->to(base_url('dashboard/packagetype'));
+
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "Package Type failed to delete"
+                ]
+            ];
+            return $this->failNotFound($response);
+        }
+
+    }
+
+    public function delete2($id = null)
+    {
+        $deletePT = $this->packageTypeModel->delete(['id' => $id]);
+
+        if ($deletePT) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete Package Type"
+                ]
+            ];
+            return $this->respondDeleted($response);
+            // return redirect()->back();
+
         }
     }
 

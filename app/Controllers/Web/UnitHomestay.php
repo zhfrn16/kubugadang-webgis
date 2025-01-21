@@ -8,6 +8,8 @@ use App\Models\HomestayUnitTypeModel;
 use App\Models\FacilityUnitModel;
 use App\Models\FacilityUnitDetailModel;
 use App\Models\GalleryUnitModel;
+use App\Models\SumpuModel;
+
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
 
@@ -19,6 +21,7 @@ class UnitHomestay extends ResourcePresenter
     protected $facilityUnitModel;
     protected $facilityUnitDetailModel;
     protected $galleryUnitModel;
+    protected $sumpuModel;
 
     /**
      * Instance of the main Request object.
@@ -37,6 +40,8 @@ class UnitHomestay extends ResourcePresenter
         $this->facilityUnitModel = new FacilityUnitModel();
         $this->facilityUnitDetailModel = new FacilityUnitDetailModel();
         $this->galleryUnitModel = new GalleryUnitModel();
+        $this->sumpuModel = new SumpuModel();
+
     }
 
     /**
@@ -73,6 +78,8 @@ class UnitHomestay extends ResourcePresenter
      */
     public function new($id = null)
     {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+
         $homestay = $this->homestayModel->get_homestay_by_id($id)->getRowArray();
 
         $facilityUnit = $this->facilityUnitModel->get_list_facility_unit()->getResultArray();
@@ -99,6 +106,7 @@ class UnitHomestay extends ResourcePresenter
             'title' => 'Unit Homestay',
             'homestay_id'=>$id,
             'data'=>$homestay,
+            'data2' => $contents2,
             'unit' => $list_unit,
             'unit_type' => $unittype,
             'gallery_unit' => $list_gallery_unit,

@@ -61,7 +61,7 @@ if ($detail['total_people'] < 11) {
                 <div class="card-header">
                     <h4 class="card-title text-center">Reservation Package</h4>
                     <div class="col-auto">
-                        <a href="<?= base_url('dashboard/package/edit'); ?>/<?= esc($detail['package_id']); ?>" class="btn btn-outline-primary"><i class="fa-solid fa-pencil me-3"></i>Edit Package</a>
+                        <!-- <a href="<?= base_url('dashboard/package/edit'); ?>/<?= esc($detail['package_id']); ?>" class="btn btn-outline-primary"><i class="fa-solid fa-pencil me-3"></i>Edit Package</a> -->
                     </div>
                 </div>
                 <div class="card-body">
@@ -77,6 +77,10 @@ if ($detail['total_people'] < 11) {
                                     <tr>
                                         <td class="fw-bold">Type</td>
                                         <td><?= esc($data_package['type_name']); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Reservation ID</td>
+                                        <td><?= esc($detail['id']); ?></td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold">Request Date</td>
@@ -98,11 +102,14 @@ if ($detail['total_people'] < 11) {
                                     </tr>
                                     <tr>
                                         <td class="fw-bold">Min Capacity</td>
-                                        <td><?= esc($data_package['min_capacity']); ?> orang</td>
+                                        <td><?= esc($data_package['min_capacity']); ?> people</td>
                                     </tr>
                                     <td class="fw-bold">Total People</td>
-                                    <td><?= esc($detail['total_people']); ?> orang</td>
+                                    <td><?= esc($detail['total_people']); ?> people</td>
                                     </tr>
+                                    <!-- <td class="fw-bold">Batas Deposit</td>
+                                    <td><?= esc(date('l, j F Y H:i:s', strtotime($batasdp))); ?></td>
+                                    </tr> -->
                                     <tr>
                                         <td class="fw-bold">Price</td>
                                         <td><?= 'Rp ' . number_format(esc($data_package['price']), 0, ',', '.'); ?></td>
@@ -152,7 +159,7 @@ if ($detail['total_people'] < 11) {
                         <!-- Description -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="descriptionHeading">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDescription" aria-expanded="true" aria-controls="collapseDescription">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">
                                     Description
                                 </button>
                             </h2>
@@ -167,7 +174,7 @@ if ($detail['total_people'] < 11) {
                         <!-- Service -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="serviceHeading">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseService" aria-expanded="true" aria-controls="collapseService">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseService" aria-expanded="false" aria-controls="collapseService">
                                     Service
                                 </button>
                             </h2>
@@ -189,7 +196,7 @@ if ($detail['total_people'] < 11) {
                         <!-- Activity -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="activityHeading">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseActivity" aria-expanded="true" aria-controls="collapseActivity">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseActivity" aria-expanded="false" aria-controls="collapseActivity">
                                     Activity
                                 </button>
                             </h2>
@@ -198,11 +205,13 @@ if ($detail['total_people'] < 11) {
                                     <!-- <p class="fw-bold">Activity</p> -->
                                     <?php foreach ($day as $d) : ?>
                                         <b>Day <?= esc($d['day']); ?></b><br>
-                                        <?php foreach ($activity as $ac) : ?>
-                                            <?php if ($d['day'] == $ac['day']) : ?>
-                                                <?= esc($ac['activity']); ?>. <?= esc($ac['name']); ?> : <?= esc($ac['description']); ?> <br>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
+                                        <ol>
+                                            <?php foreach ($activity as $ac) : ?>
+                                                <?php if ($d['day'] == $ac['day']) : ?>
+                                                    <li><?= esc($ac['name']); ?> : <?= esc($ac['description']); ?></li>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        </ol>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
@@ -276,9 +285,9 @@ if ($detail['total_people'] < 11) {
                                         <tr>
                                             <td><?= esc($i++); ?></td>
                                             <td><?= esc(date('j F Y', strtotime($dtb['date']))); ?></td>
-                                            <td>[<?= esc($dtb['name']); ?>] <?= esc($dtb['name_type']); ?> <?= esc($dtb['unit_number']); ?> <?= esc($dtb['unit_name']); ?></td>
+                                            <td>[<?= esc($dtb['name']); ?>] <br> <?= esc($dtb['unit_name']); ?></td>
                                             <td style="text-align: center;"><?= esc($dtb['unit_guest_number']); ?></td>
-                                            <td><?= esc($dtb['unit_guest_number']*$calculatePrice); ?></td>
+                                            <td><?= esc($dtb['unit_guest_number'] * $calculatePrice); ?></td>
                                             <?php if ($addhome) : ?>
                                                 <td>
                                                     <div class="btn-group" role="group" aria-label="Basic example">
@@ -299,10 +308,11 @@ if ($detail['total_people'] < 11) {
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
-                                
+
                             </tbody>
                         </table>
-                        <br><tr>
+                        <br>
+                        <tr>
                             <td>Total Day: <?= esc($dayhome); ?> days</td>
                         </tr><br>
                         <tr>
@@ -371,12 +381,12 @@ if ($detail['total_people'] < 11) {
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title text-center">Payment</h4>
-                    <?php if (in_groups(['admin']) || in_groups(['master'])) : ?>                       
-                            <div class="col-auto">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">
-                                    <i class="fa-solid fa-envelope me-3"></i>Confirmation
-                                </button>
-                            </div>
+                    <?php if (in_groups(['admin']) || in_groups(['master']) && $detail['status'] != '1') : ?>
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                                <i class="fa-solid fa-envelope me-3"></i>Confirmation
+                            </button>
+                        </div>
                     <?php endif; ?>
 
 
@@ -402,7 +412,7 @@ if ($detail['total_people'] < 11) {
                                 <div class="gallery col-auto btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#depositModalMidtrans"><i class="fa fa-money me-3"></i>
                                     <b>Proof of Deposit</b>
                                 </div>
-                            <?php endif; ?>                            
+                            <?php endif; ?>
                             <?php if ($detail['payment_check'] == 200) : ?>
                                 <div class="gallery col-auto btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#paymentModalMidtrans"><i class="fa fa-money me-3"></i>
                                     <b>Proof of Full Payment</b>
@@ -476,37 +486,37 @@ if ($detail['total_people'] < 11) {
 
                                 <tr>
                                     <td> Status </td>
-                                    <td>
+                                    <td> :
                                         <?php $date = date('Y-m-d H:i'); ?>
-                                        <?php if ($detail['status'] == null) : ?>                                            
+                                        <?php if ($datenow > $check_in && $detail['status'] == null) : ?>
                                             <?php if ($detail['custom'] == '1' || $detail['custom'] != '1') : ?>
                                                 <a href="#" class="btn-sm btn-warning float-center"><i>Waiting</i></a>
                                             <?php endif; ?>
                                         <?php elseif ($detail['status'] == '1') : ?>
                                             <?php if ($detail['cancel'] == '0') : ?>
-                                                <?php if ($detail['proof_of_deposit'] == null) : ?>
+                                                <?php if ($detail['deposit_check'] == null) : ?>
                                                     <a href="#" class="btn-sm btn-info float-center"><i>Pay deposit!</i></a>
 
-                                                <?php elseif ($detail['proof_of_deposit'] != null && $detail['proof_of_payment'] == null) : ?>
-                                                    <?php if ($detail['deposit_check'] == null) : ?>
-                                                        <a href="#" class="btn-sm btn-info float-center"><i>Deposit Check</i></a>
-                                                    <?php elseif ($detail['deposit_check'] == 0) : ?>
+                                                <?php elseif ($detail['deposit_check'] != null && $detail['payment_check'] == null) : ?>
+                                                    <?php if (substr($detail['deposit_check'], 0, 1) == "4") : ?>
                                                         <a href="#" class="btn-sm btn-info float-center"><i>Deposit Incorrect</i></a>
-                                                    <?php elseif ($detail['deposit_check'] == 1) : ?>
+                                                    <?php else : ?>
                                                         <a href="#" class="btn-sm btn-info float-center"><i>Pay in full!</i></a>
                                                     <?php endif; ?>
 
-                                                <?php elseif ($detail['proof_of_deposit'] != null && $detail['proof_of_payment'] != null) :  ?>
-                                                    <?php if ($detail['payment_check'] == null) : ?>
-                                                        <a href="#" class="btn-sm btn-info float-center"><i>Payment Check</i></a>
-                                                    <?php elseif ($detail['payment_check'] == 0) : ?>
+                                                <?php elseif ($detail['deposit_check'] != null && $detail['payment_check'] != null) :  ?>
+                                                    <?php if (substr($detail['payment_check'], 0, 1) == "4") : ?>
                                                         <a href="#" class="btn-sm btn-info float-center"><i>Payment Incorrect</i></a>
-                                                    <?php elseif ($detail['payment_check'] == 1) : ?>
+                                                    <?php else : ?>
 
                                                         <?php if ($detail['review'] == null) : ?>
                                                             <?php if ($datenow >= $check_out) : ?>
                                                                 <a href="#" class="btn-sm btn-dark float-center"><i>Unreviewed</i></a>
                                                             <?php elseif ($datenow < $check_out) : ?>
+                                                                <!-- <div class="d-inline-flex align-items-center active">
+                                                                        <div class="circle"></div>
+                                                                        <div class="ps-2">Enjoy trip!</div>
+                                                                    </div> -->
                                                                 <a href="#" class="btn-sm btn-dark float-center"><i>Enjoy trip!</i></a>
                                                             <?php endif; ?>
                                                         <?php else : ?>
@@ -536,6 +546,8 @@ if ($detail['total_people'] < 11) {
 
                                         <?php elseif ($detail['status'] == 2) : ?>
                                             <a href="#" class="btn-sm btn-danger float-center"><i>Rejected</i></a>
+                                        <?php elseif ($datenow < $check_in && $detail['status'] == null) : ?>
+                                            <a href="#" class="btn-sm btn-danger float-center"><i>Rejected</i></a>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -548,17 +560,17 @@ if ($detail['total_people'] < 11) {
                                 <tr>
                                     <?php if ($detail['status'] == '1' || $detail['status'] == '2') : ?>
                                         <td> Feedback admin about reservation</td>
-                                        <td> : <?= esc($detail['feedback']); ?> (by adm <?= esc($detail['name_admin_confirm']); ?>)</td>
+                                        <td> : <?= esc($detail['feedback']); ?> (by <?= esc($detail['name_admin_confirm']); ?>)</td>
                                     <?php endif; ?>
                                 </tr>
                                 <tr>
                                     <?php if ($detail['status'] == '1' || $detail['status'] == '2') : ?>
                                         <td><i class="fa fa-level-down" aria-hidden="true"></i> Confirmation Date</td>
-                                        <td> : <?= esc(date('l, j F Y H:i:s', strtotime($detail['confirmation_date']))); ?> (by adm <?= esc($detail['name_admin_confirm']); ?>)</td>
+                                        <td> : <?= esc(date('l, j F Y H:i:s', strtotime($detail['confirmation_date']))); ?> (by <?= esc($detail['name_admin_confirm']); ?>)</td>
                                     <?php endif; ?>
                                 </tr>
                                 <tr>
-                                    <?php if ($detail['proof_of_deposit'] != null) : ?>
+                                    <?php if ($detail['deposit_check'] == '200') : ?>
                                         <td><i class="fa fa-level-down" aria-hidden="true"></i> Deposit Payment
                                         <td>
                                             : <?= esc(date('l, j F Y H:i:s', strtotime($detail['deposit_date']))); ?> (by <?= esc($detail['username']); ?>)
@@ -568,24 +580,22 @@ if ($detail['total_people'] < 11) {
                                     <?php endif; ?>
                                 </tr>
                                 <tr>
-                                    <?php if ($detail['proof_of_deposit'] != null) : ?>
+                                    <?php if ($detail['deposit_check'] != null) : ?>
                                         <td>Status Deposit Payment
                                         <td>
                                             :
-                                            <?php if ($detail['deposit_check'] == null) : ?>
-                                                We will check your proof of deposit
-                                            <?php elseif ($detail['deposit_check'] == 1) : ?>
-                                                Thank you. The proof of deposit is correct
-                                            <?php elseif ($detail['deposit_check'] == 0) : ?>
-                                                Sorry. The proof of deposit is incorrect
+                                            <?php if ($detail['deposit_check'] == '200') : ?>
+                                                Thank you. The deposit has been received.
+                                            <?php else : ?>
+                                                Sorry, the deposit has not been received.
                                             <?php endif; ?>
-                                            (by admin <?= esc($detail['name_admin_deposit_check']); ?>)
+                                            (by Midtrans)
                                         </td>
                                         </td>
                                     <?php endif; ?>
                                 </tr>
                                 <tr>
-                                    <?php if ($detail['proof_of_payment'] != null) : ?>
+                                    <?php if ($detail['payment_check'] == '200') : ?>
                                         <td><i class="fa fa-level-down" aria-hidden="true"></i> Full Payment Reservation
                                         <td>
                                             : <?= esc(date('l, j F Y H:i:s', strtotime($detail['payment_date']))); ?> (by <?= esc($detail['username']); ?>)
@@ -594,18 +604,16 @@ if ($detail['total_people'] < 11) {
                                     <?php endif; ?>
                                 </tr>
                                 <tr>
-                                    <?php if ($detail['proof_of_payment'] != null) : ?>
+                                    <?php if ($detail['payment_check'] != null) : ?>
                                         <td>Status FullPayment
                                         <td>
                                             :
-                                            <?php if ($detail['payment_check'] == null) : ?>
-                                                We will check your proof of payment
-                                            <?php elseif ($detail['payment_check'] == 1) : ?>
-                                                Thank you. The proof of payment is correct
-                                            <?php elseif ($detail['payment_check'] == 0) : ?>
-                                                Sorry. The proof of payment is incorrect
+                                            <?php if ($detail['payment_check'] == '200') : ?>
+                                                Thank you. The payment has been received.
+                                            <?php else : ?>
+                                                Sorry, the payment has not been received.
                                             <?php endif; ?>
-                                            (by admin <?= esc($detail['name_admin_payment_check']); ?>)
+                                            (by Midtrans)
                                         </td>
                                         </td>
                                     <?php endif; ?>
@@ -623,7 +631,7 @@ if ($detail['total_people'] < 11) {
                                     <?php if ($detail['refund_date'] != null) : ?>
                                         <td><i class="fa fa-level-down" aria-hidden="true"></i> Refund Reservation
                                         <td>
-                                            : <?= esc(date('l, j F Y H:i:s', strtotime($detail['refund_date']))); ?> (by adm <?= esc($detail['name_admin_refund']); ?>)
+                                            : <?= esc(date('l, j F Y H:i:s', strtotime($detail['refund_date']))); ?> (by <?= esc($detail['name_admin_refund']); ?>)
                                         </td>
                                         </td>
                                     <?php endif; ?>
@@ -634,7 +642,7 @@ if ($detail['total_people'] < 11) {
                                         <td>
                                             :
                                             <?php if ($detail['refund_check'] == null) : ?>
-                                                You must check the proof of refund (by adm <?= esc($detail['name_admin_refund']); ?>)
+                                                Waiting for the customer’s refund check (by <?= esc($detail['name_admin_refund']); ?>)
                                             <?php elseif ($detail['refund_check'] == 1) : ?>
                                                 Thank you. The proof of refund is correct (by <?= esc($detail['username']); ?>)
                                             <?php elseif ($detail['refund_check'] == 0) : ?>
@@ -652,7 +660,7 @@ if ($detail['total_people'] < 11) {
                                             : You have finished your tour. Thank you for your review. See you on the next tour
                                         </td>
                                         </td>
-                                    <?php elseif ($datenow >= $check_out && $detail['review'] == null && $detail['status'] == 1 && $detail['cancel'] == 0) : ?>
+                                    <?php elseif ($datenow >= $check_out && $detail['deposit_check'] == 200 && $detail['payment_check'] == 200 && $detail['review'] == null && $detail['status'] == 1 && $detail['cancel'] == 0) : ?>
                                         <td> Reservation
                                         <td>
                                             : You have finished your tour. Please give your review. </td>
@@ -670,15 +678,15 @@ if ($detail['total_people'] < 11) {
                                     $dateTime = new DateTime('now'); // Waktu sekarang
                                     $datenow = $dateTime->format('Y-m-d H:i:s');
                                     ?>
-                                    <?php if ($detail['status'] == '1' && $detail['proof_of_deposit'] == null && $detail['cancel'] != 1 && $datenow < $batas_dp) : ?>
-                                        <p class="btn btn-sm btn-primary">Batas pembayaran deposit : <?= esc(date('l, j F Y H:i:s', strtotime($batas_dp)));  ?></p>
+                                    <?php if ($detail['status'] == '1' && $detail['proof_of_deposit'] == null && $detail['cancel'] != 1 && $datenow < $batasdp) : ?>
+                                        <p class="btn btn-sm btn-primary">Batas pembayaran deposit : <?= esc(date('l, j F Y H:i:s', strtotime($batasdp)));  ?></p>
                                         <br>
                                         <u><b>Countdown</b></u>
-                                        <br><i>Lakukan pembayaran sebelum batas waktu, jika batas waktu habis, maka reservasi otomatis di cancel</i>
+                                        <br><i>Do the payment before the deadline, if the deadline expires, the reservation is automatically canceled.</i>
                                         <h5 id="countdown"></h5>
                                         <script>
                                             // Set tanggal target countdown (dalam timestamp UNIX)
-                                            var targetDate = <?php echo strtotime($batas_dp); ?>;
+                                            var targetDate = <?php echo strtotime($batasdp); ?>;
 
                                             // Fungsi untuk memperbarui countdown setiap detik
                                             function updateCountdown() {
@@ -703,7 +711,7 @@ if ($detail['total_people'] < 11) {
                                                     var minutes = Math.floor((remainingSeconds % (60 * 60)) / 60);
                                                     var seconds = remainingSeconds % 60;
 
-                                                    document.getElementById('countdown').innerHTML = days + " hari " + hours + " jam " + minutes + " menit " + seconds + " detik";
+                                                    document.getElementById('countdown').innerHTML = days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds";
                                                 }
                                             }
 
@@ -745,7 +753,7 @@ if ($detail['total_people'] < 11) {
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php elseif ($detail['status'] == 1 && $detail['proof_of_deposit'] == null && $detail['cancel'] != 1 && $datenow > $batas_dp) : ?>
+                                    <?php elseif ($detail['status'] == '1' && $detail['proof_of_deposit'] == null && $detail['cancel'] != 1 && $datenow > $batasdp) : ?>
                                         <p hidden class="btn btn-danger btn-sm"><i><b>Upps Sorry, the deposit payment time for the reservation has expired</b></i></p>
                                         <br>
                                         <p hidden class="btn btn-secondary btn-sm"><i><b>Do you want to cancel? Cancel reservation can be made maximal H-3 check_in</b></i></p>
@@ -858,14 +866,16 @@ if ($detail['total_people'] < 11) {
                             <?php @csrf_field(); ?>
                             <div class="form-group">
                                 <label for="confi" class="mb-2">Status Confirmation</label> <br>
-                                <label>
-                                    <input type="radio" name="status" value="2" required>
-                                    <i class="fa fa-times"></i> Rejected
-                                </label>
-                                <label>
-                                    <input type="radio" name="status" value="1" required>
-                                    <i class="fa fa-check"></i> Accepted
-                                </label>
+                                <div class="radiobutton-wrapper">
+                                    <label class="custom-radio" style="border: 2px solid #ccc; border-radius: 50px; padding: 5px 10px; cursor: pointer;">
+                                        <input type="radio" name="status" value="2" required style="display: inline-block; width: 20px; height: 20px; border: 2px solid #ccc; border-radius: 50%; vertical-align: middle;">
+                                        <span class="radio-label" style="margin-left: 8px; vertical-align: middle;"><i class="fa fa-times"></i> Rejected</span>
+                                    </label>
+                                    <label class="custom-radio" style="border: 2px solid #ccc; border-radius: 50px; padding: 5px 10px; cursor: pointer;">
+                                        <input type="radio" name="status" value="1" required style="display: inline-block; width: 20px; height: 20px; border: 2px solid #ccc; border-radius: 50%; vertical-align: middle;">
+                                        <span class="radio-label" style="margin-left: 8px; vertical-align: middle;"><i class="fa fa-check"></i> Accepted</span>
+                                    </label>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="feedback" class="mb-2">Feedback</label>

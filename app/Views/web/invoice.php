@@ -20,7 +20,7 @@ $dateTime = new DateTime('now'); // Waktu sekarang
 $datenow = $dateTime->format('Y-m-d H:i:s');
 ?>
 <h5 style="font-size:14pt;text-align:right">RESERVATION INVOICE</h5>
-<span>Kepada Yth.</span><br />
+<span>Invoice To</span><br />
 <table cellpadding="0">
     <tr>
         <th width="10%">Name</th>
@@ -73,14 +73,22 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
         $jumlah_package = floor($people / $min);
         $tambahan = $people % $min;
 
-        if ($tambahan != 0) {
-            if ($tambahan < 5) {
-                $order = $jumlah_package + 0.5;
-            } else {
-                $order = $jumlah_package + 1;
+        if ($jumlah_package != 0) {
+            // if ($tambahan < 5) {
+            //     $order = $jumlah_package + 0.5;
+            // } else {
+            //     $order = $jumlah_package + 1;
+            // }
+            $add = 0;
+            if ($tambahan !== 0 && $tambahan < 5) {
+                $add = 0.5;
+            } else if ($tambahan >= 5) {
+                $add = 1;
             }
+            $order = $jumlah_package + $add;
         } else {
-            $order = $jumlah_package;
+            // $order = $jumlah_package;
+            $order = 1;
         }
         $total_price_package = $order * $data_package['price'];
         ?>
@@ -101,7 +109,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
     </tr>
     <?php if (isset($booking)) : ?>
         <?php foreach ($booking as $dtb) : ?>
-            <?php 
+            <?php
             // $tothom = $dayhome * $dtb['price'];
 
             if ($detail['total_people'] < 11) {
@@ -116,7 +124,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
                 <td><?= esc($dtb['name_type']); ?> <?= esc($dtb['unit_number']); ?> <?= esc($dtb['unit_name']); ?></td>
                 <td style="height: 20px;text-align:center"><?= esc($dtb['unit_guest_number']); ?></td>
                 <td style="height: 20px;text-align:right"><?= 'Rp' . number_format(esc($calculatePrice), 0, ',', '.'); ?></td>
-                <td style="height: 20px;text-align:right"><?= 'Rp' . number_format(esc($dtb['unit_guest_number']*$calculatePrice), 0, ',', '.'); ?></td>
+                <td style="height: 20px;text-align:right"><?= 'Rp' . number_format(esc($dtb['unit_guest_number'] * $calculatePrice), 0, ',', '.'); ?></td>
             </tr>
         <?php endforeach; ?>
     <?php endif; ?>
@@ -145,10 +153,12 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
     <tr>
         <th width="12%">Check Out</th>
         <th width="60%">: <?= esc(date('l, j F Y H:i:s', strtotime($check_out))); ?></th>
-    </tr>
+    </tr><br>
     <tr>
         <th width="25%"><b><u>Service Include</u></b></th>
+        <?php if (!empty($serviceexclude)) : ?>
         <th width="25%"><b><u>Service Exclude</u></b></th>
+        <?php endif; ?>
     </tr>
     <tr>
         <td>

@@ -3,6 +3,7 @@
 namespace App\Controllers\Web;
 
 use App\Models\SouvenirPlaceModel;
+use App\Models\SumpuModel;
 use App\Models\GallerySouvenirPlaceModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
@@ -11,12 +12,14 @@ class SouvenirPlace extends ResourcePresenter
 {
     protected $souvenirPlaceModel;
     protected $gallerySouvenirPlaceModel;
+    protected $sumpuModel;
 
     protected $helpers = ['auth', 'url', 'filesystem'];
 
     public function __construct()
     {
         $this->souvenirPlaceModel = new SouvenirPlaceModel();
+        $this->sumpuModel = new SumpuModel();
         $this->gallerySouvenirPlaceModel = new GallerySouvenirPlaceModel();
     }
 
@@ -49,6 +52,7 @@ class SouvenirPlace extends ResourcePresenter
     public function show($id = null)
     {
         $sp = $this->souvenirPlaceModel->get_sp_by_id($id)->getRowArray();
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
 
         if (empty($sp)) {
             return redirect()->to(substr(current_url(), 0, -strlen($id)));
@@ -64,6 +68,7 @@ class SouvenirPlace extends ResourcePresenter
         $data = [
             'title' => $sp['name'],
             'data' => $sp,
+            'data2' => $contents2,
             'folder' => 'souvenir_place'
         ];
 

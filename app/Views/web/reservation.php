@@ -26,31 +26,21 @@
                         <div class="card-header">
                             <h5 class="card-title text-center">List Reservation</h5>
                         </div>
-                        <!-- <div class="row">
 
-                            <div class="col-auto">
-                                <a href="<?= current_url(); ?>/new" class="btn btn-primary float-right"><i class="fa-solid fa-plus me-3"></i>New Reservation</a>
-                            </div>
-                            <div class="col-auto">
-                                <a href="<?= base_url('/web/package'); ?>" class="btn btn-secondary float-right">
-                                    <i class="fa-solid fa-plus me-3"></i>Custom/ Extend Package for Booking
-                                </a>
-                                <br>
-                            </div>
-                        </div> -->
-                        <br><br>
+                        <!-- <br><br> -->
+
                         <div class="card-body">
-
                             <div class="table-responsive">
                                 <table class="table table-hover dt-head-center" id="table-manage">
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>ID</th>
                                             <th>Package Name</th>
                                             <th>Request Date</th>
                                             <th>Check In</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th style="width: 140px;">Status</th>
+                                            <th style="text-align:center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="table-data">
@@ -59,12 +49,13 @@
                                             <?php foreach ($data as $item) : ?>
                                                 <tr>
                                                     <td><?= esc($i); ?></td>
+                                                    <td><?= esc($item['id']); ?></td>
                                                     <td><?= esc($item['name']); ?></td>
                                                     <td><?= date('d F Y, H:i:s', strtotime($item['request_date'])); ?></td>
                                                     <td><?= date('d F Y, H:i:s', strtotime($item['check_in'])); ?></td>
-                                                    <td>
+                                                    <td style="text-align: center;">
                                                         <?php $date = date('Y-m-d H:i'); ?>
-                                                        <?php if ($item['status'] == null) : ?>
+                                                        <?php if ($datenow > strtotime($item['check_in']) && $item['status'] == null) : ?>
                                                             <?php if ($item['custom'] == '1' || $item['custom'] != '1') : ?>
                                                                 <a href="#" class="btn-sm btn-warning float-center"><i>Waiting</i></a>
                                                             <?php endif; ?>
@@ -179,6 +170,8 @@
 
                                                         <?php elseif ($item['status'] == 2) : ?>
                                                             <a href="#" class="btn-sm btn-danger float-center"><i>Rejected</i></a>
+                                                        <?php elseif ($datenow < strtotime($item['check_in'])  && $item['status'] == null) : ?>
+                                                            <a href="#" class="btn-sm btn-danger float-center"><i>Rejected</i></a>
                                                         <?php endif; ?>
                                                     </td>
                                                     <td>
@@ -192,20 +185,20 @@
                                                             <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Review" class="btn icon btn-outline-info mx-1" href="<?= base_url('web/detailreservation/review/') . $item['id']; ?>">
                                                                 <i class="fa-solid fa-comments"></i>
                                                             </a>
+                                                            <?php if ($item['status'] == null) : ?>
+                                                                <form action="<?= base_url('web/reservation/delete/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
+                                                                    <?= csrf_field(); ?>
+                                                                    <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
+                                                                    <input type="hidden" name="package_id" value="<?= esc($item['package_id']); ?>">
+                                                                    <input type="hidden" name="user_id" value="<?= esc($item['user_id']); ?>">
+                                                                    <input type="hidden" name="_method" value="DELETE">
+                                                                    <button type="button" class="btn icon btn-outline-danger " onclick="confirmDeletereservation('deleteForm<?= esc($item['id']) ?>')"><i class="fa fa-trash"></i></button>
+                                                                </form>
+    
+                                                            <?php else : ?>
+                                                                <button type="submit" class="btn icon btn-outline-secondary" onclick="return showAlert();"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                                            <?php endif ?>
                                                         </div>
-                                                        <?php if ($item['status'] == null) : ?>
-                                                            <form action="<?= base_url('web/reservation/delete/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
-                                                                <?= csrf_field(); ?>
-                                                                <input type="hidden" name="id" value="<?= esc($item['id']); ?>">
-                                                                <input type="hidden" name="package_id" value="<?= esc($item['package_id']); ?>">
-                                                                <input type="hidden" name="user_id" value="<?= esc($item['user_id']); ?>">
-                                                                <input type="hidden" name="_method" value="DELETE">
-                                                                <button type="button" class="btn icon btn-outline-danger " onclick="confirmDeletereservation('deleteForm<?= esc($item['id']) ?>')"><i class="fa fa-trash"></i></button>
-                                                            </form>
-
-                                                        <?php else : ?>
-                                                            <button type="submit" class="btn icon btn-outline-secondary" onclick="return showAlert();"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                                        <?php endif ?>
 
                                                         <!-- Modal Detail -->
                                                         <div class="modal fade" id="historyModal<?= esc($item['id']) ?>" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
@@ -225,79 +218,50 @@
                                                                                                 <td> Status </td>
                                                                                                 <td> :
                                                                                                     <?php $date = date('Y-m-d H:i'); ?>
-                                                                                                    <?php if ($item['status'] == null) : ?>
+                                                                                                    <?php if ($datenow > $item['check_in'] && $item['status'] == null) : ?>
+                                                                                                        <?php if ($item['custom'] == '1' || $item['custom'] != '1') : ?>
+                                                                                                            <a href="#" class="btn-sm btn-warning float-center"><i>Waiting</i></a>
+                                                                                                        <?php endif; ?>
+                                                                                                    <?php elseif ($item['status'] == null) : ?>
                                                                                                         <?php if ($item['custom'] == '1' || $item['custom'] != '1') : ?>
                                                                                                             <a href="#" class="btn-sm btn-warning float-center"><i>Waiting</i></a>
                                                                                                         <?php endif; ?>
                                                                                                     <?php elseif ($item['status'] == '1') : ?>
                                                                                                         <?php if ($item['cancel'] == '0') : ?>
-                                                                                                            <?php if ($item['type_of_payment'] == '1') : ?>
-                                                                                                                <?php if ($item['proof_of_deposit'] == null) : ?>
+                                                                                                            <?php if ($item['token_of_deposit'] == null) : ?>
 
-                                                                                                                <?php elseif ($item['proof_of_deposit'] != null && $item['proof_of_payment'] == null) : ?>
-                                                                                                                    <?php if ($item['deposit_check'] == null) : ?>
-                                                                                                                        <a href="#" class="btn-sm btn-info float-center"><i>Deposit Check</i></a>
-                                                                                                                    <?php elseif ($item['deposit_check'] == 0) : ?>
-                                                                                                                        <a href="#" class="btn-sm btn-info float-center"><i>Deposit Incorrect</i></a>
-                                                                                                                    <?php elseif ($item['deposit_check'] == 1) : ?>
-                                                                                                                        <a href="#" class="btn-sm btn-info float-center"><i>Pay in full!</i></a>
-                                                                                                                    <?php endif; ?>
+                                                                                                                <a href="#" class="btn-sm btn-info float-center"><i>Pay deposit!</i></a>
 
-                                                                                                                <?php elseif ($item['proof_of_deposit'] != null && $item['proof_of_payment'] != null) :  ?>
-                                                                                                                    <?php if ($item['payment_check'] == null) : ?>
-                                                                                                                        <a href="#" class="btn-sm btn-info float-center"><i>Payment Check</i></a>
-                                                                                                                    <?php elseif ($item['payment_check'] == 0) : ?>
-                                                                                                                        <a href="#" class="btn-sm btn-info float-center"><i>Payment Incorrect</i></a>
-                                                                                                                    <?php elseif ($item['payment_check'] == 1) : ?>
-
-                                                                                                                        <?php if ($item['review'] == null) : ?>
-                                                                                                                            <?php if ($datenow >= $item['check_out']) : ?>
-                                                                                                                                <a href="#" class="btn-sm btn-dark float-center"><i>Unreviewed</i></a>
-                                                                                                                            <?php elseif ($datenow < $item['check_out']) : ?>
-
-                                                                                                                                <a href="#" class="btn-sm btn-dark float-center"><i>Enjoy trip!</i></a>
-                                                                                                                            <?php endif; ?>
-                                                                                                                        <?php else : ?>
-                                                                                                                            <a href="#" class="btn-sm btn-success float-center"><i>Done</i></a>
-                                                                                                                        <?php endif; ?>
-
-                                                                                                                    <?php endif; ?>
-                                                                                                                <?php endif; ?>
-                                                                                                            <?php elseif ($item['type_of_payment'] == '2') : ?>
-                                                                                                                <?php if ($item['token_of_deposit'] == null) : ?>
-
+                                                                                                            <?php elseif ($item['token_of_deposit'] != null && $item['token_of_payment'] == null) : ?>
+                                                                                                                <?php if ($item['deposit_check'] == null) : ?>
                                                                                                                     <a href="#" class="btn-sm btn-info float-center"><i>Pay deposit!</i></a>
+                                                                                                                <?php elseif ($item['deposit_check'] != 200) : ?>
+                                                                                                                    <a href="#" class="btn-sm btn-info float-center"><i>Deposit Incorrect</i></a>
+                                                                                                                <?php elseif ($item['deposit_check'] == 200) : ?>
+                                                                                                                    <a href="#" class="btn-sm btn-info float-center"><i>Pay in full!</i></a>
+                                                                                                                <?php endif; ?>
 
-                                                                                                                <?php elseif ($item['token_of_deposit'] != null && $item['token_of_payment'] == null) : ?>
-                                                                                                                    <?php if ($item['deposit_check'] == null) : ?>
-                                                                                                                        <a href="#" class="btn-sm btn-info float-center"><i>Pay deposit!</i></a>
-                                                                                                                    <?php elseif ($item['deposit_check'] != 200) : ?>
-                                                                                                                        <a href="#" class="btn-sm btn-info float-center"><i>Deposit Incorrect</i></a>
-                                                                                                                    <?php elseif ($item['deposit_check'] == 200) : ?>
-                                                                                                                        <a href="#" class="btn-sm btn-info float-center"><i>Pay in full!</i></a>
-                                                                                                                    <?php endif; ?>
+                                                                                                            <?php elseif ($item['token_of_deposit'] != null && $item['token_of_payment'] != null) :  ?>
+                                                                                                                <?php if ($item['payment_check'] == null) : ?>
+                                                                                                                    <a href="#" class="btn-sm btn-info float-center"><i>Pay in full!</i></a>
+                                                                                                                <?php elseif ($item['payment_check'] != 200) : ?>
+                                                                                                                    <a href="#" class="btn-sm btn-info float-center"><i>Payment Incorrect</i></a>
+                                                                                                                <?php elseif ($item['payment_check'] == 200) : ?>
 
-                                                                                                                <?php elseif ($item['token_of_deposit'] != null && $item['token_of_payment'] != null) :  ?>
-                                                                                                                    <?php if ($item['payment_check'] == null) : ?>
-                                                                                                                        <a href="#" class="btn-sm btn-info float-center"><i>Pay in full!</i></a>
-                                                                                                                    <?php elseif ($item['payment_check'] != 200) : ?>
-                                                                                                                        <a href="#" class="btn-sm btn-info float-center"><i>Payment Incorrect</i></a>
-                                                                                                                    <?php elseif ($item['payment_check'] == 200) : ?>
+                                                                                                                    <?php if ($item['review'] == null) : ?>
+                                                                                                                        <?php if ($datenow >= $item['check_out']) : ?>
+                                                                                                                            <a href="#" class="btn-sm btn-dark float-center"><i>Unreviewed</i></a>
+                                                                                                                        <?php elseif ($datenow < $item['check_out']) : ?>
+                                                                                                                            <a href="#" class="btn-sm btn-dark float-center"><i>Enjoy trip!</i></a>
 
-                                                                                                                        <?php if ($item['review'] == null) : ?>
-                                                                                                                            <?php if ($datenow >= $item['check_out']) : ?>
-                                                                                                                                <a href="#" class="btn-sm btn-dark float-center"><i>Unreviewed</i></a>
-                                                                                                                            <?php elseif ($datenow < $item['check_out']) : ?>
-                                                                                                                                <a href="#" class="btn-sm btn-dark float-center"><i>Enjoy trip!</i></a>
-
-                                                                                                                            <?php endif; ?>
-                                                                                                                        <?php else : ?>
-                                                                                                                            <a href="#" class="btn-sm btn-success float-center"><i>Done</i></a>
                                                                                                                         <?php endif; ?>
-
+                                                                                                                    <?php else : ?>
+                                                                                                                        <a href="#" class="btn-sm btn-success float-center"><i>Done</i></a>
                                                                                                                     <?php endif; ?>
+
                                                                                                                 <?php endif; ?>
                                                                                                             <?php endif; ?>
+
                                                                                                         <?php elseif ($item['cancel'] == '1') : ?>
 
                                                                                                             <?php if ($item['account_refund'] == null) : ?>
@@ -320,131 +284,74 @@
 
                                                                                                     <?php elseif ($item['status'] == 2) : ?>
                                                                                                         <a href="#" class="btn-sm btn-danger float-center"><i>Rejected</i></a>
+                                                                                                    <?php elseif ($datenow < $item['check_in'] && $item['status'] == null) : ?>
+                                                                                                        <a href="#" class="btn-sm btn-danger float-center"><i>Rejected</i></a>
                                                                                                     <?php endif; ?>
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <?php if ($item['status'] == '1' || $item['status'] == '2') : ?>
                                                                                                     <td><i class="fa fa-level-down" aria-hidden="true"></i> Confirmation Date</td>
-                                                                                                    <td> : <?= esc(date('l, j F Y H:i:s', strtotime($item['confirmation_date']))); ?> (by admin <?= esc($item['name_admin_confirm']); ?>)</td>
+                                                                                                    <td> : <?= esc(date('l, j F Y H:i:s', strtotime($item['confirmation_date']))); ?> (by <?= esc($item['name_admin_confirm']); ?>)</td>
                                                                                                 <?php endif; ?>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <?php if ($item['status'] == '1' || $item['status'] == '2') : ?>
                                                                                                     <td> Feedback admin</td>
-                                                                                                    <td> : <?= esc($item['feedback']); ?> (by admin <?= esc($item['name_admin_confirm']); ?>)</td>
+                                                                                                    <td> : <?= esc($item['feedback']); ?> (by <?= esc($item['name_admin_confirm']); ?>)</td>
                                                                                                 <?php endif; ?>
                                                                                             </tr>
                                                                                             <tr>
-                                                                                                <?php if ($item['type_of_payment'] == '1') : ?>
-                                                                                                    <?php if ($item['proof_of_deposit'] != null) : ?>
-                                                                                                        <td><i class="fa fa-level-down" aria-hidden="true"></i> Deposit Payment
-                                                                                                        <td>
-                                                                                                            : <?= esc(date('l, j F Y H:i:s', strtotime($item['deposit_date']))); ?> (by <?= esc(user()->username); ?>)
-                                                                                                        </td>
+                                                                                                <?php if ($item['proof_of_deposit'] != null) : ?>
+                                                                                                    <td><i class="fa fa-level-down" aria-hidden="true"></i> Deposit Payment
+                                                                                                    <td>
+                                                                                                        : <?= esc(date('l, j F Y H:i:s', strtotime($item['deposit_date']))); ?> (by <?= esc(user()->username); ?>)
+                                                                                                    </td>
 
                                                     </td>
                                                 <?php endif; ?>
-                                            <?php elseif ($item['type_of_payment'] == '2') : ?>
-                                                <?php if ($item['token_of_deposit'] != null && $item['deposit_check'] != null) : ?>
-                                                    <td><i class="fa fa-level-down" aria-hidden="true"></i> Deposit Payment
-                                                    <td>
-                                                        : <?= esc(date('l, j F Y H:i:s', strtotime($item['deposit_date']))); ?> (by <?= esc(user()->username); ?>)
-                                                    </td>
-
-                                                    </td>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
                                                 </tr>
                                                 <tr>
-                                                    <?php if ($item['type_of_payment'] == '1') : ?>
-                                                        <?php if ($item['proof_of_deposit'] != null) : ?>
-                                                            <td>Status Deposit Payment
-                                                            <td>
-                                                                :
-                                                                <?php if ($item['deposit_check'] == null) : ?>
-                                                                    We will check your proof of deposit
-                                                                <?php elseif ($item['deposit_check'] == 1) : ?>
-                                                                    Thank you. The proof of deposit is correct
-                                                                <?php elseif ($item['deposit_check'] == 0) : ?>
-                                                                    Sorry. The proof of deposit is incorrect
-                                                                <?php endif; ?>
-                                                                (by admin <?= esc($item['name_admin_deposit_check']); ?>)
-                                                            </td>
-                                                            </td>
-                                                        <?php endif; ?>
-                                                    <?php elseif ($item['type_of_payment'] == '2') : ?>
-                                                        <?php if ($item['token_of_deposit'] != null && $item['deposit_check'] != null) : ?>
-                                                            <td>Status Deposit Payment
-                                                            <td>
-                                                                :
-                                                                <?php if ($item['deposit_check'] == null) : ?>
-                                                                    The deposit hasn't received
-                                                                <?php elseif ($item['deposit_check'] == 200) : ?>
-                                                                    Thank you. The deposit is correct
-                                                                <?php elseif ($item['deposit_check'] != 200) : ?>
-                                                                    Sorry. The deposit is incorrect
-                                                                <?php endif; ?>
-                                                                (by Midtrans)
-                                                            </td>
-                                                            </td>
-                                                        <?php endif; ?>
-                                                    <?php endif; ?>
-                                                </tr>
-                                                <tr>
-                                                    <?php if ($item['type_of_payment'] == '1') : ?>
-                                                        <?php if ($item['proof_of_payment'] != null) : ?>
-                                                            <td><i class="fa fa-level-down" aria-hidden="true"></i> Full Payment Reservation
-                                                            <td>
-                                                                : <?= esc(date('l, j F Y H:i:s', strtotime($item['payment_date']))); ?> (by <?= esc(user()->username); ?>)
-                                                            </td>
-                                                            </td>
-                                                        <?php endif; ?>
-                                                    <?php elseif ($item['type_of_payment'] == '2') : ?>
-                                                        <?php if ($item['token_of_payment'] != null) : ?>
-                                                            <td><i class="fa fa-level-down" aria-hidden="true"></i> Full Payment Reservation
-                                                            <td>
-                                                                : <?= esc(date('l, j F Y H:i:s', strtotime($item['payment_date']))); ?> (by Midtrans)
-                                                            </td>
-                                                            </td>
-                                                        <?php endif; ?>
+                                                    <?php if ($item['deposit_check'] != null) : ?>
+                                                        <td>Status Deposit Payment
+                                                        <td>
+                                                            :
+                                                            <?php if ($item['deposit_check'] == '200') : ?>
+                                                                Thank you. The deposit has been received.
+                                                            <?php else : ?>
+                                                                Sorry, the deposit has not been received.
+                                                            <?php endif; ?>
+                                                            (by Midtrans)
+                                                        </td>
+                                                        </td>
                                                     <?php endif; ?>
 
                                                 </tr>
                                                 <tr>
-                                                    <?php if ($item['type_of_payment'] == '1') : ?>
-                                                        <?php if ($item['proof_of_payment'] != null) : ?>
-                                                            <td>Status FullPayment
-                                                            <td>
-                                                                :
-                                                                <?php if ($item['payment_check'] == null) : ?>
-                                                                    We will check your proof of payment
-                                                                <?php elseif ($item['payment_check'] == 1) : ?>
-                                                                    Thank you. The proof of payment is correct
-                                                                <?php elseif ($item['payment_check'] == 0) : ?>
-                                                                    Sorry. The proof of payment is incorrect
-                                                                <?php endif; ?>
-                                                                (by admin <?= esc($item['name_admin_payment_check']); ?>)
-                                                            </td>
-                                                            </td>
-                                                        <?php endif; ?>
-                                                    <?php elseif ($item['type_of_payment'] == '2') : ?>
-                                                        <?php if ($item['token_of_payment'] != null) : ?>
-                                                            <td>Status FullPayment
-                                                            <td>
-                                                                :
-                                                                <?php if ($item['payment_check'] == null) : ?>
-                                                                    We will check your payment
-                                                                <?php elseif ($item['payment_check'] == 200) : ?>
-                                                                    Thank you. The payment is correct
-                                                                <?php elseif ($item['payment_check'] != 200) : ?>
-                                                                    Sorry. The payment is incorrect
-                                                                <?php endif; ?>
-                                                                (by Midtrans)
-                                                            </td>
-                                                            </td>
-                                                        <?php endif; ?>
+                                                    <?php if ($item['proof_of_payment'] != null) : ?>
+                                                        <td><i class="fa fa-level-down" aria-hidden="true"></i> Full Payment Reservation
+                                                        <td>
+                                                            : <?= esc(date('l, j F Y H:i:s', strtotime($item['payment_date']))); ?> (by <?= esc(user()->username); ?>)
+                                                        </td>
+                                                        </td>
                                                     <?php endif; ?>
+
+                                                </tr>
+                                                <tr>
+                                                    <?php if ($item['payment_check'] != null) : ?>
+                                                        <td>Status FullPayment
+                                                        <td>
+                                                            :
+                                                            <?php if ($item['payment_check'] == '200') : ?>
+                                                                Thank you. The payment has been received.
+                                                            <?php else : ?>
+                                                                Sorry, the payment has not been received.
+                                                            <?php endif; ?>
+                                                            (by Midtrans)
+                                                        </td>
+                                                        </td>
+                                                    <?php endif; ?>
+
 
                                                 </tr>
                                                 <tr>
@@ -466,7 +373,7 @@
                                                     <?php elseif ($item['account_refund'] != null && $item['cancel'] == 1) : ?>
                                                         <td> Status Cancel
                                                         <td>
-                                                            : Admin will refund your payment (by admin <?= esc($item['name_admin_refund']); ?>)
+                                                            : Admin will refund your payment (by <?= esc($item['name_admin_refund']); ?>)
                                                         </td>
                                                         </td>
                                                     <?php endif; ?>
@@ -475,7 +382,7 @@
                                                     <?php if ($item['refund_date'] != null) : ?>
                                                         <td><i class="fa fa-level-down" aria-hidden="true"></i> Refund Reservation
                                                         <td>
-                                                            : <?= esc(date('l, j F Y H:i:s', strtotime($item['refund_date']))); ?> (by adm <?= esc($item['name_admin_refund']); ?>)
+                                                            : <?= esc(date('l, j F Y H:i:s', strtotime($item['refund_date']))); ?> (by <?= esc($item['name_admin_refund']); ?>)
                                                         </td>
                                                         </td>
                                                     <?php endif; ?>
@@ -486,7 +393,7 @@
                                                         <td>
                                                             :
                                                             <?php if ($item['refund_check'] == null) : ?>
-                                                                You must check the proof of refund (by admin <?= esc($item['name_admin_refund']); ?>)
+                                                                You must check the proof of refund (by <?= esc($item['name_admin_refund']); ?>)
                                                             <?php elseif ($item['refund_check'] == 1) : ?>
                                                                 Thank you. The proof of refund is correct (by <?= esc($item['username']); ?>)
                                                             <?php elseif ($item['refund_check'] == 0) : ?>
@@ -497,16 +404,28 @@
                                                     <?php endif; ?>
                                                 </tr>
                                                 <tr>
-                                                    <?php if ($datenow <= $item['check_out'] && $item['review'] == null && $item['cancel'] == 0 && $item['status'] == 1) : ?>
+                                                <?php if ($datenow <= $item['check_out'] && $item['review'] == null && $item['cancel'] == 0 && $item['status'] == 1  && $item['deposit_check'] != 200 && $item['payment_check'] != 200) : ?>
                                                         <td> Reservation Progress
                                                         <td>
-                                                            : Reservation already, enjoy your trip
+                                                            : Waiting for deposit payment.
+                                                        </td>
+                                                        </td>
+                                                    <?php elseif ($datenow <= $item['check_out'] && $item['review'] == null && $item['cancel'] == 0 && $item['status'] == 1 && $item['deposit_check'] == 200 && $item['payment_check'] != 200) : ?>
+                                                        <td> Reservation Progress
+                                                        <td>
+                                                            : Waiting for full payment.
+                                                        </td>
+                                                        </td>
+                                                    <?php elseif ($datenow <= $item['check_out'] && $item['deposit_check'] == 200 && $item['payment_check'] == 200 && $item['review'] == null && $item['cancel'] == 0 && $item['status'] == 1) : ?>
+                                                        <td> Reservation Progress
+                                                        <td>
+                                                            : Already reserved, enjoy your trip.
                                                         </td>
                                                         </td>
                                                     <?php elseif ($datenow >= $item['check_out'] && $item['review'] != null && $item['cancel'] == 0 && $item['status'] == 1) : ?>
                                                         <td> Reservation Progress
                                                         <td>
-                                                            : Your tour finished. Thank you for your review. See you on the next tour
+                                                            : Your tour finished. Thank you for your review. See you on the next tour.
                                                         </td>
                                                         </td>
                                                     <?php elseif ($datenow >= $item['check_out'] && $item['proof_of_payment'] != null && $item['review'] == null && $item['status'] == 1 && $item['cancel'] == 0) : ?>
@@ -548,4 +467,15 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('javascript') ?>
+<script>
+    $(document).ready(function() {
+        $('#table-manage').DataTable({
+            columnDefs: [{
+                targets: ['_all'],
+                className: 'dt-head-center'
+            }],
+            lengthMenu: [5, 10, 20, 50, 100]
+        });
+    });
+</script>
 <?= $this->endSection() ?>

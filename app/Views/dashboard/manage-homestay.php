@@ -52,9 +52,17 @@ $users = in_array('users', $uri);
                                             <i class="fa-solid fa-circle-info"></i>
                                         </a>
 
-                                        <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
+                                        <!-- <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
                                             <i class="fa-solid fa-trash"></i>
-                                        </a>
+                                        </a> -->
+                                        <form action="<?= base_url('dashboard/homestay/deleteobject/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
+                                            <?= csrf_field(); ?>
+                                            <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                        </form>
                                     </td>
                                     <?php $i++ ?>
                                 </tr>

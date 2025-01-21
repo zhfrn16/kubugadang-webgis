@@ -36,12 +36,6 @@ class SumpuModel extends Model
             ->select("name as tourism_village_name, {$columns}, {$coords}")
             ->get();
         return $query;
-
-        // $query = $this->db->table($this->table)
-        //     ->select('id', 'name', 'type_of_tourism', 'address', 'open', 'close', 'ticket_price', 'contact_person', 'description', 'geom', 'lat', 'lng')
-        //     ->where('id', 'SUM01')
-        //     ->get();
-        // return $query;
     }
 
     public function get_desa_wisata()
@@ -58,6 +52,69 @@ class SumpuModel extends Model
             ->select("id, name, email")
             ->get();
         return $query;
+    }
+
+    public function get_announcement_info()
+    {
+        $query = $this->db->table('announcement')
+            ->select("id, admin_id, announcement, status")
+            ->where('status', 1)
+            ->get();
+        return $query;
+    }
+
+    public function get_announcement_all()
+    {
+        $query = $this->db->table('announcement')
+            ->select("id, admin_id, announcement, status")
+            ->get();
+        return $query;
+    }
+
+    public function get_new_announcement_id()
+    {
+        $builder = $this->db->table('announcement');     
+        $lastId = $builder->select('id')->orderBy('id', 'DESC')->get()->getFirstRow('array');
+        
+        if ($lastId) {
+            $count = (int)substr($lastId['id'], 2);
+            $newCount = $count + 1; 
+        } else {
+            $newCount = 1; 
+        }
+        
+        $id = sprintf('AN%03d', $newCount); 
+        return $id;
+    }
+
+    public function add_new_announcement($announcement = null)
+    {
+       
+        $insert = $this->db->table('announcement')
+            ->insert($announcement);
+        return $insert;
+    }
+
+    public function update_announcement ($id = null, $announcement = null)
+    {
+        foreach ($announcement as $key => $value) {
+            if (empty($value)) {
+                unset($announcement[$key]);
+            }
+        }
+        
+        $query = $this->db->table('announcement')
+            ->where('id', $id)
+            ->update($announcement);
+        return $query;
+    }
+
+    public function delete_announcement($id = null)
+    {
+        $query = $this->db->table('announcement')
+        ->where('id', $id)
+        ->delete();
+    return $query;
     }
 
     public function get_id_province_desa_wisata_info()

@@ -4,6 +4,7 @@ namespace App\Controllers\Web;
 
 use App\Models\TraditionalHouseModel;
 use App\Models\GalleryTraditionalHouseModel;
+use App\Models\SumpuModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
 
@@ -11,11 +12,13 @@ class TraditionalHouse extends ResourcePresenter
 {
     protected $traditionalHouseModel;
     protected $galleryTraditionalHouseModel;
+    protected $sumpuModel;
 
     protected $helpers = ['auth', 'url', 'filesystem'];
 
     public function __construct()
     {
+        $this->sumpuModel = new SumpuModel();
         $this->traditionalHouseModel = new TraditionalHouseModel();
         $this->galleryTraditionalHouseModel = new GalleryTraditionalHouseModel();
     }
@@ -50,6 +53,7 @@ class TraditionalHouse extends ResourcePresenter
     public function show($id = null)
     {
         $th = $this->traditionalHouseModel->get_th_by_id($id)->getRowArray();
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
 
         if (empty($th)) {
             return redirect()->to(substr(current_url(), 0, -strlen($id)));
@@ -64,7 +68,8 @@ class TraditionalHouse extends ResourcePresenter
 
         $data = [
             'title' => $th['name'],
-            'data' => $th,
+            'data' => $th,            
+            'data2' => $contents2,
             'folder' => 'traditional_house'
         ];
         if (url_is('*dashboard*')) {

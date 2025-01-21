@@ -3,6 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\AccountModel;
+use App\Models\SumpuModel;
+use App\Models\PackageModel;
+use App\Models\GalleryPackageModel;
 use CodeIgniter\Session\Session;
 use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Models\UserModel;
@@ -17,6 +20,9 @@ class Home extends BaseController
     protected $auth;
     protected $userModel;
     protected $accountModel;
+    protected $sumpuModel;
+    protected $packageModel;
+    protected $galleryPackageModel;
 
     /**
      * @var AuthConfig
@@ -35,6 +41,9 @@ class Home extends BaseController
         $this->auth = service('authentication');
         $this->userModel = new UserModel();
         $this->accountModel = new AccountModel();
+        $this->sumpuModel = new SumpuModel();
+        $this->packageModel = new PackageModel();
+        $this->galleryPackageModel = new GalleryPackageModel();
     }
 
     public function index()
@@ -48,8 +57,29 @@ class Home extends BaseController
         // if ($loggedUserData) {
         //     print_r($loggedUserData);            
         // }
+        $contents = $this->packageModel->get_list_package_default()->getResultArray();
 
-        return view('landing_page');
+        // $i=0;
+        foreach ($contents as &$package) {
+            $id = $package['id'];
+            $gallery = $this->galleryPackageModel->get_gallery($id)->getRowArray();
+
+            // Assuming you want to associate the gallery with each package
+            if (!empty($gallery)) {
+                foreach ($gallery as $item) {
+                    $package['gallery'] = $item;
+                }
+            } else {
+                $package['gallery'] = 'default.jpg';
+            }
+        }
+
+        $data = [
+            'data' => $contents,
+        ];
+        // dd($data);
+        // return view('web/list_package', $data);
+        return view('landing_page', $data);
         // return view('landing_page');
     }
 
@@ -78,8 +108,12 @@ class Home extends BaseController
 
     public function profile()
     {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+
         $data = [
             'title' => 'My Profile',
+            'data2' => $contents2,
+
         ];
 
         return view('profile/manage_profile', $data);
@@ -88,10 +122,13 @@ class Home extends BaseController
     public function update()
     {
         // $acc = $this->accountModel->get_profil(user()->id)->getRowArray();
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Update Profile',
-            // 'account' => $acc
+            // 'account' => $acc            
+            'data2' => $contents2,
+
         ];
         // dd($data);
         return view('profile/update_profile', $data);
@@ -187,10 +224,13 @@ class Home extends BaseController
 
     public function changePassword()
     {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+
         $data = [
             'title' => 'Change Password',
             'errors' => [],
-            'success' => false
+            'success' => false,
+            'data2' => $contents2,
         ];
 
         if ($this->request->getMethod() == 'post') {

@@ -20,7 +20,7 @@ $uri3 = $uri[3] ?? '';
                 <?php if (logged_in()) : ?>
                     <div class="p-2 text-center">
                         <?php if (!empty(user()->fullname)) : ?>
-                            Hello, <span class="fw-bold"><?= user()->fullname; ?></span> <br> <span class="text-muted mb-0">@<?= user()->username; ?></span>
+                            Hello, <span class="fw-bold"><?= user()->fullname; ?></span> <br> <span class="fw-bold">@<?= user()->username; ?></span>
                         <?php else : ?>
                             Hello, <span class="fw-bold">@<?= user()->username; ?></span>
                         <?php endif; ?>
@@ -51,36 +51,33 @@ $uri3 = $uri[3] ?? '';
 
                     <?php if (in_groups(['admin']) || in_groups(['master'])) :
                     ?>
-                        <li class="sidebar-item <?= ($uri1 == 'sumpu') ? 'active' : ''
-                                                ?>">
-                            <a href="<?= base_url('dashboard/sumpu');
-                                        ?>" class="sidebar-link">
+                         <li class="sidebar-item has-sub">
+                            <a href="" class="sidebar-link">
                                 <i class="fa-brands fa-pagelines"></i><span>Manage Village</span>
                             </a>
+                            <ul class="submenu <?= ($uri1 == 'sumpu' || $uri1 == 'announcement') ? 'active' : '' ?>">
+                                <!-- List Package -->
+                                <li class="submenu-item <?= ($uri1 == 'sumpu') ? 'active' : '' ?>" id="pa-list">
+                                    <a href="<?= base_url('dashboard/sumpu'); ?>"><i class="fa-brands fa-pagelines"></i> Data Village</a>
+                                </li>
+                                <!-- List Package type-->
+                                <li class="submenu-item <?= ($uri1 == 'announcement') ? 'active' : '' ?>" id="pa-list">
+                                    <a href="<?= base_url('dashboard/announcement'); ?>"><i class="fa-solid fa-scroll"></i> Announcement</a>
+                                </li>                              
+                            </ul>
                         </li>
                     <?php endif;
                     ?>
 
                     <?php if (in_groups(['admin']) || in_groups(['master'])) : ?>
-                        <li class="sidebar-item <?= ($uri1 == 'reservation') ? 'active' : '' ?>">
+                        <li class="sidebar-item <?= ($uri1 == 'managereservation') ? 'active' : '' ?>">
                             <a href="<?= base_url('dashboard/managereservation'); ?>" class="sidebar-link">
                                 <i class="fa-solid fa-bullhorn"></i><span>Manage Reservation</span>
                             </a>
                         </li>
                     <?php endif; ?>
 
-
-                    <?php if (in_groups(['master'])) :
-                    ?>
-                        <li class="sidebar-item <?= ($uri1 == 'users') ? 'active' : ''
-                                                ?>">
-                            <a href="<?= base_url('dashboard/users');
-                                        ?>" class="sidebar-link">
-                                <i class="fa fa-users"></i><span>Manage Users</span>
-                            </a>
-                        </li>
-                    <?php endif;
-                    ?>
+                   
 
                     <!-- <?php if (in_groups(['admin']) || in_groups(['master'])) :
                             ?>
@@ -137,7 +134,17 @@ $uri3 = $uri[3] ?? '';
                         </li>
                     <?php endif; ?>
 
-
+                    <?php if (in_groups(['master'])) :
+                    ?>
+                        <li class="sidebar-item <?= ($uri1 == 'users') ? 'active' : ''
+                                                ?>">
+                            <a href="<?= base_url('dashboard/users');
+                                        ?>" class="sidebar-link">
+                                <i class="fa fa-users"></i><span>Manage Users</span>
+                            </a>
+                        </li>
+                    <?php endif;
+                    ?>
 
                 </ul>
             </div>

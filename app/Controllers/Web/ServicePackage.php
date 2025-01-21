@@ -7,6 +7,7 @@ use App\Models\DetailServicePackageModel;
 use App\Models\PackageModel;
 use App\Models\DetailPackageModel;
 use App\Models\PackageDayModel;
+use App\Models\SumpuModel;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
@@ -18,6 +19,7 @@ class ServicePackage extends ResourcePresenter
     protected $packageModel;
     protected $detailPackageModel;
     protected $packageDayModel;
+    protected $sumpuModel;
 
 
     /**
@@ -36,6 +38,8 @@ class ServicePackage extends ResourcePresenter
         $this->packageModel = new PackageModel();
         $this->detailPackageModel = new DetailPackageModel();
         $this->packageDayModel = new PackageDayModel();
+        $this->sumpuModel = new SumpuModel();
+
     }
 
     /**
@@ -49,6 +53,8 @@ class ServicePackage extends ResourcePresenter
 
     public function show($id = null)
     {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+
         $sp = $this->servicePackageModel->get_servicePackage_by_id($id)->getRowArray();
 
         if (empty($sp)) {
@@ -58,6 +64,8 @@ class ServicePackage extends ResourcePresenter
         $data = [
             'title' => $sp['name'],
             'data' => $sp,
+            'data2' => $contents2,
+
         ];
 
         if (url_is('*dashboard*')) {
@@ -72,11 +80,15 @@ class ServicePackage extends ResourcePresenter
      */
     public function new()
     {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+
         $servicePackage = $this->servicePackageModel->get_list_service_package()->getResultArray();
 
         $data = [
             'title' => 'New Service Package',
-            'facility' => $servicePackage
+            'facility' => $servicePackage,
+            'data2' => $contents2,
+
         ];
         return view('dashboard/service-package-form', $data);
     }
@@ -110,8 +122,9 @@ class ServicePackage extends ResourcePresenter
         $addSP = $this->servicePackageModel->add_new_servicePackage($requestData);
 
         if ($addSP) {
-            return redirect()->back();
+            // return redirect()->back();
             // return redirect()->to(base_url('dashboard/servicepackage'));
+            return redirect()->to(base_url('dashboard/servicepackage'));
         } else {
             return redirect()->back()->withInput();
         }
@@ -119,6 +132,8 @@ class ServicePackage extends ResourcePresenter
 
     public function edit($id = null)
     {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+
         $sp = $this->servicePackageModel->get_servicePackage_by_id($id)->getRowArray();
 
         if (empty($sp)) {
@@ -130,7 +145,9 @@ class ServicePackage extends ResourcePresenter
         $data = [
             'title' => 'Edit Service Package',
             'data' => $sp,
-            'facility' => $servicePackage
+            'facility' => $servicePackage,
+            'data2' => $contents2,
+
         ];
         return view('dashboard/service-package-form', $data);
     }
@@ -235,6 +252,37 @@ class ServicePackage extends ResourcePresenter
             session()->setFlashdata('error', 'Failed to delete service package.');
             return redirect()->back()->withInput();
         }
+    }
+
+    public function deleteobject($id = null)
+    {
+        $request = $this->request->getPost();  
+
+        $id = $request['id'];    
+        $array1 = array('id' => $id);
+        $deleteSP = $this->servicePackageModel->where($array1)->delete();
+
+        if ($deleteSP) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete Service Package"
+                ]
+            ];
+            session()->setFlashdata('success', 'Service Package "' . $id . '" Deleted Successfully.');
+
+            return redirect()->to(base_url('dashboard/servicepackage'));
+
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "Service Package failed to delete"
+                ]
+            ];
+            return $this->failNotFound($response);
+        }
+
     }
     
 }

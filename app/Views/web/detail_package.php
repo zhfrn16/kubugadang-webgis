@@ -105,32 +105,24 @@
                             <!-- Tombol Add to Cart dan Book Now -->
                             <div class="col-12 mb-3">
                                 <?php if (logged_in()) : ?>
-                                    <a class="btn icon btn-outline-primary me-2" onclick="addToCart('<?= esc($data['id']); ?>');">
-                                        <i class="fa fa-cart-plus"></i> Add to Cart
-                                    </a>
+                                    <?php if (in_groups(['admin']) || in_groups(['master'])) : ?>
+                                        <button class="btn icon btn-outline-primary me-2" disabled>
+                                            <i class="fa fa-cart-plus"></i> Add to Cart
+                                        </button>
+                                        <button class="btn btn-success" disabled>
+                                            Book Now
+                                        </button>
+                                    <?php else : ?>
+                                        <a class="btn icon btn-outline-primary me-2" onclick="addToCart('<?= esc($data['id']); ?>');">
+                                            <i class="fa fa-cart-plus"></i> Add to Cart
+                                        </a>
+                                        <a href="<?= base_url('web/reservation/custombooking/') . $data['id']; ?>" class="btn btn-success">Book Now</a>
+                                    <?php endif; ?>
                                 <?php else : ?>
                                     <a class="btn icon btn-outline-primary me-2" onclick="redirectToLogin()">
                                         <i class="fa fa-cart-plus"></i> Add to Cart
                                     </a>
-                                    <script>
-                                        function redirectToLogin() {
-                                            Swal.fire({
-                                                icon: 'warning',
-                                                title: 'You are not logged in',
-                                                text: 'Please log in to proceed.',
-                                                confirmButtonText: 'OK',
-                                            }).then(() => {
-                                                // Optionally, redirect to the login page
-                                                window.location.href = '<?= base_url('/login'); ?>';
-                                            });
-                                        }
-                                    </script>
-                                <?php endif; ?>
-                                <?php if (logged_in()) : ?>
-                                    <a href="<?= base_url('web/reservation/custombooking/') . $data['id']; ?>" class="btn btn-success">Book Now</a>
-                                <?php else : ?>
                                     <a class="btn btn-success" onclick="redirectToLogin()">Book Now</a>
-
                                     <script>
                                         function redirectToLogin() {
                                             Swal.fire({
@@ -145,6 +137,7 @@
                                         }
                                     </script>
                                 <?php endif; ?>
+
                             </div>
                         </div>
                     </div>
@@ -157,14 +150,63 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-7">
+                            <h4 class="card-title text-end">Package Information</h4>
                         </div>
-                        <div class="col-6">
-                            <h4 class="card-title text-center">Package Information</h4>
-                        </div>
-                        <div class="col-3">
+                        <div class="col-5">
+                            <div class="text-end">
+                                <?php if (logged_in()) : ?>
+                                    <?php if (in_groups(['admin']) || in_groups(['master'])) : ?>
+                                        <button type="submit" class="btn icon btn-outline-primary" title="Extend Package" disabled><i class="fa-solid fa-plus-square"></i> Extend</button>&nbsp;&nbsp;
+                                        <button type="submit" class="btn icon btn-outline-primary" title="Custom Package" disabled><i class="fa-solid fa-puzzle-piece"></i> Custom</button>
+                                    <?php else : ?>
+                                        <div class="d-flex justify-content-end align-items-center gap-2">
+                                            <!-- Form Extend -->
+                                            <form id="customForm" action="<?= base_url('/web/detailreservation/addextend'); ?>/<?= esc($data['id']); ?>" method="post" onsubmit="checkRequired(event)" enctype="multipart/form-data">
+                                                <?= csrf_field(); ?>
+                                                <button type="submit" class="btn icon btn-outline-primary" title="Extend Package">
+                                                    <i class="fa-solid fa-plus-square"></i> Extend
+                                                </button>
+                                            </form>
 
+                                            <!-- Form Custom -->
+                                            <form id="customizeForm" action="<?= base_url('/web/detailreservation/addcustompackage'); ?>/<?= esc($data['id']); ?>" method="post" onsubmit="checkRequired(event)" enctype="multipart/form-data">
+                                                <?= csrf_field(); ?>
+                                                <button type="submit" class="btn icon btn-outline-primary" title="Custom Package">
+                                                    <i class="fa-solid fa-puzzle-piece"></i> Custom
+                                                </button>
+                                            </form>
+                                        </div>
+                                    <?php endif; ?>
+
+                                <?php else : ?>
+                                    <div class="d-flex justify-content-end align-items-center gap-2">
+                                        <!-- Button Extend -->
+                                        <button type="button" class="btn icon btn-outline-primary" title="Extend Package" onclick="redirectToLogin()">
+                                            <i class="fa-solid fa-plus-square"></i> Extend
+                                        </button>
+
+                                        <!-- Button Custom -->
+                                        <button type="button" class="btn icon btn-outline-primary" title="Custom Package" onclick="redirectToLogin()">
+                                            <i class="fa-solid fa-puzzle-piece"></i> Custom
+                                        </button>
+                                    </div>
+                                    <script>
+                                        function redirectToLogin() {
+                                            Swal.fire({
+                                                icon: 'warning',
+                                                title: 'You are not logged in',
+                                                text: 'Please log in to proceed.',
+                                                confirmButtonText: 'OK',
+                                            }).then(() => {
+                                                window.location.href = '<?= base_url('/login'); ?>';
+                                            });
+                                        }
+                                    </script>
+                                <?php endif; ?>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -207,100 +249,51 @@
                     <div class="row">
                         <div class="col">
                             <p class="fw-bold">Service Include <br>
+                            <ul>
                                 <?php foreach ($serviceinclude as $ls) : ?>
                                     <li><?= esc($ls['name']); ?></li>
                                 <?php endforeach; ?>
+                            </ul>
                             </p>
                             <p class="fw-bold">Service exclude <br>
+                            <ul>
                                 <?php foreach ($serviceexclude as $ls) : ?>
                                     <li><?= esc($ls['name']); ?></li>
                                 <?php endforeach; ?>
+                            </ul>
                             </p>
-                            <br>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-3">
-                        </div>
-                        <div class="col-6">
-                            <h4 class="card-title text-center">Package Information</h4>
-                        </div>
-                        <div class="col-3">
-                            <?php if (logged_in()) : ?> <!-- Assuming `logged_in()` is a function that checks if the user is logged in -->
-                                <form class="form form-vertical" id="customForm" action="<?= base_url('/web/detailreservation/addextend'); ?>/<?= esc($data['id']); ?>" method="post" onsubmit="checkRequired(event)" enctype="multipart/form-data">
-                                    <?= csrf_field(); ?>
-                                    <button type="submit" class="btn icon btn-outline-primary" title="Extend Package"><i class="fa-solid fa-plus-square"></i> Extend</button>
-                                    <br>
-                                </form>
-                            <?php else : ?>
-                                <button type="button" class="btn icon btn-outline-primary" title="Extend Package" onclick="redirectToLogin()"><i class="fa-solid fa-plus-square"></i> Extend</button>
-                                <script>
-                                    function redirectToLogin() {
-                                        Swal.fire({
-                                            icon: 'warning',
-                                            title: 'You are not logged in',
-                                            text: 'Please log in to proceed.',
-                                            confirmButtonText: 'OK',
-                                        }).then(() => {
-                                            // Optionally, redirect to the login page
-                                            window.location.href = '<?= base_url('/login'); ?>';
-                                        });
-                                    }
-                                </script>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <p>
-                                <?php foreach ($day as $d) : ?>
-                                    <b>Day <?= esc($d['day']); ?></b><br>
-                                    <?php foreach ($activity as $ac) : ?>
-                                        <?php if ($d['day'] == $ac['day']) : ?>
-                                            <?= esc($ac['activity']); ?>. <?= esc($ac['name']); ?> : <?= esc($ac['description']); ?> <br>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-                                    <br>
-                                <?php endforeach; ?>
-                            </p>
-                            <br>
-                            <button type="button" id="video-play" class="btn-play btn btn-outline-primary" data-bs-toggle="modal" data-src="<?= base_url('media/videos/' . esc($data['video_url']) . ''); ?>" data-bs-target="#videoModal" <?= ($data['video_url'] == '') ? 'disabled' : ''; ?>>
-                                <span class="material-icons" style="font-size: 1.5rem; vertical-align: bottom">play_circle</span> Play Video
-                            </button>
+                    <button type="button" id="video-play" class="btn-play btn btn-outline-primary" data-bs-toggle="modal" data-src="<?= base_url('media/videos/' . esc($data['video_url']) . ''); ?>" data-bs-target="#videoModal" <?= ($data['video_url'] == '') ? 'disabled' : ''; ?>>
+                        <span class="material-icons" style="font-size: 1.5rem; vertical-align: bottom">play_circle</span> Play Video
+                    </button>
 
-                            <div class="modal fade text-left" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title" id="myModalLabel17">Video</h4>
-                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                <i data-feather="x"></i>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="ratio ratio-16x9">
-                                                <video src="" class="embed-responsive-item" id="video" controls>Sorry, your browser doesn't support embedded videos</video>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                <i class="bx bx-x d-block d-sm-none"></i>
-                                                <span class="d-none d-sm-block">Close</span>
-                                            </button>
-                                        </div>
+                    <div class="modal fade text-left" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel17">Video</h4>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <i data-feather="x"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="ratio ratio-16x9">
+                                        <video src="" class="embed-responsive-item" id="video" controls>Sorry, your browser doesn't support embedded videos</video>
                                     </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Close</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
 
             <!-- Object Media -->
             <?= $this->include('web/layouts/our_gallery'); ?>
@@ -344,21 +337,115 @@
             <!-- Object Location on Map -->
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Google Maps</h5>
-                    <?= $this->include('web/layouts/map-head'); ?>
+                    <div class="row align-items-center">
+                        <div class="col-md-auto">
+                            <h5 class="card-title">Google Maps</h5>
+                        </div>
+                        <?= $this->include('web/layouts/map-head'); ?>
+                    </div>
                 </div>
                 <?= $this->include('web/layouts/map-body'); ?>
                 <div class="card-body">
-                    <div class="col-auto ">
+                    <div class="col-auto">
                         <br>
                         <div class="btn-group float-right" role="group">
                             <?php foreach ($day as $d) : ?>
                                 <?php $loop = 0; ?>
+
                                 <script>
                                     function add<?= $d['day'], $d['package_id']; ?>() {
+                                        // Reset all buttons to their default color                                      
+                                        let buttons = document.querySelectorAll('.day-route-btn');
+                                        let dayDetails = document.querySelectorAll('.div-day-detail');
 
+                                        clearRadius();
+                                        clearRoute();
+                                        clearMarker();
+
+                                        buttons.forEach(function(button) {
+                                            button.style.backgroundColor = ''; // reset to default background color
+                                            button.style.color = ''; // reset to default text color
+                                        });
+
+                                        dayDetails.forEach(function(detailDiv) {
+                                            detailDiv.style.border = ''; // reset div border
+                                        });
+
+                                        // Change the color of the clicked button
+                                        let currentButton = document.getElementById('btn-day-<?= $d['day'], $d['package_id']; ?>');
+                                        currentButton.style.fontWeight = 'bold';
+                                        currentButton.style.backgroundColor = 'white';
+                                        currentButton.style.color = '#435ebe';
+                                        let currentButton2 = document.getElementById('btn-day-dropdown-<?= $d['day'], $d['package_id']; ?>');
+                                        currentButton2.style.backgroundColor = 'white';
+                                        currentButton2.style.color = '#435ebe';
+                                        let currentButton3 = document.getElementById('div-day-detail-<?= $d['day'], $d['package_id']; ?>');
+                                        currentButton3.style.border = '1px solid #435ebe';
+                                        currentButton3.style.borderRadius = '5px';
+
+                                        // Call initMap and other logic here
                                         initMap();
                                         map.setZoom(15);
+
+                                        // Inisialisasi koordinat titik awal (gerbang desa)
+                                        var startLat = -0.52210813;
+                                        var startLng = 100.49432448;
+
+                                        // // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
+                                        // var image = {
+                                        //     url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                        //     scaledSize: new google.maps.Size(50, 50) // Sesuaikan dengan ukuran gambar Anda
+                                        // };
+
+                                        var marker = new google.maps.Marker({
+                                            position: {
+                                                lat: startLat,
+                                                lng: startLng
+                                            },
+                                            map: map,
+                                            // icon: image,
+                                            label: {
+                                                text: '0',
+                                                color: 'white',
+                                                fontSize: '14px',
+                                                fontWeight: 'bold'
+                                            },
+                                            title: 'Village Gate'
+                                        });
+
+                                        var startLat = -0.52210813;
+                                        var startLng = 100.49432448;
+
+                                        // // Tambahkan infowindow untuk titik awal
+                                        // let infowindow = new google.maps.InfoWindow({
+                                        //     // content: '<div style="line-height:1.35;font-weight:bold;overflow:hidden;white-space:nowrap;">Gerbang Desa</div>'
+                                        //     content : '<div style="max-width:200px;max-height:300px;" class="text-center"> <p class="fw-bold fs-6">Village Gate</div>',
+                                        //     contentButton : '<br><div class="text-center"><a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +startLat +", " +startLng +')"><i class="fa-solid fa-road"></i></a><a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow"</div>'
+                                        // });
+
+                                        let id = "marker_starting";
+                                        // Tambahkan infowindow untuk titik awal
+                                        let infowindow = new google.maps.InfoWindow();
+
+                                        // Gabungkan konten utama dan tombol dalam satu variabel
+                                        let content = `<div style="max-width:200px;max-height:300px;" class="text-center">
+                                                                                        <p class="fw-bold fs-6">Village Gate</p>
+                                                                                        <div class="text-center">
+                                                                                            <a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(${startLat}, ${startLng})">
+                                                                                                <i class="fa-solid fa-road"></i>
+                                                                                            </a>            
+                                                                                        </div>
+                                                                                    </div>
+                                                                                `;
+
+                                        // Tampilkan infowindow saat marker diklik
+                                        marker.addListener('click', function() {
+                                            infowindow.setContent(content);
+                                            infowindow.open(map, marker);
+                                        });
+                                        markerArray[id] = marker;
+
+
                                         <?php
                                         $activitiesForDay = array_filter($activity, function ($activity) use ($d) {
                                             return $activity['day'] === $d['day'];
@@ -372,10 +459,35 @@
                                         ?>
                                             objectMarkerRouteNumber("<?= $objectid; ?>", <?= $lat_now; ?>, <?= $lng_now; ?>, true, <?= $loop; ?>);
 
-                                            <?php
-                                            if (1 < $loop) { ?>
 
-                                                // new01(<?= $lat_bef; ?>, <?= $lng_bef; ?>, <?= $lat_now; ?>, <?= $lng_now; ?>);
+                                            <?php if ($loop === 1) { ?>
+                                                // Tambahkan rute dari titik awal ke aktivitas pertama
+                                                var directionsService = new google.maps.DirectionsService();
+                                                var directionsDisplay = new google.maps.DirectionsRenderer({
+                                                    suppressMarkers: true,
+                                                    map: map
+                                                });
+
+                                                var start = new google.maps.LatLng(startLat, startLng);
+                                                var end = new google.maps.LatLng(<?= $lat_now; ?>, <?= $lng_now; ?>);
+
+                                                var request = {
+                                                    origin: start,
+                                                    destination: end,
+                                                    travelMode: google.maps.TravelMode.DRIVING
+                                                };
+
+                                                directionsService.route(request, function(response, status) {
+                                                    if (status == google.maps.DirectionsStatus.OK) {
+                                                        directionsDisplay.setDirections(response);
+                                                        directionsDisplay.setMap(map);
+                                                        routeArray.push(directionsDisplay);
+                                                    } else {
+                                                        window.alert('Directions request failed due to ' + status);
+                                                    }
+                                                });
+                                            <?php } else if (1 < $loop) { ?>
+
                                                 pointA<?= $loop; ?> = new google.maps.LatLng(<?= $lat_bef; ?>, <?= $lng_bef; ?>);
                                                 pointB<?= $loop; ?> = new google.maps.LatLng(<?= $lat_now; ?>, <?= $lng_now; ?>);
                                                 directionsService<?= $loop; ?> = new google.maps.DirectionsService;
@@ -392,6 +504,8 @@
                                                 }, function(response, status) {
                                                     if (status == google.maps.DirectionsStatus.OK) {
                                                         directionsDisplay<?= $loop; ?>.setDirections(response);
+                                                        directionsDisplay<?= $loop; ?>.setMap(map);
+                                                        routeArray.push(directionsDisplay<?= $loop; ?>);
                                                     } else {
                                                         window.alert('Directions request failed due to ' + status);
                                                     }
@@ -408,37 +522,105 @@
                                         }
                                         ?>
                                     }
+
+                                    function addOnly<?= $d['day'], $d['package_id']; ?>() {
+                                        // Reset all buttons to their default color                                      
+                                        let buttons = document.querySelectorAll('.day-route-btn');
+                                        let dayDetails = document.querySelectorAll('.div-day-detail');
+
+                                        buttons.forEach(function(button) {
+                                            button.style.backgroundColor = ''; // reset to default background color
+                                            button.style.color = ''; // reset to default text color
+                                        });
+
+                                        dayDetails.forEach(function(detailDiv) {
+                                            detailDiv.style.border = ''; // reset div border
+                                        });
+
+                                        // Change the color of the clicked button
+                                        let currentButton = document.getElementById('btn-day-<?= $d['day'], $d['package_id']; ?>');
+                                        currentButton.style.fontWeight = 'bold';
+                                        currentButton.style.backgroundColor = 'white';
+                                        currentButton.style.color = '#435ebe';
+                                        let currentButton2 = document.getElementById('btn-day-dropdown-<?= $d['day'], $d['package_id']; ?>');
+                                        currentButton2.style.backgroundColor = 'white';
+                                        currentButton2.style.color = '#435ebe';
+                                        let currentButton3 = document.getElementById('div-day-detail-<?= $d['day'], $d['package_id']; ?>');
+                                        currentButton3.style.border = '1px solid #435ebe';
+                                        currentButton3.style.borderRadius = '5px';
+
+
+                                    }
                                 </script>
 
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary btn-sm" type="button" aria-expanded="false" onclick="add<?= $d['day'], $d['package_id']; ?>();">Day <?= $d['day']; ?> Route</button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                                    <button id="btn-day-<?= $d['day'], $d['package_id']; ?>" type="button" class="btn btn-primary btn-sm day-route-btn" type="button" aria-expanded="false" onclick="add<?= $d['day'], $d['package_id']; ?>();">Day <?= $d['day']; ?> Route</button>
+                                    <button id="btn-day-dropdown-<?= $d['day'], $d['package_id']; ?>" type="button" class="btn btn-primary day-route-btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                                         <span class="visually-hidden">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <?php if (!empty($activitiesForDay)) :  ?>
-                                            <?php foreach ($activitiesForDay as $index => $currentActivity) : ?>
-                                                <?php $loop++; ?>
-                                                <?php if ($currentActivity['day'] === $d['day']) : ?>
+                                        <?php if (!empty($activitiesForDay)) : ?>
+                                            <?php
+                                            // Hitung jumlah aktivitas dalam hari ini
+                                            $activityCount = count($activitiesForDay);
 
-                                                    <?php if (isset($activitiesForDay[$index + 1])) :
+                                            // Ambil aktivitas pertama
+                                            $firstActivity = reset($activitiesForDay);
+
+                                            // Tambahkan tombol untuk Titik 0 ke Titik 1
+                                            if ($firstActivity) : ?>
+                                                <li>
+                                                    <button
+                                                        type="button"
+                                                        onclick="routeBetweenObjects(-0.52210813,100.49432448,<?= esc($firstActivity['lat']); ?>,<?= esc($firstActivity['lng']); ?>); addOnly<?= esc($d['day']), esc($d['package_id']); ?>();" class="btn btn-outline-primary">
+                                                        <i class="fa fa-road"></i> Titik 0 ke 1
+                                                    </button>
+                                                </li>
+                                            <?php endif; ?>
+
+                                            <?php
+                                            // Jika ada lebih dari 1 aktivitas, tambahkan dropdown antar aktivitas
+                                            if ($activityCount > 1) :
+                                                foreach ($activitiesForDay as $index => $currentActivity) :
+                                                    if (isset($activitiesForDay[$index + 1])) :
                                                         $nextActivity = $activitiesForDay[$index + 1];
-                                                    ?>
-                                                        <li><button type="button" onclick="routeBetweenObjects( <?= $currentActivity['lat'] ?>, <?= $currentActivity['lng'] ?>, <?= $nextActivity['lat'] ?>, <?= $nextActivity['lng'] ?>)" class="btn btn-outline-primary"><i class="fa fa-road"></i> Activity <?= esc($currentActivity['activity']); ?> ke <?= esc($nextActivity['activity']); ?></button></a></li>
-
-                                                    <?php endif; ?>
-
-                                                <?php endif; ?>
-                                            <?php endforeach; ?>
+                                            ?>
+                                                        <li>
+                                                            <button type="button" onclick="routeBetweenObjects( <?= esc($currentActivity['lat']); ?>, <?= esc($currentActivity['lng']); ?>, <?= esc($nextActivity['lat']); ?>, <?= esc($nextActivity['lng']); ?>); addOnly<?= esc($d['day']), esc($d['package_id']); ?>();" class="btn btn-outline-primary"> <i class="fa fa-road"></i> <?= esc($currentActivity['activity']); ?> ke <?= esc($nextActivity['activity']); ?> </button>
+                                                        </li>
+                                            <?php
+                                                    endif;
+                                                endforeach;
+                                            endif;
+                                            ?>
+                                        <?php else : ?>
+                                            <li><span class="dropdown-item text-muted">Tidak ada aktivitas untuk hari ini</span></li>
                                         <?php endif; ?>
+                                    </ul>
+                                    </ul>
                                     </ul>
                                 </div>
                             <?php endforeach; ?>
                         </div>
+
                     </div>
                 </div>
                 <script>
-                    initMap(-0.54145013, 100.48094882)
+                    initMap(-0.54145013, 100.48094882);
+
+                    window.onload = function() {
+                        try {
+                            // Cek apakah data Day 1 ada
+                            <?php if (isset($day[0])) : ?>
+                                add<?= $day[0]['day'], $day[0]['package_id']; ?>();
+                            <?php else : ?>
+                                console.log("Tidak ada data untuk Day 1");
+                            <?php endif; ?>
+                        } catch (error) {
+                            // Menangani error jika terjadi
+                            console.error("Terjadi error saat memanggil fungsi Day 1: ", error);
+                        }
+                    };
                 </script>
                 <?php foreach ($day as $d) : ?>
                     <?php foreach ($activity as $ac) : ?>
@@ -446,12 +628,40 @@
                         </script>
                     <?php endforeach; ?>
                 <?php endforeach; ?>
+                <div class="card-body" style="padding-bottom: 0.5rem !important;">
+                    <div class="row">
+                        <div class="col">
+                            <?php foreach ($day as $d) : ?>
+                                <div id="div-day-detail-<?= $d['day'], $d['package_id']; ?>" class="div-day-detail" style="padding: 5px;>">
+                                    <b>Day <?= esc($d['day']); ?></b>
+                                    <ol>
+                                        <?php foreach ($activity as $ac) : ?>
+                                            <?php if ($d['day'] == $ac['day']) : ?>
+                                                <li><?= esc($ac['name']); ?> : <?= esc($ac['description']); ?></li>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </ol>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
                 <!-- Direction section -->
                 <?= $this->include('web/layouts/direction'); ?>
-            </div>
 
+                <div class="card-body">
+                    <div class="mt-3">
+                        <a title="Around You" class="btn icon btn-outline-primary mx-1" onclick="openExplore()">
+                            <i class="fa-solid fa-compass me-3"></i>Search object around you?
+                        </a>
+                    </div>
+                    <!-- Nearby section -->
+                    <?= $this->include('web/layouts/explore'); ?>
+                </div>
+
+
+            </div>
         </div>
-    </div>
 </section>
 
 <?= $this->endSection() ?>
@@ -468,5 +678,10 @@
     myModal.addEventListener('hide.bs.modal', () => {
         document.getElementById('video').setAttribute('src', '');
     });
+</script>
+<script>
+    $('#direction-row').hide();
+    $('#check-explore-col').hide();
+    $('#result-explore-col').hide();
 </script>
 <?= $this->endSection() ?>

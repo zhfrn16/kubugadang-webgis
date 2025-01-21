@@ -3,16 +3,15 @@
 namespace App\Controllers\Web;
 
 use App\Models\SumpuModel;
+use App\Models\AccountModel;
 use Myth\Auth\Models\UserModel;
 use App\Models\GallerySumpuModel;
 use App\Models\AttractionModel;
 use App\Models\EventModel;
 use App\Models\PackageModel;
 use App\Models\PackageTypeModel;
-
 use App\Models\FacilityModel;
 use App\Models\FacilityTypeModel;
-
 use App\Models\CulinaryPlaceModel;
 use App\Models\TraditionalHouseModel;
 use App\Models\WorshipPlaceModel;
@@ -26,6 +25,7 @@ class Dashboard extends BaseController
     protected $gtpModel;
     protected $sumpuModel;
     protected $userModel;
+    protected $accountModel;
     protected $galleryGtpModel;
     protected $gallerySumpuModel;
     protected $attractionModel;
@@ -48,6 +48,7 @@ class Dashboard extends BaseController
         $this->sumpuModel = new SumpuModel();
         $this->gallerySumpuModel = new GallerySumpuModel();
         $this->userModel = new UserModel();
+        $this->accountModel = new AccountModel();
         $this->attractionModel = new AttractionModel();
         $this->eventModel = new EventModel();
         $this->packageModel = new PackageModel();
@@ -62,9 +63,8 @@ class Dashboard extends BaseController
         $this->worshipPlaceModel = new WorshipPlaceModel();
         $this->servicePackageModel = new ServicePackageModel();
         $this->homestayModel = new HomestayModel();
-
     }
-    
+
     public function index()
     {
         $data = [
@@ -72,6 +72,7 @@ class Dashboard extends BaseController
         ];
         return view('dashboard/analytics', $data);
     }
+    
 
     // public function gtp()
     // {
@@ -115,8 +116,10 @@ class Dashboard extends BaseController
 
     public function users()
     {
-        $contentsAdmin = $this->userModel->get_admin()->getResultArray();
-        $contentsCostumer = $this->userModel->get_users()->getResultArray();
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        // $contentsAdmin = $this->userModel->get_admin()->getResultArray();
+        $contentsAdmin = $this->accountModel->get_list_admin_api()->getResultArray();
+        $contentsCostumer = $this->accountModel->get_list_user_api()->getResultArray();
         $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
@@ -129,6 +132,47 @@ class Dashboard extends BaseController
         ];
         // DD($data);
         return view('dashboard/manage-users', $data);
+    }
+
+    public function announcement()
+    {
+        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents3 = $this->sumpuModel->get_announcement_all()->getResultArray();
+
+
+        $data = [
+            'title' => 'Manage Announcement',
+            'manage' => 'Announcement',
+            'announcementdata' => $contents3,
+            'data2' => $contents2,
+
+        ];
+        return view('dashboard/manage-announcement', $data);
+    }
+
+    public function all()
+    {
+        $contentsAT = $this->attractionModel->get_list_attraction()->getResultArray();
+        $contentsFC = $this->facilityModel->get_list_facility()->getResultArray();
+        $contentsCP = $this->culinaryPlaceModel->get_list_cp()->getResultArray();
+        $contentsTH = $this->traditionalHouseModel->get_list_th()->getResultArray();
+        $contentsSP = $this->souvenirPlaceModel->get_list_sp()->getResultArray();
+        $contentsWP = $this->worshipPlaceModel->get_list_wp()->getResultArray();
+        $contentsHM = $this->homestayModel->get_list_homestay()->getResultArray();
+
+        $data = [
+            'title' => 'Home',
+            'dataAT' => $contentsAT,
+            'dataFC' => $contentsFC,
+            'dataCP' => $contentsCP,
+            'dataTH' => $contentsTH,
+            'dataSP' => $contentsSP,
+            'dataWP' => $contentsWP,
+            'dataHM' => $contentsHM,
+            
+        ];
+
+        return view('web/list_all_buildings', $data);
     }
 
     public function attraction()
@@ -190,8 +234,8 @@ class Dashboard extends BaseController
         ];
         return view('dashboard/manage-page', $data);
     }
-    
-    
+
+
     public function culinaryplace()
     {
         $contents = $this->culinaryPlaceModel->get_list_cp()->getResultArray();
@@ -207,7 +251,7 @@ class Dashboard extends BaseController
         return view('dashboard/manage-page', $data);
     }
 
-    
+
     public function traditionalhouse()
     {
         $contents = $this->traditionalHouseModel->get_list_th()->getResultArray();
@@ -223,7 +267,7 @@ class Dashboard extends BaseController
         return view('dashboard/manage-page', $data);
     }
 
-    
+
 
     public function souvenirplace()
     {
@@ -257,7 +301,8 @@ class Dashboard extends BaseController
 
     public function servicepackage()
     {
-        $contents = $this->servicePackageModel->get_list_service_package()->getResultArray();
+        // $contents = $this->servicePackageModel->get_list_service_package()->getResultArray();
+        $contents = $this->servicePackageModel->get_list_service_package_dashboard()->getResultArray();
         $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
@@ -318,5 +363,4 @@ class Dashboard extends BaseController
 
         return view('dashboard/manage-homestay', $data);
     }
-    
 }

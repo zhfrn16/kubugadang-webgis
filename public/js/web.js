@@ -13,12 +13,48 @@ let destinationMarker = new google.maps.Marker();
 let routeArray = [],
   circleArray = [],
   markerArray = {};
+let overlays = [];
+let airplaneMarkers = [];
+let carMarkers = [];
+let customLabels = [];
+let customLabelsCountry = [];
+let digitasiArray = {};
+let digitNegLayers = [];
+let digitProvLayers = [];
+let digitKabKotaLayers = [];
+let digitKecLayers = [];
+let digitNagari1Layers = [];
+let digitVillage1Layers = [];
+let isLabelChecked = false;
+let isTerrainChecked = false;
+
 let bounds = new google.maps.LatLngBounds();
 let selectedShape,
   drawingManager = new google.maps.drawing.DrawingManager();
 let customStyled = [
   {
     elementType: "labels",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "poi",
+    elementType: "labels",
+    stylers: [{ visibility: "off" }],
+  },
+  {
+    featureType: "administrative.country",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "administrative.province",
     stylers: [
       {
         visibility: "off",
@@ -61,7 +97,6 @@ function setBaseUrl(url) {
 }
 
 // Initialize and add the map for landing page
-// Initialize and add the map
 function initMapLP(lat = -0.5242972, lng = 100.492333, mobile = false) {
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
@@ -83,7 +118,8 @@ function initMapLP(lat = -0.5242972, lng = 100.492333, mobile = false) {
   };
   map.set("styles", customStyled);
   directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
-  digitVillage();
+  // digitVillage();
+  digitVillage1();
 }
 
 // Initialize and add the map
@@ -100,10 +136,222 @@ function initMap(lat = -0.54145013, lng = 100.48094882) {
   };
   map.set("styles", customStyled);
   directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
-  digitVillage();
+  // digitVillage();
+  // digitVillage1();
+}
+
+function addCustomLabels(map) {
+  const locations = [
+    { position: { lat: -6.2088, lng: 106.8456 }, name: "JAKARTA" },
+    { position: { lat: -0.9446, lng: 100.3714 }, name: "PADANG" },
+    { position: { lat: 1.047, lng: 104.0305 }, name: "BATAM" },
+  ];
+
+  locations.forEach((location) => {
+    const label = new google.maps.OverlayView();
+    label.onAdd = function () {
+      const div = document.createElement("div");
+      div.style.position = "absolute";
+      div.style.padding = "5px 10px";
+      div.style.fontFamily = "Product Sans, Arial, sans-serif"; // Alternatif mendekati Google Sans
+      div.style.fontSize = "13px";
+      div.style.fontWeight = "800"; // Berat font normal seperti label Maps
+      div.style.color = "#fff"; // Warna teks putih
+      div.style.webkitTextFillColor = "#fff"; // Stroke hitam pada teks
+      div.style.webkitTextStroke = "1px #000"; // Stroke hitam pada teks
+      // div.style.letterSpacing = "-0.0325em"; // Simulasi semi-condensed 87.5%
+      div.style.textAlign = "center"; // Posisi teks rata tengah
+      div.style.zIndex = "999";
+      div.innerHTML = location.name;
+
+      const panes = this.getPanes();
+      panes.overlayLayer.appendChild(div);
+
+      this.div = div;
+    };
+
+    label.draw = function () {
+      const projection = this.getProjection();
+      const position = projection.fromLatLngToDivPixel(location.position);
+      if (this.div) {
+        const width = this.div.offsetWidth; // Lebar elemen label
+        const height = this.div.offsetHeight; // Tinggi elemen label
+
+        this.div.style.left = `${position.x - width / 2}px`; // Pusatkan secara horizontal
+        this.div.style.top = `${position.y - height / 2}px`; // Pusatkan secara vertikal
+      }
+    };
+
+    label.onRemove = function () {
+      if (this.div) {
+        this.div.parentNode.removeChild(this.div);
+        this.div = null;
+      }
+    };
+
+    label.setMap(map);
+    customLabels.push(label); // Simpan label ke array
+  });
+}
+function addCustomLabelsCountry(map) {
+  const locations = [
+    { position: { lat: 3.440052, lng: 101.957396 }, name: "MALAYSIA" },
+    { position: { lat: 1.3521, lng: 103.8198 }, name: "SINGAPORE" },
+    { position: { lat: 4.9031, lng: 114.9398 }, name: "BRUNEI" },
+    { position: { lat: -1.377737, lng: 113.217183 }, name: "INDONESIA" },
+  ];
+
+  locations.forEach((location) => {
+    const label = new google.maps.OverlayView();
+    label.onAdd = function () {
+      const div = document.createElement("div");
+      div.style.position = "absolute";
+      div.style.padding = "5px 10px";
+      div.style.fontFamily = "Product Sans, Arial, sans-serif"; // Alternatif mendekati Google Sans
+      div.style.fontSize = "18px";
+      div.style.fontWeight = "800"; // Berat font normal seperti label Maps
+      div.style.color = "#fff"; // Warna teks putih
+      div.style.webkitTextFillColor = "#fff"; // Stroke hitam pada teks
+      div.style.webkitTextStroke = "1px #000"; // Stroke hitam pada teks
+      // div.style.letterSpacing = "-0.0325em"; // Simulasi semi-condensed 87.5%
+      div.style.textAlign = "center"; // Posisi teks rata tengah
+      div.style.zIndex = "999";
+      div.innerHTML = location.name;
+
+      const panes = this.getPanes();
+      panes.overlayLayer.appendChild(div);
+
+      this.div = div;
+    };
+
+    label.draw = function () {
+      const projection = this.getProjection();
+      const position = projection.fromLatLngToDivPixel(location.position);
+      if (this.div) {
+        const width = this.div.offsetWidth; // Lebar elemen label
+        const height = this.div.offsetHeight; // Tinggi elemen label
+
+        this.div.style.left = `${position.x - width / 2}px`; // Pusatkan secara horizontal
+        this.div.style.top = `${position.y - height / 2}px`; // Pusatkan secara vertikal
+      }
+    };
+
+    label.onRemove = function () {
+      if (this.div) {
+        this.div.parentNode.removeChild(this.div);
+        this.div = null;
+      }
+    };
+
+    label.setMap(map);
+    customLabelsCountry.push(label); // Simpan label ke array
+  });
 }
 
 function initMap5(lat = -0.54145013, lng = 100.48094882) {
+  directionsService = new google.maps.DirectionsService();
+  const center = new google.maps.LatLng(lat, lng);
+  map = new google.maps.Map(document.getElementById("googlemaps"), {
+    zoom: 6,
+    center: center,
+    mapTypeId: "hybrid",
+    // styles: ,
+  });
+  var rendererOptions = {
+    map: map,
+  };
+  map.set("styles", customStyled);
+  directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
+
+  addCustomLabels(map);
+  addCustomLabelsCountry(map);
+
+  const checkOCO = document.getElementById("check-oco");
+  checkOCO.checked = true;
+  const checkOPR = document.getElementById("check-opr");
+  checkOPR.checked = true;
+  const checkORE = document.getElementById("check-ore");
+  checkORE.checked = true;
+  const checkODI = document.getElementById("check-odi");
+  checkODI.checked = true;
+  const checkOVI = document.getElementById("check-ovi");
+  checkOVI.checked = true;
+  const checkOTO = document.getElementById("check-oto");
+  checkOTO.checked = true;
+}
+
+function checkLabel() {
+  const checkBox = document.getElementById("check-label");
+  isLabelChecked = checkBox.checked; // Update status global
+
+  const defaultStyled = [
+    { elementType: "labels", stylers: [{ visibility: "on" }] },
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "administrative.land_parcel",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "administrative.neighborhood",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "road",
+      elementType: "labels",
+      stylers: [{ visibility: "on" }],
+    },
+  ];
+
+  const hideLabels = [
+    { elementType: "labels", stylers: [{ visibility: "off" }] },
+  ];
+
+  if (isLabelChecked) {
+    // Tampilkan label default
+    map.setOptions({ styles: defaultStyled });
+    customLabels.forEach((label) => label.setMap(null));
+    customLabelsCountry.forEach((label) => label.setMap(null));
+    customLabels = [];
+    customLabelsCountry = [];
+  } else {
+    // Sembunyikan label default
+    map.setOptions({ styles: hideLabels });
+    addCustomLabels(map);
+    addCustomLabelsCountry(map);
+  }
+}
+
+function checkTerrain() {
+  const checkBox = document.getElementById("check-terrain");
+  isTerrainChecked = checkBox.checked; // Update status global
+
+  if (isTerrainChecked) {
+    map.setMapTypeId("terrain");
+  } else {
+    map.setMapTypeId("hybrid");
+  }
+
+  // Terapkan ulang gaya label jika checkbox label aktif
+  if (isLabelChecked) {
+    checkLabel();
+  }
+}
+
+function checkRoadMap() {
+  const checkBox = document.getElementById("check-roadmap");
+
+  if (checkBox.checked) {
+    map.setMapTypeId("roadmap");
+  } else {
+    map.setMapTypeId("satellite");
+  }
+}
+
+function initMap7(lat = -0.54145013, lng = 100.48094882) {
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
   map = new google.maps.Map(document.getElementById("googlemaps"), {
@@ -116,156 +364,33 @@ function initMap5(lat = -0.54145013, lng = 100.48094882) {
   };
   map.set("styles", customStyled);
   directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
-
-  for (let n = 1; n < 3; n++) {
-    const idneg = n;
-    digitNeg(idneg);
-  }
-
-  // for (let p = 1; p < 3; p++) {
-  //   const idprov = p;
-  //   digitProv(idprov);
-  // }
-
-  // for (let p = 4; p < 11; p++) {
-  //   const idprov = p;
-  //   digitProv(idprov);
-  // }
-
-  // digitProv();
-
-  getIdProvince();
-
-  // for (let i = 1; i < 20; i++) {
-  //   const idkabkota = i;
-  //   digitKabKota(idkabkota);
-  // }
-
-  // for (let k = 1; k < 15; k++) {
-  //   const idkec = k;
-  //   digitKec(idkec);
-  // }
-
-  // for (let d = 1; d < 3; d++) {
-  //   const iddesa = d;
-  //   digitNagari1(iddesa);
-  // }
-
-  // for (let d = 4; d < 6; d++) {
-  //   const iddesa = d;
-  //   digitNagari1(iddesa);
-  // }
-
-  digitVillage1();
-}
-
-// Display tourism village digitizing
-function digitVillage() {
-  // const village = new google.maps.Data();
-  village = new google.maps.Data();
-  $.ajax({
-    url: baseUrl + "/api/village",
-    type: "POST",
-    data: {
-      village: "V01",
-    },
-    dataType: "json",
-    success: function (response) {
-      const data = response.data;
-      village.addGeoJson(data);
-      village.setStyle({
-        fillColor: "#00b300",
-        strokeWeight: 0.5,
-        strokeColor: "#005000",
-        fillOpacity: 0.1,
-        clickable: false,
-      });
-      village.setMap(map);
-    },
-  });
 }
 
 // // Display tourism village digitizing
 // function digitVillage() {
-//     const digitasi = new google.maps.Data();
-//     $.ajax({
-//         url: baseUrl + '/api/village',
-//         type: 'POST',
-//         data: {
-//             digitasi: 'GTP01'
-//         },
-//         dataType: 'json',
-//         success: function (response) {
-//             const data = response.data;
-//             digitasi.addGeoJson(data);
-//             digitasi.setStyle({
-//                 fillColor:'#00ff77',
-//                 strokeWeight:0.2,
-//                 strokeColor:'#ffffff',
-//                 fillOpacity: 0.3,
-//                 clickable: false
-//             });
-//             digitasi.setMap(map);
-//         }
-//     });
+//   // const village = new google.maps.Data();
+//   village = new google.maps.Data();
+//   $.ajax({
+//     url: baseUrl + "/api/village",
+//     type: "POST",
+//     data: {
+//       village: "V01",
+//     },
+//     dataType: "json",
+//     success: function (response) {
+//       const data = response.data;
+//       village.addGeoJson(data);
+//       village.setStyle({
+//         fillColor: "#00b300",
+//         strokeWeight: 0.5,
+//         strokeColor: "#005000",
+//         fillOpacity: 0.1,
+//         clickable: false,
+//       });
+//       village.setMap(map);
+//     },
+//   });
 // }
-
-function initMap2() {
-  initMap();
-  digitTracking();
-}
-
-function initMap3() {
-  initMap();
-  digitTalao();
-}
-
-function initMap6() {
-  initMap();
-  digitEstuaria();
-}
-
-function initMap7() {
-  initMappulau();
-  digitPieh();
-}
-
-function initMap8() {
-  initMapMakam();
-  digitMakam();
-}
-
-function initMappulau(lat = -0.8273858542304909, lng = 100.18757733756357) {
-  directionsService = new google.maps.DirectionsService();
-  const center = new google.maps.LatLng(lat, lng);
-  map = new google.maps.Map(document.getElementById("googlemaps"), {
-    zoom: 10,
-    center: center,
-    mapTypeId: "satellite",
-  });
-  var rendererOptions = {
-    map: map,
-  };
-  map.set("styles", customStyled);
-  directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
-  digitVillage();
-}
-
-function initMapMakam(lat = -0.701332944875221, lng = 100.18733623545263) {
-  directionsService = new google.maps.DirectionsService();
-  const center = new google.maps.LatLng(lat, lng);
-  map = new google.maps.Map(document.getElementById("googlemaps"), {
-    zoom: 15,
-    center: center,
-    mapTypeId: "satellite",
-  });
-  var rendererOptions = {
-    map: map,
-  };
-  map.set("styles", customStyled);
-  directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
-  digitVillage();
-}
 
 function initMap4(lat = -0.54145013, lng = 100.48094882) {
   directionsService = new google.maps.DirectionsService();
@@ -284,7 +409,28 @@ function initMap4(lat = -0.54145013, lng = 100.48094882) {
   digitNagari();
 }
 
-function initMap9(lat = -0.54145013, lng = 100.48094882) {
+function initMap9(lat = -0.52210813, lng = 100.49432448) {
+  directionsService = new google.maps.DirectionsService();
+  const center = new google.maps.LatLng(lat, lng);
+  map = new google.maps.Map(document.getElementById("googlemaps"), {
+    zoom: 16,
+    center: center,
+    mapTypeId: "hybrid",
+    // styles: ,
+  });
+  var rendererOptions = {
+    map: map,
+  };
+  map.set("styles", customStyled);
+  directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
+
+  addCustomLabels(map);
+  addCustomLabelsCountry(map);
+}
+
+function initMap99(lat = -0.52210813, lng = 100.49432448) {
+  // objectMarker("SUM01", -0.52210813, 100.49432448);
+
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
   map = new google.maps.Map(document.getElementById("googlemaps"), {
@@ -298,11 +444,15 @@ function initMap9(lat = -0.54145013, lng = 100.48094882) {
   map.set("styles", customStyled);
   directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
 
-  for (let d = 1; d < 2; d++) {
-    const iddesa = d;
-    digitNagari2(iddesa);
-  }
+  // digitVillage1zoom();
+
+  // for (let d = 1; d < 2; d++) {
+  //   const iddesa = d;
+  //   digitNagari2(iddesa);
+  // }
   // digitVillage3();
+  addCustomLabels(map);
+  addCustomLabelsCountry(map);
 }
 
 // Display nagari digitizing
@@ -324,7 +474,7 @@ function digitNagari() {
         fillColor: "#03C988",
         strokeWeight: 3,
         strokeColor: "#ffffff",
-        fillOpacity: 2,
+        // fillOpacity: 2,
         clickable: true, // Set clickable to true to enable click event
       });
       digitasi.setMap(map);
@@ -346,7 +496,16 @@ function digitNeg(idneg) {
   const digitasi = new google.maps.Data();
   const infoWindow = new google.maps.InfoWindow();
 
-  if (idneg < 3) {
+  function getColor(idneg) {
+    const colors = {
+      1: "red", // Merah untuk idneg 1
+      2: "purple", // Hijau untuk idneg 2
+      3: "yellow", // Biru untuk idneg 3
+    };
+    return colors[idneg] || "#793FDF"; // Default warna ungu jika idneg tidak ada di daftar
+  }
+
+  if (idneg < 4) {
     digitasiValue = "N0" + idneg;
   }
   $.ajax({
@@ -358,13 +517,19 @@ function digitNeg(idneg) {
 
       digitasi.addGeoJson(data);
       digitasi.setStyle({
-        fillColor: "#793FDF",
+        // fillColor: "#793FDF",
+        fillColor: getColor(idneg),
         strokeWeight: 0.5,
         strokeColor: "#ffffff",
-        fillOpacity: 0.5,
+        fillOpacity: 0.3,
         clickable: true, // Set clickable to true to enable click event
+        index: 1, // Set clickable to true to enable click event
       });
+      map.setZoom(6);
       digitasi.setMap(map);
+
+      // Simpan instance layer ke array global
+      digitNegLayers.push(digitasi);
 
       // Event listener for click
       digitasi.addListener("click", function (event) {
@@ -372,7 +537,7 @@ function digitNeg(idneg) {
         console.log(Name);
 
         // Set label for the clicked feature using InfoWindow
-        infoWindow.setContent("Negara " + Name);
+        infoWindow.setContent("Country: " + Name);
         infoWindow.setPosition(event.latLng);
         infoWindow.open(map);
       });
@@ -450,13 +615,17 @@ function digitProv(idprov) {
 
       digitasi.addGeoJson(data);
       digitasi.setStyle({
-        fillColor: "#35A29F",
+        fillColor: "#fff",
         strokeWeight: 0.5,
         strokeColor: "#ffffff",
-        fillOpacity: 0.3,
+        fillOpacity: 0,
         clickable: true, // Set clickable to true to enable click event
+        index: 2, // Set clickable to true to enable click event
       });
+      map.setZoom(6);
       digitasi.setMap(map);
+
+      digitNegLayers.push(digitasi);
 
       // Event listener for click
       digitasi.addListener("click", function (event) {
@@ -493,13 +662,17 @@ function digitKabKota(nameprov) {
 
       digitasi.addGeoJson(data);
       digitasi.setStyle({
-        fillColor: "#F875AA",
+        fillColor: "#fff",
         strokeWeight: 0.5,
         strokeColor: "#ffffff",
-        fillOpacity: 0.3,
+        fillOpacity: 0,
         clickable: true, // Set clickable to true to enable click event
+        index: 3, // Set clickable to true to enable click event
       });
+      map.setZoom(6);
       digitasi.setMap(map);
+
+      digitProvLayers.push(digitasi);
 
       // Event listener for click
       digitasi.addListener("click", function (event) {
@@ -536,13 +709,17 @@ function digitKec(idkec) {
 
       digitasi.addGeoJson(data);
       digitasi.setStyle({
-        fillColor: "#F0FF42",
-        strokeWeight: 0.4,
+        fillColor: "#fff",
+        strokeWeight: 1,
         strokeColor: "#ffffff",
-        fillOpacity: 0.4,
+        fillOpacity: 0,
         clickable: true, // Set clickable to true to enable click event
+        index: 4, // Set clickable to true to enable click event
       });
+      map.setZoom(6);
       digitasi.setMap(map);
+
+      digitKecLayers.push(digitasi);
 
       // Event listener for click
       digitasi.addListener("click", function (event) {
@@ -571,7 +748,7 @@ function digitNagari1(iddesa) {
     digitasiValue = "V" + iddesa;
   }
   $.ajax({
-    url: baseUrl + "media/map/output_folder3/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
+    url: baseUrl + "media/map/output_folder3/new/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
     type: "GET",
     dataType: "json",
     success: function (response) {
@@ -579,13 +756,17 @@ function digitNagari1(iddesa) {
 
       digitasi.addGeoJson(data);
       digitasi.setStyle({
-        fillColor: "#FFC436",
-        strokeWeight: 2,
+        fillColor: "#fff",
+        strokeWeight: 1,
         strokeColor: "#ffffff",
-        fillOpacity: 2,
+        fillOpacity: 0,
         clickable: true, // Set clickable to true to enable click event
+        index: 5, // Set clickable to true to enable click event
       });
+      map.setZoom(6);
       digitasi.setMap(map);
+
+      digitNagari1Layers.push(digitasi);
 
       // Event listener for click
       digitasi.addListener("click", function (event) {
@@ -647,137 +828,11 @@ function digitNagari2(iddesa) {
   });
 }
 
-// //KAB-KOTA
-// function digitKabKota(idkabkota) {
-//   const digitasi = new google.maps.Data();
-//   const infoWindow = new google.maps.InfoWindow();
-
-//   if (idkabkota < 10) {
-//     digitasiValue = "K0" + idkabkota;
-//   } else if (idkabkota >= 10) {
-//     digitasiValue = "K" + idkabkota;
-//   }
-//   $.ajax({
-//     url: baseUrl + "/api/village",
-//     type: "POST",
-//     data: {
-//       digitasi: digitasiValue,
-//     },
-//     dataType: "json",
-//     success: function (response) {
-//       const data = response.data;
-//       digitasi.addGeoJson(data);
-//       digitasi.setStyle({
-//         fillColor: "#F875AA",
-//         strokeWeight: 0.5,
-//         strokeColor: "#ffffff",
-//         fillOpacity: 0.5,
-//         clickable: true, // Set clickable to true to enable click event
-//       });
-//       digitasi.setMap(map);
-
-//       // Event listener for click
-//       digitasi.addListener("click", function (event) {
-//         const kabkotaName = event.feature.getProperty("name");
-//         console.log(kabkotaName);
-
-//         // Set label for the clicked feature using InfoWindow
-//         infoWindow.setContent(kabkotaName + ", Sumatera Barat");
-//         infoWindow.setPosition(event.latLng);
-//         infoWindow.open(map);
-//       });
-//     },
-//   });
-// }
-
-//Kecamatan
-// function digitKec(idkec) {
-//     const digitasi = new google.maps.Data();
-//     const infoWindow = new google.maps.InfoWindow();
-
-//     if (idkec < 10) {
-//         digitasiValuec = 'C0' + idkec;
-//     } else if(idkec >= 10) {
-//         digitasiValuec = 'C' + idkec;
-//     }
-
-//     $.ajax({
-//         url: baseUrl + '/api/village',
-//         type: 'POST',
-//         data: {
-//             digitasi: digitasiValuec
-//         },
-//         dataType: 'json',
-//         success: function (response) {
-//             const data = response.data;
-//             digitasi.addGeoJson(data);
-//             digitasi.setStyle({
-//                 fillColor: '#F0FF42',
-//                 strokeWeight: 0.4,
-//                 strokeColor: '#ffffff',
-//                 fillOpacity: 0.4,
-//                 clickable: true // Set clickable to true to enable click event
-//             });
-//             digitasi.setMap(map);
-
-//             // Event listener for click
-//             digitasi.addListener('click', function(event) {
-//                 const kecName = event.feature.getProperty('name');
-
-//                 // Set label for the clicked feature using InfoWindow
-//                 infoWindow.setContent('Kecamatan '+kecName+', Padang Pariaman');
-//                 infoWindow.setPosition(event.latLng);
-//                 infoWindow.open(map);
-//             });
-//         }
-//     });
-// }
-
-// //Nagari
-// function digitNagari1(iddesa) {
-//   const digitasi = new google.maps.Data();
-//   const infoWindow = new google.maps.InfoWindow();
-
-//   if (iddesa < 9) {
-//     digitasiValue = "V0" + iddesa;
-//   }
-//   $.ajax({
-//     url: baseUrl + "/api/village",
-//     type: "POST",
-//     data: {
-//       digitasi: digitasiValue,
-//     },
-//     dataType: "json",
-//     success: function (response) {
-//       const data = response.data;
-//       digitasi.addGeoJson(data);
-//       digitasi.setStyle({
-//         fillColor: "#FFC436",
-//         strokeWeight: 2,
-//         strokeColor: "#ffffff",
-//         fillOpacity: 2,
-//         clickable: true, // Set clickable to true to enable click event
-//       });
-//       digitasi.setMap(map);
-
-//       // Event listener for click
-//       digitasi.addListener("click", function (event) {
-//         const nagariName = event.feature.getProperty("name");
-
-//         // Set label for the clicked feature using InfoWindow
-//         infoWindow.setContent("Nagari " + nagariName);
-//         infoWindow.setPosition(event.latLng);
-//         infoWindow.open(map);
-//       });
-//     },
-//   });
-// }
-
 // Display nagari digitizing
 function digitNagari() {
   const digitasi = new google.maps.Data();
   $.ajax({
-    url: baseUrl + "/api/village",
+    url: baseUrl + "api/village",
     type: "POST",
     data: {
       digitasi: "V0001",
@@ -797,47 +852,14 @@ function digitNagari() {
     },
   });
 }
-//Nagari
-// function digitNagari2(iddesa) {
-//   const digitasi = new google.maps.Data();
-//   const infoWindow = new google.maps.InfoWindow();
-
-//   if (iddesa < 2) {
-//     digitasiValue = "V0" + iddesa;
-//   }
-//   $.ajax({
-//     url: baseUrl + "/api/village",
-//     type: "POST",
-//     data: {
-//       digitasi: digitasiValue,
-//     },
-//     dataType: "json",
-//     success: function (response) {
-//       const data = response.data;
-//       digitasi.addGeoJson(data);
-//       digitasi.setStyle({
-//         fillColor: "#d3e602",
-//         strokeWeight: 0.1,
-//         strokeColor: "#ffffff",
-//         fillOpacity: 0.2,
-//         clickable: true, // Set clickable to true to enable click event
-//       });
-//       digitasi.setMap(map);
-
-//       // Event listener for click
-//       digitasi.addListener("click", function (event) {
-//         const nagariName = event.feature.getProperty("name");
-
-//         // Set label for the clicked feature using InfoWindow
-//         infoWindow.setContent("Nagari " + nagariName);
-//         infoWindow.setPosition(event.latLng);
-//         infoWindow.open(map);
-//       });
-//     },
-//   });
-// }
 
 function digitHomestay(idhomestay) {
+  if (digitasiArray[idhomestay]) {
+    console.log(`Menghapus digitasi untuk ID: ${idhomestay}`);
+    digitasiArray[idhomestay].setMap(null);
+    delete digitasiArray[idhomestay];
+  }
+
   const digitasi = new google.maps.Data();
 
   $.ajax({
@@ -857,8 +879,44 @@ function digitHomestay(idhomestay) {
         fillOpacity: 0.4,
       });
       digitasi.setMap(map);
+      // Simpan digitasi ke dalam array
+      digitasiArray[idhomestay] = digitasi;
+      // Tambahkan ke array
+      // digitasiArray.push(digitasi);
+      // console.log(`Digitasi ditambahkan untuk ID: ${idhomestay}`);
     },
   });
+}
+
+// Fungsi untuk menghapus semua digitasi
+function clearAllDigitasi() {
+  // console.log("Menghapus semua digitasi...");
+  for (const id in digitasiArray) {
+    if (digitasiArray[id]) {
+      digitasiArray[id].setMap(null);
+      // console.log(`Digitasi dengan ID ${id} dihapus.`);
+    }
+  }
+  Object.keys(digitasiArray).forEach((key) => delete digitasiArray[key]);
+}
+
+// Clear all airplane markers
+function clearAirplaneMarkers() {
+  airplaneMarkers.forEach((marker) => marker.setMap(null));
+  airplaneMarkers.length = 0; // Clear the array
+}
+
+// Clear all car markers
+function clearCarMarkers() {
+  carMarkers.forEach((marker) => marker.setMap(null));
+  carMarkers.length = 0; // Clear the array
+}
+
+function clearOverlay() {
+  overlays.forEach((overlay) => {
+    overlay.setMap(null); // Remove overlay from the map
+  });
+  overlays = []; // Clear the array
 }
 
 function digitCulinary(idculinary) {
@@ -881,6 +939,7 @@ function digitCulinary(idculinary) {
         fillOpacity: 0.3,
       });
       digitasi.setMap(map);
+      digitasiArray[idculinary] = digitasi;
     },
   });
   // console.log(digitasi);
@@ -906,6 +965,7 @@ function digitTraditional(idtraditional) {
         fillOpacity: 0.3,
       });
       digitasi.setMap(map);
+      digitasiArray[idtraditional] = digitasi;
     },
   });
   // console.log(digitasi);
@@ -931,6 +991,7 @@ function digitRumah(idrumah) {
         fillOpacity: 0.3,
       });
       digitasi.setMap(map);
+      digitasiArray[idrumah] = digitasi;
     },
   });
   // console.log(digitasi);
@@ -956,6 +1017,7 @@ function digitSouvenir(idsouvenir) {
         fillOpacity: 0.4,
       });
       digitasi.setMap(map);
+      digitasiArray[idsouvenir] = digitasi;
     },
   });
   // console.log(digitasi);
@@ -981,6 +1043,7 @@ function digitWorship(idworship) {
         fillOpacity: 0.3,
       });
       digitasi.setMap(map);
+      digitasiArray[idworship] = digitasi;
     },
   });
   // console.log(digitasi);
@@ -989,17 +1052,18 @@ function digitWorship(idworship) {
 function digitFacility(idfc) {
   const digitasi = new google.maps.Data();
 
-  if (idfc < 10) {
-    digitasiValue = "FC00" + idfc;
-  } else if (idfc >= 10) {
-    digitasiValue = "FC0" + idfc;
-  }
+  // if (idfc < 10) {
+  //   digitasiValue = "FC00" + idfc;
+  // } else if (idfc >= 10) {
+  //   digitasiValue = "FC0" + idfc;
+  // }
 
   $.ajax({
     url: baseUrl + "/api/facility",
     type: "POST",
     data: {
-      digitasi: digitasiValue,
+      // digitasi: digitasiValue,
+      digitasi: idfc,
     },
     dataType: "json",
     success: function (response) {
@@ -1012,6 +1076,7 @@ function digitFacility(idfc) {
         fillOpacity: 0.4,
       });
       digitasi.setMap(map);
+      digitasiArray[idfc] = digitasi;
     },
   });
 }
@@ -1066,14 +1131,14 @@ function digitFacility(idfc) {
 //   });
 // }
 
-function digitVillage1(iddesa) {
+function digitVillage1zoom(iddesa) {
   const digitasi = new google.maps.Data();
   const infoWindow = new google.maps.InfoWindow();
 
   digitasiValue = "V03";
 
   $.ajax({
-    url: baseUrl + "media/map/output_folder3/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
+    url: baseUrl + "media/map/output_folder3/new/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
     type: "GET",
     dataType: "json",
     success: function (response) {
@@ -1081,13 +1146,61 @@ function digitVillage1(iddesa) {
 
       digitasi.addGeoJson(data);
       digitasi.setStyle({
-        fillColor: "#03C988",
-        strokeWeight: 3,
+        fillColor: "#fff",
+        strokeWeight: 1,
         strokeColor: "#ffffff",
-        fillOpacity: 2,
+        fillOpacity: 0.1,
         clickable: true, // Set clickable to true to enable click event
+        index: 6, // Set clickable to true to enable click event
       });
+      map.setZoom(14);
       digitasi.setMap(map);
+
+      digitVillage1Layers.push(digitasi);
+
+      // Event listener for click
+      digitasi.addListener("click", function (event) {
+        const Name = event.feature.getProperty("DESA");
+        console.log(Name);
+
+        // Set label for the clicked feature using InfoWindow
+        infoWindow.setContent("NAGARI " + Name);
+        infoWindow.setPosition(event.latLng);
+        infoWindow.open(map);
+      });
+    },
+    error: function (error) {
+      console.error("Error fetching GeoJSON file: " + error);
+    },
+  });
+}
+
+function digitVillage1(iddesa) {
+  const digitasi = new google.maps.Data();
+  const infoWindow = new google.maps.InfoWindow();
+
+  digitasiValue = "V03";
+
+  $.ajax({
+    url: baseUrl + "media/map/output_folder3/new/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
+    type: "GET",
+    dataType: "json",
+    success: function (response) {
+      const data = response; // Jika file .geojson diakses langsung melalui URL
+
+      digitasi.addGeoJson(data);
+      digitasi.setStyle({
+        fillColor: "#fff",
+        strokeWeight: 1,
+        strokeColor: "#ffffff",
+        fillOpacity: 0.1,
+        clickable: true, // Set clickable to true to enable click event
+        index: 6, // Set clickable to true to enable click event
+      });
+      map.setZoom(6);
+      digitasi.setMap(map);
+
+      digitVillage1Layers.push(digitasi);
 
       // Event listener for click
       digitasi.addListener("click", function (event) {
@@ -1162,12 +1275,26 @@ function setUserLoc(lat, lng) {
 
 // Remove any route shown
 function clearRoute() {
+  // console.log("Route array before clearing:", routeArray);
+
   for (i in routeArray) {
     routeArray[i].setMap(null);
   }
   routeArray = [];
   $("#direction-row").hide();
 }
+
+// function clearRoute() {
+//   console.log("Route array before clearing:", routeArray);
+
+//   if (routeArray.length > 0) {
+//       routeArray.forEach(function(route) {
+//           route.setMap(null); // Hapus rute dari peta
+//       });
+//       routeArray = []; // Reset array setelah semua rute dihapus
+//   }
+//   $("#direction-row").hide(); // Sembunyikan elemen terkait jika diperlukan
+// }
 
 // Remove any radius shown
 function clearRadius() {
@@ -1189,6 +1316,9 @@ function clearMarker() {
 function currentPosition() {
   clearRadius();
   clearRoute();
+  clearAirplaneMarkers();
+  clearCarMarkers();
+  clearOverlay();
 
   google.maps.event.clearListeners(map, "click");
   if (navigator.geolocation) {
@@ -1247,6 +1377,15 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 function manualPosition() {
   clearRadius();
   clearRoute();
+  clearDigitNeg();
+  clearDigitProv();
+  clearDigitKabKota();
+  clearDigitKec();
+  clearDigitNagari1();
+  clearDigitVillage1();
+  clearOverlay();
+  clearAirplaneMarkers();
+  clearCarMarkers();
 
   if (userLat == 0 && userLng == 0) {
     Swal.fire("Click on Map");
@@ -1283,6 +1422,8 @@ function manualPosition() {
 function routeTo(lat, lng, routeFromUser = true) {
   clearRadius();
   clearRoute();
+  clearMarker();
+
   google.maps.event.clearListeners(map, "click");
 
   let start, end;
@@ -1326,12 +1467,13 @@ function routeAllActivitiesInDay(activities) {
 function routeBetweenObjects(startLat, startLng, endLat, endLng) {
   clearRadius();
   clearRoute();
-  initMap();
+  clearMarker();
+  // initMap();
   google.maps.event.clearListeners(map, "click");
 
   // Create LatLng objects for the start and end coordinates
-  const start = new google.maps.LatLng(startLat, startLng);
-  const end = new google.maps.LatLng(endLat, endLng);
+  let start = new google.maps.LatLng(startLat, startLng);
+  let end = new google.maps.LatLng(endLat, endLng);
 
   let request = {
     origin: start,
@@ -1352,30 +1494,6 @@ function routeBetweenObjects(startLat, startLng, endLat, endLng) {
 }
 
 // Display tourism attraction digitizing
-// Tracking Mangrove
-function digitTracking() {
-  const digitasi = new google.maps.Data();
-  $.ajax({
-    url: baseUrl + "/api/village",
-    type: "POST",
-    data: {
-      digitasi: "A0001",
-    },
-    dataType: "json",
-    success: function (response) {
-      const data = response.data;
-      digitasi.addGeoJson(data);
-      digitasi.setStyle({
-        fillColor: "#FF0000",
-        strokeWeight: 0.8,
-        strokeColor: "#FF0000",
-        fillOpacity: 0.35,
-        clickable: false,
-      });
-      digitasi.setMap(map);
-    },
-  });
-}
 
 // Display marker for loaded object
 function objectMarker(id, lat, lng, status, homestay_status, anim = true) {
@@ -1388,6 +1506,8 @@ function objectMarker(id, lat, lng, status, homestay_status, anim = true) {
     icon = baseUrl + "/media/icon/marker_sumpu.png";
   } else if (id.substring(0, 2) === "AT") {
     icon = baseUrl + "/media/icon/attraction.png";
+    const idattraction = id;
+    digitAttraction(idattraction);
   } else if (id.substring(0, 2) === "EV") {
     icon = baseUrl + "/media/icon/event.png";
   } else if (id.substring(0, 1) === "P") {
@@ -1416,6 +1536,10 @@ function objectMarker(id, lat, lng, status, homestay_status, anim = true) {
     icon = baseUrl + "/media/icon/marker_rg.png";
     const idtraditional = id;
     digitTraditional(idtraditional);
+  } else if (id.substring(0, 2) === "FC") {
+    icon = baseUrl + "/media/icon/facility.png";
+    const idfc = id;
+    digitFacility(idfc);
   }
 
   markerOption = {
@@ -1445,7 +1569,16 @@ function objectMarkerRoute(id, lat, lng, anim = true) {
   if (id.substring(0, 3) === "SUM") {
     icon = baseUrl + "/media/icon/marker_sumpu.png";
   } else if (id.substring(0, 2) === "AT") {
-    icon = baseUrl + "/media/icon/attraction.png";
+    if (
+      id.substring(0, 5) === "AT004" ||
+      id.substring(0, 5) === "AT005" ||
+      id.substring(0, 5) === "AT008" ||
+      id.substring(0, 5) === "AT013"
+    ) {
+      icon = baseUrl + "/media/icon/water.png";
+    } else {
+      icon = baseUrl + "/media/icon/attraction.png";
+    }
     const idattraction = id;
     digitAttraction(idattraction);
   } else if (id.substring(0, 2) === "EV") {
@@ -1456,6 +1589,10 @@ function objectMarkerRoute(id, lat, lng, anim = true) {
     icon = baseUrl + "/media/icon/homestay.png";
     const idhomestay = id;
     digitHomestay(idhomestay);
+  } else if (id.substring(0, 2) === "FC") {
+    icon = baseUrl + "/media/icon/facility.png";
+    const idfacility = id;
+    digitFacility(idfacility);
   } else if (id.substring(0, 2) === "CP") {
     icon = baseUrl + "/media/icon/culinary.png";
     const idculinary = id;
@@ -1566,6 +1703,7 @@ function digitAttraction(idattraction) {
         fillOpacity: 0.3,
       });
       digitasi.setMap(map);
+      digitasiArray[idattraction] = digitasi;
     },
   });
   // console.log(digitasi);
@@ -1579,18 +1717,10 @@ function objectMarkerRouteMobile(id, lat, lng, anim = true) {
   let icon;
   if (id.substring(0, 3) === "SUM") {
     icon = baseUrl + "/media/icon/marker_sumpu.png";
-  } else if (id.substring(0, 1) === "A") {
-    if (id === "A0001" || id === "A0004") {
-      icon = baseUrl + "/media/icon/tracking.png";
-    } else if (id === "A0005") {
-      icon = baseUrl + "/media/icon/fish.png";
-    } else if (id === "A0006") {
-      icon = baseUrl + "/media/icon/makam.png";
-    } else if (id === "A0007" || id === "A0008" || id === "A0009") {
-      icon = baseUrl + "/media/icon/music.png";
-    } else {
-      icon = baseUrl + "/media/icon/talao.png";
-    }
+  } else if (id.substring(0, 2) === "AT") {
+    icon = baseUrl + "/media/icon/attraction.png";
+    const idattraction = id;
+    digitAttraction(idattraction);
   } else if (id.substring(0, 2) === "EV") {
     icon = baseUrl + "/media/icon/event.png";
   } else if (id.substring(0, 1) === "P") {
@@ -1599,6 +1729,10 @@ function objectMarkerRouteMobile(id, lat, lng, anim = true) {
     icon = baseUrl + "/media/icon/homestay.png";
     const idhomestay = id;
     digitHomestay(idhomestay);
+  } else if (id.substring(0, 2) === "FC") {
+    icon = baseUrl + "/media/icon/facility.png";
+    const idfacility = id;
+    digitFacility(idfacility);
   } else if (id.substring(0, 2) === "CP") {
     icon = baseUrl + "/media/icon/culinary.png";
     const idculinary = id;
@@ -1671,23 +1805,230 @@ function objectMarkerMobile(id, lat, lng, anim = true) {
   markerArray[id] = marker;
 }
 
-// function zoomToGTPMarkers() {
-//     for (const id in markerArray) {
-//         if (id.substring(0, 3) === 'GTP') {
-//             const marker = markerArray[id];
-//             map.setCenter(marker.getPosition()); // Center the map position
-//             map.setZoom(16); // Set the zoom level
-//         }
-//     }
-// }
+function howToReachSumpu() {
+  clearAirplaneMarkers();
+  clearCarMarkers();
+  clearOverlay();
+  clearMarker();
+  clearRoute();
+  clearRadius();
+
+  objectMarker("SUM01", -0.52210813, 100.49432448);
+
+  // 1.192689, 103.910130
+
+  // Coordinates
+  const singapore = { lat: 1.192689, lng: 103.91013 }; // Singapore
+  const malaysia = { lat: 3.1503614007038454, lng: 101.97940881384584 }; // Kuala Lumpur
+  const jakarta = { lat: -6.516948, lng: 106.930035 }; // Jakarta
+  const padang = { lat: -0.9478502987473912, lng: 100.3628232695202 }; // Padang
+  const bandaAceh = { lat: 5.537368838813003, lng: 95.50780215398227 }; // Banda Aceh
+  const nagariSumpu = { lat: -0.52210813, lng: 100.49432448 }; // Nagari Sumpu
+
+  // Animate flight
+  function animateFlight(map, fromLatLng, toLatLng) {
+    const airplaneIcon = {
+      url: baseUrl + "/media/icon/airplane-icon.png", // Airplane icon path
+      scaledSize: new google.maps.Size(60, 60), // Icon size
+      anchor: new google.maps.Point(25, 25), // Center the icon
+    };
+
+    const airplaneMarker = new google.maps.Marker({
+      position: fromLatLng,
+      map: map,
+      icon: airplaneIcon,
+      title: "Flight",
+    });
+
+    airplaneMarkers.push(airplaneMarker); // Store marker for later clearing
+
+    let step = 0;
+    const totalSteps = 100; // Number of animation steps
+    const interval = setInterval(() => {
+      if (step <= totalSteps) {
+        const lat =
+          fromLatLng.lat +
+          (toLatLng.lat - fromLatLng.lat) * (step / totalSteps);
+        const lng =
+          fromLatLng.lng +
+          (toLatLng.lng - fromLatLng.lng) * (step / totalSteps);
+        const newPosition = { lat, lng };
+        airplaneMarker.setPosition(newPosition);
+        step++;
+      } else {
+        clearInterval(interval); // Stop animation when complete
+      }
+    }, 50); // Animation speed (50ms per step)
+  }
+
+  // Animate car
+  function animateCar(map, fromLatLng, toLatLng) {
+    const carIcon = {
+      url: baseUrl + "/media/icon/car2.png", // Airplane icon path
+      scaledSize: new google.maps.Size(50, 50), // Icon size
+      anchor: new google.maps.Point(20, 20), // Center the icon
+    };
+
+    const carMarker = new google.maps.Marker({
+      position: fromLatLng,
+      map: map,
+      icon: carIcon,
+      title: "Car Journey",
+      zIndex: 1000,
+    });
+    carMarkers.push(carMarker); // Store marker for later clearing
+
+    let step = 0;
+    const totalSteps = 100;
+    const interval = setInterval(() => {
+      if (step <= totalSteps) {
+        const lat =
+          fromLatLng.lat +
+          (toLatLng.lat - fromLatLng.lat) * (step / totalSteps);
+        const lng =
+          fromLatLng.lng +
+          (toLatLng.lng - fromLatLng.lng) * (step / totalSteps);
+        const newPosition = { lat, lng };
+        carMarker.setPosition(newPosition);
+        step++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 50);
+  }
+
+  // Add text overlays
+  function createTextOverlay(map, position, steps) {
+    const overlay = new google.maps.OverlayView();
+
+    overlay.onAdd = function () {
+      const div = document.createElement("div");
+      div.style.position = "absolute";
+      div.style.fontSize = "14px";
+      div.style.fontWeight = "bold";
+      div.style.color = "#4a2f13";
+      div.style.backgroundColor = "#ffe6cc";
+      div.style.padding = "10px";
+      div.style.borderRadius = "5px";
+      div.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.3)";
+      div.style.zIndex = "9999";
+      div.innerHTML = steps;
+
+      const panes = this.getPanes();
+      panes.overlayLayer.appendChild(div);
+
+      this.draw = function () {
+        const projection = this.getProjection();
+        const positionPixel = projection.fromLatLngToDivPixel(position);
+        div.style.left = `${positionPixel.x}px`;
+        div.style.top = `${positionPixel.y}px`;
+      };
+
+      overlay.div = div; // Simpan referensi ke elemen DOM
+    };
+
+    overlay.onRemove = function () {
+      if (overlay.div) {
+        overlay.div.parentNode.removeChild(overlay.div);
+        overlay.div = null;
+      }
+    };
+
+    overlay.setMap(map);
+    overlays.push(overlay); // Simpan overlay dalam array
+    return overlay;
+  }
+
+  // Map animations
+  animateFlight(map, singapore, padang);
+  animateFlight(map, malaysia, padang);
+  animateCar(map, bandaAceh, nagariSumpu);
+  animateFlight(map, jakarta, padang);
+
+  setTimeout(() => {
+    animateCar(map, padang, nagariSumpu);
+  }, 6000); // Delay of 6 seconds before car animation
+
+  // Add overlays
+  createTextOverlay(
+    map,
+    singapore,
+    `
+    <div style="display: flex; align-items: center;">
+      
+      <div>
+        <b>From Singapore <img src="${baseUrl}/media/icon/sg.svg" alt="Singapore Flag" style="width: 24px; height: 16px; margin-right: 4px;">(SIN):</b><br>
+        1. Take a flight from Singapore (SIN) to Padang (PDG), Indonesia.<br>
+        2. Rent a car to Sumpu Village.
+      </div>
+    </div>
+  `
+  );
+
+  createTextOverlay(
+    map,
+    malaysia,
+    `
+    <div style="display: flex; align-items: center;">
+      
+      <div>
+        <b>From Kuala Lumpur <img src="${baseUrl}/media/icon/my.svg" alt="Malaysia Flag" style="width: 24px; height: 16px; margin-right: 4px;">(KUL):</b><br>
+        1. Take a flight from Kuala Lumpur (KUL) to Padang (PDG), Indonesia.<br>
+        2. Rent a car to Sumpu Village.
+      </div>
+    </div>
+  `
+  );
+
+  createTextOverlay(
+    map,
+    jakarta,
+    `
+    <div style="display: flex; align-items: center;">
+      
+      <div>
+        <b>From Jakarta <img src="${baseUrl}/media/icon/id.svg" alt="Indonesia Flag" style="width: 24px; height: 16px; margin-right: 4px;">:</b><br>
+        1. Take a domestic flight to Padang (PDG), Indonesia.<br>
+        2. Rent a car to Sumpu Village.
+      </div>
+    </div>
+  `
+  );
+
+  createTextOverlay(
+    map,
+    bandaAceh,
+    `
+    <div style="display: flex; align-items: center;">      
+      <div>
+        <b>From anywhere in Sumatra <img src="${baseUrl}/media/icon/id.svg" alt="Indonesia Flag" style="width: 24px; height: 16px; margin-right: 4px;">:</b><br>
+        1. Travel by land directly to Sumpu Village.<br>
+        2. Alternatively, fly to Padang (PDG) and rent a car to Sumpu Village.
+      </div>
+    </div>
+  `
+  );
+
+  map.setZoom(6);
+}
+
 function zoomToSumpuMarkers() {
+  // clearAirplaneMarkers();
+  // clearCarMarkers();
+  clearOverlay();
+  console.log("zoomToSumpuMarkers triggered"); // Debug
+  console.log("markerArray:", markerArray); // Debugging marker array
+
   for (const id in markerArray) {
     if (id.substring(0, 3) === "SUM") {
       const marker = markerArray[id];
-      map.setCenter(marker.getPosition()); // Center the map position
-      map.setZoom(16); // Set the zoom level
+      console.log("Found marker:", marker); // Debug marker
+      map.setCenter(marker.getPosition());
+      map.setZoom(16);
     }
   }
+  // objectMarker("SUM01", -0.52210813, 100.49432448);
+  // boundToObject();
 }
 
 // Display info window for loaded object
@@ -1704,7 +2045,7 @@ function objectInfoWindow(id) {
         let name = data.name;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
           "</p>" +
@@ -1728,10 +2069,10 @@ function objectInfoWindow(id) {
         let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-spa"></i> ' +
           type +
           "</p>" +
@@ -1741,7 +2082,7 @@ function objectInfoWindow(id) {
           "</div>";
 
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -1776,10 +2117,10 @@ function objectInfoWindow(id) {
         let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-spa"></i> ' +
           type +
           "</p>" +
@@ -1788,7 +2129,7 @@ function objectInfoWindow(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
           baseUrl +
           "/web/event/" +
@@ -1818,10 +2159,10 @@ function objectInfoWindow(id) {
         let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-spa"></i> ' +
           type_name +
           "</p>" +
@@ -1830,7 +2171,7 @@ function objectInfoWindow(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
           baseUrl +
           "/web/package/" +
@@ -1852,16 +2193,44 @@ function objectInfoWindow(id) {
       dataType: "json",
       success: function (response) {
         let data = response.data;
+        let aid = data.id;
         let name = data.name;
+        let lat = data.lat;
+        let lng = data.lng;
+        let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
           "</p>" +
+          '<p><i class="fa-solid fa-spa"></i> Facility' +
+          "</p>" +
+          '<p><i class="fa-solid fa-money-bill me-2"></i> ' +
+          price +
+          "</p>" +
           "</div>";
 
-        infoWindow.setContent(content);
+        contentButton =
+          '<div class="text-center">' +
+          '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
+          lat +
+          ", " +
+          lng +
+          ')"><i class="fa-solid fa-road"></i></a>' +
+          '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
+          baseUrl +
+          "/web/facility/" +
+          aid +
+          '><i class="fa-solid fa-info"></i></a>' +
+          "</div>";
+
+        if (currentUrl.includes(id)) {
+          infoWindow.setContent(content);
+          infoWindow.open(map, markerArray[aid]);
+        } else {
+          infoWindow.setContent(content + contentButton);
+        }
       },
     });
   } else if (id.substring(0, 2) === "HO") {
@@ -1879,10 +2248,10 @@ function objectInfoWindow(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-phone me-2"></i> ' +
           contact_person +
           "</p>" +
@@ -1891,7 +2260,7 @@ function objectInfoWindow(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -1930,10 +2299,10 @@ function objectInfoWindow(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-address-book"></i> ' +
           contact +
           "</p>" +
@@ -1942,7 +2311,7 @@ function objectInfoWindow(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -1977,10 +2346,10 @@ function objectInfoWindow(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-address-book"></i> ' +
           contact +
           "</p>" +
@@ -1989,7 +2358,7 @@ function objectInfoWindow(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2024,10 +2393,10 @@ function objectInfoWindow(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-address-book"></i> ' +
           contact +
           "</p>" +
@@ -2036,7 +2405,7 @@ function objectInfoWindow(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2071,10 +2440,10 @@ function objectInfoWindow(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-address-book"></i> ' +
           contact +
           "</p>" +
@@ -2083,7 +2452,7 @@ function objectInfoWindow(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2118,10 +2487,10 @@ function objectInfoWindow(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-person-praying"></i> ' +
           capacity +
           "</p>" +
@@ -2130,7 +2499,7 @@ function objectInfoWindow(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2167,7 +2536,7 @@ function objectInfoWindowRoute(id) {
         let name = data.name;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
           "</p>" +
@@ -2191,10 +2560,10 @@ function objectInfoWindowRoute(id) {
         let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-spa"></i> ' +
           type +
           "</p>" +
@@ -2204,7 +2573,7 @@ function objectInfoWindowRoute(id) {
           "</div>";
 
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2239,10 +2608,10 @@ function objectInfoWindowRoute(id) {
         let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-spa"></i> ' +
           type +
           "</p>" +
@@ -2251,7 +2620,7 @@ function objectInfoWindowRoute(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
           baseUrl +
           "/web/event/" +
@@ -2281,10 +2650,10 @@ function objectInfoWindowRoute(id) {
         let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-spa"></i> ' +
           type_name +
           "</p>" +
@@ -2293,7 +2662,7 @@ function objectInfoWindowRoute(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
           baseUrl +
           "/web/package/" +
@@ -2315,16 +2684,44 @@ function objectInfoWindowRoute(id) {
       dataType: "json",
       success: function (response) {
         let data = response.data;
+        let aid = data.id;
         let name = data.name;
+        let lat = data.lat;
+        let lng = data.lng;
+        let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
           "</p>" +
+          '<p><i class="fa-solid fa-spa"></i> Facility' +
+          "</p>" +
+          '<p><i class="fa-solid fa-money-bill me-2"></i> ' +
+          price +
+          "</p>" +
           "</div>";
 
-        infoWindow.setContent(content);
+        contentButton =
+          '<div class="text-center">' +
+          '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
+          lat +
+          ", " +
+          lng +
+          ')"><i class="fa-solid fa-road"></i></a>' +
+          '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
+          baseUrl +
+          "/web/facility/" +
+          aid +
+          '><i class="fa-solid fa-info"></i></a>' +
+          "</div>";
+
+        if (currentUrl.includes(id)) {
+          infoWindow.setContent(content);
+          infoWindow.open(map, markerArray[aid]);
+        } else {
+          infoWindow.setContent(content + contentButton);
+        }
       },
     });
   } else if (id.substring(0, 2) === "HO") {
@@ -2342,10 +2739,10 @@ function objectInfoWindowRoute(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-phone me-2"></i> ' +
           contact_person +
           "</p>" +
@@ -2354,7 +2751,7 @@ function objectInfoWindowRoute(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2393,10 +2790,10 @@ function objectInfoWindowRoute(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-address-book"></i> ' +
           contact +
           "</p>" +
@@ -2405,7 +2802,7 @@ function objectInfoWindowRoute(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2440,10 +2837,10 @@ function objectInfoWindowRoute(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-address-book"></i> ' +
           contact +
           "</p>" +
@@ -2452,7 +2849,7 @@ function objectInfoWindowRoute(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2487,10 +2884,10 @@ function objectInfoWindowRoute(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-address-book"></i> ' +
           contact +
           "</p>" +
@@ -2499,7 +2896,7 @@ function objectInfoWindowRoute(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2534,10 +2931,10 @@ function objectInfoWindowRoute(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-address-book"></i> ' +
           contact +
           "</p>" +
@@ -2546,7 +2943,7 @@ function objectInfoWindowRoute(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2581,10 +2978,10 @@ function objectInfoWindowRoute(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-person-praying"></i> ' +
           capacity +
           "</p>" +
@@ -2593,7 +2990,7 @@ function objectInfoWindowRoute(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2630,7 +3027,7 @@ function objectInfoWindowRouteMobile(id) {
         let name = data.name;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
           "</p>" +
@@ -2654,10 +3051,10 @@ function objectInfoWindowRouteMobile(id) {
         let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-spa"></i> ' +
           type +
           "</p>" +
@@ -2667,7 +3064,7 @@ function objectInfoWindowRouteMobile(id) {
           "</div>";
 
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2697,10 +3094,10 @@ function objectInfoWindowRouteMobile(id) {
         let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-spa"></i> ' +
           type +
           "</p>" +
@@ -2708,7 +3105,7 @@ function objectInfoWindowRouteMobile(id) {
           price +
           "</p>" +
           "</div>";
-        contentButton = '<br><div class="text-center">' + "</div>";
+        contentButton = '<div class="text-center">' + "</div>";
 
         if (currentUrl.includes(id)) {
           infoWindow.setContent(content);
@@ -2732,10 +3129,10 @@ function objectInfoWindowRouteMobile(id) {
         let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-spa"></i> ' +
           type_name +
           "</p>" +
@@ -2743,7 +3140,7 @@ function objectInfoWindowRouteMobile(id) {
           price +
           "</p>" +
           "</div>";
-        contentButton = '<br><div class="text-center">' + "</div>";
+        contentButton = '<div class="text-center">' + "</div>";
 
         if (currentUrl.includes(id)) {
           infoWindow.setContent(content);
@@ -2762,7 +3159,7 @@ function objectInfoWindowRouteMobile(id) {
         let name = data.name;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
           "</p>" +
@@ -2786,10 +3183,10 @@ function objectInfoWindowRouteMobile(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-phone me-2"></i> ' +
           contact_person +
           "</p>" +
@@ -2798,7 +3195,7 @@ function objectInfoWindowRouteMobile(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2832,10 +3229,10 @@ function objectInfoWindowRouteMobile(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-address-book"></i> ' +
           contact +
           "</p>" +
@@ -2844,7 +3241,7 @@ function objectInfoWindowRouteMobile(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2874,10 +3271,10 @@ function objectInfoWindowRouteMobile(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-address-book"></i> ' +
           contact +
           "</p>" +
@@ -2886,7 +3283,7 @@ function objectInfoWindowRouteMobile(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2916,10 +3313,10 @@ function objectInfoWindowRouteMobile(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-address-book"></i> ' +
           contact +
           "</p>" +
@@ -2928,7 +3325,7 @@ function objectInfoWindowRouteMobile(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -2958,10 +3355,10 @@ function objectInfoWindowRouteMobile(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-address-book"></i> ' +
           contact +
           "</p>" +
@@ -2970,7 +3367,7 @@ function objectInfoWindowRouteMobile(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -3000,10 +3397,10 @@ function objectInfoWindowRouteMobile(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-person-praying"></i> ' +
           capacity +
           "</p>" +
@@ -3012,7 +3409,7 @@ function objectInfoWindowRouteMobile(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -3044,7 +3441,7 @@ function objectInfoWindowMobile(id) {
         let name = data.name;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
           "</p>" +
@@ -3068,10 +3465,10 @@ function objectInfoWindowMobile(id) {
         let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-spa"></i> ' +
           type +
           "</p>" +
@@ -3087,7 +3484,7 @@ function objectInfoWindowMobile(id) {
           aid == "A0009"
         ) {
           contentButton =
-            '<br><div class="text-center">' +
+            '<div class="text-center">' +
             // '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openTrack(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-map-location-dot"></i></a>' +
             '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
             baseUrl +
@@ -3097,7 +3494,7 @@ function objectInfoWindowMobile(id) {
             "</div>";
         } else if (aid == "A0005" || aid == "A0006" || aid == "A0007") {
           contentButton =
-            '<br><div class="text-center">' +
+            '<div class="text-center">' +
             '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
             baseUrl +
             "/web/attraction/" +
@@ -3106,7 +3503,7 @@ function objectInfoWindowMobile(id) {
             "</div>";
         } else {
           contentButton =
-            '<br><div class="text-center">' +
+            '<div class="text-center">' +
             // '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
             '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
             baseUrl +
@@ -3139,10 +3536,10 @@ function objectInfoWindowMobile(id) {
         let address = data.address;
 
         content =
-          '<div class="text-center">' +
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
-          "</p> <br>" +
+          "</p>" +
           '<p><i class="fa-solid fa-phone me-2"></i> ' +
           contact_person +
           "</p>" +
@@ -3151,7 +3548,7 @@ function objectInfoWindowMobile(id) {
           "</p>" +
           "</div>";
         contentButton =
-          '<br><div class="text-center">' +
+          '<div class="text-center">' +
           '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
           lat +
           ", " +
@@ -3173,6 +3570,22 @@ function objectInfoWindowMobile(id) {
       },
     });
   }
+}
+
+function boundToObject2() {
+  console.log("Markers array:", markers);
+
+  if (markers.length === 0) {
+    console.warn("No markers to bound.");
+    return;
+  }
+
+  let bounds = new google.maps.LatLngBounds();
+  markers.forEach((marker) => {
+    bounds.extend(marker.getPosition());
+  });
+
+  map.fitBounds(bounds);
 }
 
 // Render map to contains all object marker
@@ -3334,6 +3747,8 @@ function openNearby(id, lat, lng) {
 // open nearby search section
 function openExplore() {
   $("#list-object-col").hide();
+  $("#list-rec-col").hide();
+  $("#result-explore-col").hide();
   $("#check-explore-col").show();
 
   document
@@ -3344,6 +3759,7 @@ function openExplore() {
 function closeExplore() {
   $("#check-explore-col").hide();
   $("#list-object-col").show();
+  $("#list-rec-col").show();
   $("#result-explore-col").hide();
 }
 
@@ -3360,15 +3776,19 @@ function checkExplore() {
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
 
-  $("#table-cp").empty();
+  $("#table-lsa").empty();
+  $("#table-at").empty();
   $("#table-th").empty();
   $("#table-ho").empty();
+  $("#table-cp").empty();
   $("#table-sp").empty();
   $("#table-wp").empty();
 
-  $("#table-cp").hide();
+  $("#table-lsa").hide();
+  $("#table-at").hide();
   $("#table-th").hide();
   $("#table-ho").hide();
+  $("#table-cp").hide();
   $("#table-sp").hide();
   $("#table-wp").hide();
 
@@ -3377,25 +3797,34 @@ function checkExplore() {
     parseFloat(document.getElementById("inputRadiusNearby").value) * 100;
   map.panTo(pos);
 
-  const checkCP = document.getElementById("check-cp").checked;
-  // const checkHO = document.getElementById("check-ho").checked;
+  const checkLSA = document.getElementById("check-lsa").checked;
   const checkTH = document.getElementById("check-th").checked;
+  const checkHO = document.getElementById("check-ho").checked;
+  const checkCP = document.getElementById("check-cp").checked;
   const checkSP = document.getElementById("check-sp").checked;
   const checkWP = document.getElementById("check-wp").checked;
 
-  if (!checkCP && !checkTH && !checkSP && !checkWP) {
+  if (!checkLSA && !checkTH && !checkHO && !checkCP && !checkSP && !checkWP) {
     document.getElementById("radiusValueNearby").innerHTML = "0 m";
     document.getElementById("inputRadiusNearby").value = 0;
     return Swal.fire("Please choose one object");
   }
 
-  if (checkCP) {
-    findExplore("cp", radiusValue);
-    $("#table-cp").show();
+  if (checkLSA) {
+    findExplore("lsa", radiusValue);
+    $("#table-lsa").show();
+  }
+  if (checkHO) {
+    findExplore("ho", radiusValue);
+    $("#table-ho").show();
   }
   if (checkTH) {
     findExplore("th", radiusValue);
     $("#table-th").show();
+  }
+  if (checkCP) {
+    findExplore("cp", radiusValue);
+    $("#table-cp").show();
   }
   if (checkSP) {
     findExplore("sp", radiusValue);
@@ -3405,8 +3834,470 @@ function checkExplore() {
     findExplore("wp", radiusValue);
     $("#table-wp").show();
   }
+
   drawRadius(new google.maps.LatLng(currentLat, currentLng), radiusValue);
   $("#result-explore-col").show();
+  $("#list-rec-col").hide();
+}
+
+function clearAllAll() {
+  clearMarker();
+  clearRadius();
+  clearRoute();
+  clearOverlay();
+  clearAirplaneMarkers();
+  clearCarMarkers();
+  objectMarker("SUM01", -0.52210813, 100.49432448);
+}
+
+function checkLayer() {
+  // Bersihkan peta dan tabel
+  clearRadius();
+  clearRoute();
+  clearMarker();
+  // clearAllDigitasi();
+
+  // initMap5();
+  objectMarker("SUM01", -0.52210813, 100.49432448);
+
+  destinationMarker.setMap(null);
+  google.maps.event.clearListeners(map, "click");
+
+  // Koordinat posisi default (misal pusat peta)
+  let pos = new google.maps.LatLng(currentLat, currentLng);
+
+  // Periksa status setiap checkbox
+  if (document.getElementById("check-oco").checked) {
+    clearAllAll();
+    clearDigitNeg();
+
+    for (let n = 1; n < 4; n++) {
+      digitNeg(n);
+    }
+  } else {
+    clearAllAll();
+    clearDigitNeg();
+  }
+
+  if (document.getElementById("check-opr").checked) {
+    clearAllAll();
+    clearDigitProv();
+    for (let p = 1; p < 11; p++) {
+      const idprov = p;
+      digitProv(idprov);
+    }
+  } else {
+    clearAllAll();
+    clearDigitProv();
+  }
+
+  if (document.getElementById("check-ore").checked) {
+    clearAllAll();
+    clearDigitKabKota();
+    nameprovv = "Sumatera_Barat";
+    digitKabKota(nameprovv);
+  } else {
+    clearAllAll();
+    clearDigitKabKota();
+  }
+
+  if (document.getElementById("check-odi").checked) {
+    clearAllAll();
+    clearDigitKec();
+    for (let k = 1; k < 15; k++) {
+      const idkec = k;
+      digitKec(idkec);
+    }
+  } else {
+    clearAllAll();
+    clearDigitKec();
+  }
+
+  if (document.getElementById("check-ovi").checked) {
+    clearAllAll();
+    clearDigitNagari1();
+    for (let d = 1; d < 5; d++) {
+      const iddesa = d;
+      digitNagari1(iddesa);
+    }
+  } else {
+    clearAllAll();
+    clearDigitNagari1();
+  }
+
+  if (document.getElementById("check-oto").checked) {
+    clearAllAll();
+    clearDigitVillage1();
+    digitVillage1();
+  } else {
+    clearAllAll();
+    clearDigitVillage1();
+  }
+}
+
+function clearDigitNeg() {
+  digitNegLayers.forEach((layer) => {
+    layer.setMap(null);
+  });
+  digitNegLayers = [];
+}
+
+function clearDigitProv() {
+  digitProvLayers.forEach((layer) => {
+    layer.setMap(null);
+  });
+  digitProvLayers = [];
+}
+
+function clearDigitKabKota() {
+  digitKabKotaLayers.forEach((layer) => {
+    layer.setMap(null);
+  });
+  digitKabKotaLayers = [];
+}
+
+function clearDigitKec() {
+  digitKecLayers.forEach((layer) => {
+    layer.setMap(null);
+  });
+  digitKecLayers = [];
+}
+
+function clearDigitNagari1() {
+  digitNagari1Layers.forEach((layer) => {
+    layer.setMap(null);
+  });
+  digitNagari1Layers = [];
+}
+
+function clearDigitVillage1() {
+  digitVillage1Layers.forEach((layer) => {
+    layer.setMap(null);
+  });
+  digitVillage1Layers = [];
+}
+
+function checkObject() {
+  // Bersihkan peta dan tabel
+  clearRadius();
+  clearRoute();
+  clearMarker();
+  clearAllDigitasi();
+  clearAirplaneMarkers();
+  clearCarMarkers();
+  // initMap5();
+  objectMarker("SUM01", -0.52210813, 100.49432448);
+  destinationMarker.setMap(null);
+  google.maps.event.clearListeners(map, "click");
+
+  // Sembunyikan semua tabel
+  $("#table-lsa").empty().hide();
+  $("#table-at").empty().hide();
+  $("#table-th").empty().hide();
+  $("#table-ho").empty().hide();
+  $("#table-cp").empty().hide();
+  $("#table-sp").empty().hide();
+  $("#table-wp").empty().hide();
+
+  // Koordinat posisi default (misal pusat peta)
+  let pos = new google.maps.LatLng(currentLat, currentLng);
+
+  // Periksa status setiap checkbox
+
+  if (document.getElementById("check-olsa").checked) {
+    clearAllAll();
+    findAll("lsa");
+    $("#table-lsa").show();
+  }
+  if (document.getElementById("check-oat").checked) {
+    clearAllAll();
+    findAll("at");
+    $("#table-at").show();
+  }
+  if (document.getElementById("check-oth").checked) {
+    clearAllAll();
+    findAll("th");
+    $("#table-th").show();
+  }
+  if (document.getElementById("check-oho").checked) {
+    clearAllAll();
+    findAll("ho");
+    $("#table-ho").show();
+  }
+  if (document.getElementById("check-ocp").checked) {
+    clearAllAll();
+    findAll("cp");
+    $("#table-cp").show();
+  }
+  if (document.getElementById("check-osp").checked) {
+    clearAllAll();
+    findAll("sp");
+    $("#table-sp").show();
+  }
+  if (document.getElementById("check-owp").checked) {
+    clearAllAll();
+    findAll("wp");
+    $("#table-wp").show();
+  }
+
+  // Atur bound ke objek yang ditemukan
+  boundToObject();
+
+  // Tampilkan kolom hasil pencarian
+  $("#result-explore-col").show();
+  $("#list-rec-col").hide();
+}
+
+function clickExplore() {
+  clearRadius();
+  clearRoute();
+  clearMarker();
+  clearAllDigitasi();
+  clearAirplaneMarkers();
+  clearCarMarkers();
+  $("#list-object-col").hide();
+
+  const checkOLSA = document.getElementById("check-olsa");
+  checkOLSA.checked = true;
+  const checkOAT = document.getElementById("check-oat");
+  checkOAT.checked = true;
+  const checkOTH = document.getElementById("check-oth");
+  checkOTH.checked = true;
+  const checkOHO = document.getElementById("check-oho");
+  checkOHO.checked = true;
+  const checkOCP = document.getElementById("check-ocp");
+  checkOCP.checked = true;
+  const checkOSP = document.getElementById("check-osp");
+  checkOSP.checked = true;
+  const checkOWP = document.getElementById("check-owp");
+  checkOWP.checked = true;
+
+  let buttons = document.querySelectorAll(".day-route-btn");
+  let dayDetails = document.querySelectorAll(".div-day-detail");
+  let allActivityRows = document.querySelectorAll('[id^="activity-row-"]');
+
+  buttons.forEach(function (button) {
+    button.style.backgroundColor = ""; // reset to default background color
+    button.style.color = ""; // reset to default text color
+  });
+
+  dayDetails.forEach(function (detailDiv) {
+    detailDiv.style.border = ""; // reset div border
+  });
+
+  allActivityRows.forEach(function (activityRow) {
+    activityRow.style.visibility = "hidden"; // Sembunyikan semua activity row
+    activityRow.style.display = "none"; // Pastikan elemen tidak terlihat
+  });
+
+  // initMap5();
+  // objectMarker("SUM01", -0.52210813, 100.49432448);
+
+  destinationMarker.setMap(null);
+  google.maps.event.clearListeners(map, "click");
+
+  let pos = new google.maps.LatLng(-0.54145013, 100.48094882);
+  map.panTo(pos);
+
+  // let categories = ["lsa", "at", "th"];
+  let categories = ["lsa", "at", "th", "ho", "cp", "sp", "wp"];
+  let promises = categories.map((category) => findAll(category));
+
+  digitVillage1zoom();
+  // map.setZoom(16);
+
+  Promise.all(promises).then(() => {
+    boundToObject();
+    $("#result-explore-col").show();
+    $("#list-rec-col").hide();
+    $("#check-explore-col").hide();
+  });
+}
+
+function clickLayer() {
+  clearRadius();
+  clearRoute();
+  clearMarker();
+  clearAllDigitasi();
+  clearAirplaneMarkers();
+  clearCarMarkers();
+  clearDigitNeg();
+  clearDigitProv();
+  clearDigitKabKota();
+  clearDigitKec();
+  clearDigitNagari1();
+  clearDigitVillage1();
+  $("#list-object-col").hide();
+
+  const checkOCO = document.getElementById("check-oco");
+  checkOCO.checked = true;
+  const checkOPR = document.getElementById("check-opr");
+  checkOPR.checked = true;
+  const checkORE = document.getElementById("check-ore");
+  checkORE.checked = true;
+  const checkODI = document.getElementById("check-odi");
+  checkODI.checked = true;
+  const checkOVI = document.getElementById("check-ovi");
+  checkOVI.checked = true;
+  const checkOTO = document.getElementById("check-oto");
+  checkOTO.checked = true;
+
+  let buttons = document.querySelectorAll(".day-route-btn");
+  let dayDetails = document.querySelectorAll(".div-day-detail");
+  let allActivityRows = document.querySelectorAll('[id^="activity-row-"]');
+
+  buttons.forEach(function (button) {
+    button.style.backgroundColor = ""; // reset to default background color
+    button.style.color = ""; // reset to default text color
+  });
+
+  dayDetails.forEach(function (detailDiv) {
+    detailDiv.style.border = ""; // reset div border
+  });
+
+  allActivityRows.forEach(function (activityRow) {
+    activityRow.style.visibility = "hidden"; // Sembunyikan semua activity row
+    activityRow.style.display = "none"; // Pastikan elemen tidak terlihat
+  });
+
+  // initMap5();
+  objectMarker("SUM01", -0.52210813, 100.49432448);
+
+  destinationMarker.setMap(null);
+  google.maps.event.clearListeners(map, "click");
+
+  // let pos = new google.maps.LatLng(-0.54145013, 100.48094882);
+  // map.panTo(pos);
+
+  for (let n = 1; n < 4; n++) {
+    const idneg = n;
+    digitNeg(idneg);
+  }
+
+  const myidprov = "P03";
+  const digitidprov = myidprov.substring(1);
+
+  for (let p = 1; p < digitidprov; p++) {
+    const idprov = p;
+    digitProv(idprov);
+  }
+
+  for (let p = digitidprov; p < 11; p++) {
+    const idprov = p;
+    digitProv(idprov);
+  }
+
+  nameprovv = "Sumatera_Barat";
+  digitKabKota(nameprovv);
+
+  for (let k = 1; k < 15; k++) {
+    const idkec = k;
+    digitKec(idkec);
+  }
+
+  for (let d = 1; d < 3; d++) {
+    const iddesa = d;
+    digitNagari1(iddesa);
+  }
+
+  for (let d = 3; d < 5; d++) {
+    const iddesa = d;
+    digitNagari1(iddesa);
+  }
+
+  // digitVillage1();
+
+  digitVillage1zoom();
+  // map.setZoom(16);
+
+  Promise.all(promises).then(() => {
+    boundToObject();
+    $("#result-explore-col").show();
+    $("#list-rec-col").hide();
+  });
+}
+
+// Fetch all object
+function findAll(category) {
+  // let pos = new google.maps.LatLng(currentLat, currentLng);
+  if (category === "lsa") {
+    $.ajax({
+      url: baseUrl + "/api/attractionlsa/findlsaAll",
+      type: "POST",
+      data: {},
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+        boundToObject();
+      },
+    });
+  } else if (category === "at") {
+    $.ajax({
+      url: baseUrl + "/api/attraction/findAll",
+      type: "POST",
+      data: {},
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+        boundToObject();
+      },
+    });
+  } else if (category === "th") {
+    $.ajax({
+      url: baseUrl + "/api/traditionalHouse/findAll",
+      type: "POST",
+      data: {},
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+        boundToObject();
+      },
+    });
+  } else if (category === "ho") {
+    $.ajax({
+      url: baseUrl + "/api/homestay/findAll",
+      type: "POST",
+      data: {},
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+        boundToObject();
+      },
+    });
+  } else if (category === "cp") {
+    $.ajax({
+      url: baseUrl + "/api/culinaryPlace/findAll",
+      type: "POST",
+      data: {},
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+        boundToObject();
+      },
+    });
+  } else if (category === "sp") {
+    $.ajax({
+      url: baseUrl + "/api/souvenirPlace/findAll",
+      type: "POST",
+      data: {},
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+        boundToObject();
+      },
+    });
+  } else if (category === "wp") {
+    $.ajax({
+      url: baseUrl + "/api/worshipPlace/findAll",
+      type: "POST",
+      data: {},
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+        boundToObject();
+      },
+    });
+  }
 }
 
 // Fetch object nearby by category
@@ -3426,9 +4317,9 @@ function findExplore(category, radius) {
         displayExploreResult(category, response);
       },
     });
-  } else if (category === "th") {
+  } else if (category === "lsa") {
     $.ajax({
-      url: baseUrl + "/api/traditionalHouse/findByRadius",
+      url: baseUrl + "/api/attractionlsa/findByRadius",
       type: "POST",
       data: {
         lat: currentLat,
@@ -3440,9 +4331,9 @@ function findExplore(category, radius) {
         displayExploreResult(category, response);
       },
     });
-  } else if (category === "rg") {
+  } else if (category === "th") {
     $.ajax({
-      url: baseUrl + "/api/homestay/findByRadius",
+      url: baseUrl + "/api/traditionalHouse/findByRadius",
       type: "POST",
       data: {
         lat: currentLat,
@@ -3499,15 +4390,68 @@ function findExplore(category, radius) {
   }
 }
 
+// function displayExploreResult(category, response) {
+//   let data = response.data;
+//   let headerName;
+//   if (category === "cp") {
+//     headerName = "Culinary Place";
+//   } else if (category === "at") {
+//     headerName = "Attraction";
+//   } else if (category === "th") {
+//     headerName = "Traditional House";
+//   } else if (category === "lsa") {
+//     headerName = "Lake Singkarak Activity";
+//   } else if (category === "ho") {
+//     headerName = "Homestay";
+//   } else if (category === "sp") {
+//     headerName = "Souvenir Place";
+//   } else if (category === "wp") {
+//     headerName = "Worship Place";
+//   }
+
+//   let table =
+//     "<thead><tr>" +
+//     "<th>" +
+//     headerName +
+//     " Name</th>" +
+//     '<th colspan="1">Action</th>' +
+//     "</tr></thead>" +
+//     '<tbody id="data-' +
+//     category +
+//     '">' +
+//     "</tbody>";
+//   $("#table-" + category).append(table);
+
+//   for (i in data) {
+//     let item = data[i];
+//     let row =
+//       "<tr>" +
+//       "<td>" +
+//       item.name +
+//       "</td>" +
+//       "<td>" +
+//       '<a title="Location" class="btn-sm icon btn-primary" onclick="focusObject(`' +
+//       item.id +
+//       '`);"><i class="fa-solid fa-map-location-dot"></i></a>' +
+//       "</td>" +
+//       "</tr>";
+//     $("#data-" + category).append(row);
+//     objectMarkerExplore(item.id, item.lat, item.lng, item.status, item.type);
+//   }
+// }
+
 function displayExploreResult(category, response) {
   let data = response.data;
   let headerName;
+
   if (category === "cp") {
     headerName = "Culinary Place";
+  } else if (category === "at") {
+    headerName = "Attraction";
   } else if (category === "th") {
     headerName = "Traditional House";
-  } else if (category === "rg") {
-    headerName = "Homestay";
+  } else if (category === "lsa") {
+    headerName = "Lake Singkarak Activity";
   } else if (category === "ho") {
     headerName = "Homestay";
   } else if (category === "sp") {
@@ -3527,31 +4471,43 @@ function displayExploreResult(category, response) {
     category +
     '">' +
     "</tbody>";
-  $("#table-" + category).append(table);
+  $("#table-" + category).html(table); // Use html() to replace table content instead of appending
 
-  for (i in data) {
-    let item = data[i];
-    let row =
+  if (data.length === 0) {
+    // If no data, display the "No object in this radius" message
+    let noDataRow =
       "<tr>" +
-      "<td>" +
-      item.name +
-      "</td>" +
-      "<td>" +
-      '<a title="Location" class="btn-sm icon btn-primary" onclick="focusObject(`' +
-      item.id +
-      '`);"><i class="fa-solid fa-map-location-dot"></i></a>' +
-      "</td>" +
+      '<td colspan="2" style="text-align: center; font-style: italic;">No object</td>' +
       "</tr>";
-    $("#data-" + category).append(row);
-    objectMarkerExplore(item.id, item.lat, item.lng, item.status);
+    $("#data-" + category).append(noDataRow);
+  } else {
+    // Populate table with data
+    for (let i in data) {
+      let item = data[i];
+      let row =
+        "<tr>" +
+        "<td>" +
+        item.name +
+        "</td>" +
+        "<td>" +
+        '<a title="Location" class="btn-sm icon btn-primary" onclick="focusObject(`' +
+        item.id +
+        '`);"><i class="fa-solid fa-map-location-dot"></i></a>' +
+        "</td>" +
+        "</tr>";
+      $("#data-" + category).append(row);
+      objectMarkerExplore(item.id, item.lat, item.lng, item.status, item.type);
+    }
   }
 }
+
 
 function objectMarkerExplore(
   id,
   lat,
   lng,
   status,
+  type,
   homestay_status,
   anim = true
 ) {
@@ -3560,16 +4516,20 @@ function objectMarkerExplore(
   let marker = new google.maps.Marker();
 
   let icon;
-  // if (id.substring(0, 2) === "HO") {
-  //   if (status === "1") {
-  //     icon = baseUrl + "/media/icon/hogtp.png";
-  //   } else {
-  //     icon = baseUrl + "/media/icon/homestay.png";
-  //   }
-  //   const idhomestay = id;
-  //   digitHomestay(idhomestay);
-  // } else
-  if (id.substring(0, 2) === "CP") {
+  // if (id.substring(0, 2) === "AT") {
+  //   icon = baseUrl + "/media/icon/attraction.png";
+  //   const idlsa = id;
+  //   digitAttraction(idlsa);
+  // }
+  if (id.substring(0, 2) === "AT") {
+    if (type === "Lake") {
+      icon = baseUrl + "/media/icon/water.png";
+    } else {
+      icon = baseUrl + "/media/icon/attraction.png";
+    }
+    const idattraction = id;
+    digitAttraction(idattraction);
+  } else if (id.substring(0, 2) === "CP") {
     if (status === "1") {
       icon = baseUrl + "/media/icon/cpgtp.png";
     } else {
@@ -3933,10 +4893,6 @@ function displayTrackResult(category, response) {
     headerName = "Selfie Area";
   } else if (category === "F0007") {
     headerName = "Souvenir Place";
-  } else if (category === "F0008") {
-    headerName = "Tree House";
-  } else if (category === "F0009") {
-    headerName = "Viewing Tower";
   } else if (category === "F0010") {
     headerName = "Worship Place";
   }
@@ -4047,10 +5003,6 @@ function displayNearbyResult(category, response) {
     headerName = "Selfie Area";
   } else if (category === "F0007") {
     headerName = "Souvenir Place";
-  } else if (category === "F0008") {
-    headerName = "Tree House";
-  } else if (category === "F0009") {
-    headerName = "Viewing Tower";
   } else if (category === "F0010") {
     headerName = "Worship Place";
   }
@@ -4134,105 +5086,73 @@ function infoModal(id) {
 // Create legend
 function getLegend() {
   const icons = {
-    tracking: {
-      name: "Tracking Mangrove",
-      icon: baseUrl + "/media/icon/tracking.png",
+    // ng: {
+    //   name: "Country",
+    //   icon: baseUrl + "/media/icon/negara.png",
+    // },
+    my: {
+      name: "Malaysia",
+      icon: baseUrl + "/media/icon/malaysia.png",
     },
-    estuaria: {
-      name: "Estuaria",
-      icon: baseUrl + "/media/icon/tracking.png",
+    sg: {
+      name: "Singapore",
+      icon: baseUrl + "/media/icon/singapore.png",
     },
-    pieh: {
-      name: "Pieh",
-      icon: baseUrl + "/media/icon/talao.png",
+    br: {
+      name: "Brunei",
+      icon: baseUrl + "/media/icon/brunei.png",
     },
-    talao: {
-      name: "Water Attractions",
-      icon: baseUrl + "/media/icon/talao.png",
-    },
-    event: {
-      name: "Event",
-      icon: baseUrl + "/media/icon/event.png",
-    },
-    package: {
-      name: "Package",
+    // pr: {
+    //   name: "Province",
+    //   icon: baseUrl + "/media/icon/provinsinew.png",
+    // },
+    // kk: {
+    //   name: "Regency/City",
+    //   icon: baseUrl + "/media/icon/provinsinew.png",
+    // },
+    // kc: {
+    //   name: "District",
+    //   icon: baseUrl + "/media/icon/provinsinew.png",
+    // },
+    // na: {
+    //   name: "Village",
+    //   icon: baseUrl + "/media/icon/provinsinew.png",
+    // },
+    // dw: {
+    //   name: "Tourism Village",
+    //   icon: baseUrl + "/media/icon/provinsinew.png",
+    // },
+    attraction: {
+      name: "Attraction",
       icon: baseUrl + "/media/icon/package.png",
     },
-    package: {
-      name: "Package",
-      icon: baseUrl + "/media/icon/package.png",
-    },
-    cp: {
-      name: "Culinary Place",
-      icon: baseUrl + "/media/icon/culinary.png",
+    lsa: {
+      name: "Lake Singkarak Act",
+      icon: baseUrl + "/media/icon/water.png",
     },
     rg: {
-      name: "Homestay",
-      icon: baseUrl + "/media/icon/homestay.png",
-    },
-    ga: {
-      name: "Gazebo",
-      icon: baseUrl + "/media/icon/gazebo.png",
+      name: "Traditional House",
+      icon: baseUrl + "/media/icon/marker_rg.png",
     },
     ho: {
       name: "Homestay",
       icon: baseUrl + "/media/icon/homestay.png",
     },
-    of: {
-      name: "Outbond Field",
-      icon: baseUrl + "/media/icon/outbond.png",
-    },
-    pa: {
-      name: "Parking Area",
-      icon: baseUrl + "/media/icon/parking.png",
-    },
-    pb: {
-      name: "Public Bathroom",
-      icon: baseUrl + "/media/icon/bathroom.png",
-    },
-    sa: {
-      name: "Selfie Area",
-      icon: baseUrl + "/media/icon/selfie.png",
+    cp: {
+      name: "Culinary Place",
+      icon: baseUrl + "/media/icon/culinary.png",
     },
     sp: {
       name: "Souvenir Place",
       icon: baseUrl + "/media/icon/souvenir.png",
     },
-    th: {
-      name: "Tree House",
-      icon: baseUrl + "/media/icon/treehouse.png",
-    },
-    vw: {
-      name: "Viewing Tower",
-      icon: baseUrl + "/media/icon/tower.png",
-    },
     wp: {
       name: "Worship Place",
       icon: baseUrl + "/media/icon/worship.png",
     },
-    ng: {
-      name: "Negara",
-      icon: baseUrl + "/media/icon/negara.png",
-    },
-    pr: {
-      name: "Provinsi",
-      icon: baseUrl + "/media/icon/provinsi.png",
-    },
-    kk: {
-      name: "Kabupaten/Kota",
-      icon: baseUrl + "/media/icon/kabkota.png",
-    },
-    kc: {
-      name: "Kecamatan",
-      icon: baseUrl + "/media/icon/kecamatan.png",
-    },
-    na: {
-      name: "Nagari",
-      icon: baseUrl + "/media/icon/nagari.png",
-    },
-    dw: {
-      name: "Desa Wisata",
-      icon: baseUrl + "/media/icon/desawisata.png",
+    fc: {
+      name: "Facility",
+      icon: baseUrl + "/media/icon/facility.png",
     },
   };
 
@@ -4247,48 +5167,69 @@ function getLegend() {
 
     $("#legend").append(div);
   }
-  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+  map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
 }
 
-// toggle legend element
+// // toggle legend element
+// function viewLegend() {
+//   if ($("#legend").is(":hidden")) {
+//     $("#legend").show();
+//   } else {
+//     $("#legend").hide();
+//   }
+// }
+
 function viewLegend() {
+  console.log("Legend exists:", $("#legend").length > 0); // Periksa apakah elemen ada
+  console.log("Legend visibility before toggle:", $("#legend").is(":visible"));
+
   if ($("#legend").is(":hidden")) {
     $("#legend").show();
   } else {
     $("#legend").hide();
   }
+
+  console.log("Legend visibility after toggle:", $("#legend").is(":visible"));
 }
 
 function getLegendMobile() {
   const icons = {
-    tracking: {
-      name: "Tracking Mangrove",
-      icon: baseUrl + "/media/icon/tracking.png",
+    attraction: {
+      name: "Attraction",
+      icon: baseUrl + "/media/icon/package.png",
     },
-    tracking: {
-      name: "Estuaria",
-      icon: baseUrl + "/media/icon/tracking.png",
+    lsa: {
+      name: "Lake Singkarak Act",
+      icon: baseUrl + "/media/icon/water.png",
     },
-    pieh: {
-      name: "Pieh",
-      icon: baseUrl + "/media/icon/talao.png",
-    },
-    talao: {
-      name: "Water Attractions",
-      icon: baseUrl + "/media/icon/talao.png",
+    rg: {
+      name: "Traditional House",
+      icon: baseUrl + "/media/icon/marker_rg.png",
     },
     ho: {
       name: "Homestay",
       icon: baseUrl + "/media/icon/homestay.png",
     },
-    dw: {
-      name: "Desa Wisata",
-      icon: baseUrl + "/media/icon/desawisata.png",
+    cp: {
+      name: "Culinary Place",
+      icon: baseUrl + "/media/icon/culinary.png",
+    },
+    sp: {
+      name: "Souvenir Place",
+      icon: baseUrl + "/media/icon/souvenir.png",
+    },
+    wp: {
+      name: "Worship Place",
+      icon: baseUrl + "/media/icon/worship.png",
+    },
+    fc: {
+      name: "Facility",
+      icon: baseUrl + "/media/icon/facility.png",
     },
   };
 
-  // const title = '<p class="fw-bold fs-6">Legend</p>';
-  // $('#legend').append(title);
+  const title = '<p class="fw-bold fs-6">Legend</p>';
+  $("#legend").append(title);
 
   for (key in icons) {
     const type = icons[key];
@@ -4298,7 +5239,7 @@ function getLegendMobile() {
 
     $("#legendMobile").append(div);
   }
-  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legendMobile);
+  map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legendMobile);
 }
 
 // toggle legend element
@@ -4395,7 +5336,136 @@ function findByType(object) {
   }
 }
 
-// Show All in Explore Ulakan
+// function showMapExplore(category = null) {
+//   clearMarker();
+//   clearRadius();
+//   clearRoute();
+
+//   const apiUrls = {
+//     cp: baseUrl + "/api/culinaryPlace",
+//     // th: baseUrl + "/api/traditionalHouse",
+//     // rg: baseUrl + "/api/homestay",
+//     // ho: baseUrl + "/api/homestayhomestay",
+//     // sp: baseUrl + "/api/souvenirPlace",
+//     // wp: baseUrl + "/api/worshipPlace",
+//     // at: baseUrl + "/api/attraction",
+//   };
+
+//   // Jika kategori null, ambil semua data
+//   const categoriesToFetch = category ? [category] : Object.keys(apiUrls);
+
+//   categoriesToFetch.forEach((cat) => {
+//     const URI = apiUrls[cat];
+//     if (!URI) {
+//       console.error("Invalid category provided:", cat);
+//       return;
+//     }
+
+//     // Fetch data untuk kategori tertentu
+//     $.ajax({
+//       url: URI,
+//       dataType: "json",
+//       success: function (response) {
+//         let data = response.data;
+//         for (let i in data) {
+//           let item = data[i];
+//           objectMarker(item.id, item.lat, item.lng);
+//         }
+//         boundToObject();
+//         // Tampilkan tabel untuk kategori yang sesuai
+//         $("#table-cp").show();
+//         $("#result-exploreall-col").show();
+//         console.log("Data fetched for category:", cat, data);
+//       },
+//       error: function (xhr, status, error) {
+//         console.error("Error fetching data for category:", cat, error);
+//       },
+//     });
+//   });
+//   // $("#table-cp").show();
+//   // $("#result-allexplore-col").show();
+// }
+
+function showMapExplore(category = null) {
+  clearMarker();
+  clearRadius();
+  clearRoute();
+
+  const apiUrls = {
+    cp: baseUrl + "/api/culinaryPlace",
+    th: baseUrl + "/api/traditionalHouse",
+    wp: baseUrl + "/api/worshipPlace",
+    ho: baseUrl + "/api/homestayhomestay",
+    sp: baseUrl + "/api/souvenirPlace",
+    at: baseUrl + "/api/attraction",
+  };
+
+  // Tentukan kategori yang ingin diambil
+  const categoriesToFetch = category ? [category] : Object.keys(apiUrls);
+
+  categoriesToFetch.forEach((cat) => {
+    const URI = apiUrls[cat];
+    if (!URI) {
+      console.error("Invalid category provided:", cat);
+      return;
+    }
+
+    $.ajax({
+      url: URI,
+      dataType: "json",
+      success: function (response) {
+        let data = response.data;
+
+        // Debug: pastikan data terlihat
+        console.log(`Data for category ${cat}:`, data);
+
+        if (data.length === 0) {
+          console.warn(`No data available for category ${cat}`);
+          $(`#table-${cat}`).html(
+            "<tr><td colspan='4'>No data available</td></tr>"
+          );
+          return;
+        }
+
+        // Isi tabel dengan data
+        let tableBody = `<thead>
+                           <tr>
+                             <th>No</th>
+                             <th>Name</th>
+                             <th>Latitude</th>
+                             <th>Longitude</th>
+                           </tr>
+                         </thead><tbody>`;
+        data.forEach((item, index) => {
+          tableBody += `<tr>
+                          <td>${index + 1}</td>
+                          <td>${item.name || "-"}</td>
+                          <td>${item.lat}</td>
+                          <td>${item.lng}</td>
+                        </tr>`;
+
+          // Tambahkan marker ke peta
+          objectMarker(item.id, item.lat, item.lng);
+        });
+        tableBody += "</tbody>";
+
+        // Masukkan data ke tabel dengan ID sesuai kategori
+        $(`#table-${cat}`).html(tableBody).show();
+        boundToObject();
+        console.log("Data fetched for category:", cat, data);
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching data for category:", cat, error);
+      },
+    });
+  });
+
+  // Tampilkan kolom hasil
+  $("#result-explore-col").show();
+  $("#list-rec-col").hide();
+}
+
+// Show All in Explore Sumpu
 function showMap(id = null) {
   let URI;
 
@@ -4716,6 +5786,107 @@ function deleteUsers(id = null, username = null, csrfToken = null) {
 }
 
 // Delete selected object
+function deleteObjectOld(id = null, name = null, user = false) {
+  if (id === null) {
+    return Swal.fire("ID cannot be null");
+  }
+
+  let content, apiUri;
+  if (id.substring(0, 2) === "EV") {
+    content = "Event";
+    apiUri = "event/";
+  } else if (id.substring(0, 1) === "P") {
+    content = "Package";
+    apiUri = "package/";
+  } else if (id.substring(0, 2) === "FC") {
+    content = "Facility";
+    apiUri = "facility/";
+  } else if (id.substring(0, 2) === "AT") {
+    content = "Attraction";
+    apiUri = "attraction/";
+  } else if (id.substring(0, 2) === "CP") {
+    content = "Culinary Place";
+    apiUri = "culinaryPlace/";
+  } else if (id.substring(0, 2) === "TH") {
+    content = "Traditional House";
+    apiUri = "traditionalHouse/";
+  } else if (id.substring(0, 2) === "HO") {
+    content = "Homestay";
+    apiUri = "homestay/";
+  } else if (id.substring(0, 2) === "WP") {
+    content = "Worship Place";
+    apiUri = "worshipPlace/";
+  } else if (id.substring(0, 2) === "SP") {
+    content = "Souvenir Place";
+    apiUri = "souvenirPlace/";
+  } else if (id.substring(0, 1) === "S") {
+    content = "Service Package";
+    apiUri = "servicepackage/";
+  } else if (id.substring(0, 1) === "T") {
+    content = "Package Type";
+    apiUri = "packagetype/";
+  } else if (id.substring(0, 2) === "HO") {
+    content = "Homestay";
+    apiUri = "homestay/";
+  } else if (id.substring(0, 2) === "AN") {
+    content = "Announcement";
+    apiUri = "announcement/";
+  } else if (id.substring(0, 1) === "S") {
+    content = "Admin";
+    apiUri = "admin/";
+  } else if (id.substring(0, 7) === "R") {
+    content = "Reservation";
+    apiUri = "reservation/";
+  } else if (user === true) {
+    content = "User";
+    apiUri = "user/";
+  }
+
+  Swal.fire({
+    title: "Delete " + content + "?",
+    text: "You are about to remove " + name,
+    icon: "warning",
+    showCancelButton: true,
+    denyButtonText: "Delete",
+    confirmButtonColor: "#dc3545",
+    cancelButtonColor: "#343a40",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        // url: baseUrl + "/api/" + apiUri + id,
+        // type: "DELETE",
+        url: baseUrl + "dashboard/" + apiUri + "delete/" + id,
+        type: "POST",
+        data: {
+          // Data
+          id: id,
+        },
+        dataType: "json",
+        success: function (response) {
+          if (response.status === 200) {
+            Swal.fire(
+              "Deleted!",
+              "Successfully remove " + name,
+              "success"
+            ).then((result) => {
+              if (result.isConfirmed) {
+                document.location.reload();
+              }
+            });
+            // document.location.reload();
+          } else {
+            Swal.fire("Failed", "Delete " + name + " failed!", "warning");
+            // document.location.reload();
+          }
+          //   document.location.reload();
+        },
+      });
+      document.location.reload();
+    }
+  });
+}
+
+// Delete selected object
 function deleteObject(id = null, name = null, user = false) {
   if (id === null) {
     return Swal.fire("ID cannot be null");
@@ -4758,6 +5929,9 @@ function deleteObject(id = null, name = null, user = false) {
   } else if (id.substring(0, 2) === "HO") {
     content = "Homestay";
     apiUri = "homestay/";
+  } else if (id.substring(0, 2) === "AN") {
+    content = "Announcement";
+    apiUri = "announcement/";
   } else if (id.substring(0, 1) === "S") {
     content = "Admin";
     apiUri = "admin/";
@@ -4766,7 +5940,7 @@ function deleteObject(id = null, name = null, user = false) {
     apiUri = "reservation/";
   } else if (user === true) {
     content = "User";
-    apiUri = "user/";
+    apiUri = "users/";
   }
 
   Swal.fire({
@@ -4780,8 +5954,12 @@ function deleteObject(id = null, name = null, user = false) {
   }).then((result) => {
     if (result.isConfirmed) {
       $.ajax({
-        url: baseUrl + "/api/" + apiUri + id,
-        type: "DELETE",
+        url: baseUrl + "dashboard/" + apiUri + "deleteobject/" + id,
+        type: "POST",
+        data: {
+          // Data
+          id: id,
+        },
         dataType: "json",
         success: function (response) {
           if (response.status === 200) {
@@ -4794,15 +5972,18 @@ function deleteObject(id = null, name = null, user = false) {
                 document.location.reload();
               }
             });
+            // document.location.reload();
           } else {
             Swal.fire("Failed", "Delete " + name + " failed!", "warning");
+            // document.location.reload();
           }
+          //   document.location.reload();
         },
       });
+      document.location.reload();
     }
   });
 }
-
 function deleteCart(
   package_id = null,
   name = null,
@@ -4858,7 +6039,79 @@ function deleteCart(
   });
 }
 
+// function confirmDeletereservation(formId) {
+//   Swal.fire({
+//     title: "Are you sure you want to cancel this reservation?",
+//     text: "This reservation has not been confirmed. We will no longer process this reservation if you cancel it.",
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonColor: "#d33",
+//     cancelButtonColor: "#3085d6",
+//     confirmButtonText: "Yes, cancel!",
+//     cancelButtonText: "Cancel",
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       // Jika pengguna mengonfirmasi, submit formulir
+//       document.getElementById(formId).submit(); // Mengirim formulir
+//     } else if (result.dismiss === Swal.DismissReason.cancel) {
+//       // Jika pengguna membatalkan, tindakan apa yang ingin Anda lakukan (contoh: tampilkan pesan)
+//       Swal.fire("Not canceled", "Your reservation will be processed :)", "info");
+//     }
+//   });
+// }
+
+// function showAlert() {
+//   Swal.fire({
+//     title: "Unable to cancel because this reservation has been confirmed by admin",
+//     text: "You need to request a cancellation on detail page to cancel this reservation",
+//     icon: "info",
+//     confirmButtonColor: "#3085d6",
+//     confirmButtonText: "OK",
+//   });
+//   return false;
+// }
+
+function confirmDeletePackageType(formId) {
+  $id = document.getElementById("id").value;
+
+  Swal.fire({
+    title: "Are you sure you want to delete this package type",
+    text: "You cannot restore this data!!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Jika pengguna mengonfirmasi, submit formulir
+      // Mengirim data ke server menggunakan AJAX
+      $.ajax({
+        url: baseUrl + "/dashboard/packagetype/delete/" + $id,
+        type: "POST",
+        data: {
+          // Data
+          id: formId,
+        },
+        dataType: "json",
+        success: function (response) {},
+      });
+      document.getElementById(formId).submit(); // Mengirim formulir
+
+      console.log("Berhasil menghapus reservasi");
+
+      // document.getElementById(formId).submit(); // Mengirim formulir
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      // Jika pengguna membatalkan, tindakan apa yang ingin Anda lakukan (contoh: tampilkan pesan)
+      Swal.fire("Not deleted", "Your reservation is safe :)", "info");
+    }
+  });
+}
+
 function confirmDeletereservation(formId) {
+  $id = document.getElementById("id").value;
+
   Swal.fire({
     title: "Are you sure you want to delete the reservation",
     text: "You cannot restore this data!!",
@@ -4871,7 +6124,22 @@ function confirmDeletereservation(formId) {
   }).then((result) => {
     if (result.isConfirmed) {
       // Jika pengguna mengonfirmasi, submit formulir
+      // Mengirim data ke server menggunakan AJAX
+      $.ajax({
+        url: baseUrl + "/web/detailreservation/savedelete/" + $id,
+        type: "POST",
+        data: {
+          // Data
+          id: formId,
+        },
+        dataType: "json",
+        success: function (response) {},
+      });
       document.getElementById(formId).submit(); // Mengirim formulir
+
+      console.log("Berhasil menghapus reservasi");
+
+      // document.getElementById(formId).submit(); // Mengirim formulir
     } else if (result.dismiss === Swal.DismissReason.cancel) {
       // Jika pengguna membatalkan, tindakan apa yang ingin Anda lakukan (contoh: tampilkan pesan)
       Swal.fire("Not deleted", "Your reservation is safe :)", "info");
@@ -5067,6 +6335,51 @@ function addToReservation(unitId) {
   console.log("Add unit with ID " + unitId + " to reservation.");
 }
 
+// function activityOptions() {
+//   var selectedPackage = document.getElementById("package").value;
+//   var selectedDay = document.getElementById("day").value;
+
+//     $("#activity").empty();
+//     $.ajax({
+//       url: baseUrl + "/api/activitynumber",
+//       type: "GET",
+//     data: {
+//       package_id: selectedPackage,
+//       day: selectedDay,
+//     },
+//       success: function (response) {
+//         if (response && response.data) {
+//           let data = response.data;
+//           for (let i in data) {
+//             let item = data[i];
+//             if (item.category == "1") {
+//               categoryname = "Group";
+//             } else if (item.category == "2") {
+//               categoryname = "Individu";
+//             }
+//             let activity =
+//               '<option value="' +
+//               item.id +
+//               '">' +
+//               item.name +
+//               " - Rp" +
+//               item.ticket_price +
+//               " - " +
+//               categoryname +
+//               "</option>";
+//             $("#activity").append(activity);
+//           }
+//         } else {
+//           console.error("Invalid or missing data structure in AJAX response");
+//         }
+//       },
+//       error: function (xhr, status, error) {
+//         console.error("AJAX request failed:", status, error);
+//       },
+//     });
+
+// }
+
 function objectOptions() {
   var selectedActivity = document.getElementById("activity_type").value;
 
@@ -5242,6 +6555,7 @@ function serviceOptions() {
 
 function chooseHome() {
   let checkInDate = document.getElementById("check_in").value;
+  let checkOutDate = document.getElementById("check_out").value;
   let totalPeople = document.getElementById("total_people").value;
   let accomodationType1 = document.getElementById("accomodationType1").checked;
   // let accomodationType2 = document.getElementById("accomodationType2").checked;
@@ -5254,11 +6568,6 @@ function chooseHome() {
     // If accomodationType1 is checked (Default)
     url = baseUrl + "/api/chooseHome";
     urlHome = "Default";
-  } else if (accomodationType2) {
-    // If accomodationType2 is checked (Custom)
-    // Update the URL accordingly
-    url = baseUrl + "/api/chooseCustomHome";
-    urlHome = "Custom";
   }
 
   console.log(checkInDate);
@@ -5267,6 +6576,7 @@ function chooseHome() {
     type: "POST",
     data: {
       checkInDate: checkInDate,
+      checkOutDate: checkOutDate,
       totalPeople: totalPeople,
     },
     dataType: "json",
@@ -5276,8 +6586,10 @@ function chooseHome() {
       if (
         response.status === 200 &&
         response.datahome &&
-        response.datahome.houses &&
-        response.datahome.houses.length > 0
+        Object.keys(response.datahome).length > 0 &&
+        Object.values(response.datahome).some(
+          (dateData) => dateData.houses && dateData.houses.length > 0
+        )
       ) {
         // If there is data, display it
         displayFoundHome(urlHome, response);
@@ -5359,108 +6671,114 @@ function displayFoundHome(urlHome, response) {
 
     var totalUnits = 0; // Initialize totalUnits counter
 
-    response.datahome.houses.forEach(function (homestay) {
-      if (!homestay.units || homestay.units.length === 0) {
-        return;
-      }
+    Object.keys(response.datahome).forEach(function (dateKey) {
+      const dateData = response.datahome[dateKey];
+      const houses = dateData.houses;
 
-      var unitAvailabilityContainer = document.createElement("div");
-      unitAvailabilityContainer.className = "col-md-12 col-12";
+      houses.forEach(function (homestay) {
+        if (!homestay.units || homestay.units.length === 0) {
+          return;
+        }
 
-      var unitHtml =
-        '<div class="card" style="margin-bottom:0rem!important">' +
-        // '<div class="card-header">' +
-        // '<h4 class="card-title text-center">Unit Availability</h4>' +
-        // "</div>" +
-        '<div class="card-body">' +
-        '<table class="table table-hover dt-head-center" id="table-manage">' +
-        // "<br>" +
-        "<tbody>" +
-        homestay.units
-          .map(
-            (item) =>
-              "<tr>" +
-              "<td style='vertical-align:inherit'>" +
-              '<div class="form-check">' +
-              '<input class="form-check-input unit-checkbox" type="checkbox" name="selected_units[]" value="' +
-              esc(item.unit_type + "-" + item.unit_number) +
-              '" id="unit' +
-              esc(item.unit_number) +
-              '" data-homestay-id="' +
-              esc(item.homestay_id) +
-              '" data-unit-type="' +
-              esc(item.unit_type) +
-              '" data-unit-number="' +
-              esc(item.unit_number) +
-              '" data-price="' +
-              esc(item.price) +
-              '" data-unit-name="' +
-              esc(item.unit_name) +
-              '" data-home-name="' +
-              esc(homestay.name) +
-              '" data-capacity="' +
-              esc(item.capacity) +
-              '" checked disabled>' +
-              '<label class="form-check-label" for="unit' +
-              esc(item.unit_number) +
-              '"></label>' +
-              "</div>" +
-              "</td>" +
-              "<td style='width:150px; vertical-align:inherit'>" +
-              '<img src="/media/photos/homestay/' +
-              homestay.gallery[0] +
-              '" class="img-fluid rounded-start" alt="Gallery Image" style="object-fit: cover; width: 150px; height:100px; border-top-right-radius: 0.25rem !important; border-bottom-right-radius: 0.25rem !important;">' +
-              "</td>" +
-              "<td style='width:150px; vertical-align:inherit'>" +
-              esc(homestay.name) +
-              "<br><br>Facilities:" +
-              homestay.facilities
-                .map((facility) => "<li>" + esc(facility.name) + "</li>")
-                .join("") +
-              "</td>" +
-              "<td  style='vertical-align:inherit'>" +
-              '<td style="width: 150px;vertical-align:inherit">' +
-              '<img src="/media/photos/unithomestay/' +
-              esc(item.url) +
-              '" class="img-fluid rounded-start" alt="Gallery Image" style="object-fit: cover; width: 150px; height: 100px; border-top-right-radius: 0.25rem !important; border-bottom-right-radius: 0.25rem !important;">' +
-              "</td>" +
-              "<td style='width:150px;vertical-align:inherit'>" +
-              esc(item.unit_name) +
-              "<br><br><br>Facilities:" +
-              item.facility_units
-                .map((facility_array) => {
-                  return facility_array
-                    .map((facility_unit) => {
-                      return "<li>" + esc(facility_unit.name) + "</li>";
-                    })
-                    .join("");
-                })
-                .join("") +
-              "</td>" +
-              "<td style='vertical-align:inherit'>" +
-              "Rp " +
-              // esc(item.price) +
-              number_format(esc(item.price), 0, ",", ".") +
-              "</td>" +
-              "<td style='vertical-align:inherit'>" +
-              '<i class="fa-solid fa-user"></i> ' +
-              esc(item.capacity) +
-              "</td>" +
-              "</tr>"
-          )
-          .join("") +
-        "</tbody>" +
-        "</table>" +
-        "</div>" +
-        "</div>";
+        var unitAvailabilityContainer = document.createElement("div");
+        unitAvailabilityContainer.className = "col-md-12 col-12";
 
-      unitAvailabilityContainer.innerHTML = unitHtml;
-      resultContainer.appendChild(unitAvailabilityContainer);
+        var unitHtml =
+          '<div class="card" style="margin-bottom:0rem!important">' +
+          '<div class="card-body">' +
+          '<table class="table table-hover dt-head-center" id="table-manage">' +
+          "<tbody>" +
+          homestay.units
+            .map(
+              (item) =>
+                "<tr>" +
+                "<td style='vertical-align:inherit'>" +
+                '<div class="form-check">' +
+                '<input class="form-check-input unit-checkbox" type="checkbox" name="selected_units[]" value="' +
+                esc(item.unit_type + "-" + item.unit_number) +
+                '" id="unit' +
+                esc(item.unit_number) +
+                '" data-date="' +
+                esc(dateKey) +
+                '" data-homestay-id="' +
+                esc(item.homestay_id) +
+                '" data-unit-type="' +
+                esc(item.unit_type) +
+                '" data-unit-number="' +
+                esc(item.unit_number) +
+                '" data-price="' +
+                esc(item.price) +
+                '" data-unit-name="' +
+                esc(item.unit_name) +
+                '" data-home-name="' +
+                esc(homestay.name) +
+                '" data-capacity="' +
+                esc(item.capacity) +
+                '" checked disabled>' +
+                '<label class="form-check-label" for="unit' +
+                esc(item.unit_number) +
+                '"></label>' +
+                "</div>" +
+                "</td>" +
+                "<td style='width:110px; vertical-align:inherit'>" +
+                esc(dateKey) +
+                "</td>" +
+                "<td style='width:150px; vertical-align:inherit'>" +
+                '<img src="/media/photos/homestay/' +
+                homestay.gallery[0] +
+                '" class="img-fluid rounded-start" alt="Gallery Image" style="object-fit: cover; width: 150px; height:100px; border-top-right-radius: 0.25rem !important; border-bottom-right-radius: 0.25rem !important;">' +
+                "</td>" +
+                "<td style='width:150px; vertical-align:inherit'>" +
+                esc(homestay.name) +
+                "<br><br>Facilities:" +
+                homestay.facilities
+                  .map((facility) => "<li>" + esc(facility.name) + "</li>")
+                  .join("") +
+                "</td>" +
+                "<td  style='vertical-align:inherit'>" +
+                '<td style="width: 150px;vertical-align:inherit">' +
+                '<img src="/media/photos/unithomestay/' +
+                esc(item.url) +
+                '" class="img-fluid rounded-start" alt="Gallery Image" style="object-fit: cover; width: 150px; height: 100px; border-top-right-radius: 0.25rem !important; border-bottom-right-radius: 0.25rem !important;">' +
+                "</td>" +
+                "<td style='width:150px;vertical-align:inherit'>" +
+                esc(item.unit_name) +
+                "<br><br><br>Facilities:" +
+                item.facility_units
+                  .map((facility_array) => {
+                    return facility_array
+                      .map((facility_unit) => {
+                        return "<li>" + esc(facility_unit.name) + "</li>";
+                      })
+                      .join("");
+                  })
+                  .join("") +
+                "</td>" +
+                "<td style='vertical-align:inherit'>" +
+                "Rp " +
+                number_format(esc(item.price), 0, ",", ".") +
+                "</td>" +
+                "<td style='vertical-align:inherit'>" +
+                '<i class="fa-solid fa-user"></i> ' +
+                esc(item.capacity) +
+                "</td>" +
+                "</tr>"
+            )
+            .join("") +
+          "</tbody>" +
+          "</table>" +
+          "</div>" +
+          "</div>";
 
-      updateTotalPrice();
+        unitAvailabilityContainer.innerHTML = unitHtml;
+        resultContainer.appendChild(unitAvailabilityContainer);
 
-      totalUnits += homestay.units.length;
+        updateTotalPrice();
+
+        totalUnits += homestay.units.length;
+      });
     });
+
     unitTotal(totalUnits);
   }
 }
@@ -5468,21 +6786,14 @@ function displayFoundHome(urlHome, response) {
 function updateTotalPrice() {
   let totalPrice = parseInt($("#total_price").val()) || 0;
   let selectedUnitsInfo =
-    '<table class="table" id="selectedUnitTable"><thead><tr><th>ID</th><th>Type</th><th>Number</th><th>Homestay</th><th>Unit</th><th>Day</th><th>Price</th><th>Cpty</th></tr></thead><tbody>'; // Untuk menyimpan informasi unit yang dipilih
+    '<table class="table" id="selectedUnitTable"><thead><tr><th>Date</th><th>ID</th><th>Type</th><th>Number</th><th>Homestay</th><th>Unit</th><th>Price</th><th>Cpty</th></tr></thead><tbody>'; // Untuk menyimpan informasi unit yang dipilih
 
   let totalUnitPrice = 0;
-
-  let daysTime = $("#days").val();
-  let daysUnitTimeCalculator = daysTime - 1;
-  if (daysUnitTimeCalculator == 0) {
-    daysUnitTime = 1;
-  } else {
-    daysUnitTime = daysUnitTimeCalculator;
-  }
 
   // Loop through each checkbox that is checked
   $("input[name='selected_units[]']:checked").each(function () {
     const price = parseFloat($(this).data("price"));
+    const date = $(this).data("date");
     const homestay_id = $(this).data("homestay-id");
     const unit_type = $(this).data("unit-type");
     const unit_number = $(this).data("unit-number");
@@ -5503,22 +6814,20 @@ function updateTotalPrice() {
 
     // Tambahkan informasi ke tabel
     selectedUnitsInfo += "<tr>";
+    selectedUnitsInfo += "<td>" + esc(date) + "</td>";
     selectedUnitsInfo += "<td>" + esc(homestay_id) + "</td>";
     selectedUnitsInfo += "<td>" + esc(unit_type) + "</td>";
     selectedUnitsInfo += "<td>" + esc(unit_number) + "</td>";
 
     selectedUnitsInfo += "<td>" + esc(home_name) + "</td>";
     selectedUnitsInfo += "<td>" + esc(unit_name) + "</td>";
-    selectedUnitsInfo += "<td>" + esc(daysUnitTime) + "</td>";
     selectedUnitsInfo +=
-      "<td>Rp " +
-      number_format(esc(price * daysUnitTime), 0, ",", ".") +
-      "</td>";
+      "<td>Rp " + number_format(esc(price), 0, ",", ".") + "</td>";
     selectedUnitsInfo += "<td>" + esc(capacity) + "</td>";
     selectedUnitsInfo += "</tr>";
 
-    totalPrice += price * daysUnitTime;
-    totalUnitPrice += price * daysUnitTime;
+    totalPrice += price;
+    totalUnitPrice += price;
   });
 
   selectedUnitsInfo += "</tbody></table>";
@@ -5585,9 +6894,10 @@ function createReservation() {
     let cells = table.rows[i].cells;
 
     // Mendapatkan nilai dari setiap sel menggunakan textContent
-    let homestay_id = cells[0].textContent;
-    let unit_type = cells[1].textContent;
-    let unit_number = cells[2].textContent;
+    let date = cells[0].textContent;
+    let homestay_id = cells[1].textContent;
+    let unit_type = cells[2].textContent;
+    let unit_number = cells[3].textContent;
     let capacity = cells[7].textContent;
 
     // let homestay_id = cells[0].dataset.homestayId;
@@ -5596,6 +6906,7 @@ function createReservation() {
 
     // Membuat objek untuk setiap baris dan menambahkannya ke array
     let rowData = {
+      date: date,
       homestay_id: homestay_id,
       unit_type: unit_type,
       unit_number: unit_number,
@@ -5872,6 +7183,9 @@ function payMidtrans() {
       $("#modalPackageName").text(response.package.name);
       $("#modalAmount").text(response.datareservation.deposit);
 
+      // Menghapus tombol "bayar" sebelumnya jika ada
+      $("#modalAmount").next("button").remove();
+
       // Membuat link pembayaran
       var paymentLink =
         "https://app.sandbox.midtrans.com/snap/v2/vtweb/" + response.data;
@@ -5895,7 +7209,7 @@ function payMidtrans() {
 
 function updateDepositClick(res_id, res_id_deposit, myTokenDeposit) {
   $.ajax({
-    url: baseUrl + "/web/detailreservation/" + res_id + "/updateDepositCheck",
+    url: baseUrl + "/web/detailreservation/" + res_id + "/updatedepositcheck",
     type: "POST",
     data: {
       res_id: res_id,
@@ -5905,9 +7219,13 @@ function updateDepositClick(res_id, res_id_deposit, myTokenDeposit) {
     dataType: "json",
     success: function (response) {
       console.log("Deposit check berhasil diperbarui");
+      document.location.reload();
+
     },
     error: function (xhr, status, error) {
       console.error("Gagal memperbarui deposit check:", error);
+      document.location.reload();
+
     },
   });
 }
@@ -5929,6 +7247,8 @@ function payMidtransMyToken() {
   $("#modalOrderId").text(res_id_deposit);
   $("#modalPackageName").text(reservation_package_name);
   $("#modalAmount").text(reservation_deposit);
+  // Menghapus tombol "bayar" sebelumnya jika ada
+  $("#modalAmount").next("button").remove();
   // Menambahkan tombol Bayar di bawah token
   var paymentLink =
     "https://app.sandbox.midtrans.com/snap/v2/vtweb/" + myTokenDeposit;
@@ -5961,24 +7281,23 @@ function payMidtransFull() {
       $("#modalOrderIdFull").text(res_id_full);
       $("#modalPackageNameFull").text(response.package.name);
       $("#modalAmountFull").text(response.amount);
+
+      // Menghapus tombol "bayar" sebelumnya jika ada
+      $("#modalAmountFull").next("button").remove();
       // Menambahkan tombol Bayar di bawah token
+      // Membuat link pembayaran
       var paymentLink =
         "https://app.sandbox.midtrans.com/snap/v2/vtweb/" + response.data;
-      var payButton = $("<a>")
-        .attr("href", paymentLink)
-        .attr("target", "_blank")
-        .addClass("btn btn-outline-info")
-        .text("Pay");
-      $("#modalAmountFull").after(payButton);
-      payButton.on("click", function () {
-        // Ketika tombol Bayar diklik, jalankan fungsi berikut
-        // Misalnya, Anda dapat menambahkan logika tambahan di sini
-        // updateFullClick(res_id_full, myTokenFull);
-        // Anda juga dapat memanggil fungsi lain di sini, seperti updateDepositCheck()
-      });
 
-      // updateDepositCheck(response.datareservation.id, 'checked');
-      // paymentSuccess(response.datareservation.id);
+      // Menambahkan tombol Bayar di bawah token
+      var payButton = $("<button>")
+        .addClass("btn btn-outline-info")
+        .text("Pay")
+        .on("click", function () {
+          window.open(paymentLink, "_blank"); // Buka link pembayaran dalam jendela baru
+          // updateDepositClick(res_id, res_id_deposit, myTokenDeposit);
+        });
+      $("#modalAmountFull").after(payButton);
     },
     error: function () {
       // Tampilkan pesan kesalahan kepada pengguna jika permintaan gagal
@@ -6004,6 +7323,8 @@ function payMidtransMyTokenFull() {
   $("#modalOrderIdFull").text(res_id_full);
   $("#modalPackageNameFull").text(reservation_package_name);
   $("#modalAmountFull").text(reservation_payment);
+  // Menghapus tombol "bayar" sebelumnya jika ada
+  $("#myModalFull .modal-body").next("button").remove();
   // Membuat link pembayaran
   var paymentLink =
     "https://app.sandbox.midtrans.com/snap/v2/vtweb/" + myTokenFull;
@@ -6021,7 +7342,7 @@ function payMidtransMyTokenFull() {
 
 function updateFullClick(res_id, res_id_full, myTokenFull) {
   $.ajax({
-    url: baseUrl + "/web/detailreservation/" + res_id + "/updateFullCheck",
+    url: baseUrl + "/web/detailreservation/" + res_id + "/updatefullcheck",
     type: "POST",
     data: {
       res_id: res_id,
@@ -6031,9 +7352,12 @@ function updateFullClick(res_id, res_id_full, myTokenFull) {
     dataType: "json",
     success: function (response) {
       console.log("Full check berhasil diperbarui");
+      document.location.reload();
     },
     error: function (xhr, status, error) {
       console.error("Gagal memperbarui full check:", error);
+      document.location.reload();
+
     },
   });
 }
@@ -6113,16 +7437,26 @@ function weatherNow() {
       const response = await fetch(apiUrl);
       const data = await response.json();
 
+      // Ambil data cuaca dari API
       const weatherDescription = data.weather[0].description;
       const temperature = data.main.temp;
       const humidity = data.main.humidity;
       const weatherIcon = data.weather[0].icon;
+      const windSpeed = data.wind.speed;
+
+      const capitalizeWords = (str) => {
+        return str.replace(/\b\w/g, (char) => char.toUpperCase());
+      };
+      const capitalizedWeatherDescription = capitalizeWords(weatherDescription);
 
       document.getElementById("weather-info").innerHTML = `
-          <span style="margin-right: 10px;">${cityName}, ID</span>
-          <img src="http://openweathermap.org/img/wn/${weatherIcon}.png" alt="Weather Icon" style="margin-right: 10px; filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));" />
-          <span style="margin-right: 10px;">${temperature}°C</span>
-      `;
+    <span style="margin-right: 10px;">${cityName}, ID</span>
+    <img src="http://openweathermap.org/img/wn/${weatherIcon}.png" alt="Weather Icon" style="margin-right: 10px; filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));" />
+    <span style="margin-right: 10px;">${temperature}°C</span>
+    <span style="margin-right: 10px;">${capitalizedWeatherDescription}</span>
+    <span style="margin-right: 10px;">Humidity: ${humidity}%</span>
+    <span style="margin-right: 10px;">Wind: ${windSpeed} m/s</span>
+`;
     } catch (error) {
       console.error("Error fetching weather data:", error);
       document.getElementById("weather-info").innerHTML =

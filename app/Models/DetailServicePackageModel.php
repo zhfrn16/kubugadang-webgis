@@ -41,6 +41,7 @@ class DetailServicePackageModel extends Model
             ->select("*")
             ->join('service_package', 'detail_service_package.service_package_id = service_package.id')
             ->where('detail_service_package.package_id', $id)
+            ->orderBy('detail_service_package.created_at', 'ASC')
             ->get();
         return $query;
     }
@@ -63,6 +64,7 @@ class DetailServicePackageModel extends Model
             ->join('service_package', 'detail_service_package.service_package_id = service_package.id')
             ->where('detail_service_package.package_id', $id)
             ->where('detail_service_package.status', '1')
+            ->orderBy('detail_service_package.created_at', 'ASC')
             ->get();
 
         return $query;
@@ -75,6 +77,7 @@ class DetailServicePackageModel extends Model
             ->join('service_package', 'detail_service_package.service_package_id = service_package.id')
             ->where('detail_service_package.package_id', $id)
             ->where('detail_service_package.status', '0')
+            ->orderBy('detail_service_package.created_at', 'ASC')
             ->get();
 
         return $query;
@@ -125,7 +128,7 @@ class DetailServicePackageModel extends Model
      public function getCombinedServicePrice($package_id = null, $package_min_capacity = null)
     {
         $servicePackageModel = new ServicePackageModel();
-        $servicePackageData = $servicePackageModel->select('service_package.price as price, service_package.min_capacity as min_capacity, package.min_capacity as package_min_capacity')
+        $servicePackageData = $servicePackageModel->select('service_package.id as idservice, service_package.price as price, service_package.min_capacity as min_capacity, package.min_capacity as package_min_capacity')
             ->join('detail_service_package', 'detail_service_package.service_package_id=service_package.id')
             ->join('package', 'detail_service_package.package_id=package.id')
             ->where('detail_service_package.status', '1')
@@ -146,16 +149,24 @@ class DetailServicePackageModel extends Model
             if (isset($servicePackage['price']) && is_numeric($servicePackage['price']) && isset($servicePackage['min_capacity']) && is_numeric($servicePackage['min_capacity'])) {
                 // Kalkulasi jumlah item berdasarkan kapasitas paket dan layanan
                 $capacity = $servicePackage['min_capacity'];
+                $idservice = $servicePackage['idservice'];
                 $totalPeople = $servicePackage['package_min_capacity'];
                 $day = $packageDayData['day'];
+                $daymin1 = $day - 1;
 
-                // Menambahkan logika perhitungan totalDay
-                if ($day > 2) {
-                    $totalDay = $day - 1;
-                } elseif ($day <= 2) {
+                if ($idservice == 'S05' || $idservice == 'S16'){
                     $totalDay = 1;
-                } else {
-                    $totalDay = 0;
+                } else if ($idservice == 'S03' || $idservice == 'S11' || $idservice == 'S13'){
+                    $totalDay = $daymin1;
+                } else{
+                    // Menambahkan logika perhitungan totalDay
+                    if ($day >= 2) {
+                        $totalDay = $day;
+                    } elseif ($day <= 2) {
+                        $totalDay = 1;
+                    } else {
+                        $totalDay = 0;
+                    }
                 }
 
                 $numberOfServices = floor($totalPeople / $capacity);
@@ -185,7 +196,7 @@ class DetailServicePackageModel extends Model
     public function getCombinedServicePriceCustom($package_id = null, $package_min_capacity = null)
     {
         $servicePackageModel = new ServicePackageModel();
-        $servicePackageData = $servicePackageModel->select('service_package.price as price, service_package.min_capacity as min_capacity, package.min_capacity as package_min_capacity')
+        $servicePackageData = $servicePackageModel->select('service_package.id as idservice, service_package.price as price, service_package.min_capacity as min_capacity, package.min_capacity as package_min_capacity')
             ->join('detail_service_package', 'detail_service_package.service_package_id=service_package.id')
             ->join('package', 'detail_service_package.package_id=package.id')
             ->where('detail_service_package.status', '1')
@@ -207,15 +218,23 @@ class DetailServicePackageModel extends Model
                 // Kalkulasi jumlah item berdasarkan kapasitas paket dan layanan
                 $capacity = $servicePackage['min_capacity'];
                 $totalPeople = $package_min_capacity;
+                $idservice = $servicePackage['idservice'];
                 $day = $packageDayData['day'];
+                $daymin1 = $day - 1;
 
-                // Menambahkan logika perhitungan totalDay
-                if ($day > 2) {
-                    $totalDay = $day - 1;
-                } elseif ($day <= 2) {
+                if ($idservice == 'S05' || $idservice == 'S16'){
                     $totalDay = 1;
-                } else {
-                    $totalDay = 0;
+                } else if ($idservice == 'S03' || $idservice == 'S11' || $idservice == 'S13'){
+                    $totalDay = $daymin1;
+                } else{
+                    // Menambahkan logika perhitungan totalDay
+                    if ($day >= 2) {
+                        $totalDay = $day;
+                    } elseif ($day <= 2) {
+                        $totalDay = 1;
+                    } else {
+                        $totalDay = 0;
+                    }
                 }
 
                 $numberOfServices = floor($totalPeople / $capacity);

@@ -4,6 +4,7 @@ namespace App\Controllers\Web;
 
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Models\GroupModel;
+use App\Models\AccountModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
 use Myth\Auth\Passwords\Password;
@@ -12,6 +13,7 @@ class Users extends ResourcePresenter
 {
     protected $userModel;
     protected $groupModel;
+    protected $accountModel;
 
 
     /**
@@ -27,7 +29,8 @@ class Users extends ResourcePresenter
     {
         $this->userModel = new UserModel();
         $this->groupModel = new GroupModel();
-        $this->auth   = service('authentication');
+        $this->accountModel = new AccountModel();
+        // $this->auth   = service('authentication');
 
     }
 
@@ -36,9 +39,7 @@ class Users extends ResourcePresenter
      *
      * @return mixed
      */
-    public function index()
-    {
-    }
+    public function index() {}
 
     public function show($id = null)
     {
@@ -82,12 +83,13 @@ class Users extends ResourcePresenter
     {
         $request = $this->request->getPost();
 
-        $id = $this->userModel->get_new_id();
-        
+        // $id = $this->userModel->get_new_id();
+        $newid = $this->accountModel->get_new_id();
+
         $password = '1234567';
-        
+
         $requestData = [
-            'id' => $id,
+            'id' => $newid,
             'username' => $request['username'],
             'email' => $request['email'],
             'password_hash' => '$2y$10$gnvUE.vqFBKC4xwi.xBJTuURWh6ydKh9jUVR4R3T3XojTOST.oIaO',
@@ -95,8 +97,8 @@ class Users extends ResourcePresenter
             'active' => '1'
         ];
 
-        $groupId='1';
-        
+        $groupId = '3';
+
 
         foreach ($requestData as $key => $value) {
             if (empty($value)) {
@@ -104,11 +106,17 @@ class Users extends ResourcePresenter
             }
         }
 
-        $addUS = $this->userModel->add_new_user($requestData);
-        $addUG = $this->groupModel->addUserToGroup($id, $groupId);
+        // $addUS = $this->userModel->add_new_user($requestData);
+        // $addUS = $this->userModel->insert($requestData);
+        // $addUG = $this->groupModel->addUserToGroup($id, $groupId);
+
+        $addUS = $this->userModel->insert($requestData);
+        if ($addUS) {
+            $addUG = $this->accountModel->addUserToGroup($newid, $groupId);
+        }
 
         if ($addUS && $addUG) {
-            session()->setFlashdata('success', 'Admin account "'.$requestData['username'].'" created');
+            session()->setFlashdata('success', 'Admin account "' . $requestData['username'] . '" created');
 
             return redirect()->back();
         } else {
@@ -177,7 +185,7 @@ class Users extends ResourcePresenter
         } else {
             // Data belum ada, jalankan query insert
             $addSP = $this->detailServicePackageModel->add_new_detail_service($id, $requestData);
-       
+
             if ($addSP) {
                 session()->setFlashdata('success', 'Service package added successfully.');
 
@@ -188,21 +196,50 @@ class Users extends ResourcePresenter
         }
     }
 
-    public function delete($id=null)
+    public function deleteobject($id = null)
     {
         $request = $this->request->getPost();
 
-        $package_id=$request['package_id'];
-        $service_package_id=$request['service_package_id'];
-        $name=$request['name'];
-        $status=$request['status'];
+        $id = $request['id'];
+        $array1 = array('id' => $id);
+        $deleteUS = $this->accountModel->delete_user_api($id);
+
+        if ($deleteUS) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete User"
+                ]
+            ];
+            session()->setFlashdata('success', 'User "' . $id . '" Deleted Successfully.');
+
+            return redirect()->to(base_url('dashboard/users'));
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "User failed to delete"
+                ]
+            ];
+            return $this->failNotFound($response);
+        }
+    }
+
+    public function delete($id = null)
+    {
+        $request = $this->request->getPost();
+
+        $package_id = $request['package_id'];
+        $service_package_id = $request['service_package_id'];
+        $name = $request['name'];
+        $status = $request['status'];
 
         $array = array('package_id' => $package_id, 'service_package_id' => $service_package_id, 'status' => $status);
         $detailServicePackage = $this->detailServicePackageModel->where($array)->find();
-        $deleteDSP= $this->detailServicePackageModel->where($array)->delete();
+        $deleteDSP = $this->detailServicePackageModel->where($array)->delete();
 
         if ($deleteDSP) {
-            session()->setFlashdata('success', 'Service "'.$name.'" deleted successfully.');
+            session()->setFlashdata('success', 'Service "' . $name . '" deleted successfully.');
 
             return redirect()->back();
 

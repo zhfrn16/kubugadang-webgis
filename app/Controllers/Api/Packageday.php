@@ -108,6 +108,44 @@ class PackageDay extends ResourceController
         return $this->respond($response);
     }
 
+    public function getDayList($id)
+    {
+        // Ambil data package day
+        $packageDay = $this->packageDayModel->get_package_day_list($id)->getResultArray();
+    
+        // Ambil data combined dari detail_package
+        $combinedData = $this->detailPackageModel->getCombinedDataSimple($id);
+    
+        // Peta untuk menyusun detail berdasarkan day
+        $combinedMap = [];
+        foreach ($combinedData as $detail) {
+            $day = $detail['day'];
+            if (!isset($combinedMap[$day])) {
+                $combinedMap[$day] = [];
+            }
+            $combinedMap[$day][] = $detail;
+        }
+    
+        // Gabungkan data detail ke masing-masing package day
+        foreach ($packageDay as &$dayItem) {
+            $day = $dayItem['day'];
+            $dayItem['details'] = $combinedMap[$day] ?? []; // Tambahkan detail ke elemen array
+        }
+    
+        // Susun response
+        $response = [
+            'data' => $packageDay,
+            'status' => 200,
+            'message' => [
+                "Success display list day information of Package"
+            ]
+        ];
+    
+        return $this->respond($response);
+    }
+    
+
+
     public function findByName()
     {
         $request = $this->request->getPost();
@@ -164,16 +202,14 @@ class PackageDay extends ResourceController
                 ]
             ];
             return $this->respondDeleted($response);
-            } else {
-                $response = [
-                    'status' => 404,
-                    'message' => [
-                        "Package not found"
-                    ]
-                ];
-                return $this->failNotFound($response);
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "Package not found"
+                ]
+            ];
+            return $this->failNotFound($response);
         }
     }
-
-    
 }

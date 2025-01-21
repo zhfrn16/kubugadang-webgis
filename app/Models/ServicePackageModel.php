@@ -27,6 +27,15 @@ class ServicePackageModel extends Model
     public function get_list_service_package() {
         $query = $this->db->table($this->table)
             ->select("*")
+            ->orderBy('name', 'ASC')
+            ->get();
+
+        return $query;
+    }
+
+    public function get_list_service_package_dashboard() {
+        $query = $this->db->table($this->table)
+            ->select("*")
             ->orderBy('id', 'ASC')
             ->get();
 

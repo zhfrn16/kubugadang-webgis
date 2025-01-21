@@ -37,6 +37,84 @@ class DetailPackageModel extends Model
         return $query;
     }
 
+    public function update_activity($packageId, $day, $oldActivity, $newActivity)
+    {
+        return $this->db->table($this->table)
+            ->where('package_id', $packageId)
+            ->where('day', $day)
+            ->where('activity', $oldActivity)
+            ->update(['activity' => $newActivity]);
+    }
+
+
+
+    public function getCombinedDataSimple($package_id)
+    {
+        $culinaryPlaceModel = new CulinaryPlaceModel();
+        $traditionalHouseModel = new TraditionalHouseModel();
+        $souvenirPlaceModel = new SouvenirPlaceModel();
+        $worshipPlaceModel = new WorshipPlaceModel();
+        $facilityModel = new FacilityModel();
+        $attractionModel = new AttractionModel();
+        $eventModel = new EventModel();
+        $homestayModel = new HomestayModel();
+
+        $culinaryData = $culinaryPlaceModel->select('package_id, day, activity, activity_type, object_id, detail_package.status, detail_package.description, name')
+            ->join('detail_package', 'detail_package.object_id=culinary_place.id')
+            ->where('detail_package.package_id', $package_id)
+            ->get()->getResultArray();
+
+        $traditionalData = $traditionalHouseModel->select('package_id, day, ticket_price as traditional_house_price, activity, activity_type, object_id, detail_package.status, detail_package.description, name')
+            ->join('detail_package', 'detail_package.object_id=traditional_house.id')
+            ->where('detail_package.package_id', $package_id)
+            ->get()->getResultArray();
+
+        $souvenirData = $souvenirPlaceModel->select('package_id, day, activity, activity_type, object_id, detail_package.status, detail_package.description, name')
+            ->join('detail_package', 'detail_package.object_id=souvenir_place.id')
+            ->where('detail_package.package_id', $package_id)
+            ->get()->getResultArray();
+
+        $worshipData = $worshipPlaceModel->select('package_id, day, activity, activity_type, object_id, detail_package.status, detail_package.description, name')
+            ->join('detail_package', 'detail_package.object_id=worship_place.id')
+            ->where('detail_package.package_id', $package_id)
+            ->get()->getResultArray();
+
+        $facilityData = $facilityModel->select('package_id, day, activity, activity_type, object_id, detail_package.status, detail_package.description, name')
+            ->join('detail_package', 'detail_package.object_id=facility.id')
+            ->where('detail_package.package_id', $package_id)
+            ->get()->getResultArray();
+
+        $attractionData = $attractionModel->select('package_id, day, activity, price as attraction_price, activity_type, object_id, detail_package.status, detail_package.description, name')
+            ->join('detail_package', 'detail_package.object_id=attraction.id')
+            ->where('detail_package.package_id', $package_id)
+            ->get()->getResultArray();
+
+        $eventData = $eventModel->select('package_id, day, activity, object_id, detail_package.status, activity_type, detail_package.description, name')
+            ->join('detail_package', 'detail_package.object_id=event.id')
+            ->where('detail_package.package_id', $package_id)
+            ->get()->getResultArray();
+
+        $homestayData = $homestayModel->select('package_id, day, activity, object_id, detail_package.status, activity_type, detail_package.description, name')
+            ->join('detail_package', 'detail_package.object_id=homestay.id')
+            ->where('detail_package.package_id', $package_id)
+            ->get()->getResultArray();
+
+        // Gabungkan hasil dari kedua model
+        $combinedData = array_merge($culinaryData, $traditionalData, $souvenirData, $worshipData, $facilityData, $attractionData, $eventData, $homestayData);
+
+        usort($combinedData, function ($a, $b) {
+            $dayComparison = $a['day'] - $b['day']; // Bandingkan secara numerik berdasarkan 'day'
+            if ($dayComparison === 0) {
+                // Jika 'day' sama, bandingkan secara numerik berdasarkan 'activity'
+                return intval($a['activity']) - intval($b['activity']);
+            }
+            // Urutkan berdasarkan 'day' terlebih dahulu
+            return $dayComparison;
+        });
+
+        return $combinedData;
+    }
+
     public function getCombinedData($package_id)
     {
         $culinaryPlaceModel = new CulinaryPlaceModel();
@@ -92,10 +170,10 @@ class DetailPackageModel extends Model
         $combinedData = array_merge($culinaryData, $traditionalData, $souvenirData, $worshipData, $facilityData, $attractionData, $eventData, $homestayData);
 
         usort($combinedData, function ($a, $b) {
-            $dayComparison = strcmp($a['day'], $b['day']);
+            $dayComparison = $a['day'] - $b['day']; // Bandingkan secara numerik berdasarkan 'day'
             if ($dayComparison === 0) {
-                // Jika 'day' sama, bandingkan berdasarkan 'activity'
-                return strcmp($a['activity'], $b['activity']);
+                // Jika 'day' sama, bandingkan secara numerik berdasarkan 'activity'
+                return intval($a['activity']) - intval($b['activity']);
             }
             // Urutkan berdasarkan 'day' terlebih dahulu
             return $dayComparison;
@@ -104,45 +182,7 @@ class DetailPackageModel extends Model
         return $combinedData;
     }
 
-    // public function getCombinedDataPrice($package_id)
-    // {
-    //     $attractionModel = new AttractionModel();
-    //     $traditionalHouseModel = new TraditionalHouseModel();
-    
-    //     // Ambil data harga atraksi dan harga tiket rumah tradisional
-    //     $attractionData = $attractionModel->select('attraction.price as attraction_price')
-    //         ->join('detail_package', 'detail_package.object_id = attraction.id')
-    //         ->where('detail_package.package_id', $package_id)
-    //         ->get()->getResultArray();
-    
-    //     $traditionalHouseData = $traditionalHouseModel->select('traditional_house.ticket_price as traditional_house_price')
-    //         ->join('detail_package', 'detail_package.object_id = traditional_house.id')
-    //         ->where('detail_package.package_id', $package_id)
-    //         ->get()->getResultArray();
-    
-    //     // Inisialisasi variabel untuk total harga
-    //     $combinedDataPrice = 0;
-    
-    //     // Iterasi melalui data atraksi
-    //     foreach ($attractionData as $attraction) {
-    //         // Periksa apakah 'attraction_price' ada dan memiliki nilai
-    //         if (isset($attraction['attraction_price']) && is_numeric($attraction['attraction_price'])) {
-    //             // Tambahkan 'attraction_price' ke total harga
-    //             $combinedDataPrice += $attraction['attraction_price'];
-    //         }
-    //     }
-    
-    //     // Iterasi melalui data tiket rumah tradisional
-    //     foreach ($traditionalHouseData as $traditionalHouse) {
-    //         // Periksa apakah 'traditional_house_price' ada dan memiliki nilai
-    //         if (isset($traditionalHouse['traditional_house_price']) && is_numeric($traditionalHouse['traditional_house_price'])) {
-    //             // Tambahkan 'traditional_house_price' ke total harga
-    //             $combinedDataPrice += $traditionalHouse['traditional_house_price'];
-    //         }
-    //     }
-    
-    //     return $combinedDataPrice;
-    // }
+
 
 
     public function getCombinedDataPrice($package_id = null, $package_min_capacity = null)
@@ -418,10 +458,6 @@ class DetailPackageModel extends Model
         $insert = $this->db->table($this->table)
             ->insert($packageActivity);
         return $insert;
-
-        // $insert = $this->db->table($this->table)
-        //     ->insert($packageActivity);
-        // return $insert;
     }
 
     function get_object()

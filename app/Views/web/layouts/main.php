@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($title); ?> - Kampuang Minang Nagari Sumpu</title>
+    <title><?= esc($title); ?> - Desa Wisata Sumpu</title>
 
     <!-- Template CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/css/main/app.css'); ?>">
@@ -18,9 +18,9 @@
 
     <!-- Third Party CSS and JS -->
     <link rel="stylesheet" href="<?= base_url('assets/css/shared/iconly.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,200,0,0" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -62,7 +62,9 @@
 
     <!-- Template CSS -->
     <script src="<?= base_url('assets/js/app.js'); ?>"></script>
-
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+   
     <!-- Custom JS -->
     <?= $this->renderSection('javascript') ?>
     <script>
@@ -73,14 +75,7 @@
             })
         }, false);
 
-        $('#datepicker').datepicker({
-            format: 'yyyy-mm-dd',
-            startDate: '-3d'
-        });
-        $('#datepickerVH').datepicker({
-            format: 'yyyy-mm-dd',
-            startDate: '-3d'
-        });
+      
     </script>
 </body>
 

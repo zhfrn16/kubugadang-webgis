@@ -38,16 +38,7 @@ class VillageModel extends Model
             ->get();
         return $query;
     }
-
-    public function get_ulakan()
-    {
-        $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
-        $query = $this->db->table($this->table)
-            ->select("id, name, {$coords}")
-            ->where('id', 'V01')
-            ->get();
-        return $query;
-    }
+    
 
     public function get_wilayah($id)
     {

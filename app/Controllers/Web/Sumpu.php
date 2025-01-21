@@ -39,6 +39,7 @@ class Sumpu extends ResourcePresenter
     {
         $contents = $this->sumpuModel->get_sumpu()->getResultArray();
         $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents3 = $this->sumpuModel->get_announcement_info()->getResultArray();
 
         for ($index = 0; $index < count($contents); $index++) {
             $list_gallery = $this->gallerySumpuModel->get_gallery($contents[$index]['id'])->getResultArray();
@@ -53,13 +54,15 @@ class Sumpu extends ResourcePresenter
             'title' => 'Home',
             'data' => $contents,
             'data2' => $contents2,
+            'data3' => $contents3,
+
         ];
         $data2 = [
             'title' => 'Home',
             'data2' => $contents2,
         ];
 
-    
+
         return view('web/info_home', $data);
         return view('web/layouts/header', $data2);
     }
@@ -123,27 +126,27 @@ class Sumpu extends ResourcePresenter
 
         $updateVillage = $this->sumpuModel->update_sumpu($id, $requestData);
 
-          // Handle gallery files
-          if (isset($request['gallery'])) {
+        // Handle gallery files
+        if (isset($request['gallery'])) {
             $folders = $request['gallery'];
             $gallery = array();
             foreach ($folders as $folder) {
                 $filepath = WRITEPATH . 'uploads/' . $folder;
                 $filenames = get_filenames($filepath);
                 $fileImg = new File($filepath . '/' . $filenames[0]);
-    
+
                 // Remove old file with the same name, if exists
                 $existingFile = FCPATH . 'media/photos/sumpu/' . $fileImg->getFilename();
                 if (file_exists($existingFile)) {
                     unlink($existingFile);
                 }
-    
+
                 $fileImg->move(FCPATH . 'media/photos/sumpu');
                 delete_files($filepath);
                 rmdir($filepath);
                 $gallery[] = $fileImg->getFilename();
             }
-    
+
             // Update or add gallery data
             if ($this->gallerySumpuModel->isGalleryExist($id)) {
                 // Update gallery with the new or existing file names
@@ -163,4 +166,93 @@ class Sumpu extends ResourcePresenter
             return redirect()->back()->withInput();
         }
     }
+
+    public function createannouncement()
+    {
+        $request = $this->request->getPost();
+
+        $id = $this->sumpuModel->get_new_announcement_id();
+
+        $requestData = [
+            'id' => $id,
+            'admin_id' => user()->id,
+            'announcement' => $request['announcement'],
+            'status' => $request['status'],
+        ];
+
+        foreach ($requestData as $key => $value) {
+            if (empty($value)) {
+                unset($requestData[$key]);
+            }
+        }
+
+        $addAN = $this->sumpuModel->add_new_announcement($requestData);
+
+        if ($addAN) {
+            return redirect()->back();
+            // return redirect()->to(base_url('dashboard/servicepackage'));
+        } else {
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function updateannouncement($id = null)
+    {
+        $request = $this->request->getPost();
+       
+
+        $requestData = [
+            'announcement' => $request['announcement'],
+            'status' => $request['status'],
+        ];
+
+
+        foreach ($requestData as $key => $value) {
+            if (empty($value)) {
+                unset($requestData[$key]);
+            }
+        }
+
+
+
+        $updateAN = $this->sumpuModel->update_announcement($id, $requestData);
+
+        if ($updateAN) {
+            return redirect()->back();
+        } else {
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function deleteobject($id = null)
+    {
+        $request = $this->request->getPost();  
+
+        $id = $request['id'];    
+        $array1 = array('id' => $id);
+        $deleteAN = $this->sumpuModel->delete_announcement($id);
+
+        if ($deleteAN) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete Announcement"
+                ]
+            ];
+            session()->setFlashdata('success', 'Announcement "' . $id . '" Deleted Successfully.');
+
+            return redirect()->to(base_url('dashboard/homestay'));
+
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "Homestay failed to delete"
+                ]
+            ];
+            return $this->failNotFound($response);
+        }
+    }
+
+    
 }

@@ -11,7 +11,7 @@ class PackageDayModel extends Model
     protected $table = 'package_day';
     protected $primaryKey = 'id';
     protected $returnType = 'array';
-    protected $allowedFields    = ['package_id','day','description', 'status', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['package_id', 'day', 'description', 'status', 'created_at', 'updated_at'];
 
     // Dates
     protected $useTimestamps = true;
@@ -25,8 +25,9 @@ class PackageDayModel extends Model
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
-    public function get_list_package_day($id) {
-        
+    public function get_list_package_day($id)
+    {
+
         $query = $this->db->table($this->table)
             ->select("*")
             ->where('package_id', $id)
@@ -36,8 +37,21 @@ class PackageDayModel extends Model
         return $query;
     }
 
-    public function get_list_package_day_total($id) {
-        
+    public function get_package_day_list($id)
+    {
+
+        $query = $this->db->table($this->table)
+            ->select("*")
+            ->where('package_id', $id)
+            ->orderBy('day', 'ASC')
+            ->get();
+
+        return $query;
+    }
+
+    public function get_list_package_day_total($id)
+    {
+
         $query = $this->db->table($this->table)
             ->select("count(day) as total")
             ->where('package_id', $id)
@@ -70,13 +84,13 @@ class PackageDayModel extends Model
     {
         $query = $this->db->table($this->table)
             ->select("day")
-            ->where('package_id', $package_id) 
+            ->where('package_id', $package_id)
             ->distinct()
             ->get();
 
         return $query;
     }
-    
+
     public function get_package_day_by_id($package_id)
     {
         $query = $this->db->table($this->table)
@@ -94,7 +108,7 @@ class PackageDayModel extends Model
             ->get();
         return $query;
     }
-    
+
     // public function get_new_id()
     // {
     //     $lastId = $this->db->table($this->table)->select('package_id')->orderBy('package_id', 'ASC')->get()->getLastRow('array');
@@ -111,7 +125,7 @@ class PackageDayModel extends Model
             ->get()
             ->getRow();
     }
-    
+
     public function add_new_packageDay($packageDay = null)
     {
         $packageDay['created_at'] = Time::now();
@@ -120,6 +134,26 @@ class PackageDayModel extends Model
             ->insert($packageDay);
         return $insert;
     }
+
+    public function updateday_packageDay($dayold, $packageDay = null)
+    {
+        $packageDay['updated_at'] = Time::now();
+        $update = $this->db->table($this->table)
+            ->where('package_id', $packageDay['package_id'])
+            ->where('day', $dayold)
+            ->update($packageDay);
+        return $update;
+    }
+
+    public function update_packageday($packageId, $oldDay, $data)
+    {
+        return $this->db->table($this->table)
+            ->where('package_id', $packageId)
+            ->where('day', $oldDay)  // Pastikan Anda menggunakan oldDay (day sebelum diupdate)
+            ->update($data);
+    }
+
+
 
     // public function update_packageDay($id = null, $packageDay = null)
     // {

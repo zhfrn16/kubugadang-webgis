@@ -3,7 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
-use App\Models\GtpModel;
+use App\Models\SumpuModel;
 use App\Models\VillageModel;
 use App\Models\KecamatanModel;
 use App\Models\KabkotaModel;
@@ -23,7 +23,7 @@ class Village extends BaseController
 
     public function __construct()
     {
-        $this->gtpModel = new GtpModel();
+        $this->gtpModel = new SumpuModel();
         $this->villageModel = new VillageModel();
         $this->kecamatanModel = new KecamatanModel();
         $this->kabkotaModel = new KabkotaModel();

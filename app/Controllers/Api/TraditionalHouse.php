@@ -57,6 +57,21 @@ class TraditionalHouse extends ResourceController
         return $this->respond($response);
     }
 
+    public function findAll()
+    {
+        $request = $this->request->getPost();
+        $contents = $this->traditionalHouseModel->get_list_th()->getResult();
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success find all traditional house"
+            ]
+        ];
+        return $this->respond($response);
+    }
+
     public function findByRadius()
     {
         $request = $this->request->getPost();

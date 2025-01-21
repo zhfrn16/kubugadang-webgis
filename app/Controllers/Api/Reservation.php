@@ -27,6 +27,8 @@ use CodeIgniter\RESTful\ResourceController;
 use App\Libraries\MY_TCPDF as TCPDF;
 use Myth\Auth\Models\UserModel;
 use DateTime;
+use DatePeriod;
+use DateInterval;
 
 class Reservation extends ResourceController
 {
@@ -83,7 +85,7 @@ class Reservation extends ResourceController
         $this->detailServicePackageModel = new DetailServicePackageModel();
     }
 
-
+ 
     public function payMidtrans($id)
     {
         $reservation_id = str_replace("D", "", $id);
@@ -95,7 +97,7 @@ class Reservation extends ResourceController
         $package = $this->packageModel->get_package_by_id($package_reservation)->getRowArray();
 
         // Set your Merchant Server Key
-        \Midtrans\Config::$serverKey = 'SB-Mid-server-Of1IfaGcLxvAOT-blQIE63_G';
+        \Midtrans\Config::$serverKey = 'SB-Mid-server-XXXXXXX-blQIE63_G';
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
         \Midtrans\Config::$isProduction = false;
         // Set sanitization on (default)
@@ -154,7 +156,7 @@ class Reservation extends ResourceController
         $package = $this->packageModel->get_package_by_id($package_reservation)->getRowArray();
 
         // Set your Merchant Server Key
-        \Midtrans\Config::$serverKey = 'SB-Mid-server-Of1IfaGcLxvAOT-blQIE63_G';
+        \Midtrans\Config::$serverKey = 'SB-Mid-server-XXXXXXX-blQIE63_G';
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
         \Midtrans\Config::$isProduction = false;
         // Set sanitization on (default)
@@ -339,327 +341,464 @@ class Reservation extends ResourceController
     public function chooseHome()
     {
         $request = $this->request->getPost();
-        $checkInDate = $request['checkInDate'];
-        $totalPeople = $request['totalPeople'];
 
-        // $checkInDate = '2024-04-15';
-        // $totalPeople = '10';
+        $checkInDateRequest = $request['checkInDate'];
+        $checkOutDateRequest = $request['checkOutDate'];
+        $totalPeopleRequest = $request['totalPeople'];
 
-        if ($totalPeople < 11) {
+        // $checkOutDateRequest = date('Y-m-d', strtotime($request['checkOutDate'] . " -1 day"));
+
+        // $checkInDate = '2024-11-17';
+        // $checkInDateRequest = '2024-10-25';
+        // $checkOutDateRequest = '2024-10-27';
+        // $totalPeopleRequest = '7';
+        // $checkOutDateRequest2 = '2024-11-19';
+        // $checkInDate = '2024-04-28';
+
+        $totalPeopleInput = $totalPeopleRequest;
+
+        if ($totalPeopleRequest < 11) {
             $calculatePrice = 250000;
-        } else if ($totalPeople > 10) {
+        } else if ($totalPeopleRequest > 10) {
             $calculatePrice = 200000;
         }
 
+        $checkInDateArray = [];
 
-        // $checkExistingData = true;
-        $checkExistingData = $this->detailReservationModel->checkIfUnitReserved($checkInDate);
+        // Menggunakan DatePeriod untuk iterasi setiap tanggal
+        $period = new DatePeriod(
+            new DateTime($checkInDateRequest),
+            new DateInterval('P1D'),
+            new DateTime($checkOutDateRequest) // Check-out tidak termasuk dalam array
+        );
 
-        if (!$checkExistingData) {
+        foreach ($period as $date) {
+            $checkInDateArray[] = $date->format('Y-m-d');
+        }
 
-            $checkNormalOrRating = $this->detailReservationModel->get_normal_or_rating()->getResultArray();
+        $housesPerDay = [];
 
-            // Menghitung total elemen dalam array
-            $total = count($checkNormalOrRating);
+        $canProceed = true;
 
-            // Mengecek apakah totalnya genap atau tidak
-            if ($total % 2 == 0) {
-                $tipe_pemilihan = "Normal";
+        foreach ($checkInDateArray as $checkInDateCheck) {
+            $all_total_date_remaining = $this->unitHomestayModel->get_total_remaining($checkInDateCheck)->getResultArray();
+            $totalDateRemainingMajor = 0;
 
-                $list_homestay = $this->unitHomestayModel->get_available_units()->getResultArray();
+            foreach ($all_total_date_remaining as $unit_total_date_remaining) {
+                $totalDateRemainingMajor = $unit_total_date_remaining['total_remaining'];
+            }
 
-                $homestays = array();
-                foreach ($list_homestay as $homestay) {
-                    $homestays[] = [
-                        'homestay_id' => $homestay['homestay_id'],
-                        'unit_type' => $homestay['unit_type'],
-                        'unit_number' => $homestay['unit_number']
-                    ];
+            // Jika salah satu total remaining lebih kecil dari totalPeopleRequest
+            if ($totalDateRemainingMajor < $totalPeopleRequest) {
+                $canProceed = false;
+                break; // Hentikan pengecekan karena tidak memenuhi syarat
+            }
+        }
+
+
+        if ($canProceed) {
+            foreach ($checkInDateArray as $checkInDate) {
+
+                $totalPeople = $totalPeopleRequest;
+                // $checkExistingData = true;
+                $checkExistingData = $this->detailReservationModel->checkIfUnitReserved($checkInDate);
+
+                // check $totalDateRemainingAll
+                $total_date_remaining = $this->unitHomestayModel->get_total_date_remaining($checkInDate, $checkInDate)->getResultArray();
+                foreach ($total_date_remaining as $unit_total_date_remaining) {
+                    $totalDateRemainingAll = $unit_total_date_remaining['total_remaining'];
                 }
 
-                $response_data = ['houses' => []];
+                if ($totalDateRemainingAll >= $totalPeople) {
+                    // $response = [
+                    //     'status' => 200,
+                    //     'message' => 'Bentrok dengan jadwal tamu lain. Tidak dapat mencarikan unit homestay. Jumlah orang yang akan menginap melebihi kapasitas unit yang tersedia.'
+                    // ];
 
-                foreach ($homestays as $homestay) {
-                    $homestay_id = $homestay['homestay_id'];
-                    $unit_type = $homestay['unit_type'];
-                    $unit_number = $homestay['unit_number'];
+                    if (!$checkExistingData) {
 
-                    $homestayData = $this->homestayModel->get_homestay_by_id_simple($homestay_id)->getRowArray();
 
-                    if (empty($homestayData)) {
-                        continue;
-                    }
+                        $checkNormalOrRating = $this->detailReservationModel->get_normal_or_rating()->getResultArray();
 
-                    // Retrieve facility and gallery details
-                    $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($homestay_id)->getResultArray();
-                    $list_gallery = $this->galleryHomestayModel->get_gallery($homestay_id)->getResultArray();
-                    $galleries = array();
-                    foreach ($list_gallery as $gallery) {
-                        $galleries[] = $gallery['url'];
-                    }
-                    $homestayData['gallery'] = $galleries;
+                        // Menghitung total elemen dalam array
+                        $total = count($checkNormalOrRating);
 
-                    // Retrieve unit details with total reservations
-                    $list_units = $this->unitHomestayModel->unit_tersedia($homestay_id, $unit_type, $unit_number, $checkInDate, $totalPeople)->getResultArray();
+                        // Mengecek apakah totalnya genap atau tidak
+                        if ($total % 2 == 0) {
+                            $tipe_pemilihan = "Normal (Genap)";
 
-                    $units_selected = []; // Array untuk menyimpan unit yang dipilih di setiap homestay
+                            $total_remaining = $this->unitHomestayModel->get_total_date_remaining($checkInDate, $checkInDate)->getResultArray();
+                            foreach ($total_remaining as $unit_total_remaining) {
+                                $total_remaining_all = $unit_total_remaining['total_remaining'];
+                            }
+                            if ($totalPeople > $total_remaining_all) {
+                                $response = [
+                                    'status' => 200,
+                                    'message' => 'Tidak dapat mencarikan unit homestay. Jumlah orang yang akan menginap melebihi kapasitas unit yang tersedia.',
+                                    'totalPeople' => $totalPeopleInput,
+                                    // 'total_remaining_all' => $total_remaining_all,
+                                    'tipe' => $tipe_pemilihan,
 
-                    foreach ($list_units as $unit) {
-                        if ($totalPeople > 0 && $unit['capacity'] > 0) {
-                            $unit_capacity = min($totalPeople, $unit['capacity']);
+                                ];
+                            } else if ($totalPeople < $total_remaining_all or $totalPeople = $total_remaining_all) {
 
-                            $facilities = array();
-                            $unit_number = $unit['unit_number'];
-                            $homestay_id = $unit['homestay_id'];
-                            $unit_type = $unit['unit_type'];
-                            $list_facility = $this->facilityUnitDetailModel->get_data_facility_unit_detail($unit_number, $homestay_id, $unit_type)->getResultArray();
-                            $facilities[] = $list_facility;
-                            $fc = $facilities;
 
-                            $units_selected[] = [
-                                'homestay_id' => $unit['homestay_id'],
-                                'unit_type' => $unit['unit_type'],
-                                'unit_number' => $unit['unit_number'],
-                                'unit_name' => $unit['unit_name'],
-                                'description' => $unit['description'],
-                                // 'price' => $unit['price'],
-                                'price' => $calculatePrice * $unit_capacity,
-                                'room_capacity' => $unit['room_capacity'],
-                                'url' => $unit['url'],
-                                'capacity' => $unit_capacity,
-                                'facility_units' => $fc,
+                                $list_homestay = $this->unitHomestayModel->get_available_units()->getResultArray();
+
+                                $homestays = array();
+                                foreach ($list_homestay as $homestay) {
+                                    $homestays[] = [
+                                        'homestay_id' => $homestay['homestay_id'],
+                                        'unit_type' => $homestay['unit_type'],
+                                        'unit_number' => $homestay['unit_number']
+                                    ];
+                                }
+
+                                $response_data = ['houses' => []];
+
+                                foreach ($homestays as $homestay) {
+                                    $homestay_id = $homestay['homestay_id'];
+                                    $unit_type = $homestay['unit_type'];
+                                    $unit_number = $homestay['unit_number'];
+
+                                    $homestayData = $this->homestayModel->get_homestay_by_id_simple($homestay_id)->getRowArray();
+
+                                    if (empty($homestayData)) {
+                                        continue;
+                                    }
+
+                                    // Retrieve facility and gallery details
+                                    $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($homestay_id)->getResultArray();
+                                    $list_gallery = $this->galleryHomestayModel->get_gallery($homestay_id)->getResultArray();
+                                    $galleries = array();
+                                    foreach ($list_gallery as $gallery) {
+                                        $galleries[] = $gallery['url'];
+                                    }
+                                    $homestayData['gallery'] = $galleries;
+
+                                    // Retrieve unit details with total reservations
+                                    $list_units = $this->unitHomestayModel->unit_tersedia($homestay_id, $unit_type, $unit_number, $checkInDate, $totalPeople)->getResultArray();
+
+                                    $units_selected = []; // Array untuk menyimpan unit yang dipilih di setiap homestay
+
+                                    foreach ($list_units as $unit) {
+                                        if ($totalPeople > 0 && $unit['capacity'] > 0) {
+                                            $unit_capacity = min($totalPeople, $unit['capacity']);
+
+                                            $facilities = array();
+                                            $unit_number = $unit['unit_number'];
+                                            $homestay_id = $unit['homestay_id'];
+                                            $unit_type = $unit['unit_type'];
+                                            $list_facility = $this->facilityUnitDetailModel->get_data_facility_unit_detail($unit_number, $homestay_id, $unit_type)->getResultArray();
+                                            $facilities[] = $list_facility;
+                                            $fc = $facilities;
+
+                                            $units_selected[] = [
+                                                'homestay_id' => $unit['homestay_id'],
+                                                'unit_type' => $unit['unit_type'],
+                                                'unit_number' => $unit['unit_number'],
+                                                'unit_name' => $unit['unit_name'],
+                                                'description' => $unit['description'],
+                                                // 'price' => $unit['price'],
+                                                'price' => $calculatePrice * $unit_capacity,
+                                                'room_capacity' => $unit['room_capacity'],
+                                                'url' => $unit['url'],
+                                                'capacity' => $unit_capacity,
+                                                'facility_units' => $fc,
+                                            ];
+
+                                            $totalPeople -= $unit_capacity;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+
+                                    if (!empty($units_selected)) {
+                                        $response_data['houses'][] = [
+                                            'id' => $homestay_id,
+                                            'name' => $homestayData['name'],
+                                            'gallery' => $homestayData['gallery'],
+                                            'facilities' => $list_facility_rumah,
+                                            'units' => $units_selected,
+                                        ];
+                                    }
+
+                                    if ($totalPeople <= 0) {
+                                        break;
+                                    }
+                                }
+
+                                $housesPerDay[$checkInDate] = $response_data;
+
+                                $response = [
+                                    'status' => 200,
+                                    'message' => 'Success',
+                                    'totalPeople' => $totalPeopleInput,
+                                    // 'total_remaining_all' => $total_remaining_all,
+                                    'tipe' => $tipe_pemilihan,
+                                    'datahome' => $housesPerDay
+                                ];
+                            }
+                        } else if ($total % 2 != 0) {
+                            $tipe_pemilihan = "Rating (Ganjil)";
+
+                            $total_remaining = $this->unitHomestayModel->get_total_date_remaining($checkInDate, $checkInDate)->getResultArray();
+                            foreach ($total_remaining as $unit_total_remaining) {
+                                $total_remaining_all = $unit_total_remaining['total_remaining'];
+                            }
+                            if ($totalPeople > $total_remaining_all) {
+                                $response = [
+                                    'status' => 200,
+                                    'message' => 'Tidak dapat mencarikan unit homestay. Jumlah orang yang akan menginap melebihi kapasitas unit yang tersedia.',
+                                    'totalPeople' => $totalPeopleInput,
+                                    // 'total_remaining_all' => $total_remaining_all,
+                                    'tipe' => $tipe_pemilihan,
+
+                                ];
+                            } else if ($totalPeople < $total_remaining_all or $totalPeople = $total_remaining_all) {
+
+
+                                $list_homestay = $this->unitHomestayModel->get_available_units_by_rating()->getResultArray();
+
+                                $homestays = array();
+                                foreach ($list_homestay as $homestay) {
+                                    $homestays[] = [
+                                        'homestay_id' => $homestay['homestay_id'],
+                                        'unit_type' => $homestay['unit_type'],
+                                        'unit_number' => $homestay['unit_number']
+                                    ];
+                                }
+
+                                $response_data = ['houses' => []];
+
+                                foreach ($homestays as $homestay) {
+                                    $homestay_id = $homestay['homestay_id'];
+                                    $unit_type = $homestay['unit_type'];
+                                    $unit_number = $homestay['unit_number'];
+
+                                    $homestayData = $this->homestayModel->get_homestay_by_id_simple($homestay_id)->getRowArray();
+
+                                    if (empty($homestayData)) {
+                                        continue;
+                                    }
+
+                                    // Retrieve facility and gallery details
+                                    $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($homestay_id)->getResultArray();
+                                    $list_gallery = $this->galleryHomestayModel->get_gallery($homestay_id)->getResultArray();
+                                    $galleries = array();
+                                    foreach ($list_gallery as $gallery) {
+                                        $galleries[] = $gallery['url'];
+                                    }
+                                    $homestayData['gallery'] = $galleries;
+
+                                    // Retrieve unit details with total reservations
+                                    // $list_units = $this->unitHomestayModel->unit_tersedia_by_rating($homestay_id, $unit_type, $unit_number, $checkInDate, $totalPeople)->getResultArray();
+                                    $list_units = $this->unitHomestayModel->unit_tersedia($homestay_id, $unit_type, $unit_number, $checkInDate, $totalPeople)->getResultArray();
+
+                                    $units_selected = []; // Array untuk menyimpan unit yang dipilih di setiap homestay
+
+                                    foreach ($list_units as $unit) {
+                                        if ($totalPeople > 0 && $unit['capacity'] > 0) {
+                                            $unit_capacity = min($totalPeople, $unit['capacity']);
+
+                                            $facilities = array();
+                                            $unit_number = $unit['unit_number'];
+                                            $homestay_id = $unit['homestay_id'];
+                                            $unit_type = $unit['unit_type'];
+                                            $list_facility = $this->facilityUnitDetailModel->get_data_facility_unit_detail($unit_number, $homestay_id, $unit_type)->getResultArray();
+                                            $facilities[] = $list_facility;
+                                            $fc = $facilities;
+
+                                            $units_selected[] = [
+                                                'homestay_id' => $unit['homestay_id'],
+                                                'unit_type' => $unit['unit_type'],
+                                                'unit_number' => $unit['unit_number'],
+                                                'unit_name' => $unit['unit_name'],
+                                                'description' => $unit['description'],
+                                                // 'price' => $unit['price'],
+                                                'price' => $calculatePrice * $unit_capacity,
+                                                'room_capacity' => $unit['room_capacity'],
+                                                'url' => $unit['url'],
+                                                'capacity' => $unit_capacity,
+                                                'facility_units' => $fc,
+                                            ];
+
+                                            $totalPeople -= $unit_capacity;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+
+                                    if (!empty($units_selected)) {
+                                        $response_data['houses'][] = [
+                                            'id' => $homestay_id,
+                                            'name' => $homestayData['name'],
+                                            'gallery' => $homestayData['gallery'],
+                                            'facilities' => $list_facility_rumah,
+                                            'units' => $units_selected
+                                        ];
+                                    }
+
+                                    if ($totalPeople <= 0) {
+                                        break;
+                                    }
+                                }
+
+                                $housesPerDay[$checkInDate] = $response_data;
+
+                                $response = [
+                                    'status' => 200,
+                                    'message' => 'Success',
+                                    'totalPeople' => $totalPeopleInput,
+                                    // 'total_remaining_all' => $total_remaining_all,
+                                    'tipe' => $tipe_pemilihan,
+                                    'datahome' => $housesPerDay
+                                ];
+                            }
+                        }
+                    } else {
+                        $tipe_pemilihan = "Prioritaskan Yang Ada";
+                        // Retrieve list of homestays
+                        // $list_homestay = $this->unitHomestayModel->get_homestay_by_reserved($checkInDate)->getResultArray();
+                        // Retrieve list of homestays based on priority
+
+                        // $total_remaining = $this->unitHomestayModel->get_total_date_remaining($checkInDate, $checkInDate)->getResultArray();
+                        $total_remaining = $this->unitHomestayModel->check_remaining($checkInDate)->getResultArray();
+                        foreach ($total_remaining as $unit_total_remaining) {
+                            $total_remaining_all = $unit_total_remaining['total_remaining'];
+                        }
+                        if ($totalPeople > $total_remaining_all) {
+                            $response = [
+                                'status' => 200,
+                                'message' => 'Tidak dapat mencarikan unit homestay. Jumlah orang yang akan menginap melebihi kapasitas unit yang tersedia.',
+                                'totalPeople' => $totalPeopleInput,
+                                // 'total_remaining_all' => $total_remaining_all,
+                                'tipe' => $tipe_pemilihan,
+
                             ];
+                        } else if ($totalPeople < $total_remaining_all or $totalPeople = $total_remaining_all) {
 
-                            $totalPeople -= $unit_capacity;
-                        } else {
-                            break;
+
+                            $list_homestay = $this->unitHomestayModel->get_homestay_by_prioritas_real($checkInDate)->getResultArray();
+
+                            $homestays = array();
+                            foreach ($list_homestay as $homestay) {
+                                $homestays[] = [
+                                    'homestay_id' => $homestay['homestay_id'],
+                                    'unit_type' => $homestay['unit_type'],
+                                    'unit_number' => $homestay['unit_number'],
+                                    'room_capacity' => $homestay['room_capacity'],
+                                    'url' => $homestay['url'],
+                                    'unit_remaining' => $homestay['unit_remaining'],
+                                    'unit_name' => $homestay['unit_name']
+                                ];
+                            }
+
+
+                            $response_data = ['houses' => []];
+
+                            // Loop hasil query SQL (yang berisi 9 baris data unit)
+                            foreach ($homestays as $unit) {
+                                $homestay_id = $unit['homestay_id'];
+                                $unit_type = $unit['unit_type'];
+                                $unit_number = $unit['unit_number'];
+
+                                // Dapatkan detail homestay
+                                $homestay = $this->homestayModel->get_homestay_by_id_simple($homestay_id)->getRowArray();
+                                if (empty($homestay)) {
+                                    continue;
+                                }
+
+                                // Dapatkan detail fasilitas homestay dan galeri
+                                $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($homestay_id)->getResultArray();
+                                $list_gallery = $this->galleryHomestayModel->get_gallery($homestay_id)->getResultArray();
+                                $galleries = array_column($list_gallery, 'url');
+
+
+
+                                // Sesuaikan harga dan kapasitas unit
+                                $unit_capacity = min($totalPeople, $unit['unit_remaining']);
+                                $unit_price = $calculatePrice * $unit_capacity;
+
+                                $facilities = array();
+                                $unit_number = $unit['unit_number'];
+                                $homestay_id = $unit['homestay_id'];
+                                $unit_type = $unit['unit_type'];
+                                $list_facility = $this->facilityUnitDetailModel->get_data_facility_unit_detail($unit_number, $homestay_id, $unit_type)->getResultArray();
+                                $facilities[] = $list_facility;
+                                $fc = $facilities;
+
+                                // Tambahkan unit ke dalam array `houses`
+                                $response_data['houses'][] = [
+                                    'id' => $homestay_id,
+                                    'name' => $homestay['name'],
+                                    'gallery' => $galleries,
+                                    'facilities' => $list_facility_rumah,
+                                    'units' => [
+                                        [
+                                            'homestay_id' => $unit['homestay_id'],
+                                            'unit_type' => $unit['unit_type'],
+                                            'unit_number' => $unit['unit_number'],
+                                            'unit_name' => $unit['unit_name'],
+                                            'price' => $unit_price,
+                                            'room_capacity' => $unit['room_capacity'],
+                                            'url' => $unit['url'],
+                                            'capacity' => $unit_capacity,
+                                            // 'facility_units' => $list_facility,
+                                            'facility_units' => $fc,
+                                        ]
+                                    ]
+
+                                ];
+
+                                // Kurangi jumlah tamu yang tersisa
+                                $totalPeople -= $unit_capacity;
+
+                                // Hentikan loop jika jumlah tamu sudah mencukupi
+                                if ($totalPeople <= 0) {
+                                    break;
+                                }
+                            }
+
+
+                            // Respon API dengan unit-unit yang dipilih
+                            // $response = [
+                            //     'status' => 200,
+                            //     'message' => 'Success',
+                            //     'totalPeople' => $totalPeopleInput,
+                            //     'total_remaining_all' => $total_remaining_all,
+                            //     'tipe' => $tipe_pemilihan,
+                            //     'datahome' => $response_data,
+
+                            // ];
+
+                            $housesPerDay[$checkInDate] = $response_data;
                         }
                     }
-
-                    if (!empty($units_selected)) {
-                        $response_data['houses'][] = [
-                            'id' => $homestay_id,
-                            'name' => $homestayData['name'],
-                            'gallery' => $homestayData['gallery'],
-                            'facilities' => $list_facility_rumah,
-                            'units' => $units_selected,
-                        ];
-                    }
-
-                    if ($totalPeople <= 0) {
-                        break;
-                    }
+                } else if ($totalDateRemainingAll < $totalPeople) {
+                    $response = [
+                        'status' => 200,
+                        'message' => 'Bentrok dengan jadwal tamu lain. Tidak dapat mencarikan unit homestay. Jumlah orang yang akan menginap melebihi kapasitas unit yang tersedia.'
+                    ];
                 }
 
                 $response = [
                     'status' => 200,
                     'message' => 'Success',
+                    'totalPeople' => $totalPeopleInput,
+                    // 'total_remaining_all' => $total_remaining_all,
                     'tipe' => $tipe_pemilihan,
-                    'datahome' => $response_data,
-                ];
-            } else if ($total % 2 != 0) {
-                $tipe_pemilihan = "Rating";
+                    'datahome' => $housesPerDay
 
-                $list_homestay = $this->unitHomestayModel->get_available_units_by_rating()->getResultArray();
-
-                $homestays = array();
-                foreach ($list_homestay as $homestay) {
-                    $homestays[] = [
-                        'homestay_id' => $homestay['homestay_id'],
-                        'unit_type' => $homestay['unit_type'],
-                        'unit_number' => $homestay['unit_number']
-                    ];
-                }
-
-                $response_data = ['houses' => []];
-
-                foreach ($homestays as $homestay) {
-                    $homestay_id = $homestay['homestay_id'];
-                    $unit_type = $homestay['unit_type'];
-                    $unit_number = $homestay['unit_number'];
-
-                    $homestayData = $this->homestayModel->get_homestay_by_id_simple($homestay_id)->getRowArray();
-
-                    if (empty($homestayData)) {
-                        continue;
-                    }
-
-                    // Retrieve facility and gallery details
-                    $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($homestay_id)->getResultArray();
-                    $list_gallery = $this->galleryHomestayModel->get_gallery($homestay_id)->getResultArray();
-                    $galleries = array();
-                    foreach ($list_gallery as $gallery) {
-                        $galleries[] = $gallery['url'];
-                    }
-                    $homestayData['gallery'] = $galleries;
-
-                    // Retrieve unit details with total reservations
-                    // $list_units = $this->unitHomestayModel->unit_tersedia_by_rating($homestay_id, $unit_type, $unit_number, $checkInDate, $totalPeople)->getResultArray();
-                    $list_units = $this->unitHomestayModel->unit_tersedia($homestay_id, $unit_type, $unit_number, $checkInDate, $totalPeople)->getResultArray();
-
-                    $units_selected = []; // Array untuk menyimpan unit yang dipilih di setiap homestay
-
-                    foreach ($list_units as $unit) {
-                        if ($totalPeople > 0 && $unit['capacity'] > 0) {
-                            $unit_capacity = min($totalPeople, $unit['capacity']);
-
-                            $facilities = array();
-                            $unit_number = $unit['unit_number'];
-                            $homestay_id = $unit['homestay_id'];
-                            $unit_type = $unit['unit_type'];
-                            $list_facility = $this->facilityUnitDetailModel->get_data_facility_unit_detail($unit_number, $homestay_id, $unit_type)->getResultArray();
-                            $facilities[] = $list_facility;
-                            $fc = $facilities;
-
-                            $units_selected[] = [
-                                'homestay_id' => $unit['homestay_id'],
-                                'unit_type' => $unit['unit_type'],
-                                'unit_number' => $unit['unit_number'],
-                                'unit_name' => $unit['unit_name'],
-                                'description' => $unit['description'],
-                                // 'price' => $unit['price'],
-                                'price' => $calculatePrice * $unit_capacity,
-                                'room_capacity' => $unit['room_capacity'],
-                                'url' => $unit['url'],
-                                'capacity' => $unit_capacity,
-                                'facility_units' => $fc,
-                            ];
-
-                            $totalPeople -= $unit_capacity;
-                        } else {
-                            break;
-                        }
-                    }
-
-                    if (!empty($units_selected)) {
-                        $response_data['houses'][] = [
-                            'id' => $homestay_id,
-                            'name' => $homestayData['name'],
-                            'gallery' => $homestayData['gallery'],
-                            'facilities' => $list_facility_rumah,
-                            'units' => $units_selected,
-                        ];
-                    }
-
-                    if ($totalPeople <= 0) {
-                        break;
-                    }
-                }
-
-                $response = [
-                    'status' => 200,
-                    'message' => 'Success',
-                    'tipe' => $tipe_pemilihan,
-                    'datahome' => $response_data,
                 ];
             }
         } else {
-            // Retrieve list of homestays
-            // $list_homestay = $this->unitHomestayModel->get_homestay_by_reserved($checkInDate)->getResultArray();
-            // Retrieve list of homestays based on priority
-            $list_homestay = $this->unitHomestayModel->get_homestay_by_prioritas_real($checkInDate)->getResultArray();
-
-            $homestays = array();
-            foreach ($list_homestay as $homestay) {
-                $homestays[] = [
-                    'homestay_id' => $homestay['homestay_id'],
-                    'unit_type' => $homestay['unit_type'],
-                    'unit_number' => $homestay['unit_number']
-                ];
-            }
-
-
-            $response_data = ['houses' => []];
-
-            foreach ($homestays as $homestay) {
-                $homestay_id = $homestay['homestay_id'];
-                $unit_type = $homestay['unit_type'];
-                $unit_number = $homestay['unit_number'];
-
-                $homestay = $this->homestayModel->get_homestay_by_id_simple($homestay_id)->getRowArray();
-
-                if (empty($homestay)) {
-                    continue;
-                }
-
-                // Retrieve facility and gallery details
-                $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($homestay_id)->getResultArray();
-                $list_gallery = $this->galleryHomestayModel->get_gallery($homestay_id)->getResultArray();
-                $galleries = array();
-                foreach ($list_gallery as $gallery) {
-                    $galleries[] = $gallery['url'];
-                }
-                $homestay['gallery'] = $galleries;
-
-                // Retrieve unit details with total reservations
-                // $list_units = $this->unitHomestayModel->unit_tersedia($homestay_id, $unit_type, $unit_number, $checkInDate, $totalPeople)->getResultArray();
-                $list_units = $this->unitHomestayModel->get_homestay_by_prioritas_real($checkInDate)->getResultArray();
-
-                // $list_units = $this->unitHomestayModel->unit_tersedia($homestay_id, $checkInDate, $totalPeople)->getResultArray();
-
-                $units_selected = []; // Inisialisasi ulang array untuk menyimpan unit yang dipilih di setiap homestay
-
-                foreach ($list_units as $unit) {
-                    // Cek jika kapasitas unit mencukupi untuk jumlah tamu yang tersisa
-                    if ($totalPeople > 0 && $unit['unit_remaining'] > 0) {
-                        // Tentukan kapasitas unit yang akan dipilih (maksimum antara kapasitas unit dan jumlah tamu yang tersisa)
-                        $unit_capacity = min($totalPeople, $unit['unit_remaining']);
-
-                        $facilities = array();
-                        $unit_number = $unit['unit_number'];
-                        $homestay_id = $unit['homestay_id'];
-                        $unit_type = $unit['unit_type'];
-                        $list_facility = $this->facilityUnitDetailModel->get_data_facility_unit_detail($unit_number, $homestay_id, $unit_type)->getResultArray();
-                        $facilities[] = $list_facility;
-                        $fc = $facilities;
-
-                        // Tambahkan unit yang dipilih ke dalam array
-                        $units_selected[] = [
-                            'homestay_id' => $unit['homestay_id'],
-                            'unit_type' => $unit['unit_type'],
-                            'unit_number' => $unit['unit_number'],
-                            'unit_name' => $unit['unit_name'],
-                            'description' => $unit['description'],
-                            'price' => $calculatePrice * $unit_capacity,
-                            'room_capacity' => $unit['room_capacity'],
-                            'url' => $unit['url'],
-                            'capacity' => $unit_capacity,
-                            'facility_units' => $fc,
-                            // Tambahan data lainnya sesuai kebutuhan
-                        ];
-
-                        // Kurangi jumlah tamu yang tersisa dengan kapasitas unit yang dipilih
-                        $totalPeople -= $unit_capacity;
-                    } else {
-                        // Jika tidak ada tamu yang tersisa atau kapasitas unit tidak mencukupi, keluar dari loop
-                        break;
-                    }
-                }
-
-                if (!empty($units_selected)) {
-                    $response_data['houses'][] = [
-                        'id' => $homestay_id,
-                        'name' => $homestay['name'],
-                        'gallery' => $homestay['gallery'],
-                        'facilities' => $list_facility_rumah,
-                        'units' => $units_selected,
-                    ];
-                }
-
-                // Jika jumlah tamu sudah mencukupi, keluar dari loop homestay
-                if ($totalPeople <= 0) {
-                    break;
-                }
-            }
-
-            // Respon API dengan unit-unit yang dipilih
             $response = [
                 'status' => 200,
-                'message' => 'Success',
-                'datahome' => $response_data,
-
+                'message' => 'Bentrok dengan jadwal tamu lain pada salah satu hari. Tidak dapat mencarikan unit homestay. Jumlah orang yang akan menginap melebihi kapasitas unit yang tersedia.'
             ];
         }
+
 
         return $this->respond($response, $response['status']);
     }
@@ -990,158 +1129,6 @@ class Reservation extends ResourceController
     }
 
 
-
-    //     public function statistictersedia2()
-    // {
-    //     $checkInDate = '2024-04-17';
-    //     $totalPeople = 10;
-
-    //     $list_homestay = $this->unitHomestayModel->get_available_units()->getResultArray();
-    //     $response_data = ['houses' => []];
-
-    //     foreach ($list_homestay as $homestay) {
-    //         $homestay_id = $homestay['homestay_id'];
-    //         $unit_type = $homestay['unit_type'];
-    //         $unit_number = $homestay['unit_number'];
-
-    //         $homestayData = $this->homestayModel->get_homestay_by_id_simple($homestay_id)->getRowArray();
-
-    //         if (empty($homestayData)) {
-    //             continue;
-    //         }
-
-    //         // Retrieve facility and gallery details
-    //         $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($homestay_id)->getResultArray();
-    //         $list_gallery = $this->galleryHomestayModel->get_gallery($homestay_id)->getResultArray();
-    //         $galleries = [];
-    //         foreach ($list_gallery as $gallery) {
-    //             $galleries[] = $gallery['url'];
-    //         }
-    //         $homestayData['gallery'] = $galleries;
-
-    //         // Retrieve unit details with total reservations
-    //         $list_units = $this->unitHomestayModel->unit_tersedia2($homestay_id, $unit_type, $unit_number, $checkInDate, $totalPeople);
-
-    //         // Initialize array to store selected units
-    //         $units_selected = [];
-
-    //         // Initialize variable to store totalPeople remaining
-    //         $totalPeopleRemaining = $totalPeople;
-
-    //         // Check if there are still totalPeople remaining
-    //         if ($totalPeopleRemaining > 0) {
-    //             // Iterate through available units to find units with total capacity equal to totalPeople
-    //             foreach ($list_units as $unit) {
-    //                 // Determine the capacity of the selected unit
-    //                 $unit_capacity = $unit['capacity'];
-
-    //                 // Check if the capacity of the unit matches the totalPeople remaining
-    //                 if ($unit_capacity == $totalPeopleRemaining) {
-    //                     // Add the selected unit to the array
-    //                     $units_selected[] = [
-    //                         'homestay_id' => $unit['homestay_id'],
-    //                         'unit_type' => $unit['unit_type'],
-    //                         'unit_number' => $unit['unit_number'],
-    //                         'unit_name' => $unit['unit_name'],
-    //                         'description' => $unit['description'],
-    //                         'price' => $unit['price'],
-    //                         'room_capacity' => $unit_capacity,
-    //                         'totalPeopleRemaining' => 0, // No more people remaining
-    //                         'url' => $unit['url'],
-    //                         // Additional data as needed
-    //                     ];
-
-    //                     // Update totalPeopleRemaining to 0 as all people have been accommodated
-    //                     $totalPeopleRemaining = 0;
-
-    //                     // Exit the loop since the required units have been found
-    //                     break;
-    //                 }
-    //             }
-    //         }
-
-    //         // Add the selected units to the response data
-    //         if (empty($units_selected)) {
-    //             $response_data['houses'][] = [
-    //                 'id' => $homestay_id,
-    //                 'name' => $homestayData['name'],
-    //                 // 'gallery' => $homestayData['gallery'],
-    //                 // 'facilities' => $list_facility_rumah,
-    //                 'units' => $units_selected,
-    //             ];
-    //         }
-
-    //         // If all totalPeople have been accommodated, exit the homestay loop
-    //         if ($totalPeopleRemaining <= 0) {
-    //             break;
-    //         }
-    //     }
-
-    //     // API response with selected units
-    //     $response = [
-    //         'status' => 200,
-    //         'message' => 'Success',
-    //         'datahome' => $response_data,
-    //     ];
-
-    //     return $this->respond($response, $response['status']);
-    // }
-
-    // public function chooseCustomHome()
-    // {
-    //     $request = $this->request->getPost();
-    //     $checkInDate = $request['checkInDate'];
-    //     $totalPeople = $request['totalPeople'];
-
-    //     $list_homestay = $this->unitHomestayModel->get_homestay_by_custom($totalPeople)->getResultArray();
-    //     $homestays = array();
-    //     foreach ($list_homestay as $homestay) {
-    //         $homestays[] = $homestay['homestay_id'];
-    //     }
-
-
-    //     foreach ($homestays as $homestay_id) {
-    //         $homestay = $this->homestayModel->get_homestay_by_id($homestay_id)->getRowArray();
-
-    //         if (empty($homestay)) {
-    //             continue;
-    //         }
-
-    //         $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($homestay_id)->getResultArray();
-    //         $list_gallery = $this->galleryHomestayModel->get_gallery($homestay_id)->getResultArray();
-    //         $galleries = array();
-    //         foreach ($list_gallery as $gallery) {
-    //             $galleries[] = $gallery['url'];
-    //         }
-    //         $homestay['gallery'] = $galleries;
-
-    //         if ($totalPeople < 11) {
-    //             $list_unit = $this->unitHomestayModel->get_unit_homestay_with_gallery_custom_medium($homestay_id, $checkInDate, $totalPeople)->getResultArray();
-    //         } else {
-    //             $list_unit = $this->unitHomestayModel->get_unit_homestay_with_gallery_large($homestay_id, $checkInDate, $totalPeople)->getResultArray();
-    //         }
-
-
-    //         // Add data for the current Homestay to the response
-    //         $response_data['houses'][] = [
-    //             'id' => $homestay_id,
-    //             'name' => $homestay['name'],
-    //             'gallery' => $homestay['gallery'],
-    //             'facilities' => $list_facility_rumah,
-    //             'units' => $list_unit,
-    //         ];
-    //     }
-
-    //     $response = [
-    //         'status' => 200,
-    //         'message' => 'Success',
-    //         'data' => $list_homestay,
-    //         'datachoose' => $homestays,
-    //         'datahome' => $response_data,
-    //     ];
-
-    //     return $this->respond($response, 200);
-    // }
 
     public function chooseCustomHome()
     {
@@ -1485,21 +1472,22 @@ class Reservation extends ResourceController
         // Add detail reservation
         if (isset($request['homestays'])) {
             $homestays = $request['homestays'];
-            $check_in = date('Y-m-d', strtotime($request['check_in']));
-            $check_out = date('Y-m-d', strtotime($request['check_out']));
+            // $check_in = date('Y-m-d', strtotime($request['check_in']));
+            // $check_out = date('Y-m-d', strtotime($request['check_out']));
 
-            $date_booking = array();
-            $current_date = $check_in;
+            // $date_booking = array();
+            // $current_date = $check_in;
 
-            while (strtotime($current_date) < strtotime($check_out)) {
-                $date_booking[] = date('Y-m-d', strtotime($current_date));
-                $current_date = date('Y-m-d', strtotime($current_date . " +1 day"));
-            }
+            // while (strtotime($current_date) < strtotime($check_out)) {
+            //     $date_booking[] = date('Y-m-d', strtotime($current_date));
+            //     $current_date = date('Y-m-d', strtotime($current_date . " +1 day"));
+            // }
 
-            foreach ($date_booking as $db) {
+            // foreach ($date_booking as $db) {
                 foreach ($homestays as $homestay) {
                     $requestData = [
-                        'date' => $db,
+                        // 'date' => $db,
+                        'date' => $homestay['date'],
                         'homestay_id' => $homestay['homestay_id'],
                         'unit_type' => $homestay['unit_type'],
                         'unit_number' => $homestay['unit_number'],
@@ -1511,7 +1499,7 @@ class Reservation extends ResourceController
                     // Add detail reservation
                     // $this->detailReservationModel->add_new_detail_reservation2($requestData);
                     $this->detailReservationModel->add_new_detail_reservation($requestData);
-                }
+                // }
             }
         }
 
@@ -1754,19 +1742,19 @@ class Reservation extends ResourceController
 
                 $email = \Config\Services::email();
                 $email->setTo($customerEmail);
-                $email->setSubject('Reservasi Anda di ' . $villageName);
+                $email->setSubject('Your Reservation at ' . $villageName . ' ' . $reservation_id);
 
-                $message = "<p>Yth. $customerName,</p>";
-                $message .= "<p>Terima kasih telah melakukan reservasi di $villageName!</p>";
-                $message .= "<p>Reservasi Anda telah disimpan dengan detail sebagai berikut:</p><br>";
-                $message .= "<p><span style='display: inline-block; width: 150px;'>ID Reservasi</span>: $reservation_id</p>";
-                $message .= "<p><span style='display: inline-block; width: 150px;'>Nama Paket</span>: $packageName</p>";
-                $message .= "<p><span style='display: inline-block; width: 150px;'>Tanggal Reservasi</span>: $reservation_date</p>";
-                $message .= "<p><span style='display: inline-block; width: 150px;'>Waktu Reservasi</span>: $reservation_time WIB</p>";
+                $message = "<p>Dear $customerName,</p>";
+                $message .= "<p>Thank you for making a reservation at $villageName!</p>";
+                $message .= "<p>Your reservation has been saved with the following details:</p><br>";
+                $message .= "<p><span style='display: inline-block; width: 150px;'>Reservation ID</span>: $reservation_id</p>";
+                $message .= "<p><span style='display: inline-block; width: 150px;'>Package Name</span>: $packageName</p>";
+                $message .= "<p><span style='display: inline-block; width: 150px;'>Reservation Date</span>: $reservation_date</p>";
+                $message .= "<p><span style='display: inline-block; width: 150px;'>Reservation Time</span>: $reservation_time WIB</p>";
                 $message .= "<p><span style='display: inline-block; width: 150px;'>Note</span>: $note</p>";
                 $message .= "<p><span style='display: inline-block; width: 150px;'>Status</span>: WAITING</p><br>";
-                $message .= "<p>Konfirmasi atas reservasi ini akan segera diproses.</p><br>";
-                $message .= "<p>Salam,</p>";
+                $message .= "<p>We will process the confirmation for this reservation immediately.</p><br>";
+                $message .= "<p>Best regards,</p>";
                 $message .= "<p>Pokdarwis $villageName</p>";
 
                 $email->setMessage($message);
@@ -1782,19 +1770,19 @@ class Reservation extends ResourceController
 
                     $email2 = \Config\Services::email();
                     $email2->setTo($villageEmail);
-                    $email2->setSubject('Reservasi Baru ' . $villageName);
+                    $email2->setSubject('New Reservation for ' . $villageName . ' ' . $reservation_id);
 
-                    $message = "<p>Halo Admin,</p>";
-                    $message .= "<p>Anda menerima notifikasi bahwa ada reservasi baru yang telah dibuat oleh pengguna. Berikut ini adalah rinciannya:</p><br>";
-                    $message .= "<p><span style='display: inline-block; width: 150px;'>ID Reservasi</span>: $reservation_id</p>";
+                    $message = "<p>Hello Admin,</p>";
+                    $message .= "<p>You receive a notification that a new reservation has been made by a customer. Here are the details:</p><br>";
+                    $message .= "<p><span style='display: inline-block; width: 150px;'>Reservation ID</span>: $reservation_id</p>";
                     $message .= "<p><span style='display: inline-block; width: 150px;'>Customer</span>: $customerName</p>";
-                    $message .= "<p><span style='display: inline-block; width: 150px;'>Nama Paket</span>: $packageName</p>";
-                    $message .= "<p><span style='display: inline-block; width: 150px;'>Tanggal Reservasi</span>: $reservation_date</p>";
-                    $message .= "<p><span style='display: inline-block; width: 150px;'>Waktu Reservasi</span>: $reservation_time WIB</p>";
+                    $message .= "<p><span style='display: inline-block; width: 150px;'>Package Name</span>: $packageName</p>";
+                    $message .= "<p><span style='display: inline-block; width: 150px;'>Reservation Date</span>: $reservation_date</p>";
+                    $message .= "<p><span style='display: inline-block; width: 150px;'>Reservation Time</span>: $reservation_time WIB</p>";
                     $message .= "<p><span style='display: inline-block; width: 150px;'>Note</span>: $note</p>";
                     $message .= "<p><span style='display: inline-block; width: 150px;'>Status</span>: WAITING</p><br>";
-                    $message .= "<p>Silakan segera melakukan tindak lanjut atas reservasi ini.</p>";
-                    $message .= "<p>Terima kasih.</p>";
+                    $message .= "<p>Please follow up on this reservation immediately.</p>";
+                    $message .= "<p>Thank you.</p>";
 
                     $email2->setMessage($message);
                     $email2->setMailType('html');
