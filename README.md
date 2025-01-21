@@ -5,10 +5,18 @@
 - Get repository `Download as ZIP`
 - Extract and open folder
 - Run `composer install` on terminal
-- Rename file `env` to `.env`
+- Rename file `env` to `.env` or just use '.env' file in this folder instead
 - Inside file `.env`, set `CI_ENVIRONMENT = development`
-- Insde file `.env`, set `app.baseURL = 'http://localhost:8080/'`
+- Inside file `.env`, set `app.baseURL = 'http://localhost:8080/'`
+- Change $SMTPUser and $SMTPPass at Email.php
+- Change $serverKey Midtrans at Reservation.php and DetailReservation.php
+- Change api key OpenWaetherMap at web.js
 - Run `php spark serve` on terminal
+
+| Username     | Password    |
+| ------------ | ----------- |
+| `adminsumpu` | `1234567`   |
+| `wulan`      | `wisudades` |
 
 Template Route at `\App\Config\Route.php`
 Template Controller at `\app\Controller\Home.php`
