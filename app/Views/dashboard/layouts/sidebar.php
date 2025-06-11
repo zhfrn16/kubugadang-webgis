@@ -35,6 +35,7 @@ $uri3 = $uri[3] ?? '';
                             <i class="fa-solid fa-house"></i><span> Home</span>
                         </a>
                     </li>
+                    
 
 
                     <!-- <?php if (in_groups(['admin']) || in_groups(['master'])) :
@@ -68,15 +69,6 @@ $uri3 = $uri[3] ?? '';
                         </li>
                     <?php endif;
                     ?>
-
-                    <?php if (in_groups(['admin']) || in_groups(['master'])) : ?>
-                        <li class="sidebar-item <?= ($uri1 == 'managereservation') ? 'active' : '' ?>">
-                            <a href="<?= base_url('dashboard/managereservation'); ?>" class="sidebar-link">
-                                <i class="fa-solid fa-bullhorn"></i><span>Manage Reservation</span>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-
                    
 
                     <!-- <?php if (in_groups(['admin']) || in_groups(['master'])) :
@@ -122,16 +114,22 @@ $uri3 = $uri[3] ?? '';
                                 </li>
                             </ul>
                         </li>
-                    <?php endif;
-                    ?>
-
-
-                    <?php if (in_groups(['admin']) || in_groups(['master'])) : ?>
                         <li class="sidebar-item <?= ($uri1 == 'homestay') ? 'active' : '' ?>">
                             <a href="<?= base_url('dashboard/homestay'); ?>" class="sidebar-link">
                                 <i class="fa-solid fa-bed"></i><span>Manage Homestay</span>
                             </a>
                         </li>
+                        <li class="sidebar-item <?= ($uri1 == 'event') ? 'active' : '' ?>">
+                            <a href="<?= base_url('dashboard/event'); ?>" class="sidebar-link">
+                                <i class="fa-solid fa-bed"></i><span>Manage Event</span>
+                            </a>
+                        </li>
+                    <?php endif;
+                    ?>
+
+
+                    <?php if (in_groups(['admin']) || in_groups(['master'])) : ?>
+
                     <?php endif; ?>
 
                     <?php if (in_groups(['master'])) :
