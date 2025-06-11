@@ -63,7 +63,7 @@
     <div class="row justify-content-center align-items-center m-0" style="background-color: #2d499d">
         <div class="col">
             <p class="text-center text-white"><?= date('Y');
-                                                ?> &copy; Rivonny Wulandari</p>
+                                                ?> &copy; M. Hadi Zahfran</p>
         </div>
     </div>
   
