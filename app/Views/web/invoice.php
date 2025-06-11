@@ -202,7 +202,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
 
 <?php if ($detail['type_of_payment'] == 1) : ?>
     <p><u>TRANSFER VIA</u></p>
-    <p>Bank Syariah Mandiri (BSI) - Kode 451: IDR<br />A/C : 12345678<br />A/N : Kampuang Minang Nagari Sumpu</p>
+    <p>Bank Syariah Mandiri (BSI) - Kode 451: IDR<br />A/C : 12345678<br />A/N : Desa Wisata Kubu Gadang</p>
 <?php elseif ($detail['type_of_payment'] == 2) : ?>
     <p><u>TRANSFER VIA MIDTRANS PAYMENT GATEWAY</u></p>
 <?php endif; ?>
@@ -299,7 +299,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s');
             <p>Tanah Datar, <?= esc(date('j F Y', $date_now)); ?></p>
             <p>Best regards,</p>
             <p></p>
-            <p>Pokdarwis Kampuang Minang Nagari Sumpu</p>
+            <p>Pokdarwis Desa Wisata Kubu Gadang</p>
         </td>
     </tr>
 </table>

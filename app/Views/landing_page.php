@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Desa Wisata Kampuang Minang Nagari Sumpu</title>
+    <title>Desa Wisata Desa Wisata Kubu Gadang</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="keywords" />
     <meta content="" name="description" />
@@ -107,7 +107,7 @@
                         Welcome to
                     </h2>
                     <h1 class="display-4 text-light mb-5">
-                        Desa Wisata<br>Kampuang Minang<br>Nagari Sumpu
+                        Desa Wisata<br>Kubu Gadang<br>
                     </h1>
                     <div class="d-flex align-items-center pt-4 animated slideInDown">
                         <a href="/web" class="btn btn-primary py-sm-3 px-3 px-sm-5 me-5">Explore</a>
@@ -163,13 +163,13 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <p><span class="text-primary me-2">#</span>Welcome To Desa Wisata Kampuang Minang Nagari Sumpu</p>
+                    <p><span class="text-primary me-2">#</span>Welcome To Desa Wisata Desa Wisata Kubu Gadang</p>
                     <h1 class="display-5 mb-4">
                         Why You Should Visit
                         Desa Wisata <br><span class="text-primary">Kampuang Minang <br>Nagari Sumpu</span>
                     </h1>
                     <p class="mb-4">
-                        Kampuang Minang Nagari Sumpu is located in Nagari Sumpur, South Batipuh District, Tanah Datar Regency, West Sumatra, north of Lake Singkarak, which is fed by Batang Sumpu. To get to Kampuang Minang Nagari Sumpu, it is estimated to take about 2 hours from Minangkabau International Airport. In Kampuang Minang Nagari Sumpu there are cultural tours with about 70 traditional houses called Rumah Gadang and several historical sites. Out of the many Rumah Gadang, there are 3 Rumah Gadang that have been used as a homestay for the tourists who visit Kampuang Minang Nagari Sumpu. </p>
+                        Desa Wisata Kubu Gadang is located in Nagari Sumpur, South Batipuh District, Tanah Datar Regency, West Sumatra, north of Lake Singkarak, which is fed by Batang Sumpu. To get to Desa Wisata Kubu Gadang, it is estimated to take about 2 hours from Minangkabau International Airport. In Desa Wisata Kubu Gadang there are cultural tours with about 70 traditional houses called Rumah Gadang and several historical sites. Out of the many Rumah Gadang, there are 3 Rumah Gadang that have been used as a homestay for the tourists who visit Desa Wisata Kubu Gadang. </p>
                     <h5 class="mb-3">
                         <a href="#map" class="text-reset" onclick="showMap('aLSA');">
                             <i class="far fa-check-circle text-primary me-3"></i>Lake Singkarak Tourism
@@ -444,7 +444,7 @@
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Rivonny Wulandari</a>, All
+                        &copy; <a class="border-bottom" href="#">M. Hadi Zahfran</a>, All
                         Right Reserved.
                     </div>
                 </div>

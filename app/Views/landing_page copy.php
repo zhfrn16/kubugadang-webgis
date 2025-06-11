@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Desa Wisata Kampuang Minang Nagari Sumpu</title>
+    <title>Desa Wisata Desa Wisata Kubu Gadang</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="keywords" />
     <meta content="" name="description" />
@@ -161,13 +161,13 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <p><span class="text-primary me-2">#</span>Welcome To Desa Wisata Kampuang Minang Nagari Sumpu</p>
+                    <p><span class="text-primary me-2">#</span>Welcome To Desa Wisata Desa Wisata Kubu Gadang</p>
                     <h1 class="display-5 mb-4">
                         Why You Should Visit
                         Desa Wisata <br><span class="text-primary">Kampuang Minang <br>Nagari Sumpu</span>
                     </h1>
                     <p class="mb-4">
-                        Kampuang Minang Nagari Sumpu is located in Nagari Sumpur, South Batipuh District, Tanah Datar Regency, West Sumatra, just north of Lake Singkarak, which is fed by the Batang Sumpu stream. To get to Kampuang Minang Nagari Sumpu, it is estimated to travel from Minangkabau International Airport for about 2 hours. In Kampuang Minang Nagari Sumpu there are cultural tours with about 70 gadang houses and several historical sites. Of the many gadang houses, there are 3 gadang houses that have been used as homestays for tourists visiting Kampuang Minang Nagari Sumpu.
+                        Desa Wisata Kubu Gadang is located in Nagari Sumpur, South Batipuh District, Tanah Datar Regency, West Sumatra, just north of Lake Singkarak, which is fed by the Batang Sumpu stream. To get to Desa Wisata Kubu Gadang, it is estimated to travel from Minangkabau International Airport for about 2 hours. In Desa Wisata Kubu Gadang there are cultural tours with about 70 gadang houses and several historical sites. Of the many gadang houses, there are 3 gadang houses that have been used as homestays for tourists visiting Desa Wisata Kubu Gadang.
                     </p>
                     <h5 class="mb-3">
                         <a href="#map" class="text-reset" onclick="showMap('a');">
@@ -279,7 +279,7 @@
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Rivonny Wulandari</a>, All
+                        &copy; <a class="border-bottom" href="#">M. Hadi Zahfran</a>, All
                         Right Reserved.
                     </div>
                 </div>

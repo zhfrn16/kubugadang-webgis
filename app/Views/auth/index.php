@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?= esc($title); ?> - Desa Wisata Kampuang Minang Nagari Sumpu</title>
+    <title><?= esc($title); ?> - Desa Wisata Desa Wisata Kubu Gadang</title>
 
     <!-- Favicon -->
     <link href="media/icon/favicon.svg" rel="icon" />
