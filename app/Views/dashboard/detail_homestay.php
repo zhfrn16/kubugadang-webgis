@@ -32,7 +32,7 @@
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h4 class="card-title text-center">Rumah Gadang Information</h4>
+                            <h4 class="card-title text-center">Homestay Information</h4>
                         </div>
                         <div class="col-auto">
                             <a href="<?= base_url('dashboard/homestay'); ?>/<?= esc($data['id']); ?>/edit" class="btn btn-primary float-end"><i class="fa-solid fa-pencil me-3"></i>Edit</a>
@@ -100,7 +100,7 @@
                     <div class="row">
                         <div class="col-3"> </div>
                         <div class="col-6">                            
-                            <h4 class="card-title text-center">Rumah Gadang Unit</h4>
+                            <h4 class="card-title text-center">Homestay Unit</h4>
                         </div>
                         <div class="col-3">
                             <a href="<?= base_url('dashboard/unithomestay/new'); ?>/<?= $data['id']; ?>" class="btn btn-primary float-end"><i class="fa fa-add"></i> Manage</a>
