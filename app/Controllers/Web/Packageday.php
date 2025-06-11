@@ -4,7 +4,7 @@ namespace App\Controllers\Web;
 
 use App\Models\PackageDayModel;
 use App\Models\PackageModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\DetailPackageModel;
 use App\Models\DetailServicePackageModel;
 
@@ -28,7 +28,7 @@ class PackageDay extends ResourcePresenter
 
     protected $packageDayModel;
     protected $packageModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $detailPackageModel;
     protected $culinaryPlaceModel;
     protected $traditionalHouseModel;
@@ -56,7 +56,7 @@ class PackageDay extends ResourcePresenter
     {
         $this->packageDayModel = new PackageDayModel();
         $this->packageModel = new PackageModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->detailPackageModel = new DetailPackageModel();
         $this->culinaryPlaceModel = new CulinaryPlaceModel();
         $this->traditionalHouseModel = new TraditionalHouseModel();
@@ -106,7 +106,7 @@ class PackageDay extends ResourcePresenter
      */
     public function newday($id)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $package = $this->packageModel->get_package_by_id($id)->getRowArray();
         $package_id = $package['id'];
@@ -259,7 +259,7 @@ class PackageDay extends ResourcePresenter
 
     public function edit($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $sp = $this->packageDayModel->get_servicePackage_by_id($id)->getRowArray();
         if (empty($sp)) {

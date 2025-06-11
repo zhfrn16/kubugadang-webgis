@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\ReservationModel;
 use App\Models\BackupDetailReservationModel;
 use App\Models\DetailReservationModel;
@@ -37,7 +37,7 @@ class Reservation extends ResourceController
     protected $backupDetailReservationModel;
     protected $detailServicePackageModel;
     protected $detailReservationModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $reservationModel;
     protected $homestayModel;
     protected $unitHomestayModel;
@@ -65,7 +65,7 @@ class Reservation extends ResourceController
 
     public function __construct()
     {
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->reservationModel = new ReservationModel();
         $this->detailReservationModel = new DetailReservationModel();
         $this->detailPackageModel = new DetailPackageModel();
@@ -1516,7 +1516,7 @@ class Reservation extends ResourceController
             $packageName = $package['name'];
 
 
-            $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+            $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
             if ($villageEmailData) {
                 $villageName = $villageEmailData['name'];
 
@@ -1525,9 +1525,9 @@ class Reservation extends ResourceController
 
                 // set document information
                 $pdf->SetCreator(PDF_CREATOR);
-                $pdf->SetAuthor('Kampuang Minang Nagari Sumpu');
-                $pdf->SetTitle('PDF Invoice Kampuang Minang Nagari Sumpu');
-                $pdf->SetSubject('Kampuang Minang Nagari Sumpu');
+                $pdf->SetAuthor('Desa Wisata Kubu Gadang');
+                $pdf->SetTitle('PDF Invoice Desa Wisata Kubu Gadang');
+                $pdf->SetSubject('Desa Wisata Kubu Gadang');
                 $pdf->SetKeywords('TCPDF, PDF, invoice, pesonasumpu.online');
 
 

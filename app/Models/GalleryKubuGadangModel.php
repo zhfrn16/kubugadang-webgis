@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class GallerySumpuModel extends Model
+class GalleryKubuGadangModel extends Model
 {
     protected $DBGroup = 'default';
     protected $table = 'gallery_tourism_village';

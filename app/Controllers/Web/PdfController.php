@@ -92,9 +92,9 @@ class PdfController extends ResourcePresenter
 
         // set document information
         $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Kampuang Minang Nagari Sumpu');
-        $pdf->SetTitle('PDF Invoice Kampuang Minang Nagari Sumpu');
-        $pdf->SetSubject('Kampuang Minang Nagari Sumpu');
+        $pdf->SetAuthor('Desa Wisata Kubu Gadang');
+        $pdf->SetTitle('PDF Invoice Desa Wisata Kubu Gadang');
+        $pdf->SetSubject('Desa Wisata Kubu Gadang');
         $pdf->SetKeywords('TCPDF, PDF, invoice, pesonasumpu.online');
 
 

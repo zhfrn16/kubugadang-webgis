@@ -3,7 +3,7 @@
 namespace App\Controllers\Web;
 
 use App\Models\ReservationModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\PackageDayModel;
 use App\Models\AccountModel;
 use CodeIgniter\RESTful\ResourcePresenter;
@@ -13,7 +13,7 @@ use DateTime;
 class ManageReservation extends ResourcePresenter
 {
     protected $reservationModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $packageDayModel;
     protected $accountModel;
     /**
@@ -28,7 +28,7 @@ class ManageReservation extends ResourcePresenter
     public function __construct()
     {
         $this->reservationModel = new ReservationModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->packageDayModel = new PackageDayModel();
         $this->accountModel = new AccountModel();
     }
@@ -41,7 +41,7 @@ class ManageReservation extends ResourcePresenter
     public function index()
     {
         $datareservation = $this->reservationModel->get_list_reservation()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         foreach ($datareservation as &$item) { 
             $check_in = $item['check_in'];
@@ -110,7 +110,7 @@ class ManageReservation extends ResourcePresenter
     public function show($id = null)
     {
         $detail_reservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         if (empty($detail_reservation)) {
             return redirect()->to(substr(current_url(), 0, -strlen($id)));

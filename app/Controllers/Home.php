@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\AccountModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\PackageModel;
 use App\Models\GalleryPackageModel;
 use CodeIgniter\Session\Session;
@@ -20,7 +20,7 @@ class Home extends BaseController
     protected $auth;
     protected $userModel;
     protected $accountModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $packageModel;
     protected $galleryPackageModel;
 
@@ -41,7 +41,7 @@ class Home extends BaseController
         $this->auth = service('authentication');
         $this->userModel = new UserModel();
         $this->accountModel = new AccountModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->packageModel = new PackageModel();
         $this->galleryPackageModel = new GalleryPackageModel();
     }
@@ -108,7 +108,7 @@ class Home extends BaseController
 
     public function profile()
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'My Profile',
@@ -122,7 +122,7 @@ class Home extends BaseController
     public function update()
     {
         // $acc = $this->accountModel->get_profil(user()->id)->getRowArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Update Profile',
@@ -224,7 +224,7 @@ class Home extends BaseController
 
     public function changePassword()
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Change Password',

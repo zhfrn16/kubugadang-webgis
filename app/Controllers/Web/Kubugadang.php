@@ -8,7 +8,7 @@ use App\Models\GalleryKubuGadangModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
 
-class Sumpu extends ResourcePresenter
+class Kubugadang extends ResourcePresenter
 {
     protected $KubuGadangModel;
     protected $galleryKubuGadangModel;

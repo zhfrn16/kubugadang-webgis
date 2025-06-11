@@ -4,7 +4,7 @@ namespace App\Controllers\Web;
 
 use App\Models\AttractionModel;
 use App\Models\GalleryAttractionModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
 
@@ -12,7 +12,7 @@ class Attraction extends ResourcePresenter
 {
     protected $attractionModel;
     protected $galleryAttractionModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
 
     /**
      * Instance of the main Request object.
@@ -25,7 +25,7 @@ class Attraction extends ResourcePresenter
 
     public function __construct()
     {
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->attractionModel = new AttractionModel();
         $this->galleryAttractionModel = new GalleryAttractionModel();
     }
@@ -54,7 +54,7 @@ class Attraction extends ResourcePresenter
     public function show($id = null)
     {
         $attraction = $this->attractionModel->get_attraction_by_id($id)->getRowArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         if (empty($attraction)) {
             return redirect()->to(substr(current_url(), 0, -strlen($id)));

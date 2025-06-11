@@ -3,7 +3,7 @@
 namespace App\Controllers\Web;
 
 use App\Models\CulinaryPlaceModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\GalleryCulinaryPlaceModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
@@ -12,7 +12,7 @@ class CulinaryPlace extends ResourcePresenter
 {
     protected $culinaryPlaceModel;
     protected $galleryCulinaryPlaceModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
 
     protected $helpers = ['auth', 'url', 'filesystem'];
 
@@ -20,7 +20,7 @@ class CulinaryPlace extends ResourcePresenter
     {
         $this->culinaryPlaceModel = new CulinaryPlaceModel();
         $this->galleryCulinaryPlaceModel = new GalleryCulinaryPlaceModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
     }
 
     /**
@@ -53,7 +53,7 @@ class CulinaryPlace extends ResourcePresenter
     public function show($id = null)
     {
         $cp = $this->culinaryPlaceModel->get_cp_by_id($id)->getRowArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         if (empty($cp)) {
             return redirect()->to(substr(current_url(), 0, -strlen($id)));

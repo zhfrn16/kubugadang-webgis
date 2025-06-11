@@ -54,7 +54,7 @@ $routes->group('web', function ($routes) {
 // App
 $routes->group('web', ['namespace' => 'App\Controllers\Web'], function ($routes) {
 
-    $routes->get('/', 'Sumpu::index');
+    $routes->get('/', 'KubuGadang::index');
     // $routes->get('getprice', 'Reservation::getprice');
     $routes->get('all', 'Dashboard::all', ['filter' => 'login']);
     $routes->get('package/extend/(:any)', 'Package::extend/$1', ['filter' => 'login']);
@@ -68,8 +68,9 @@ $routes->group('web', ['namespace' => 'App\Controllers\Web'], function ($routes)
     $routes->presenter('attraction');
     $routes->presenter('event');
     $routes->presenter('package');
-    $routes->presenter('sumpu');
-    $routes->presenter('sumpur');
+    $routes->presenter('kubugadang');
+    // $routes->presenter('sumpu');
+    // $routes->presenter('sumpur');
     $routes->presenter('explore');
     $routes->resource('explore');
     $routes->get('mypackage', 'Explore::exploremypackage', ['filter' => 'login']);

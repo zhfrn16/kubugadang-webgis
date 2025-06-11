@@ -3,7 +3,7 @@
 namespace App\Controllers\Web;
 
 use App\Models\PackageModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\PackageDayModel;
 use App\Models\DetailPackageModel;
 use App\Models\GalleryPackageModel;
@@ -29,7 +29,7 @@ use CodeIgniter\Files\File;
 class Package extends ResourcePresenter
 {
     protected $packageModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $detailPackageModel;
     protected $packageDayModel;
     protected $galleryPackageModel;
@@ -62,7 +62,7 @@ class Package extends ResourcePresenter
     public function __construct()
     {
         $this->packageModel = new PackageModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->packageDayModel = new PackageDayModel();
         $this->detailPackageModel = new DetailPackageModel();
         $this->galleryPackageModel = new GalleryPackageModel();
@@ -95,7 +95,7 @@ class Package extends ResourcePresenter
     public function index()
     {
         $contents = $this->packageModel->get_list_package_default()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         // $i=0;
         foreach ($contents as &$package) {
@@ -135,7 +135,7 @@ class Package extends ResourcePresenter
 
     public function show($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $package = $this->packageModel->get_package_by_id($id)->getRowArray();
         if (empty($package)) {
@@ -178,7 +178,7 @@ class Package extends ResourcePresenter
 
     public function detailpackage($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $package = $this->packageModel->get_package_by_id($id)->getRowArray();
         if (empty($package)) {
@@ -226,7 +226,7 @@ class Package extends ResourcePresenter
      */
     public function new()
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $type = $this->packageTypeModel->get_list_package_type()->getResultArray();
         $servicelist = $this->servicePackageModel->get_list_service_package()->getResultArray();
@@ -344,7 +344,7 @@ class Package extends ResourcePresenter
 
     public function edit($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $package = $this->packageModel->get_package_by_id($id)->getRowArray();
         if (empty($package)) {
@@ -758,7 +758,7 @@ class Package extends ResourcePresenter
 
     public function extend($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $package = $this->packageModel->get_package_by_id($id)->getRowArray();
         if (empty($package)) {
@@ -832,7 +832,7 @@ class Package extends ResourcePresenter
 
     public function custompackage($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $package = $this->packageModel->get_package_by_id($id)->getRowArray();
         if (empty($package)) {
@@ -906,7 +906,7 @@ class Package extends ResourcePresenter
 
     public function custom($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $package = $this->packageModel->get_package_by_id($id)->getRowArray();
         if (empty($package)) {
@@ -980,7 +980,7 @@ class Package extends ResourcePresenter
 
     public function listmobile()
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $list_package = $this->packageModel->get_list_package_default_mobile()->getResultArray();
         $packages = [];

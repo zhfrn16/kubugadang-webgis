@@ -7,16 +7,16 @@ use App\Models\GalleryKubuGadangModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
 
-class Sumpu extends ResourceController
+class KubuGadang extends ResourceController
 {
     use ResponseTrait;
 
-    protected $KubuGadangModel;
+    protected $kubuGadangModel;
     protected $galleryKubuGadangModel;
 
     public function __construct()
     {
-        $this->KubuGadangModel = new KubuGadangModel();
+        $this->kubuGadangModel = new KubuGadangModel();
         $this->galleryKubuGadangModel = new GalleryKubuGadangModel();
     }
 
@@ -27,7 +27,7 @@ class Sumpu extends ResourceController
      */
     public function index()
     {
-        $contents = $this->KubuGadangModel->get_sumpu()->getResultArray();
+        $contents = $this->kubuGadangModel->get_kubuGadang()->getResultArray();
 
         for ($index = 0; $index < count($contents); $index++) {
             $list_gallery = $this->galleryKubuGadangModel->get_gallery($contents[$index]['id'])->getResultArray();
@@ -51,13 +51,13 @@ class Sumpu extends ResourceController
 
     public function show($id = null)
     {
-        $sumpu = $this->KubuGadangModel->get_sumpu_marker($id)->getRowArray();
+        $kubuGadang = $this->kubuGadangModel->get_kubuGadang_marker($id)->getRowArray();
 
         $response = [
-            'data' => $sumpu,
+            'data' => $kubuGadang,
             'status' => 200,
             'message' => [
-                "Success display detail information of Sumpu"
+                "Success display detail information of KubuGadang"
             ]
         ];
         return $this->respond($response);
@@ -65,7 +65,7 @@ class Sumpu extends ResourceController
 
     public function tourismVillageInfo()
     {
-        $contents = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
+        $contents = $this->kubuGadangModel->get_desa_wisata_info()->getResultArray();
         $response = [
             'data' => $contents,
             'status' => 200,
@@ -79,7 +79,7 @@ class Sumpu extends ResourceController
 
     public function getIdProvince()
     {
-        $contents = $this->KubuGadangModel->get_id_province_desa_wisata_info()->getResultArray();
+        $contents = $this->kubuGadangModel->get_id_province_desa_wisata_info()->getResultArray();
 
         $response = [
             'data' => $contents,
@@ -95,7 +95,7 @@ class Sumpu extends ResourceController
     public function deleteannouncement($id = null)
     {
         
-        $deleteAN = $this->KubuGadangModel->delete_announcement($id);
+        $deleteAN = $this->kubuGadangModel->delete_announcement($id);
         if ($deleteAN) {
             $response = [
                 'status' => 200,

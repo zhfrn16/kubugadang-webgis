@@ -4,7 +4,7 @@ namespace App\Controllers\Web;
 
 use App\Models\TraditionalHouseModel;
 use App\Models\GalleryTraditionalHouseModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
 
@@ -12,13 +12,13 @@ class TraditionalHouse extends ResourcePresenter
 {
     protected $traditionalHouseModel;
     protected $galleryTraditionalHouseModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
 
     protected $helpers = ['auth', 'url', 'filesystem'];
 
     public function __construct()
     {
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->traditionalHouseModel = new TraditionalHouseModel();
         $this->galleryTraditionalHouseModel = new GalleryTraditionalHouseModel();
     }
@@ -53,7 +53,7 @@ class TraditionalHouse extends ResourcePresenter
     public function show($id = null)
     {
         $th = $this->traditionalHouseModel->get_th_by_id($id)->getRowArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         if (empty($th)) {
             return redirect()->to(substr(current_url(), 0, -strlen($id)));

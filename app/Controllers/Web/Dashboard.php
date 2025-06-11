@@ -2,10 +2,10 @@
 
 namespace App\Controllers\Web;
 
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\AccountModel;
 use Myth\Auth\Models\UserModel;
-use App\Models\GallerySumpuModel;
+use App\Models\GalleryKubuGadangModel;
 use App\Models\AttractionModel;
 use App\Models\EventModel;
 use App\Models\PackageModel;
@@ -23,11 +23,11 @@ use App\Controllers\BaseController;
 class Dashboard extends BaseController
 {
     protected $gtpModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $userModel;
     protected $accountModel;
     protected $galleryGtpModel;
-    protected $gallerySumpuModel;
+    protected $galleryKubuGadangModel;
     protected $attractionModel;
     protected $eventModel;
     protected $packageModel;
@@ -45,8 +45,8 @@ class Dashboard extends BaseController
 
     public function __construct()
     {
-        $this->sumpuModel = new SumpuModel();
-        $this->gallerySumpuModel = new GallerySumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
+        $this->galleryKubuGadangModel = new GalleryKubuGadangModel();
         $this->userModel = new UserModel();
         $this->accountModel = new AccountModel();
         $this->attractionModel = new AttractionModel();
@@ -95,10 +95,10 @@ class Dashboard extends BaseController
 
     public function sumpu()
     {
-        $contents = $this->sumpuModel->get_sumpu()->getRowArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents = $this->KubuGadangModel->get_sumpu()->getRowArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
-        $list_gallery = $this->gallerySumpuModel->get_all_gallery()->getResultArray();
+        $list_gallery = $this->galleryKubuGadangModel->get_all_gallery()->getResultArray();
         $galleries = array();
         foreach ($list_gallery as $gallery) {
             $galleries[] = $gallery['url'];
@@ -116,11 +116,11 @@ class Dashboard extends BaseController
 
     public function users()
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
         // $contentsAdmin = $this->userModel->get_admin()->getResultArray();
         $contentsAdmin = $this->accountModel->get_list_admin_api()->getResultArray();
         $contentsCostumer = $this->accountModel->get_list_user_api()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Users',
@@ -136,8 +136,8 @@ class Dashboard extends BaseController
 
     public function announcement()
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
-        $contents3 = $this->sumpuModel->get_announcement_all()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
+        $contents3 = $this->KubuGadangModel->get_announcement_all()->getResultArray();
 
 
         $data = [
@@ -178,7 +178,7 @@ class Dashboard extends BaseController
     public function attraction()
     {
         $contents = $this->attractionModel->get_list_attraction()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Attraction',
@@ -193,7 +193,7 @@ class Dashboard extends BaseController
     public function event()
     {
         $contents = $this->eventModel->get_list_event()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Event',
@@ -208,7 +208,7 @@ class Dashboard extends BaseController
     public function package()
     {
         $contents = $this->packageModel->get_list_package()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Package',
@@ -223,7 +223,7 @@ class Dashboard extends BaseController
     public function facility()
     {
         $contents = $this->facilityModel->get_list_facility()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Facility',
@@ -239,7 +239,7 @@ class Dashboard extends BaseController
     public function culinaryplace()
     {
         $contents = $this->culinaryPlaceModel->get_list_cp()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Culinary Place',
@@ -255,7 +255,7 @@ class Dashboard extends BaseController
     public function traditionalhouse()
     {
         $contents = $this->traditionalHouseModel->get_list_th()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Traditional House',
@@ -272,7 +272,7 @@ class Dashboard extends BaseController
     public function souvenirplace()
     {
         $contents = $this->souvenirPlaceModel->get_list_sp()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Souvenir Place',
@@ -287,7 +287,7 @@ class Dashboard extends BaseController
     public function worshipplace()
     {
         $contents = $this->worshipPlaceModel->get_list_wp()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Worship Place',
@@ -303,7 +303,7 @@ class Dashboard extends BaseController
     {
         // $contents = $this->servicePackageModel->get_list_service_package()->getResultArray();
         $contents = $this->servicePackageModel->get_list_service_package_dashboard()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Service Package',
@@ -319,7 +319,7 @@ class Dashboard extends BaseController
     public function facilitytype()
     {
         $contents = $this->facilityTypeModel->get_list_facility_type()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Facility Type',
@@ -335,7 +335,7 @@ class Dashboard extends BaseController
     public function packagetype()
     {
         $contents = $this->packageTypeModel->get_list_package_type()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Package Type',
@@ -351,7 +351,7 @@ class Dashboard extends BaseController
     public function homestay()
     {
         $contents = $this->homestayModel->get_list_homestay()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Manage Homestay',

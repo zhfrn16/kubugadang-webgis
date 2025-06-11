@@ -17,7 +17,7 @@ class MY_TCPDF extends TCPDF {
         // Set font
         $this->SetFont('helvetica', 'B', 11);
         $this->SetX(40);
-        $this->Cell(0, 2, 'Kampuang Minang Nagari Sumpu', 0, 1, '', 0, '', 0);
+        $this->Cell(0, 2, 'Desa Wisata Kubu Gadang', 0, 1, '', 0, '', 0);
         // Title
         $this->SetFont('helvetica', '', 9);
         $this->SetX(40);

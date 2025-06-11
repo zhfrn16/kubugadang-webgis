@@ -3,7 +3,7 @@
 namespace App\Controllers\Web;
 
 use App\Models\FacilityModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\GalleryFacilityModel;
 use App\Models\FacilityTypeModel;
 use CodeIgniter\RESTful\ResourcePresenter;
@@ -12,7 +12,7 @@ use CodeIgniter\Files\File;
 class Facility extends ResourcePresenter
 {
     protected $facilityModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $galleryFacilityModel;
     protected $facilityTypeModel;
 
@@ -28,7 +28,7 @@ class Facility extends ResourcePresenter
     public function __construct()
     {
         $this->facilityModel = new FacilityModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->galleryFacilityModel = new GalleryFacilityModel();
         $this->facilityTypeModel = new FacilityTypeModel();
     }
@@ -45,7 +45,7 @@ class Facility extends ResourcePresenter
     public function show($id = null)
     {
         $fc = $this->facilityModel->get_facility_by_id($id)->getRowArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         if (empty($fc)) {
             return redirect()->to(substr(current_url(), 0, -strlen($id)));

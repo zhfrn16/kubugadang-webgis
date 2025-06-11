@@ -4,7 +4,7 @@ namespace App\Controllers\Api;
 
 use App\Models\KecamatanModel;
 use App\Models\VillageModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\PackageModel;
 use App\Models\GalleryPackageModel;
 use App\Models\PackageDayModel;
@@ -19,7 +19,7 @@ class Explore extends ResourceController
 
     protected $kecamatanModel;
     protected $villageModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $packageModel;
     protected $galleryPackageModel;
     protected $packageDayModel;
@@ -31,7 +31,7 @@ class Explore extends ResourceController
     {
         $this->kecamatanModel = new KecamatanModel();
         $this->villageModel = new VillageModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->packageModel = new PackageModel();
         $this->galleryPackageModel = new GalleryPackageModel();
         $this->packageDayModel = new PackageDayModel();
@@ -49,7 +49,7 @@ class Explore extends ResourceController
 
         $kecamatanModel =  new KecamatanModel();
         $kecamatans = $this->villageModel->findAll(); // Ambil semua data kecamatan
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $list_package = $this->packageModel->get_list_package_explore()->getResultArray();
         $packages = [];
@@ -100,7 +100,7 @@ class Explore extends ResourceController
 
         $kecamatanModel =  new KecamatanModel();
         $kecamatans = $this->villageModel->findAll(); // Ambil semua data kecamatan
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $user_id = user()->id;
 
@@ -222,7 +222,7 @@ class Explore extends ResourceController
 
         $kecamatanModel =  new KecamatanModel();
         $kecamatans = $this->villageModel->findAll(); // Ambil semua data kecamatan
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $list_package = $this->packageModel->get_list_package_explore()->getResultArray();
         $packages = [];
@@ -273,7 +273,7 @@ class Explore extends ResourceController
 
         $kecamatanModel =  new KecamatanModel();
         $kecamatans = $this->villageModel->findAll(); // Ambil semua data kecamatan
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $user_id = user()->id;
 

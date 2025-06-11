@@ -3,7 +3,7 @@
 namespace App\Controllers\Web;
 
 use App\Models\HomestayModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\GalleryHomestayModel;
 use App\Models\GalleryUnitModel;
 use App\Models\UnitHomestayModel;
@@ -18,7 +18,7 @@ use CodeIgniter\Files\File;
 class Homestay extends ResourcePresenter
 {
     protected $homestayModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $galleryHomestayModel;
     protected $galleryUnitModel;
     protected $unitHomestayModel;
@@ -33,7 +33,7 @@ class Homestay extends ResourcePresenter
     public function __construct()
     {
         $this->homestayModel = new HomestayModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->galleryHomestayModel = new GalleryHomestayModel();
         $this->galleryUnitModel = new GalleryUnitModel();
         $this->unitHomestayModel = new UnitHomestayModel();
@@ -51,7 +51,7 @@ class Homestay extends ResourcePresenter
      */
     public function index()
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
         $contents = $this->homestayModel->get_list_homestay()->getResultArray();
 
         $data = [
@@ -66,7 +66,7 @@ class Homestay extends ResourcePresenter
     public function indexhomestay()
     {
         $contents = $this->homestayModel->get_list_homestay_homestay()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         foreach ($contents as &$package) {
             $id = $package['id'];
@@ -102,7 +102,7 @@ class Homestay extends ResourcePresenter
      public function show($id = null)
      {
          $homestay = $this->homestayModel->get_homestay_by_id($id)->getRowArray();
-         $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
  
          if (empty($homestay)) {
              return redirect()->to(substr(current_url(), 0, -strlen($id)));
@@ -168,7 +168,7 @@ class Homestay extends ResourcePresenter
      
     public function new()
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $facility = $this->facilityHomestayModel->get_list_facility_homestay()->getResultArray();
         $id = $this->homestayModel->get_new_id();
@@ -280,7 +280,7 @@ class Homestay extends ResourcePresenter
 
     public function edit($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $facility = $this->facilityHomestayModel->get_list_facility_homestay()->getResultArray();
 

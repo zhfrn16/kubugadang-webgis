@@ -3,14 +3,14 @@
 namespace App\Controllers\Web;
 
 use App\Models\PackageTypeModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
 
 class PackageType extends ResourcePresenter
 {
     protected $packageTypeModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
 
     /**
      * Instance of the main Request object.
@@ -24,7 +24,7 @@ class PackageType extends ResourcePresenter
     public function __construct()
     {
         $this->packageTypeModel = new PackageTypeModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
 
     }
 
@@ -39,7 +39,7 @@ class PackageType extends ResourcePresenter
 
     public function show($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $pt = $this->packageTypeModel->get_package_type_by_id($id)->getRowArray();
 
@@ -66,7 +66,7 @@ class PackageType extends ResourcePresenter
      */
     public function new()
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
         $packageType = $this->packageTypeModel->get_list_package_type()->getResultArray();
 
         $data = [
@@ -113,7 +113,7 @@ class PackageType extends ResourcePresenter
 
     public function edit($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $pt = $this->packageTypeModel->get_package_type_by_id($id)->getRowArray();
 

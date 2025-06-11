@@ -20,7 +20,7 @@ use App\Models\SouvenirPlaceModel;
 use App\Models\AttractionModel;
 use App\Models\EventModel;
 use App\Models\HomestayModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\ServicePackageModel;
 
 use App\Libraries\MY_TCPDF as TCPDF;
@@ -51,7 +51,7 @@ class DetailReservation extends ResourcePresenter
     protected $attractionModel;
     protected $eventModel;
     protected $homestayModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $accountModel;
     protected $userModel;
 
@@ -84,7 +84,7 @@ class DetailReservation extends ResourcePresenter
         $this->attractionModel = new AttractionModel();
         $this->eventModel = new EventModel();
         $this->homestayModel = new HomestayModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->accountModel = new AccountModel();
         $this->galleryPackageModel = new GalleryPackageModel();
         $this->userModel = new UserModel();
@@ -544,10 +544,10 @@ class DetailReservation extends ResourcePresenter
     public function show($id = null)
     {
         $contents = $this->packageModel->get_list_package_distinct()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $datareservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
-        $datatourismvillage = $this->sumpuModel->get_sumpu()->getResultArray();
+        $datatourismvillage = $this->KubuGadangModel->get_sumpu()->getResultArray();
         $package_reservation = $datareservation['package_id'];
 
         //detail package 
@@ -749,10 +749,10 @@ class DetailReservation extends ResourcePresenter
     {
         $id = 'R0029'; 
         $contents = $this->packageModel->get_list_package_distinct()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $datareservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
-        $datatourismvillage = $this->sumpuModel->get_sumpu()->getResultArray();
+        $datatourismvillage = $this->KubuGadangModel->get_sumpu()->getResultArray();
         $package_reservation = $datareservation['package_id'];
 
         //detail package 
@@ -944,7 +944,7 @@ class DetailReservation extends ResourcePresenter
 
     public function confirm($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $contents = $this->packageModel->get_list_package_distinct()->getResultArray();
         $datareservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
@@ -1183,7 +1183,7 @@ class DetailReservation extends ResourcePresenter
 
             $statusreservasi = $request['status'];
             if ($statusreservasi == 1) {
-                $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+                $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
                 if ($villageEmailData) {
                     $villageName = $villageEmailData['name'];
 
@@ -1192,9 +1192,9 @@ class DetailReservation extends ResourcePresenter
 
                     // set document information
                     $pdf->SetCreator(PDF_CREATOR);
-                    $pdf->SetAuthor('Kampuang Minang Nagari Sumpu');
-                    $pdf->SetTitle('PDF Invoice Kampuang Minang Nagari Sumpu');
-                    $pdf->SetSubject('Kampuang Minang Nagari Sumpu');
+                    $pdf->SetAuthor('Desa Wisata Kubu Gadang');
+                    $pdf->SetTitle('PDF Invoice Desa Wisata Kubu Gadang');
+                    $pdf->SetSubject('Desa Wisata Kubu Gadang');
                     $pdf->SetKeywords('TCPDF, PDF, invoice, pesonasumpu.online');
 
 
@@ -1484,7 +1484,7 @@ class DetailReservation extends ResourcePresenter
                 }
             } else if ($statusreservasi == 2) {
 
-                $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+                $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
                 if ($villageEmailData) {
                     $villageName = $villageEmailData['name'];
 
@@ -1493,9 +1493,9 @@ class DetailReservation extends ResourcePresenter
 
                     // set document information
                     $pdf->SetCreator(PDF_CREATOR);
-                    $pdf->SetAuthor('Kampuang Minang Nagari Sumpu');
-                    $pdf->SetTitle('PDF Invoice Kampuang Minang Nagari Sumpu');
-                    $pdf->SetSubject('Kampuang Minang Nagari Sumpu');
+                    $pdf->SetAuthor('Desa Wisata Kubu Gadang');
+                    $pdf->SetTitle('PDF Invoice Desa Wisata Kubu Gadang');
+                    $pdf->SetSubject('Desa Wisata Kubu Gadang');
                     $pdf->SetKeywords('TCPDF, PDF, invoice, pesonasumpu.online');
 
 
@@ -1812,7 +1812,7 @@ class DetailReservation extends ResourcePresenter
         $updateDR = $this->reservationModel->update_cancel($id, $requestData);
 
         if ($updateDR) {
-            $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+            $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
             if ($villageEmailData) {
                 $villageName = $villageEmailData['name'];
                 $detail_reservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
@@ -1830,9 +1830,9 @@ class DetailReservation extends ResourcePresenter
 
                 // set document information
                 $pdf->SetCreator(PDF_CREATOR);
-                $pdf->SetAuthor('Kampuang Minang Nagari Sumpu');
-                $pdf->SetTitle('PDF Invoice Kampuang Minang Nagari Sumpu');
-                $pdf->SetSubject('Kampuang Minang Nagari Sumpu');
+                $pdf->SetAuthor('Desa Wisata Kubu Gadang');
+                $pdf->SetTitle('PDF Invoice Desa Wisata Kubu Gadang');
+                $pdf->SetSubject('Desa Wisata Kubu Gadang');
                 $pdf->SetKeywords('TCPDF, PDF, invoice, pesonasumpu.online');
 
 
@@ -2143,7 +2143,7 @@ class DetailReservation extends ResourcePresenter
         $updateDR = $this->reservationModel->update_cancel($id, $requestData);
 
         if ($updateDR) {
-            $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+            $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
             if ($villageEmailData) {
                 $villageName = $villageEmailData['name'];
                 $detail_reservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
@@ -2161,9 +2161,9 @@ class DetailReservation extends ResourcePresenter
 
                 // set document information
                 $pdf->SetCreator(PDF_CREATOR);
-                $pdf->SetAuthor('Kampuang Minang Nagari Sumpu');
-                $pdf->SetTitle('PDF Invoice Kampuang Minang Nagari Sumpu');
-                $pdf->SetSubject('Kampuang Minang Nagari Sumpu');
+                $pdf->SetAuthor('Desa Wisata Kubu Gadang');
+                $pdf->SetTitle('PDF Invoice Desa Wisata Kubu Gadang');
+                $pdf->SetSubject('Desa Wisata Kubu Gadang');
                 $pdf->SetKeywords('TCPDF, PDF, invoice, pesonasumpu.online');
 
 
@@ -2500,7 +2500,7 @@ class DetailReservation extends ResourcePresenter
         $updateR = $this->reservationModel->update_cancel($id, $requestData);
 
         if ($updateR) {
-            $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+            $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
             if ($villageEmailData) {
                 $villageName = $villageEmailData['name'];
                 $account_refund = $request['account_refund'];
@@ -2519,9 +2519,9 @@ class DetailReservation extends ResourcePresenter
 
                 // set document information
                 $pdf->SetCreator(PDF_CREATOR);
-                $pdf->SetAuthor('Kampuang Minang Nagari Sumpu');
-                $pdf->SetTitle('PDF Invoice Kampuang Minang Nagari Sumpu');
-                $pdf->SetSubject('Kampuang Minang Nagari Sumpu');
+                $pdf->SetAuthor('Desa Wisata Kubu Gadang');
+                $pdf->SetTitle('PDF Invoice Desa Wisata Kubu Gadang');
+                $pdf->SetSubject('Desa Wisata Kubu Gadang');
                 $pdf->SetKeywords('TCPDF, PDF, invoice, pesonasumpu.online');
 
 
@@ -2880,7 +2880,7 @@ class DetailReservation extends ResourcePresenter
 
             $refund_check = $request['refund_check'];
             if ($refund_check == 1) {
-                $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+                $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
                 if ($villageEmailData) {
                     $villageName = $villageEmailData['name'];
                     $detail_reservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
@@ -2899,9 +2899,9 @@ class DetailReservation extends ResourcePresenter
 
                     // set document information
                     $pdf->SetCreator(PDF_CREATOR);
-                    $pdf->SetAuthor('Kampuang Minang Nagari Sumpu');
-                    $pdf->SetTitle('PDF Invoice Kampuang Minang Nagari Sumpu');
-                    $pdf->SetSubject('Kampuang Minang Nagari Sumpu');
+                    $pdf->SetAuthor('Desa Wisata Kubu Gadang');
+                    $pdf->SetTitle('PDF Invoice Desa Wisata Kubu Gadang');
+                    $pdf->SetSubject('Desa Wisata Kubu Gadang');
                     $pdf->SetKeywords('TCPDF, PDF, invoice, pesonasumpu.online');
 
 
@@ -3177,7 +3177,7 @@ class DetailReservation extends ResourcePresenter
                     return redirect()->back()->withInput();
                 }
             } else if ($refund_check == 0) {
-                $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+                $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
                 if ($villageEmailData) {
                     $villageName = $villageEmailData['name'];
                     $detail_reservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
@@ -3196,9 +3196,9 @@ class DetailReservation extends ResourcePresenter
 
                     // set document information
                     $pdf->SetCreator(PDF_CREATOR);
-                    $pdf->SetAuthor('Kampuang Minang Nagari Sumpu');
-                    $pdf->SetTitle('PDF Invoice Kampuang Minang Nagari Sumpu');
-                    $pdf->SetSubject('Kampuang Minang Nagari Sumpu');
+                    $pdf->SetAuthor('Desa Wisata Kubu Gadang');
+                    $pdf->SetTitle('PDF Invoice Desa Wisata Kubu Gadang');
+                    $pdf->SetSubject('Desa Wisata Kubu Gadang');
                     $pdf->SetKeywords('TCPDF, PDF, invoice, pesonasumpu.online');
 
 
@@ -3782,7 +3782,7 @@ class DetailReservation extends ResourcePresenter
     public function review($id = null)
     {
         $contents = $this->packageModel->get_list_package_distinct()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $datareservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
         $package_reservation = $datareservation['package_id'];

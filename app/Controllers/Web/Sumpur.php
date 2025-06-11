@@ -4,7 +4,7 @@ namespace App\Controllers\Web;
 
 use App\Models\KecamatanModel;
 use App\Models\VillageModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 // use App\Models\GalleryGtpModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 
@@ -12,7 +12,7 @@ class Sumpur extends ResourcePresenter
 {
     protected $kecamatanModel;
     protected $villageModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
 
     protected $helpers = ['auth', 'url', 'filesystem'];
 
@@ -20,7 +20,7 @@ class Sumpur extends ResourcePresenter
     {
         $this->kecamatanModel = new KecamatanModel();
         $this->villageModel = new VillageModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         // $this->galleryGtpModel = new GalleryGtpModel();
     }
 
@@ -46,7 +46,7 @@ class Sumpur extends ResourcePresenter
 
         $kecamatanModel =  new KecamatanModel();
         $kecamatans = $this->villageModel->findAll(); // Ambil semua data kecamatan
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Explore Sumpu',

@@ -3,7 +3,7 @@
 namespace App\Controllers\Web;
 
 use App\Models\CartModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\GalleryPackageModel;
 use App\Models\AccountModel;
 
@@ -13,7 +13,7 @@ use CodeIgniter\Files\File;
 class Cart extends ResourcePresenter
 {
     protected $cartModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $galleryPackageModel;
     protected $accountModel;
 
@@ -29,7 +29,7 @@ class Cart extends ResourcePresenter
     public function __construct()
     {
         $this->cartModel = new CartModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->galleryPackageModel = new GalleryPackageModel();
         $this->accountModel = new AccountModel();
     }
@@ -46,7 +46,7 @@ class Cart extends ResourcePresenter
         // $user = user()->username;
         $user = user()->id;
         $contents = $this->cartModel->get_list_cart_by_user_id($user)->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         foreach ($contents as &$package) {
             $id = $package['package_id'];

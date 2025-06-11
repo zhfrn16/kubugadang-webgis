@@ -7,7 +7,7 @@ use App\Models\DetailServicePackageModel;
 use App\Models\PackageModel;
 use App\Models\DetailPackageModel;
 use App\Models\PackageDayModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
@@ -19,7 +19,7 @@ class ServicePackage extends ResourcePresenter
     protected $packageModel;
     protected $detailPackageModel;
     protected $packageDayModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
 
 
     /**
@@ -38,7 +38,7 @@ class ServicePackage extends ResourcePresenter
         $this->packageModel = new PackageModel();
         $this->detailPackageModel = new DetailPackageModel();
         $this->packageDayModel = new PackageDayModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
 
     }
 
@@ -53,7 +53,7 @@ class ServicePackage extends ResourcePresenter
 
     public function show($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $sp = $this->servicePackageModel->get_servicePackage_by_id($id)->getRowArray();
 
@@ -80,7 +80,7 @@ class ServicePackage extends ResourcePresenter
      */
     public function new()
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $servicePackage = $this->servicePackageModel->get_list_service_package()->getResultArray();
 
@@ -132,7 +132,7 @@ class ServicePackage extends ResourcePresenter
 
     public function edit($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $sp = $this->servicePackageModel->get_servicePackage_by_id($id)->getRowArray();
 

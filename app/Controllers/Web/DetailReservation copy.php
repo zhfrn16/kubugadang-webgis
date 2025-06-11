@@ -20,7 +20,7 @@ use App\Models\SouvenirPlaceModel;
 use App\Models\AttractionModel;
 use App\Models\EventModel;
 use App\Models\HomestayModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\ServicePackageModel;
 
 use CodeIgniter\RESTful\ResourcePresenter;
@@ -46,7 +46,7 @@ class DetailReservation extends ResourcePresenter
     protected $attractionModel;
     protected $eventModel;
     protected $homestayModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $accountModel;
 
 
@@ -78,7 +78,7 @@ class DetailReservation extends ResourcePresenter
         $this->attractionModel = new AttractionModel();
         $this->eventModel = new EventModel();
         $this->homestayModel = new HomestayModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->accountModel = new AccountModel();
         $this->galleryPackageModel = new GalleryPackageModel();
 
@@ -387,7 +387,7 @@ class DetailReservation extends ResourcePresenter
     // {
     //     $contents = $this->packageModel->get_list_package_distinct()->getResultArray();
     //     $datareservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
-    //     $datatourismvillage = $this->sumpuModel->get_sumpu()->getResultArray();
+    //     $datatourismvillage = $this->KubuGadangModel->get_sumpu()->getResultArray();
     //     $package_id_reservation = $datareservation['package_id'];
 
     //     //detail package 
@@ -547,10 +547,10 @@ class DetailReservation extends ResourcePresenter
     public function show($id = null)
     {
         $contents = $this->packageModel->get_list_package_distinct()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $datareservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
-        $datatourismvillage = $this->sumpuModel->get_sumpu()->getResultArray();
+        $datatourismvillage = $this->KubuGadangModel->get_sumpu()->getResultArray();
         $package_reservation = $datareservation['package_id'];
 
         //detail package 
@@ -738,7 +738,7 @@ class DetailReservation extends ResourcePresenter
 
     public function confirm($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $contents = $this->packageModel->get_list_package_distinct()->getResultArray();
         $datareservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
@@ -966,7 +966,7 @@ class DetailReservation extends ResourcePresenter
 
             $statusreservasi = $request['status'];
             if ($statusreservasi == 1) {
-                $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+                $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
                 if ($villageEmailData) {
                     $villageName = $villageEmailData['name'];
 
@@ -1028,7 +1028,7 @@ class DetailReservation extends ResourcePresenter
                     return redirect()->back();
                 }
             } else if ($statusreservasi == 2) {
-                $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+                $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
                 if ($villageEmailData) {
                     $villageName = $villageEmailData['name'];
 
@@ -1185,7 +1185,7 @@ class DetailReservation extends ResourcePresenter
         $updateR = $this->reservationModel->update_cancel($id, $requestData);
 
         if ($updateR) {
-            $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+            $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
             if ($villageEmailData) {
                 $villageName = $villageEmailData['name'];
                 $account_refund = $request['account_refund'];
@@ -1335,7 +1335,7 @@ class DetailReservation extends ResourcePresenter
 
             $refund_check = $request['refund_check'];
             if ($refund_check == 1) {
-                $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+                $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
                 if ($villageEmailData) {
                     $villageName = $villageEmailData['name'];
                     $detail_reservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
@@ -1403,7 +1403,7 @@ class DetailReservation extends ResourcePresenter
                     return redirect()->back()->withInput();
                 }
             } else if ($refund_check == 0) {
-                $villageEmailData = $this->sumpuModel->get_desa_wisata_info()->getRowArray();
+                $villageEmailData = $this->KubuGadangModel->get_desa_wisata_info()->getRowArray();
                 if ($villageEmailData) {
                     $villageName = $villageEmailData['name'];
                     $detail_reservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();

@@ -3,7 +3,7 @@
 namespace App\Controllers\Web;
 
 use App\Models\EventModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 use App\Models\GalleryEventModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
@@ -11,7 +11,7 @@ use CodeIgniter\Files\File;
 class Event extends ResourcePresenter
 {
     protected $eventModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
     protected $galleryEventModel;
 
     /**
@@ -26,7 +26,7 @@ class Event extends ResourcePresenter
     public function __construct()
     {
         $this->eventModel = new EventModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
         $this->galleryEventModel = new GalleryEventModel();
     }
 
@@ -38,7 +38,7 @@ class Event extends ResourcePresenter
     public function index()
     {
         $contents = $this->eventModel->get_list_event()->getResultArray();
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $data = [
             'title' => 'Event',

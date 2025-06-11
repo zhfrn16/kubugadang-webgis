@@ -8,7 +8,7 @@ use App\Models\HomestayUnitTypeModel;
 use App\Models\FacilityUnitModel;
 use App\Models\FacilityUnitDetailModel;
 use App\Models\GalleryUnitModel;
-use App\Models\SumpuModel;
+use App\Models\KubuGadangModel;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
@@ -21,7 +21,7 @@ class UnitHomestay extends ResourcePresenter
     protected $facilityUnitModel;
     protected $facilityUnitDetailModel;
     protected $galleryUnitModel;
-    protected $sumpuModel;
+    protected $KubuGadangModel;
 
     /**
      * Instance of the main Request object.
@@ -40,7 +40,7 @@ class UnitHomestay extends ResourcePresenter
         $this->facilityUnitModel = new FacilityUnitModel();
         $this->facilityUnitDetailModel = new FacilityUnitDetailModel();
         $this->galleryUnitModel = new GalleryUnitModel();
-        $this->sumpuModel = new SumpuModel();
+        $this->KubuGadangModel = new KubuGadangModel();
 
     }
 
@@ -78,7 +78,7 @@ class UnitHomestay extends ResourcePresenter
      */
     public function new($id = null)
     {
-        $contents2 = $this->sumpuModel->get_desa_wisata_info()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $homestay = $this->homestayModel->get_homestay_by_id($id)->getRowArray();
 
