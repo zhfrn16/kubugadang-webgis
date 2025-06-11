@@ -35,7 +35,7 @@ class Database extends Config
         'hostname' => 'wisatasumpu-server.mysql.database.azure.com',
         'username' => 'adminsumpu',
         'password' => '19Mei2001',
-        'database' => 'desasumpumodul6',
+        'database' => 'kubugadang',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,
