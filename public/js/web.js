@@ -409,7 +409,7 @@ function initMap4(lat = -0.54145013, lng = 100.48094882) {
   digitNagari();
 }
 
-function initMap9(lat = -0.52210813, lng = 100.49432448) {
+function initMap9(lat = -0.4761815168531753, lng = 100.43223933779609) {
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
   map = new google.maps.Map(document.getElementById("googlemaps"), {
@@ -428,8 +428,8 @@ function initMap9(lat = -0.52210813, lng = 100.49432448) {
   addCustomLabelsCountry(map);
 }
 
-function initMap99(lat = -0.52210813, lng = 100.49432448) {
-  // objectMarker("SUM01", -0.52210813, 100.49432448);
+function initMap99(lat = -0.4761815168531753, lng = 100.43223933779609) {
+  // objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
 
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
@@ -748,7 +748,7 @@ function digitNagari1(iddesa) {
     digitasiValue = "V" + iddesa;
   }
   $.ajax({
-    url: baseUrl + "media/map/output_folder3/new/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
+    url: baseUrl + "media/map/kubugadang/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
     type: "GET",
     dataType: "json",
     success: function (response) {
@@ -1135,10 +1135,10 @@ function digitVillage1zoom(iddesa) {
   const digitasi = new google.maps.Data();
   const infoWindow = new google.maps.InfoWindow();
 
-  digitasiValue = "V03";
+  digitasiValue = "map-v1r2";
 
   $.ajax({
-    url: baseUrl + "media/map/output_folder3/new/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
+    url: baseUrl + "media/map/kubugadang/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
     type: "GET",
     dataType: "json",
     success: function (response) {
@@ -1179,10 +1179,10 @@ function digitVillage1(iddesa) {
   const digitasi = new google.maps.Data();
   const infoWindow = new google.maps.InfoWindow();
 
-  digitasiValue = "V03";
+  digitasiValue = "map-v1r2";
 
   $.ajax({
-    url: baseUrl + "media/map/output_folder3/new/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
+    url: baseUrl + "media/map/kubugadang/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
     type: "GET",
     dataType: "json",
     success: function (response) {
@@ -1222,7 +1222,7 @@ function digitVillage3(iddesa) {
   const digitasi = new google.maps.Data();
   const infoWindow = new google.maps.InfoWindow();
 
-  digitasiValue = "V03";
+  digitasiValue = "map-v1r2";
 
   $.ajax({
     url: baseUrl + "media/map/output_folder3/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
@@ -1813,7 +1813,7 @@ function howToReachSumpu() {
   clearRoute();
   clearRadius();
 
-  objectMarker("SUM01", -0.52210813, 100.49432448);
+  objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
 
   // 1.192689, 103.910130
 
@@ -1823,7 +1823,8 @@ function howToReachSumpu() {
   const jakarta = { lat: -6.516948, lng: 106.930035 }; // Jakarta
   const padang = { lat: -0.9478502987473912, lng: 100.3628232695202 }; // Padang
   const bandaAceh = { lat: 5.537368838813003, lng: 95.50780215398227 }; // Banda Aceh
-  const nagariSumpu = { lat: -0.52210813, lng: 100.49432448 }; // Nagari Sumpu
+  const nagariSumpu = { lat: -0.4761815168531753, lng: 100.43223933779609 }; // Nagari Sumpu
+  const desaKubuGadang = { lat: -0.4761815168531753, lng: 100.43223933779609 }; // Nagari Sumpu
 
   // Animate flight
   function animateFlight(map, fromLatLng, toLatLng) {
@@ -1942,11 +1943,11 @@ function howToReachSumpu() {
   // Map animations
   animateFlight(map, singapore, padang);
   animateFlight(map, malaysia, padang);
-  animateCar(map, bandaAceh, nagariSumpu);
+  animateCar(map, bandaAceh, desaKubuGadang);
   animateFlight(map, jakarta, padang);
 
   setTimeout(() => {
-    animateCar(map, padang, nagariSumpu);
+    animateCar(map, padang, desaKubuGadang);
   }, 6000); // Delay of 6 seconds before car animation
 
   // Add overlays
@@ -1959,7 +1960,7 @@ function howToReachSumpu() {
       <div>
         <b>From Singapore <img src="${baseUrl}/media/icon/sg.svg" alt="Singapore Flag" style="width: 24px; height: 16px; margin-right: 4px;">(SIN):</b><br>
         1. Take a flight from Singapore (SIN) to Padang (PDG), Indonesia.<br>
-        2. Rent a car to Sumpu Village.
+        2. Rent a car to Kubu Gadang Village.
       </div>
     </div>
   `
@@ -1974,7 +1975,7 @@ function howToReachSumpu() {
       <div>
         <b>From Kuala Lumpur <img src="${baseUrl}/media/icon/my.svg" alt="Malaysia Flag" style="width: 24px; height: 16px; margin-right: 4px;">(KUL):</b><br>
         1. Take a flight from Kuala Lumpur (KUL) to Padang (PDG), Indonesia.<br>
-        2. Rent a car to Sumpu Village.
+        2. Rent a car to Kubu Gadang Village.
       </div>
     </div>
   `
@@ -1989,7 +1990,7 @@ function howToReachSumpu() {
       <div>
         <b>From Jakarta <img src="${baseUrl}/media/icon/id.svg" alt="Indonesia Flag" style="width: 24px; height: 16px; margin-right: 4px;">:</b><br>
         1. Take a domestic flight to Padang (PDG), Indonesia.<br>
-        2. Rent a car to Sumpu Village.
+        2. Rent a car to Kubu Gadang Village.
       </div>
     </div>
   `
@@ -2002,8 +2003,8 @@ function howToReachSumpu() {
     <div style="display: flex; align-items: center;">      
       <div>
         <b>From anywhere in Sumatra <img src="${baseUrl}/media/icon/id.svg" alt="Indonesia Flag" style="width: 24px; height: 16px; margin-right: 4px;">:</b><br>
-        1. Travel by land directly to Sumpu Village.<br>
-        2. Alternatively, fly to Padang (PDG) and rent a car to Sumpu Village.
+        1. Travel by land directly to Kubu Gadang Village.<br>
+        2. Alternatively, fly to Padang (PDG) and rent a car to Kubu Gadang Village.
       </div>
     </div>
   `
@@ -2027,7 +2028,7 @@ function zoomToSumpuMarkers() {
       map.setZoom(16);
     }
   }
-  // objectMarker("SUM01", -0.52210813, 100.49432448);
+  // objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
   // boundToObject();
 }
 
@@ -2038,11 +2039,12 @@ function objectInfoWindow(id) {
 
   if (id.substring(0, 3) === "SUM") {
     $.ajax({
-      url: baseUrl + "/api/sumpu/" + id,
+      url: baseUrl + "/api/kubugadang/" + id,
       dataType: "json",
       success: function (response) {
         let data = response.data;
         let name = data.name;
+        console.log(response.data);
 
         content =
           '<div style="max-width:200px;max-height:300px;" class="text-center">' +
@@ -3847,7 +3849,7 @@ function clearAllAll() {
   clearOverlay();
   clearAirplaneMarkers();
   clearCarMarkers();
-  objectMarker("SUM01", -0.52210813, 100.49432448);
+  objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
 }
 
 function checkLayer() {
@@ -3858,7 +3860,7 @@ function checkLayer() {
   // clearAllDigitasi();
 
   // initMap5();
-  objectMarker("SUM01", -0.52210813, 100.49432448);
+  objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
 
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
@@ -3986,7 +3988,7 @@ function checkObject() {
   clearAirplaneMarkers();
   clearCarMarkers();
   // initMap5();
-  objectMarker("SUM01", -0.52210813, 100.49432448);
+  objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
 
@@ -4091,7 +4093,7 @@ function clickExplore() {
   });
 
   // initMap5();
-  // objectMarker("SUM01", -0.52210813, 100.49432448);
+  // objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
 
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
@@ -4161,7 +4163,7 @@ function clickLayer() {
   });
 
   // initMap5();
-  objectMarker("SUM01", -0.52210813, 100.49432448);
+  objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
 
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
@@ -7428,7 +7430,7 @@ function sendToEmailRequest(
 
 function weatherNow() {
   const apiKey = "0ec1b86edc77ddcf8f5b6722561e564b";
-  const cityName = "Sumpur";
+  const cityName = "Kubu Gadang";
 
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
 
@@ -7465,4 +7467,33 @@ function weatherNow() {
   }
 
   window.onload = fetchWeather;
+}
+
+function initMap6() {
+    initMap();
+    digitEstuaria();
+}
+
+function digitSilekLanyah() {
+    const digitasi = new google.maps.Data();
+    $.ajax({
+        url: baseUrl + '/api/village',
+        type: 'POST',
+        data: {
+            digitasi: 'A0004'
+        },
+        dataType: 'json',
+        success: function (response) {
+            const data = response.data;
+            digitasi.addGeoJson(data);
+            digitasi.setStyle({
+                fillColor:'#FF0000',
+                strokeWeight:0.8,
+                strokeColor:'#FF0000',
+                fillOpacity: 0.2,
+                clickable: false
+            });
+            digitasi.setMap(map);
+        }
+    });
 }
