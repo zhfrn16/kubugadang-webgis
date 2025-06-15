@@ -12,7 +12,7 @@ use App\Models\KubuGadangModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
 
-class ServicePackage extends ResourcePresenter
+class Servicepackage extends ResourcePresenter
 {
     protected $servicePackageModel;
     protected $detailServicePackageModel;
