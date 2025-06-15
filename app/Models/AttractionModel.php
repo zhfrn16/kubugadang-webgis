@@ -237,7 +237,7 @@ class AttractionModel extends Model
         $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.type,{$this->table}.price,{$this->table}.description,{$this->table}.video_url,{$this->table}.category";
         $query = $this->db->table($this->table)
             ->select("{$columns}, {$coords}")
-            ->where('id', 'AT004')
+            ->where('id', 'AT001')
             ->get();
         return $query;
     }
