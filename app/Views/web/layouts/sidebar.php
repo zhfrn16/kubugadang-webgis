@@ -52,38 +52,15 @@ $uri3 = $uri[3] ?? '';
                             <i class="fa-solid fa-map"></i><span>Explore Village</span>
                         </a>
                     </li> -->
-                                        <li class="sidebar-item has-sub <?= ($uri1 == 'tracking' || $uri1 == 'estuaria' || $uri1 == 'pieh') ? 'active' : '' ?>">
-                        <a href="" class="sidebar-link">
-                            <i class="fa-solid fa-star"></i><span>Unique Attraction</span>
+                    <li class="sidebar-item <?= ($uri1 == 'silek') ? 'active' : '' ?>">
+                        <a href="<?= base_url('/web/explore'); ?>" class="sidebar-link">
+                            <i class="fa-solid fa-star"></i><span>Unique Attraction<span>
                         </a>
-
-                        <ul class="submenu <?= ($uri1 == 'estuaria') ||  ($uri1 == 'tracking') || ($uri1 == 'pieh') ||  ($uri1 == 'makam') ? 'active' : '' ?>">
-                            <li class="submenu-item <?= ($uri1 == 'estuaria') ? 'active' : '' ?>" id="at-list">
-                                <a href="<?= base_url('/web/estuaria'); ?>" class="sidebar-link">
-                                    <i class="fa-solid fa-ship me-3"></i><span>Estuary </span>
-                                </a>
-                            </li>
-                            <li class="submenu-item<?= ($uri1 == 'tracking') ? 'active' : '' ?>" id="at-list">
-                                <a href="<?= base_url('/web/tracking'); ?>" class="sidebar-link">
-                                    <i class="fa-solid fa-bridge-water me-3"></i><span>Tracking Mangrove</span>
-                                </a>
-                            </li>
-                            <li class="submenu-item<?= ($uri1 == 'pieh') ? 'active' : '' ?>" id="at-list">
-                                <a href="<?= base_url('/web/pieh'); ?>" class="sidebar-link">
-                                    <i class="fa-solid fa-fish me-3"></i><span>Trip Pieh Island</span>
-                                </a>
-                            </li>
-                            <li class="submenu-item<?= ($uri1 == 'makam') ? 'active' : '' ?>" id="at-list">
-                                <a href="<?= base_url('/web/makam'); ?>" class="sidebar-link">
-                                    <i class="fa-solid fa-mosque me-3"></i><span>Makam Syekh Burhanuddin</span>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
 
                     <!-- Explore Village -->
-                    <li class="sidebar-item <?= ($uri1 == 'kubugadang') ? 'active' : '' ?>">
-                        <a href="<?= base_url('/web/kubugadang'); ?>" class="sidebar-link">
+                    <li class="sidebar-item <?= ($uri1 == 'explore') ? 'active' : '' ?>">
+                        <a href="<?= base_url('/web/explore'); ?>" class="sidebar-link">
                             <i class="fa-solid fa-map"></i><span>Explore Village<span>
                         </a>
                     </li>
