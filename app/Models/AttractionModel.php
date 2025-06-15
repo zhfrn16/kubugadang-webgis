@@ -230,4 +230,15 @@ class AttractionModel extends Model
             ->get();
         return $query;
     }
+
+        public function get_silek()
+    {
+        $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.type,{$this->table}.price,{$this->table}.description,{$this->table}.video_url,{$this->table}.category";
+        $query = $this->db->table($this->table)
+            ->select("{$columns}, {$coords}")
+            ->where('id', 'AT004')
+            ->get();
+        return $query;
+    }
 }

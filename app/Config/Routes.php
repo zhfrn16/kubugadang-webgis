@@ -81,6 +81,11 @@ $routes->group('web', ['namespace' => 'App\Controllers\Web'], function ($routes)
     $routes->post('package/updatecapacity', 'Package::updatecapacity');
     $routes->post('package/sendToEmailRequest', 'Package::sendToEmailRequest');
 
+    $routes->group('silek', function ($routes) {
+        $routes->presenter('silek');
+        $routes->get('/', 'Unik::silek');
+    });
+
 
     $routes->resource('homestay');
     $routes->presenter('homestay');

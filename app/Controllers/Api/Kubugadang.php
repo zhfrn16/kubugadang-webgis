@@ -7,7 +7,7 @@ use App\Models\GalleryKubuGadangModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
 
-class Sumpu extends ResourceController
+class Kubugadang extends ResourceController
 {
     use ResponseTrait;
 
