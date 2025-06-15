@@ -53,7 +53,7 @@ $uri3 = $uri[3] ?? '';
                         </a>
                     </li> -->
                     <li class="sidebar-item <?= ($uri1 == 'silek') ? 'active' : '' ?>">
-                        <a href="<?= base_url('/web/explore'); ?>" class="sidebar-link">
+                        <a href="<?= base_url('/web/silek'); ?>" class="sidebar-link">
                             <i class="fa-solid fa-star"></i><span>Unique Attraction<span>
                         </a>
                     </li>
