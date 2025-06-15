@@ -13,7 +13,7 @@
                         <h4><?= esc($item['name']); ?></h4>
                     <?php endforeach; ?>
                 <?php endif; ?>
-                <!-- <h4>Desa Wisata Sumpu</h4> -->
+                <!-- <h4>Desa Wisata Kubu Gadang</h4> -->
                 <h6>Tourism Village</h6>
             </div>
 

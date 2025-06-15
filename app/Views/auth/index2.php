@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register - Desa Wisata Sumpu</title>
+    <title>Register - Desa Wisata Kubu Gadang</title>
 
     <!-- Favicon -->
     <link href="media/icon/favicon.svg" rel="icon" />

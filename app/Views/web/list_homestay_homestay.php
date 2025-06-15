@@ -33,7 +33,7 @@
                                         <div class="col-md-8">
                                             <div class="card-body">
                                                 <h5 class="card-title"><?= esc($item['name']); ?></h5>
-                                                <p>Desa Wisata Sumpu</p>
+                                                <p>Desa Wisata Kubu Gadang</p>
                                                 <!-- <p>Include Tourism Package</p> -->
                                                 <p><i class="fa-solid fa-wifi"></i> Free WiFi &nbsp;<i class="fa-solid fa-utensils"></i> Breakfast</p>
                                                
