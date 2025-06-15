@@ -123,7 +123,7 @@ function initMapLP(lat = -0.5242972, lng = 100.492333, mobile = false) {
 }
 
 // Initialize and add the map
-function initMap(lat = -0.54145013, lng = 100.48094882) {
+function initMap(lat = -0.47580795, lng = 100.43229867) {
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
   map = new google.maps.Map(document.getElementById("googlemaps"), {
@@ -7480,7 +7480,7 @@ function digitSilekLanyah() {
         url: baseUrl + '/api/village',
         type: 'POST',
         data: {
-            digitasi: 'A0004'
+            digitasi: 'AT001'
         },
         dataType: 'json',
         success: function (response) {
