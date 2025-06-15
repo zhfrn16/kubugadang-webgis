@@ -16,15 +16,16 @@
                             <label for="check-ho">Homestay</label>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-12" style="padding: 0px;">
-
+                    
                     <div class="form-check">
                         <div class="checkbox">
                             <input type="checkbox" id="check-cp" class="form-check-input" checked>
                             <label for="check-cp">Culinary Place</label>
                         </div>
                     </div>
+                </div>
+                <div class="col-md-6 col-12" style="padding: 0px;">
+
                     <div class="form-check">
                         <div class="checkbox">
                             <input type="checkbox" id="check-sp" class="form-check-input" checked>
