@@ -123,7 +123,7 @@ function initMapLP(lat = -0.5242972, lng = 100.492333, mobile = false) {
 }
 
 // Initialize and add the map
-function initMap(lat = -0.54145013, lng = 100.48094882) {
+function initMap(lat = -0.47580795, lng = 100.43229867) {
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
   map = new google.maps.Map(document.getElementById("googlemaps"), {
@@ -3799,30 +3799,22 @@ function checkExplore() {
     parseFloat(document.getElementById("inputRadiusNearby").value) * 100;
   map.panTo(pos);
 
-  const checkLSA = document.getElementById("check-lsa").checked;
-  const checkTH = document.getElementById("check-th").checked;
+  // const checkLSA = document.getElementById("check-lsa").checked;
+  // const checkTH = document.getElementById("check-th").checked;
   const checkHO = document.getElementById("check-ho").checked;
   const checkCP = document.getElementById("check-cp").checked;
   const checkSP = document.getElementById("check-sp").checked;
   const checkWP = document.getElementById("check-wp").checked;
 
-  if (!checkLSA && !checkTH && !checkHO && !checkCP && !checkSP && !checkWP) {
+  if (!checkHO && !checkCP && !checkSP && !checkWP) {
     document.getElementById("radiusValueNearby").innerHTML = "0 m";
     document.getElementById("inputRadiusNearby").value = 0;
     return Swal.fire("Please choose one object");
   }
 
-  if (checkLSA) {
-    findExplore("lsa", radiusValue);
-    $("#table-lsa").show();
-  }
   if (checkHO) {
     findExplore("ho", radiusValue);
     $("#table-ho").show();
-  }
-  if (checkTH) {
-    findExplore("th", radiusValue);
-    $("#table-th").show();
   }
   if (checkCP) {
     findExplore("cp", radiusValue);
@@ -7470,7 +7462,7 @@ function digitSilekLanyah() {
         url: baseUrl + '/api/village',
         type: 'POST',
         data: {
-            digitasi: 'A0004'
+            digitasi: 'AT001'
         },
         dataType: 'json',
         success: function (response) {

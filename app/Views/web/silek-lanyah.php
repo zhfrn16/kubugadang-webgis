@@ -7,20 +7,38 @@
     <!--map-->
     <div class="col-md-7 col-12">
         <div class="card">
-            <div class="card-header">
-                <div class="row align-items-center">
-                    <div class="col-md-auto">
-                        <h5 class="card-title">Google Maps with Location</h5>
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-md-auto">
+                            <h4 class="card-title">Google Maps</h4>
+                            <div class="col-12 d-flex align-items-center gap-1">
+                                <!-- Checkbox 1 -->
+                                <div class="form-check" style="font-size: 14px;">
+                                    <input class="form-check-input" type="checkbox" id="check-label" value="check-label" onchange="checkLabel()">
+                                    <label class="form-check-label" for="check-label">Labels</label>
+                                </div>&nbsp;
+                                <!-- Checkbox 2 -->
+                                <div class="form-check" style="font-size: 14px;">
+                                    <input class="form-check-input" type="checkbox" id="check-terrain" value="check-terrain" onchange="checkTerrain()">
+                                    <label class="form-check-label" for="check-terrain">Terrain</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <script>
+                            ramalancuaca();
+                        </script>
+                        <div class="col-md-auto" id="weather-info"></div> -->
+
+                        <?= $this->include('web/layouts/map-head'); ?>
                     </div>
-                    <?= $this->include('web/layouts/map-head'); ?>
                 </div>
-            </div>
             <div class="card-body">
             <div class="googlemaps" id="googlemaps"></div>
             <script>initMap6(); </script>
             <div id="legend"></div>
             <script>$('#legend').hide(); getLegend();</script>
-</div>
+            </div>
         </div>
     </div>
 
@@ -30,7 +48,7 @@
             <div class="col-12" id="list-at-col">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title text-center">Estuary</h5>
+                        <h5 class="card-title text-center">Silek Lanyah</h5>
                     </div>
                     <div class="card-body">
                         <script>
