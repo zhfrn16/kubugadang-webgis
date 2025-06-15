@@ -4006,20 +4006,10 @@ function checkObject() {
 
   // Periksa status setiap checkbox
 
-  if (document.getElementById("check-olsa").checked) {
-    clearAllAll();
-    findAll("lsa");
-    $("#table-lsa").show();
-  }
   if (document.getElementById("check-oat").checked) {
     clearAllAll();
     findAll("at");
     $("#table-at").show();
-  }
-  if (document.getElementById("check-oth").checked) {
-    clearAllAll();
-    findAll("th");
-    $("#table-th").show();
   }
   if (document.getElementById("check-oho").checked) {
     clearAllAll();
