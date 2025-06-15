@@ -14,7 +14,7 @@ $uri3 = $uri[3] ?? '';
         <div class="sidebar-menu">
             <div class="d-flex flex-column">
                 <div class="d-flex justify-content-center avatar avatar-xl me-3" id="avatar-sidebar">
-                    <img src="<?= base_url('media/photos/pesona_sumpu.png'); ?>" alt="" srcset="">
+                    <img src="<?= base_url('media/photos/logo_kuga.jpg'); ?>" alt="" srcset="">
                 </div>
 
                 <?php if (logged_in()) : ?>
@@ -35,7 +35,7 @@ $uri3 = $uri[3] ?? '';
                             <i class="fa-solid fa-house"></i><span> Home</span>
                         </a>
                     </li>
-                    
+
 
 
                     <!-- <?php if (in_groups(['admin']) || in_groups(['master'])) :
@@ -52,7 +52,7 @@ $uri3 = $uri[3] ?? '';
 
                     <?php if (in_groups(['admin']) || in_groups(['master'])) :
                     ?>
-                         <li class="sidebar-item has-sub">
+                        <li class="sidebar-item has-sub">
                             <a href="" class="sidebar-link">
                                 <i class="fa-brands fa-pagelines"></i><span>Manage Village</span>
                             </a>
@@ -64,12 +64,12 @@ $uri3 = $uri[3] ?? '';
                                 <!-- List Package type-->
                                 <li class="submenu-item <?= ($uri1 == 'announcement') ? 'active' : '' ?>" id="pa-list">
                                     <a href="<?= base_url('dashboard/announcement'); ?>"><i class="fa-solid fa-scroll"></i> Announcement</a>
-                                </li>                              
+                                </li>
                             </ul>
                         </li>
                     <?php endif;
                     ?>
-                   
+
 
                     <!-- <?php if (in_groups(['admin']) || in_groups(['master'])) :
                             ?>
