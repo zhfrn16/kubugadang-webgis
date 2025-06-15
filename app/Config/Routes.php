@@ -54,7 +54,7 @@ $routes->group('web', function ($routes) {
 // App
 $routes->group('web', ['namespace' => 'App\Controllers\Web'], function ($routes) {
 
-    $routes->get('/', 'KubuGadang::index');
+    $routes->get('/', 'Kubugadang::index');
     // $routes->get('getprice', 'Reservation::getprice');
     $routes->get('all', 'Dashboard::all', ['filter' => 'login']);
     $routes->get('package/extend/(:any)', 'Package::extend/$1', ['filter' => 'login']);
@@ -172,6 +172,7 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers\Web', 'filter' => '
     $routes->get('facility', 'Dashboard::facility');
     $routes->get('souvenirplace', 'Dashboard::souvenirplace');
     $routes->get('worshipplace', 'Dashboard::worshipplace');
+    $routes->resource('worshipplace', ['controller' => 'WorshipPlace']);
     $routes->get('culinaryplace', 'Dashboard::culinaryplace');
     $routes->get('traditionalhouse', 'Dashboard::traditionalhouse');
     $routes->get('servicepackage', 'Dashboard::servicepackage');
@@ -274,7 +275,7 @@ $routes->group('upload', ['namespace' => 'App\Controllers\Web'], function ($rout
 // API
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes) {
 
-    $routes->resource('sumpu');
+    $routes->resource('kubugadang');
     $routes->get('custombooking/(:segment)', 'Reservation::custombooking/$1');
     $routes->get('tersedia', 'Reservation::tersedia');
     $routes->get('chooseHomeLama', 'Reservation::chooseHomeLama');
