@@ -12,18 +12,6 @@
 
                     <div class="form-check">
                         <div class="checkbox">
-                            <input type="checkbox" id="check-lsa" class="form-check-input" checked>
-                            <label for="check-lsa">Lake Singkarak</label>
-                        </div>
-                    </div>
-                    <div class="form-check">
-                        <div class="checkbox">
-                            <input type="checkbox" id="check-th" class="form-check-input" checked>
-                            <label for="check-th">Rumah Gadang</label>
-                        </div>
-                    </div>
-                    <div class="form-check">
-                        <div class="checkbox">
                             <input type="checkbox" id="check-ho" class="form-check-input" checked>
                             <label for="check-ho">Homestay</label>
                         </div>

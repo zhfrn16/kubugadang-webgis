@@ -110,20 +110,8 @@
         <ul class="dropdown-menu p-2">        
             <li>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="check-olsa" value="lsa" onchange="checkObject()">
-                    <label class="form-check-label" for="check-olsa">Lake Singkarak Activity</label>
-                </div>
-            </li>
-            <li>
-                <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="check-oat" value="at" onchange="checkObject()">
                     <label class="form-check-label" for="check-oat">Attraction</label>
-                </div>
-            </li>
-            <li>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="check-oth" value="th" onchange="checkObject()">
-                    <label class="form-check-label" for="check-oth">Traditional Houses</label>
                 </div>
             </li>
             <li>
