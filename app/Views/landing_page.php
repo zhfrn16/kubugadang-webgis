@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Desa Wisata Desa Wisata Kubu Gadang</title>
+    <title>Desa Wisata Kubu Gadang</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="keywords" />
     <meta content="" name="description" />
@@ -19,6 +19,11 @@
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <!-- Calendar -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@event-calendar/build@4.4.0/dist/event-calendar.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@event-calendar/build@4.4.0/dist/event-calendar.min.js"></script>
+
 
     <!-- Libraries Stylesheet -->
     <link href="<?= base_url('assets/lib/animate/animate.min.css'); ?>" rel="stylesheet" />
@@ -169,30 +174,30 @@
                         Desa Wisata <br><span class="text-primary">Kampuang Minang <br>Nagari Sumpu</span>
                     </h1>
                     <p class="mb-4">
-                        Desa Wisata Kubu Gadang is located in Nagari Sumpur, South Batipuh District, Tanah Datar Regency, West Sumatra, north of Lake Singkarak, which is fed by Batang Sumpu. To get to Desa Wisata Kubu Gadang, it is estimated to take about 2 hours from Minangkabau International Airport. In Desa Wisata Kubu Gadang there are cultural tours with about 70 traditional houses called Rumah Gadang and several historical sites. Out of the many Rumah Gadang, there are 3 Rumah Gadang that have been used as a homestay for the tourists who visit Desa Wisata Kubu Gadang. </p>
+                        Kubu Gadang Tourism Village is one of the Community Based Tourism in West Sumatra Province located on Jalan Haji Miskin, Ekor Lubuk Village, Padang Panjang City. Kubu Gadang was pioneered as a Tourism Village since 2014. Kubu Gadang Tourism Village has a variety of natural and cultural potentials that are packaged in various educational programs with activities that provide learning and experience for tourists. Kubu Gadang Tourism Village has been visited by domestic and foreign tourists and has won various provincial and national awards, including:</p>
                     <h5 class="mb-3">
                         <a href="#map" class="text-reset" onclick="showMap('aLSA');">
-                            <i class="far fa-check-circle text-primary me-3"></i>Lake Singkarak Tourism
+                            <i class="far fa-check-circle text-primary me-3"></i>Best Tourism Village of West Sumatra in 2020 by the Association of Indonesian Tourism Industries (GIPI) of West Sumatra
                         </a>
                     </h5>
                     <h5 class="mb-3">
                         <a href="#map" class="text-reset" onclick="showMap('aNT');">
-                            <i class="far fa-check-circle text-primary me-3"></i>Nature Tourism
+                            <i class="far fa-check-circle text-primary me-3"></i>Runner Up of the Best Tourism Awareness Group (POKDARWIS) of West Sumatra 2021
                         </a>
                     </h5>
                     <h5 class="mb-3">
                         <a href="#map" class="text-reset" onclick="showMap('aCT');">
-                            <i class="far fa-check-circle text-primary me-3"></i>Cultural Tourism
+                            <i class="far fa-check-circle text-primary me-3"></i>Sustainable Tourism Village Certification
                         </a>
                     </h5>
                     <h5 class="mb-3">
                         <a href="#map" class="text-reset" onclick="showMap('aET');">
-                            <i class="far fa-check-circle text-primary me-3"></i>Educational Tourism
+                            <i class="far fa-check-circle text-primary me-3"></i>Top 100 Best Tourism Villages of the Indonesian Tourism Village Award (ADWI) 2021
                         </a>
                     </h5>
                     <h5 class="mb-3">
                         <a href="#map" class="text-reset" onclick="showMap('cp');">
-                            <i class="far fa-check-circle text-primary me-3"></i>Culinary Tourism
+                            <i class="far fa-check-circle text-primary me-3"></i>Top 8 Best Tourism Villages in the Advanced Category of the Indonesian Tourism Village Award (ADWI) 2023
                         </a>
                     </h5>
                     <a class="btn btn-primary py-3 px-5 mt-3" href="/web">Explore</a>
@@ -228,13 +233,12 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <p><span class="text-primary me-2">#</span>Geopark</p>
+                    <p><span class="text-primary me-2">#</span>Unique Tourism</p>
                     <h1 class="display-5 mb-4">
-                        Geopark<br><span class="text-primary">Lake Singkarak</span>
+                        <span class="text-primary">Silek Lanyah</span>
                     </h1>
                     <p class="mb-4">
-                        According to UNESCO, a geopark is an earth park concept that aims to protect national and international protected areas with unique geological heritage and aesthetic value. This geopark is being developed in an integrated management model that includes aspects of conservation, education and local economic development. Lake Singkarak, the second largest lake in Sumatra after Lake Toba, was formed by the tectonic activity of the Semangko fault. The natural formation process of this fault activity gives Lake Singkarak its own uniqueness.
-                        <br><br>Lake Singkarak has an area of about 107.8 square kilometers with a length of 21 kilometers and a width of 7 kilometers. This lake can be reached from three cities at the same time as it is located about 70 kilometers from Padang, 20 kilometers from Solok and 36 kilometers from Bukittinggi. In addition to its strategic location, this Geopark destination is also famous for its enchanting scenery. How could it be otherwise, as far as the eye can see, Sobat Pesona is spoiled with a stretch of beautiful blue water and majestic mountains as a backdrop.
+                        
                     </p>
 
                 </div>
@@ -250,133 +254,10 @@
     </div>
     <!-- About Geopark End -->
 
-    <!-- About Rumah Gadang Start -->
-    <div class="container-xxl py-5" id="about-rumah-gadang">
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <p><span class="text-primary me-2">#</span>Traditional House</p>
-                    <h1 class="display-5 mb-4">
-                        Traditional House<br><span class="text-primary">Rumah Gadang</span>
-                    </h1>
-                    <p class="mb-4">
-                        The types of Rumah Gadang include Rumah Gadang Alang Babega or also known as Rumah Baanjuang. The surrounding community is more familiar with this name. This gadang house is included in the Koto Piliang house. Then there is also the Gajah Maharam Gadang House. This house belongs to the Bodi Caniago family. There is also the Surambi Papek Aceh field house. There are only two gadang houses left in Nagari Sumpu. Finally, there is the Sabaka Rice House. The caricature is in the form of a gadang house but does not have a gonjong. Several types of gadang houses add to the uniqueness of the tourist village.
-                        <br><br>
-                        The difference between this village and other villages can be seen from the fact that there are 4 types of gadang houses in a village, usually there are only one or two types of gadang houses in a village. After seeing the uniqueness of the gadang house with the beautiful lake, we rested at a Siti Fatimah homestay. This homestay offers a gadang house by presenting the atmosphere of the old Minangkabau village to the tourists who come.
-                    </p>
-                </div>
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="img-border">
-                        <img class="img-fluid right" src="<?= base_url('media/photos/landing-page/carousel-3.jpg'); ?>" alt="" />
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
-    <!-- About Rumah Gadang End -->
-
     <!-- Carousel Start -->
-    <div class="container-xxl py-5" id="carouselpackage">
+    <div class="container-xxl py-5">
         <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
-                    <p><span class="text-primary me-2">#</span>Tourism Package</p>
-
-                    <div id="packageCarousel" class="carousel slide position-relative" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <?php if (isset($data) && count($data) > 0) : ?>
-                                <?php $chunks = array_chunk($data, 3); // Membagi data menjadi kelompok yang berisi 3 item 
-                                ?>
-                                <?php $isActive = true; ?>
-                                <?php foreach ($chunks as $chunk) : ?>
-                                    <div class="carousel-item <?= $isActive ? 'active' : ''; ?>">
-                                        <div class="row">
-                                            <?php foreach ($chunk as $item) : ?>
-                                                <div class="col-md-4">
-                                                    <div class="card">
-                                                        <div class="row g-0">
-                                                            <div class="col-md-12">
-                                                                <img src="<?= base_url('media/photos/package/' . esc($item['gallery'])); ?>" class="img-fluid rounded-start" alt="Gallery Image" style="object-fit: cover; width: 100%; height: 200px;">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <div class="card-body">
-                                                                    <h5 class="card-title"><?= esc($item['name']); ?></h5>
-                                                                    <p class="card-text btn-success btn-sm" style="margin: 0; display: inline-block;"><?= esc($item['type_name']); ?></p>
-                                                                    <p class="card-text" style="margin-top: 10px;"><i class="fa-regular fa-clock"></i><?= esc($item['days']); ?> D &nbsp;<i class="fa-solid fa-user-group"></i>Min. <?= esc($item['min_capacity']); ?> people</p>
-                                                                    <p class="card-text" style="margin: 0;">Start from</p>
-                                                                    <p class="card-text" style="margin: 0; color: orange; font-weight:bold;">
-                                                                        <?= 'Rp ' . number_format(esc($item['price']), 0, ',', '.'); ?>
-                                                                    </p>
-                                                                    <div class="d-flex">
-                                                                        <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="More Info" class="btn icon btn-outline-primary me-2" href="<?= base_url('web/package/') . $item['id']; ?>">
-                                                                            <i class="fa-solid fa-circle-info"></i> More Info
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    </div>
-                                    <?php $isActive = false; ?>
-                                <?php endforeach; ?>
-                            <?php else : ?>
-                                <p>No Package available.</p>
-                            <?php endif; ?>
-                        </div>
-                        <!-- Custom CSS for Controls -->
-                        <style>
-                            .carousel-control-prev-icon,
-                            .carousel-control-next-icon {
-                                background-color: rgb(67 94 190);
-                                /* Slightly transparent black */
-                                border-radius: 50%;
-                            }
-
-                            .carousel-controls {
-                                position: absolute;
-                                top: 10px;
-                                right: 10px;
-                                z-index: 3;
-                                /* Higher z-index to ensure it is above all other elements */
-                                display: flex;
-                                gap: 10px;
-                            }
-
-                            .carousel-controls button {
-                                background-color: rgb(67 94 190);
-                                /* Slightly transparent black */
-                                border: none;
-                                padding: 10px;
-                                cursor: pointer;
-                            }
-
-                            /* Custom CSS for Button Icon */
-                            .btn.icon.btn-outline-primary {
-                                color: rgb(67, 94, 190);
-                                border-color: rgb(67, 94, 190);
-                            }
-
-                            .btn.icon.btn-outline-primary:hover {
-                                background-color: rgba(67, 94, 190, 0.1);
-                            }
-                        </style>
-                        <div class="carousel-controls">
-                            <button class="bi bi-chevron-light" type="button" data-bs-target="#packageCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="cbi bi-chevron-light" type="button" data-bs-target="#packageCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div class="row g-5" id="ec">
             </div>
         </div>
     </div>
@@ -386,23 +267,27 @@
     <div class="container-xxl bg-primary facts my-5 py-5 wow fadeInUp" data-wow-delay="0.1s" id="award">
         <div class="container py-5">
             <div class="row g-4">
-                <div class="col-md-4 col-lg-4 text-center wow fadeIn" data-wow-delay="0.1s">
+                <div class="col-md-3 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
                     <img src="media/photos/landing-page/trophy.png" alt="" style="filter: invert(100%); max-width: 4em" class="mb-3">
-                    <p class="text-white mb-0">Top</p>
-                    <h1 class="text-white mb-2" data-toggle="counter-up">50</h1>
-                    <p class="text-white mb-0">ADWI 2021</p>
+                    <p class="text-white mb-0">Desa Terbaik Di Sumbar</p>
+                    <p class="text-white mb-0">GIPI AWARD 2021</p>
                 </div>
-                <div class="col-md-4 col-lg-4 text-center wow fadeIn" data-wow-delay="0.2s">
+                <div class="col-md-3 col-lg-3 text-center wow fadeIn" data-wow-delay="0.2s">
                     <img src="media/photos/landing-page/trophy.png" alt="" style="filter: invert(100%); max-width: 4em" class="mb-3">
-                    <p class="text-white mb-0">Top</p>
-                    <h1 class="text-white mb-2" data-toggle="counter-up">15</h1>
-                    <p class="text-white mb-0">New Desa Brilian 2023</p>
+                    <p class="text-white mb-0">Desa Wisata</p>
+                    <p class="text-white mb-0">Berkelanjutan</p>
                 </div>
-                <div class="col-md-4 col-lg-4 text-center wow fadeIn" data-wow-delay="0.3s">
+                <div class="col-md-3 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
                     <img src="media/photos/landing-page/rumah-gadang.png" alt="" style="filter: invert(100%); max-width: 5em">
-                    <p class="text-white mb-0">Total</p>
-                    <h1 class="text-white mb-2" data-toggle="counter-up">70</h1>
-                    <p class="text-white mb-0">Rumah Gadang</p>
+                    <h1 class="text-white mb-2">100</h1>
+                    <p class="text-white mb-0">Besar</p>
+                    <p class="text-white mb-0">ADWI</p>
+                </div>
+                <div class="col-md-3 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
+                    <img src="media/photos/landing-page/rumah-gadang.png" alt="" style="filter: invert(100%); max-width: 5em">
+                    <p class="text-white mb-0">Top</p>
+                    <h1 class="text-white mb-2">8</h1>
+                    <p class="text-white mb-0">Desa Wisata Termaju</p>
                 </div>
             </div>
         </div>
@@ -523,7 +408,71 @@
                 }
             })
         }
+    const ec = EventCalendar.create(document.getElementById('ec'), {
+        view: 'dayGridMonth',
+        headerToolbar: {
+            start: 'prev,next today',
+            center: 'title',
+        },
+        scrollTime: '09:00:00',
+        events: createEvents(),
+        dayMaxEvents: true,
+        nowIndicator: true,
+        selectable: true
+    });
+
+    function createEvents() {
+        let days = [];
+        // for (let i = 0; i < 7; ++i) {
+        //     let day = new Date();
+        //     let diff = i - day.getDay();
+        //     day.setDate(day.getDate() + diff);
+        //     days[i] = day.getFullYear() + "-" + _pad(day.getMonth()+1) + "-" + _pad(day.getDate());
+        // }
+
+        let events = [];
+        $.ajax({
+            url: '<?= base_url('/api/event') ?>',
+            dataType: 'json',
+            async: false,
+            success: function(response) {
+                if (response && response.data) {
+                    console.log(response.data);
+                    events = response.data.map(function(item) {
+                        return {
+                            start: item.event_start,
+                            end: item.event_end,
+                            title: item.name,
+                            color: item.color || "#779ECB"
+                        };
+                    });
+                }
+            }
+        });
+        return events;
+
+        // return [
+        //     {start: days[0] + " 00:00", end: days[0] + " 09:00", resourceId: 1, display: "background"},
+        //     {start: days[1] + " 12:00", end: days[1] + " 14:00", resourceId: 2, display: "background"},
+        //     {start: days[2] + " 17:00", end: days[2] + " 24:00", resourceId: 1, display: "background"},
+        //     {start: days[0] + " 10:00", end: days[0] + " 14:00", resourceId: 1, title: "The calendar can display background and regular events", color: "#FE6B64"},
+        //     {start: days[1] + " 16:00", end: days[2] + " 08:00", resourceId: 2, title: "An event may span to another day", color: "#B29DD9"},
+        //     {start: days[2] + " 09:00", end: days[2] + " 13:00", resourceId: 2, title: "Events can be assigned to resources and the calendar has the resources view built-in", color: "#779ECB"},
+        //     {start: days[3] + " 14:00", end: days[3] + " 20:00", resourceId: 1, title: "", color: "#FE6B64"},
+        //     {start: days[3] + " 15:00", end: days[3] + " 18:00", resourceId: 1, title: "Overlapping events are positioned properly", color: "#779ECB"},
+        //     {start: days[5] + " 10:00", end: days[5] + " 16:00", resourceId: 2, title: {html: "You have complete control over the <i><b>display</b></i> of events…"}, color: "#779ECB"},
+        //     {start: days[5] + " 14:00", end: days[5] + " 19:00", resourceId: 2, title: "…and you can drag and drop the events!", color: "#FE6B64"},
+        //     {start: days[5] + " 18:00", end: days[5] + " 21:00", resourceId: 2, title: "", color: "#B29DD9"},
+        //     {start: days[1], end: days[3], resourceId: 1, title: "All-day events can be displayed at the top", color: "#B29DD9", allDay: true}
+        // ];
+    }
+
+    function _pad(num) {
+        let norm = Math.floor(Math.abs(num));
+        return (norm < 10 ? '0' : '') + norm;
+    }
     </script>
+    
 </body>
 
 </html>
