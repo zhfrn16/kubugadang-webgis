@@ -25,7 +25,7 @@ $uri3 = $uri[3] ?? '';
                     </div>
                 <?php else : ?>
                     <div class="d-flex justify-content-center avatar avatar-xl me-3" id="avatar-sidebar">
-                        <img src="<?= base_url('media/photos/pesona_sumpu.png'); ?>" alt="" srcset="">
+                        <img src="<?= base_url('media/photos/logo_kuga.jpg'); ?>" alt="" srcset="">
                     </div>
                     <div class="p-2 d-flex justify-content-center">Hello, Visitor</div>
                 <?php endif; ?>

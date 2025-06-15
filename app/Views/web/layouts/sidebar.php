@@ -16,7 +16,7 @@ $uri3 = $uri[3] ?? '';
 
                 <?php if (logged_in()) : ?>
                     <div class="d-flex justify-content-center avatar avatar-xl me-3" id="avatar-sidebar">
-                        <img src="<?= base_url('media/photos/pesona_sumpu.png'); ?>" alt="" srcset="">
+                        <img src="<?= base_url('media/photos/logo_kuga.jpg'); ?>" alt="" srcset="">
                     </div>
                     <div class="p-2 text-center">
                         <?php if (!empty(user()->fullname)) : ?>
@@ -27,7 +27,7 @@ $uri3 = $uri[3] ?? '';
                     </div>
                 <?php else : ?>
                     <div class="d-flex justify-content-center avatar avatar-xl me-3" id="avatar-sidebar">
-                        <img src="<?= base_url('media/photos/pesona_sumpu.png'); ?>" alt="" srcset="">
+                        <img src="<?= base_url('media/photos/logo_kuga.jpg'); ?>" alt="" srcset="">
                     </div>
                     <div class="p-2 d-flex justify-content-center">Hello, Visitor</div>
                 <?php endif; ?>
@@ -74,15 +74,15 @@ $uri3 = $uri[3] ?? '';
                     </li>
 
                     <li class="sidebar-item <?= ($uri1 == 'homestay') ? 'active' : '' ?>">
-                            <a href="<?= base_url('/web/homestayhomestay'); ?>" class="sidebar-link">
-                                <i class="fa-solid fa-bed"></i><span>Homestay</span>
-                            </a>
+                        <a href="<?= base_url('/web/homestayhomestay'); ?>" class="sidebar-link">
+                            <i class="fa-solid fa-bed"></i><span>Homestay</span>
+                        </a>
                     </li>
 
                     <li class="sidebar-item <?= ($uri1 == 'event') ? 'active' : '' ?>">
-                            <a href="<?= base_url('/web/event'); ?>" class="sidebar-link">
-                                <i class="fa-solid fa-bed"></i><span>Events</span>
-                            </a>
+                        <a href="<?= base_url('/web/event'); ?>" class="sidebar-link">
+                            <i class="fa-solid fa-bed"></i><span>Events</span>
+                        </a>
                     </li>
 
 
@@ -94,7 +94,7 @@ $uri3 = $uri[3] ?? '';
                         </li>
                     <?php endif; ?>
 
-                   
+
 
                     <?php if (in_groups(['admin']) || in_groups(['master'])) : ?>
                         <li class="sidebar-item">
