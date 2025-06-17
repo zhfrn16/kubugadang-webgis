@@ -106,10 +106,10 @@ $uri3 = $uri[3] ?? '';
 
                     <li class="sidebar-item">
                         <div class="d-flex justify-content-around">
-                            <a href="https://www.instagram.com/pesonasumpu/" class="sidebar-link" target="_blank">
+                            <a href="https://www.instagram.com/desawisatakubugadang/" class="sidebar-link" target="_blank">
                                 <i class="fa-brands fa-instagram"></i><span>Instagram</span>
                             </a>
-                            <a href="https://www.tiktok.com/@pesonasumpu2" class="sidebar-link" target="_blank">
+                            <a href="https://www.tiktok.com/@desawisatakubugadang" class="sidebar-link" target="_blank">
                                 <i class="fa-brands fa-tiktok"></i><span>TikTok</span>
                             </a>
                         </div>

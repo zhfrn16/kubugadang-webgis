@@ -21,7 +21,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
 
     <!-- Calendar -->
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@event-calendar/build@4.4.0/dist/event-calendar.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@event-calendar/build@4.4.0/dist/event-calendar.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@event-calendar/build@4.4.0/dist/event-calendar.min.js"></script>
 
 
@@ -114,6 +114,7 @@
                     <h1 class="display-4 text-light mb-5">
                         Desa Wisata<br>Kubu Gadang<br>
                     </h1>
+                    <h3 class="display-9 text-light mb-1"> -Your Hometown In West Sumatera-</h3>
                     <div class="d-flex align-items-center pt-4 animated slideInDown">
                         <a href="/web" class="btn btn-primary py-sm-3 px-3 px-sm-5 me-5">Explore</a>
                         <!-- <a href="/web" class="btn btn-primary py-sm-3 px-3 px-sm-5 me-5"
@@ -129,13 +130,13 @@
             <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
                 <div class="owl-carousel header-carousel">
                     <div class="owl-carousel-item">
-                        <img class="img-fluid" src="<?= base_url('media/photos/landing-page/carousel-1.jpg'); ?>" alt="" />
+                        <img class="img-fluid" src="<?= base_url('media/photos/landing-page/desakuga1.jpg'); ?>" alt="" />
                     </div>
                     <div class="owl-carousel-item">
-                        <img class="img-fluid" src="<?= base_url('media/photos/landing-page/carousel-2.jpg'); ?>" alt="" />
+                        <img class="img-fluid" src="<?= base_url('media/photos/landing-page/sileklanyah.jpg'); ?>" alt="" />
                     </div>
                     <div class="owl-carousel-item">
-                        <img class="img-fluid" src="<?= base_url('media/photos/landing-page/carousel-3.jpg'); ?>" alt="" />
+                        <img class="img-fluid" src="<?= base_url('media/photos/landing-page/desakuga2.jpg'); ?>" alt="" />
                     </div>
                 </div>
             </div>
@@ -171,18 +172,18 @@
                     <p><span class="text-primary me-2">#</span>Welcome To Desa Wisata Desa Wisata Kubu Gadang</p>
                     <h1 class="display-5 mb-4">
                         Why You Should Visit
-                        Desa Wisata <br><span class="text-primary">Kampuang Minang <br>Nagari Sumpu</span>
+                        Desa Wisata <br><span class="text-primary">Kubu Gadang</span>
                     </h1>
                     <p class="mb-4">
-                        Kubu Gadang Tourism Village is one of the Community Based Tourism in West Sumatra Province located on Jalan Haji Miskin, Ekor Lubuk Village, Padang Panjang City. Kubu Gadang was pioneered as a Tourism Village since 2014. Kubu Gadang Tourism Village has a variety of natural and cultural potentials that are packaged in various educational programs with activities that provide learning and experience for tourists. Kubu Gadang Tourism Village has been visited by domestic and foreign tourists and has won various provincial and national awards, including:</p>
+                        Kubu Gadang Tourism Village is one of the Community Based Tourism in West Sumatra Province located on Jalan Haji Miskin, Ekor Lubuk Village, Padang Panjang City. Kubu Gadang was pioneered as a Tourism Village since 2014. Kubu Gadang tourist village is a refreshing and romantic place to evoke nostalgia for beautiful memories in your hometown. Kubu Gadang Tourism Village has a variety of natural and cultural potentials that are packaged in various educational programs with activities that provide learning and experience for tourists. Kubu Gadang Tourism Village has been visited by domestic and foreign tourists and has won various provincial and national awards.</p>
                     <h5 class="mb-3">
                         <a href="#map" class="text-reset" onclick="showMap('aLSA');">
-                            <i class="far fa-check-circle text-primary me-3"></i>Best Tourism Village of West Sumatra in 2020 by the Association of Indonesian Tourism Industries (GIPI) of West Sumatra
+                            <i class="far fa-check-circle text-primary me-3"></i>Cultural Heritage
                         </a>
                     </h5>
                     <h5 class="mb-3">
                         <a href="#map" class="text-reset" onclick="showMap('aNT');">
-                            <i class="far fa-check-circle text-primary me-3"></i>Runner Up of the Best Tourism Awareness Group (POKDARWIS) of West Sumatra 2021
+                            <i class="far fa-check-circle text-primary me-3"></i>Local Empowerment
                         </a>
                     </h5>
                     <h5 class="mb-3">
@@ -192,19 +193,19 @@
                     </h5>
                     <h5 class="mb-3">
                         <a href="#map" class="text-reset" onclick="showMap('aET');">
-                            <i class="far fa-check-circle text-primary me-3"></i>Top 100 Best Tourism Villages of the Indonesian Tourism Village Award (ADWI) 2021
+                            <i class="far fa-check-circle text-primary me-3"></i>Experiental Learning
                         </a>
                     </h5>
                     <h5 class="mb-3">
                         <a href="#map" class="text-reset" onclick="showMap('cp');">
-                            <i class="far fa-check-circle text-primary me-3"></i>Top 8 Best Tourism Villages in the Advanced Category of the Indonesian Tourism Village Award (ADWI) 2023
+                            <i class="far fa-check-circle text-primary me-3"></i>Natural Tourism, Cultural Tourism, Artificial Tourism
                         </a>
                     </h5>
                     <a class="btn btn-primary py-3 px-5 mt-3" href="/web">Explore</a>
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="img-border">
-                        <img class="img-fluid right" src="<?= base_url('media/photos/landing-page/bg-about.jpg'); ?>" alt="" />
+                        <img class="img-fluid right" src="<?= base_url('media/photos/landing-page/kuga22.jpg'); ?>" alt="" />
                     </div>
                 </div>
             </div>
@@ -238,13 +239,13 @@
                         <span class="text-primary">Silek Lanyah</span>
                     </h1>
                     <p class="mb-4">
-                        
+                        When visiting Kubu Gadang Village, visitors will be able to enjoy the beauty of nature and culture. Silek Lanyah Kubu Gadang is a unique traditional Minangkabau martial art performed on muddy fields, usually in rice fields after harvest. This tour is unique because it is not only a sport or performing art but also acts as a means of moral and social education. Silek Lanyah is performed by three generations, namely children, teenagers and adults and is the original community of Kubu Gadang.
                     </p>
 
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="img-border">
-                        <img class="img-fluid right" src="<?= base_url('media/photos/landing-page/singkarak.jpg'); ?>" alt="" />
+                        <img class="img-fluid right" src="<?= base_url('media/photos/landing-page/sileklanyahbg.jpg'); ?>" alt="" />
                     </div>
                 </div>
             </div>
@@ -278,13 +279,13 @@
                     <p class="text-white mb-0">Berkelanjutan</p>
                 </div>
                 <div class="col-md-3 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
-                    <img src="media/photos/landing-page/rumah-gadang.png" alt="" style="filter: invert(100%); max-width: 5em">
+                    <img src="media/photos/landing-page/trophy.png" alt="" style="filter: invert(100%); max-width: 4em" class="mb-3">
                     <h1 class="text-white mb-2">100</h1>
                     <p class="text-white mb-0">Besar</p>
                     <p class="text-white mb-0">ADWI</p>
                 </div>
                 <div class="col-md-3 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
-                    <img src="media/photos/landing-page/rumah-gadang.png" alt="" style="filter: invert(100%); max-width: 5em">
+                    <img src="media/photos/landing-page/trophy.png" alt="" style="filter: invert(100%); max-width: 4em" class="mb-3">
                     <p class="text-white mb-0">Top</p>
                     <h1 class="text-white mb-2">8</h1>
                     <p class="text-white mb-0">Desa Wisata Termaju</p>
@@ -301,17 +302,18 @@
                 <div class="col-lg-9 col-md-6">
                     <h5 class="text-light mb-4">Address</h5>
                     <p class="mb-2">
-                        <i class="fa fa-map-marker-alt me-3"></i>Nagari Sumpu, Batipuh Selatan, Kabupaten Tanah Datar, Sumatera Barat
+                        <i class="fa fa-map-marker-alt me-3"></i> Jalan Haji Miskin Kelurahan Ekor Lubuk, Kecamatan Padang Panjang Timur, Kota Padang Panjang, Provinsi Sumatera Barat
                     </p>
                     <p class="mb-2">
-                        <i class="fa fa-phone-alt me-3"></i>+62 813 7451 9594
+                        <i class="fa fa-phone-alt me-3"></i> +62 812 7515 1074
                     </p>
                     <p class="mb-2">
-                        <i class="fa fa-envelope me-3"></i>pesonasumpu@gmail.com
+                        <i class="fa fa-envelope me-3"></i> desawisatakubugadang@gmail.com
                     </p>
                     <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href="https://www.instagram.com/pesonasumpu"><i class="fab fa-instagram"></i></a>
-                        <a class="btn btn-outline-light btn-social" href="https://www.facebook.com/Kampuang%20Minang%20Nagari%20Sumpu"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href="https://www.instagram.com/desawisatakubugadang/"><i class="fab fa-instagram"></i></a>
+                        <a class="btn btn-outline-light btn-social" href="https://www.facebook.com/desawisatakubugadang/"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href="https://www.youtube.com/@Desawisatakubugadang"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
 
@@ -408,71 +410,71 @@
                 }
             })
         }
-    const ec = EventCalendar.create(document.getElementById('ec'), {
-        view: 'dayGridMonth',
-        headerToolbar: {
-            start: 'prev,next today',
-            center: 'title',
-        },
-        scrollTime: '09:00:00',
-        events: createEvents(),
-        dayMaxEvents: true,
-        nowIndicator: true,
-        selectable: true
-    });
-
-    function createEvents() {
-        let days = [];
-        // for (let i = 0; i < 7; ++i) {
-        //     let day = new Date();
-        //     let diff = i - day.getDay();
-        //     day.setDate(day.getDate() + diff);
-        //     days[i] = day.getFullYear() + "-" + _pad(day.getMonth()+1) + "-" + _pad(day.getDate());
-        // }
-
-        let events = [];
-        $.ajax({
-            url: '<?= base_url('/api/event') ?>',
-            dataType: 'json',
-            async: false,
-            success: function(response) {
-                if (response && response.data) {
-                    console.log(response.data);
-                    events = response.data.map(function(item) {
-                        return {
-                            start: item.event_start,
-                            end: item.event_end,
-                            title: item.name,
-                            color: item.color || "#779ECB"
-                        };
-                    });
-                }
-            }
+        const ec = EventCalendar.create(document.getElementById('ec'), {
+            view: 'dayGridMonth',
+            headerToolbar: {
+                start: 'prev,next today',
+                center: 'title',
+            },
+            scrollTime: '09:00:00',
+            events: createEvents(),
+            dayMaxEvents: true,
+            nowIndicator: true,
+            selectable: true
         });
-        return events;
 
-        // return [
-        //     {start: days[0] + " 00:00", end: days[0] + " 09:00", resourceId: 1, display: "background"},
-        //     {start: days[1] + " 12:00", end: days[1] + " 14:00", resourceId: 2, display: "background"},
-        //     {start: days[2] + " 17:00", end: days[2] + " 24:00", resourceId: 1, display: "background"},
-        //     {start: days[0] + " 10:00", end: days[0] + " 14:00", resourceId: 1, title: "The calendar can display background and regular events", color: "#FE6B64"},
-        //     {start: days[1] + " 16:00", end: days[2] + " 08:00", resourceId: 2, title: "An event may span to another day", color: "#B29DD9"},
-        //     {start: days[2] + " 09:00", end: days[2] + " 13:00", resourceId: 2, title: "Events can be assigned to resources and the calendar has the resources view built-in", color: "#779ECB"},
-        //     {start: days[3] + " 14:00", end: days[3] + " 20:00", resourceId: 1, title: "", color: "#FE6B64"},
-        //     {start: days[3] + " 15:00", end: days[3] + " 18:00", resourceId: 1, title: "Overlapping events are positioned properly", color: "#779ECB"},
-        //     {start: days[5] + " 10:00", end: days[5] + " 16:00", resourceId: 2, title: {html: "You have complete control over the <i><b>display</b></i> of events…"}, color: "#779ECB"},
-        //     {start: days[5] + " 14:00", end: days[5] + " 19:00", resourceId: 2, title: "…and you can drag and drop the events!", color: "#FE6B64"},
-        //     {start: days[5] + " 18:00", end: days[5] + " 21:00", resourceId: 2, title: "", color: "#B29DD9"},
-        //     {start: days[1], end: days[3], resourceId: 1, title: "All-day events can be displayed at the top", color: "#B29DD9", allDay: true}
-        // ];
-    }
+        function createEvents() {
+            let days = [];
+            // for (let i = 0; i < 7; ++i) {
+            //     let day = new Date();
+            //     let diff = i - day.getDay();
+            //     day.setDate(day.getDate() + diff);
+            //     days[i] = day.getFullYear() + "-" + _pad(day.getMonth()+1) + "-" + _pad(day.getDate());
+            // }
 
-    function _pad(num) {
-        let norm = Math.floor(Math.abs(num));
-        return (norm < 10 ? '0' : '') + norm;
-    }
+            let events = [];
+            $.ajax({
+                url: '<?= base_url('/api/event') ?>',
+                dataType: 'json',
+                async: false,
+                success: function(response) {
+                    if (response && response.data) {
+                        console.log(response.data);
+                        events = response.data.map(function(item) {
+                            return {
+                                start: item.event_start,
+                                end: item.event_end,
+                                title: item.name,
+                                color: item.color || "#779ECB"
+                            };
+                        });
+                    }
+                }
+            });
+            return events;
+
+            // return [
+            //     {start: days[0] + " 00:00", end: days[0] + " 09:00", resourceId: 1, display: "background"},
+            //     {start: days[1] + " 12:00", end: days[1] + " 14:00", resourceId: 2, display: "background"},
+            //     {start: days[2] + " 17:00", end: days[2] + " 24:00", resourceId: 1, display: "background"},
+            //     {start: days[0] + " 10:00", end: days[0] + " 14:00", resourceId: 1, title: "The calendar can display background and regular events", color: "#FE6B64"},
+            //     {start: days[1] + " 16:00", end: days[2] + " 08:00", resourceId: 2, title: "An event may span to another day", color: "#B29DD9"},
+            //     {start: days[2] + " 09:00", end: days[2] + " 13:00", resourceId: 2, title: "Events can be assigned to resources and the calendar has the resources view built-in", color: "#779ECB"},
+            //     {start: days[3] + " 14:00", end: days[3] + " 20:00", resourceId: 1, title: "", color: "#FE6B64"},
+            //     {start: days[3] + " 15:00", end: days[3] + " 18:00", resourceId: 1, title: "Overlapping events are positioned properly", color: "#779ECB"},
+            //     {start: days[5] + " 10:00", end: days[5] + " 16:00", resourceId: 2, title: {html: "You have complete control over the <i><b>display</b></i> of events…"}, color: "#779ECB"},
+            //     {start: days[5] + " 14:00", end: days[5] + " 19:00", resourceId: 2, title: "…and you can drag and drop the events!", color: "#FE6B64"},
+            //     {start: days[5] + " 18:00", end: days[5] + " 21:00", resourceId: 2, title: "", color: "#B29DD9"},
+            //     {start: days[1], end: days[3], resourceId: 1, title: "All-day events can be displayed at the top", color: "#B29DD9", allDay: true}
+            // ];
+        }
+
+        function _pad(num) {
+            let norm = Math.floor(Math.abs(num));
+            return (norm < 10 ? '0' : '') + norm;
+        }
     </script>
-    
+
 </body>
 
 </html>
