@@ -418,7 +418,8 @@
         events: createEvents(),
         dayMaxEvents: true,
         nowIndicator: true,
-        selectable: true
+        selectable: true,
+        dragConstraint: false
     });
 
     function createEvents() {
@@ -440,10 +441,12 @@
                     console.log(response.data);
                     events = response.data.map(function(item) {
                         return {
+                            id: item.id,
                             start: item.event_start,
                             end: item.event_end,
                             title: item.name,
-                            color: item.color || "#779ECB"
+                            color: item.color || "#779ECB",
+                            editable: false,
                         };
                     });
                 }

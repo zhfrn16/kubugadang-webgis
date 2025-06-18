@@ -527,6 +527,15 @@
     color: var(--dark);
 }
 
+/* calendar */
+ .ec-day {
+    aspect-ratio: 3/2;
+ }
+
+ h4.ec-event-title {
+    font-size: 1rem;
+ }
+
 
 /*** Footer ***/
 .footer {
