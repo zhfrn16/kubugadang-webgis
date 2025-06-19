@@ -484,7 +484,6 @@
 
 <?= $this->section('javascript') ?>
 <script>
-    // $('#activity-row-<?= $package['data']['id']; ?>').hide();
     $('#direction-row').hide();
     $('#check-explore-col').hide();
     $('#result-explore-col').hide();

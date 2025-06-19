@@ -410,6 +410,7 @@
                 }
             })
         }
+<<<<<<< HEAD
         const ec = EventCalendar.create(document.getElementById('ec'), {
             view: 'dayGridMonth',
             headerToolbar: {
@@ -421,6 +422,51 @@
             dayMaxEvents: true,
             nowIndicator: true,
             selectable: true
+=======
+    const ec = EventCalendar.create(document.getElementById('ec'), {
+        view: 'dayGridMonth',
+        headerToolbar: {
+            start: 'prev,next today',
+            center: 'title',
+        },
+        scrollTime: '09:00:00',
+        events: createEvents(),
+        dayMaxEvents: true,
+        nowIndicator: true,
+        selectable: true,
+        dragConstraint: false
+    });
+
+    function createEvents() {
+        let days = [];
+        // for (let i = 0; i < 7; ++i) {
+        //     let day = new Date();
+        //     let diff = i - day.getDay();
+        //     day.setDate(day.getDate() + diff);
+        //     days[i] = day.getFullYear() + "-" + _pad(day.getMonth()+1) + "-" + _pad(day.getDate());
+        // }
+
+        let events = [];
+        $.ajax({
+            url: '<?= base_url('/api/event') ?>',
+            dataType: 'json',
+            async: false,
+            success: function(response) {
+                if (response && response.data) {
+                    console.log(response.data);
+                    events = response.data.map(function(item) {
+                        return {
+                            id: item.id,
+                            start: item.event_start,
+                            end: item.event_end,
+                            title: item.name,
+                            color: item.color || "#779ECB",
+                            editable: false,
+                        };
+                    });
+                }
+            }
+>>>>>>> 741bd9e124a1529ea32b720708ed2eadb10d1d7e
         });
 
         function createEvents() {
