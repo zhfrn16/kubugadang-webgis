@@ -203,7 +203,8 @@ class Homestay extends ResourcePresenter
             'contact_person' => $request['contact_person'],
             'open' => $request['open'],
             'close' => $request['close'],
-            'description' => $request['description']
+            'description' => $request['description'],
+            'price' => $request['price']
         ];
         foreach ($requestData as $key => $value) {
             if (empty($value)) {
@@ -322,6 +323,7 @@ class Homestay extends ResourcePresenter
             'open' => $request['open'],
             'close' => $request['close'],
             'description' => $request['description'],
+            'price' => $request['price'],
         ];
         foreach ($requestData as $key => $value) {
             if (empty($value)) {

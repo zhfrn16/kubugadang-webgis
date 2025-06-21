@@ -11,7 +11,7 @@ class HomestayModel extends Model
     protected $primaryKey = 'id';
     protected $returnType = 'array';
     protected $allowedFields    = [
-        'id', 'name', 'address', 'contact_person', 'open', 'close', 'description', 'status', 'homestay_status', 'video_url', 'geom'
+        'id', 'name', 'address', 'contact_person', 'open', 'close', 'description', 'status', 'homestay_status', 'video_url', 'geom', 'price'
     ];
 
     // Dates
@@ -29,7 +29,7 @@ class HomestayModel extends Model
     public function get_list_homestay()
     {
         $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
-        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description,{$this->table}.price";
         $query = $this->db->table($this->table)
         ->select("{$columns}, {$coords}")
         ->get();
@@ -40,7 +40,7 @@ class HomestayModel extends Model
     public function get_list_homestay_homestay()
     {
         $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
-        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description,{$this->table}.price";
         $query = $this->db->table($this->table)
         ->select("{$columns}, {$coords}")
         ->where('homestay_status', '1')
@@ -105,7 +105,7 @@ class HomestayModel extends Model
     public function get_homestay_by_id($id = null)
     {
         $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
-        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description,{$this->table}.price";
         $geoJson = "ST_AsGeoJSON({$this->table}.geom) AS geoJson";
         $query = $this->db->table($this->table)
             ->select("{$columns}, {$coords}, {$geoJson}")
@@ -127,13 +127,13 @@ class HomestayModel extends Model
     public function get_homestay_by_id_custom($id = null)
     {
         $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
-        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description,{$this->table}.price";
         // $geoJson = "ST_AsGeoJSON({$this->table}.geom) AS geoJson";
         $query = $this->db->table($this->table)
             ->select("{$columns}, {$coords}, unit_homestay.price")
             ->join('unit_homestay', 'homestay.id = unit_homestay.homestay_id')
             ->where('homestay.id', $id)
-            ->groupBy("unit_homestay.price, {$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description")
+            ->groupBy("unit_homestay.price, {$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description,{$this->table}.price")
             ->get();
         return $query;
     }
@@ -148,7 +148,7 @@ class HomestayModel extends Model
                     * cos(radians(ST_X(ST_CENTROID({$this->table}.geom))) - radians({$long})) 
                     + sin(radians({$lat}))* sin(radians(ST_Y(ST_CENTROID({$this->table}.geom))))))";
         $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
-        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description,{$this->table}.price";
         $query = $this->db->table($this->table)
             ->select("{$columns}, {$coords}, {$distance} as distance")
             ->having(['distance <=' => $radius])
@@ -205,7 +205,7 @@ class HomestayModel extends Model
 
     public function get_list_hm_apii() {
         $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
-        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description,{$this->table}.price";
         $vilGeom = "village.id = '1' AND ST_Contains(village.geom, {$this->table}.geom)";
         $query = $this->db->table($this->table)
             ->select("{$columns}, {$coords}")
@@ -217,7 +217,7 @@ class HomestayModel extends Model
 
     public function get_list_hm_api() {
         $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
-        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.open,{$this->table}.close,{$this->table}.video_url,{$this->table}.homestay_status,{$this->table}.description,{$this->table}.price";
         // $vilGeom = "village.id = '1' AND ST_Contains(village.geom, {$this->table}.geom)";
         $query = $this->db->table($this->table)
             ->select("{$columns}, {$coords}")
