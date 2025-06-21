@@ -64,7 +64,7 @@
                             <div class="row">
                                 <div class="col table-responsive">
                                     <div>
-                                        <?php print $item['description']; ?>
+                                        <?= $item['description']; ?>
                                     </div>
                                     <div>
                                         <tr>
