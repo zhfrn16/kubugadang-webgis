@@ -103,6 +103,7 @@ class Homestay extends ResourcePresenter
      {
          $homestay = $this->homestayModel->get_homestay_by_id($id)->getRowArray();
          $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
+         $homestayComment = $this->homestayModel->getCommentByHomestayId($id)->getResultArray();
  
          if (empty($homestay)) {
              return redirect()->to(substr(current_url(), 0, -strlen($id)));
@@ -151,6 +152,7 @@ class Homestay extends ResourcePresenter
              'title' => $homestay['name'],
              'data' => $homestay,
              'data2' => $contents2,
+             'reservation' => $homestayComment,
              'facilityhome' => $list_facility_rumah,
              'unit' => $list_unit,
              'gallery_unit' => $list_gallery_unit,
@@ -355,6 +357,63 @@ class Homestay extends ResourcePresenter
         if ($updateHO) {
             return redirect()->to(base_url('dashboard/homestay') . '/' . $id);
         } else {
+            return redirect()->back()->withInput();
+        }
+    }
+    
+
+    public function createComment()
+    {
+        $request = $this->request->getPost();
+        $id = $request['id'];
+        $comment = $request['comment'];
+
+        $data = [
+            'homestay_id' => $id,
+            'comment' => $comment,
+            'user_id' => user_id(),
+            'rating' => $request['rating'] ?? null,
+        ];
+
+        if ($this->homestayModel->createComment($data)) {
+            session()->setFlashdata('success', 'Comment added successfully.');
+            return redirect()->to(base_url('dashboard/homestay/' . $id));
+        } else {
+            session()->setFlashdata('error', 'Failed to add comment.');
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function updateComment($id = null)
+    {
+        $request = $this->request->getPost();
+        $comment = $request['comment'];
+
+        $data = [
+            'comment' => $comment,
+            'rating' => $request['rating'] ?? null,
+            'user_id' => user_id(),
+        ];
+
+        if ($this->homestayModel->updateComment($id, $data)) {
+            session()->setFlashdata('success', 'Comment updated successfully.');
+            return redirect()->to(base_url('dashboard/homestay/' . $id));
+        } else {
+            session()->setFlashdata('error', 'Failed to update comment.');
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function deleteComment($id = null)
+    {
+        $request = $this->request->getPost();
+        $commentId = $request['comment_id'];
+
+        if ($this->homestayModel->deleteComment($commentId)) {
+            session()->setFlashdata('success', 'Comment deleted successfully.');
+            return redirect()->to(base_url('dashboard/homestay/' . $id));
+        } else {
+            session()->setFlashdata('error', 'Failed to delete comment.');
             return redirect()->back()->withInput();
         }
     }
