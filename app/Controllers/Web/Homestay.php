@@ -27,7 +27,7 @@ class Homestay extends ResourcePresenter
     protected $facilityHomestayModel;
     protected $facilityHomestayDetailModel;
     protected $detailReservationModel;
-    
+
     protected $helpers = ['auth', 'url', 'filesystem'];
 
     public function __construct()
@@ -71,13 +71,13 @@ class Homestay extends ResourcePresenter
         foreach ($contents as &$package) {
             $id = $package['id'];
             $gallery = $this->galleryHomestayModel->get_gallery($id)->getRowArray();
-        
+
             // Assuming you want to associate the gallery with each package
-            if(!empty($gallery)){
-                foreach($gallery as $item){
+            if (!empty($gallery)) {
+                foreach ($gallery as $item) {
                     $package['gallery'] = $item;
                 }
-            }else{
+            } else {
                 $package['gallery'] = 'default.jpg';
             }
         }
@@ -97,75 +97,74 @@ class Homestay extends ResourcePresenter
      *
      * @return mixed
      */
-    
 
-     public function show($id = null)
-     {
-         $homestay = $this->homestayModel->get_homestay_by_id($id)->getRowArray();
-         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
- 
-         if (empty($homestay)) {
-             return redirect()->to(substr(current_url(), 0, -strlen($id)));
-         }
- 
-         $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($id)->getResultArray();
- 
-         $list_gallery = $this->galleryHomestayModel->get_gallery($id)->getResultArray();
-         $galleries = array();
-         foreach ($list_gallery as $gallery) {
-             $galleries[] = $gallery['url'];
-         }
-         $homestay['gallery'] = $galleries;
- 
-         $list_unit = $this->unitHomestayModel->get_unit_homestay($id)->getResultArray();
- 
-         $facilities = array();
-         foreach ($list_unit as $unit) {
-             $unit_number=$unit['unit_number'];
-             $homestay_id=$unit['homestay_id'];
-             $unit_type=$unit['unit_type'];
-             $list_facility = $this->facilityUnitDetailModel->get_data_facility_unit_detail($unit_number, $homestay_id, $unit_type)->getResultArray();
-             $facilities[]=$list_facility;
-         }
-         $fc = $facilities;
- 
-         $list_gallery_unit = $this->galleryUnitModel->get_gallery($id)->getResultArray();
- 
-         $datareview = array();
-         $datarating = array();
-         foreach($list_unit as $unit){
-             $unit_number=$unit['unit_number'];
-             $homestay_id=$unit['homestay_id'];
-             $unit_type=$unit['unit_type'];
-             $dreview = $this->detailReservationModel->getReview($unit_number, $homestay_id, $unit_type)->getResultArray();
-             $drating = $this->detailReservationModel->getRating($unit_number, $homestay_id, $unit_type)->getResultArray();
-             $datareview[]=$dreview;
-             $datarating[]=$drating;
- 
-         }
- 
-         $review = $datareview;
-         $rating = $datarating;
- 
-         $data = [
-             'title' => $homestay['name'],
-             'data' => $homestay,
-             'data2' => $contents2,
-             'facilityhome' => $list_facility_rumah,
-             'unit' => $list_unit,
-             'gallery_unit' => $list_gallery_unit,
-             'facility' => $fc,
-             'review' => $review,
-             'rating' => $rating,
-             'folder' => 'homestay'
-         ];
- 
-         if (url_is('*dashboard*')) {
-             return view('dashboard/detail_homestay', $data);
-         }
-         return view('web/detail_homestay',$data);
-     }
-     
+
+    public function show($id = null)
+    {
+        $homestay = $this->homestayModel->get_homestay_by_id($id)->getRowArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
+
+        if (empty($homestay)) {
+            return redirect()->to(substr(current_url(), 0, -strlen($id)));
+        }
+
+        $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($id)->getResultArray();
+
+        $list_gallery = $this->galleryHomestayModel->get_gallery($id)->getResultArray();
+        $galleries = array();
+        foreach ($list_gallery as $gallery) {
+            $galleries[] = $gallery['url'];
+        }
+        $homestay['gallery'] = $galleries;
+
+        $list_unit = $this->unitHomestayModel->get_unit_homestay($id)->getResultArray();
+
+        $facilities = array();
+        foreach ($list_unit as $unit) {
+            $unit_number = $unit['unit_number'];
+            $homestay_id = $unit['homestay_id'];
+            $unit_type = $unit['unit_type'];
+            $list_facility = $this->facilityUnitDetailModel->get_data_facility_unit_detail($unit_number, $homestay_id, $unit_type)->getResultArray();
+            $facilities[] = $list_facility;
+        }
+        $fc = $facilities;
+
+        $list_gallery_unit = $this->galleryUnitModel->get_gallery($id)->getResultArray();
+
+        $datareview = array();
+        $datarating = array();
+        foreach ($list_unit as $unit) {
+            $unit_number = $unit['unit_number'];
+            $homestay_id = $unit['homestay_id'];
+            $unit_type = $unit['unit_type'];
+            $dreview = $this->detailReservationModel->getReview($unit_number, $homestay_id, $unit_type)->getResultArray();
+            $drating = $this->detailReservationModel->getRating($unit_number, $homestay_id, $unit_type)->getResultArray();
+            $datareview[] = $dreview;
+            $datarating[] = $drating;
+        }
+
+        $review = $datareview;
+        $rating = $datarating;
+
+        $data = [
+            'title' => $homestay['name'],
+            'data' => $homestay,
+            'data2' => $contents2,
+            'facilityhome' => $list_facility_rumah,
+            'unit' => $list_unit,
+            'gallery_unit' => $list_gallery_unit,
+            'facility' => $fc,
+            'review' => $review,
+            'rating' => $rating,
+            'folder' => 'homestay'
+        ];
+
+        if (url_is('*dashboard*')) {
+            return view('dashboard/detail_homestay', $data);
+        }
+        return view('web/detail_homestay', $data);
+    }
+
     public function new()
     {
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
@@ -175,12 +174,12 @@ class Homestay extends ResourcePresenter
 
         $data = [
             'title' => 'New Homestay',
-            'homestay_id'=>$id,
+            'homestay_id' => $id,
             'facility' => $facility,
             'data2' => $contents2,
 
         ];
-        
+
         return view('dashboard/homestay-form', $data);
     }
 
@@ -232,7 +231,7 @@ class Homestay extends ResourcePresenter
         }
 
         if ($addHO) {
-            return redirect()->to(base_url('dashboard/homestay/').$id.'/edit');
+            return redirect()->to(base_url('dashboard/homestay/') . $id . '/edit');
         } else {
             $session = session();
             $session->setFlashdata('error', 'Data tersebut sudah ada');
@@ -267,14 +266,13 @@ class Homestay extends ResourcePresenter
         } else {
             // Data belum ada, jalankan query insert
             $addFH = $this->facilityHomestayDetailModel->add_new_facilityHomestayDetail($requestData);
-       
+
             if ($addFH) {
-                return redirect()->to(base_url('dashboard/homestay/new/').$id);
+                return redirect()->to(base_url('dashboard/homestay/new/') . $id);
             } else {
                 return redirect()->back()->withInput();
             }
         }
-        
     }
 
 
@@ -296,13 +294,13 @@ class Homestay extends ResourcePresenter
         }
         $homestay['gallery'] = $galleries;
 
-        $facilityHomestay= $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($id)->getResultArray();
+        $facilityHomestay = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($id)->getResultArray();
 
         $data = [
             'title' => 'Homestay',
             'data' => $homestay,
             'facility' => $facility,
-            'facility_homestay'=>$facilityHomestay,
+            'facility_homestay' => $facilityHomestay,
             'data2' => $contents2,
 
         ];
@@ -359,9 +357,9 @@ class Homestay extends ResourcePresenter
 
     public function deleteobject($id = null)
     {
-        $request = $this->request->getPost();  
+        $request = $this->request->getPost();
 
-        $id = $request['id'];    
+        $id = $request['id'];
         $array1 = array('id' => $id);
         $deleteHM = $this->homestayModel->where($array1)->delete();
 
@@ -375,7 +373,6 @@ class Homestay extends ResourcePresenter
             session()->setFlashdata('success', 'Homestay "' . $id . '" Deleted Successfully.');
 
             return redirect()->to(base_url('dashboard/homestay'));
-
         } else {
             $response = [
                 'status' => 404,
@@ -385,9 +382,8 @@ class Homestay extends ResourcePresenter
             ];
             return $this->failNotFound($response);
         }
-
     }
-    
+
     // public function get_list_hm_api() {
     //     $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
     //     $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.address,{$this->table}.contact_person,{$this->table}.description";

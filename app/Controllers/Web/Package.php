@@ -131,7 +131,7 @@ class Package extends ResourcePresenter
      * @return mixed
      */
 
-     
+
 
     public function show($id = null)
     {
@@ -1028,9 +1028,9 @@ class Package extends ResourcePresenter
 
     public function deleteobject($id = null)
     {
-        $request = $this->request->getPost();  
+        $request = $this->request->getPost();
 
-        $id = $request['id'];    
+        $id = $request['id'];
         $array1 = array('id' => $id);
         $deleteHM = $this->packageModel->where($array1)->delete();
 
@@ -1044,7 +1044,6 @@ class Package extends ResourcePresenter
             session()->setFlashdata('success', 'Package "' . $id . '" Deleted Successfully.');
 
             return redirect()->to(base_url('dashboard/package'));
-
         } else {
             $response = [
                 'status' => 404,
@@ -1055,5 +1054,4 @@ class Package extends ResourcePresenter
             return $this->failNotFound($response);
         }
     }
-    
 }
