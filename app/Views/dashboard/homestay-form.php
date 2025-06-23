@@ -85,6 +85,7 @@ $edit = in_array('edit', $uri);
                                         </select>
                                     </div>
                                 </div><br>
+                            
                                 <div class="row g-4">
                                     <div class="col-md-12">
                                         <label for="description_facility">Description</label>
@@ -147,6 +148,13 @@ $edit = in_array('edit', $uri);
                             <div class="form-group mb-4">
                                 <label for="description" class="form-label">Description</label>
                                 <textarea class="form-control" id="description" name="description" rows="4"><?= ($edit) ? $data['description'] : old('description'); ?></textarea>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="price" class="mb-2">Price</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp </span>
+                                    <input type="number" id="price" class="form-control" name="price" placeholder="Price" aria-label="Price" aria-describedby="price" value="<?= ($edit && isset($data['price'])) ? $data['price'] : 0; ?>">
+                                </div>
                             </div>
                             <div class="form-group mb-4">
                                 <label for="gallery" class="form-label">Gallery</label>

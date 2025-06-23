@@ -136,6 +136,7 @@ class Package extends ResourcePresenter
     public function show($id = null)
     {
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
+        $review = $this->reservationModel->getReview($id)->getResultArray();
 
         $package = $this->packageModel->get_package_by_id($id)->getRowArray();
         if (empty($package)) {
@@ -161,6 +162,7 @@ class Package extends ResourcePresenter
             'title' => $package['name'],
             'data' => $package,
             'data2' => $contents2,
+            'reviews' => $review,
             'serviceinclude' => $serviceinclude,
             'serviceexclude' => $serviceexclude,
             'day' => $getday,
@@ -179,6 +181,7 @@ class Package extends ResourcePresenter
     public function detailpackage($id = null)
     {
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
+        $review = $this->reservationModel->getReview($id)->getResultArray();
 
         $package = $this->packageModel->get_package_by_id($id)->getRowArray();
         if (empty($package)) {
@@ -204,6 +207,7 @@ class Package extends ResourcePresenter
             'title' => $package['name'],
             'data' => $package,
             'data2' => $contents2,
+            'reviews' => $review,
             'serviceinclude' => $serviceinclude,
             'serviceexclude' => $serviceexclude,
             'day' => $getday,
@@ -569,6 +573,57 @@ class Package extends ResourcePresenter
                 'message' => 'Failed to update minimal capacity.'
             ];
             return $this->response->setJSON($response);
+        }
+    }
+
+    public function createReview()
+    {
+        $request = $this->request->getPost();
+        $id = $request['id'];
+        $user_id = user()->id;
+        $review = [
+            'package_id' => $id,
+            'user_id' => $user_id,
+            'rating' => $request['rating'],
+            'review' => $request['review']
+        ];
+
+        // Check if the user has already reviewed this package
+        if ($this->reservationModel->getReviewByUser($id, $user_id)) {
+            return redirect()->back()->with('error', 'You have already reviewed this package.');
+        }
+
+        // Insert the review
+        if ($this->reservationModel->createReview($review)) {
+            return redirect()->back()->with('success', 'Review submitted successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Failed to submit review.');
+        }
+    }
+
+    public function updateReview($id = null)
+    {
+        $request = $this->request->getPost();
+        $review = [
+            'rating' => $request['rating'],
+            'review' => $request['review']
+        ];
+
+        // Update the review
+        if ($this->reservationModel->update_review($id, $review)) {
+            return redirect()->back()->with('success', 'Review updated successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Failed to update review.');
+        }
+    }
+
+    public function deleteReview($id = null)
+    {
+        // Delete the review
+        if ($this->reservationModel->delete_review($id)) {
+            return redirect()->back()->with('success', 'Review deleted successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Failed to delete review.');
         }
     }
 

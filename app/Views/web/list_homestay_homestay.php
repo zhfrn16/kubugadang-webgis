@@ -35,7 +35,7 @@
                                                 <h5 class="card-title"><?= esc($item['name']); ?></h5>
                                                 <p>Desa Wisata Kubu Gadang</p>
                                                 <!-- <p>Include Tourism Package</p> -->
-                                                <p><i class="fa-solid fa-wifi"></i> Free WiFi &nbsp;<i class="fa-solid fa-utensils"></i> Breakfast</p>
+                                                <p><i class="fa-solid fa-utensils"></i> Breakfast</p>
                                                
                                                 <div class="d-flex">
                                                     <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="More Info" class="btn icon btn-outline-primary me-2" href="<?= base_url('web/homestay/') . $item['id']; ?>">

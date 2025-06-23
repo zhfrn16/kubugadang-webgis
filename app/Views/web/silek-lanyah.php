@@ -69,6 +69,37 @@
                                 <div class="row">
                                     <div class="col table-responsive">
                                         <div>
+                                            <?= $item['description']; ?>
+                                        </div>
+                                        <div>
+                                            <tr>
+                                                <td class="fw-bold">Price</td>
+                                                <td> : <?= 'Rp ' . number_format(esc($item['price']), 0, ',', '.'); ?></td>
+                                            </tr>
+                                        </div>
+                                        <div>
+                                            <tr>
+                                                <td class="fw-bold">Payment Category </td>
+                                                <td>
+                                                    <?php if ($item['category'] == 0): ?>
+                                                        : Group
+                                                    <?php elseif ($item['category'] == 1): ?>
+                                                        : Individu
+                                                    <?php endif; ?>
+                                                </td>
+                                            </tr>
+                                        </div>
+                                        <br>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                            <?php foreach ($data as $item) : ?>
+                                <script>
+                                    objectMarker("<?= esc($item['id']); ?>", <?= esc($item['lat']); ?>, <?= esc($item['lng']); ?>);
+                                </script>
+                                <div class="row">
+                                    <div class="col table-responsive">
+                                        <div>
                                             <?php print $item['description']; ?>
                                         </div>
                                         <div>

@@ -53,7 +53,16 @@
                                     <tr>
                                         <td class="fw-bold">Close</td>
                                         <td><?= esc($data['close']); ?></td>
-                                    </tr>                                   
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Price</td>
+                                        <td>  
+                                            <?php
+                                                $price = isset($data['price']) && $data['price'] !== null ? $data['price'] : 0;
+                                                echo 'Rp ' . number_format(esc($price), 0, ',', '.');
+                                            ?>
+                                            </td>
+                                    </tr>                              
                                 </tbody>
                             </table>
                         </div>
