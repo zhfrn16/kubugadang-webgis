@@ -44,17 +44,21 @@ class PackageReviewModel extends Model
     // Get all reviews for a package
     public function getReviewsByPackage($package_id)
     {
-        return $this->where('package_id', $package_id)
-            ->orderBy('created_at', 'DESC')
+        return $this->select('package_review.*, users.username, users.fullname')
+            ->join('users', 'users.id = package_review.user_id', 'left')
+            ->where('package_review.package_id', $package_id)
+            ->orderBy('package_review.created_at', 'DESC')
             ->findAll();
     }
 
     // Get a review by user for a package
     public function getReviewByUser($package_id, $user_id)
     {
-        return $this->where([
-                'package_id' => $package_id,
-                'user_id' => $user_id
+        return $this->select('package_review.*, users.username, users.fullname')
+            ->join('users', 'users.id = package_review.user_id', 'left')
+            ->where([
+                'package_review.package_id' => $package_id,
+                'package_review.user_id' => $user_id
             ])
             ->first();
     }

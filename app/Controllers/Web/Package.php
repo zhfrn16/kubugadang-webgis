@@ -3,6 +3,7 @@
 namespace App\Controllers\Web;
 
 use App\Models\PackageModel;
+use App\Models\PackageReviewModel;
 use App\Models\KubuGadangModel;
 use App\Models\PackageDayModel;
 use App\Models\DetailPackageModel;
@@ -30,6 +31,7 @@ class Package extends ResourcePresenter
 {
     protected $packageModel;
     protected $KubuGadangModel;
+    protected $packageReviewModel;
     protected $detailPackageModel;
     protected $packageDayModel;
     protected $galleryPackageModel;
@@ -62,6 +64,7 @@ class Package extends ResourcePresenter
     public function __construct()
     {
         $this->packageModel = new PackageModel();
+        $this->packageReviewModel = new PackageReviewModel();
         $this->KubuGadangModel = new KubuGadangModel();
         $this->packageDayModel = new PackageDayModel();
         $this->detailPackageModel = new DetailPackageModel();
@@ -136,7 +139,7 @@ class Package extends ResourcePresenter
     public function show($id = null)
     {
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
-        $review = $this->reservationModel->getReview($id)->getResultArray();
+        $comment = $this->packageReviewModel->getReviewsByPackage($id);
 
         $package = $this->packageModel->get_package_by_id($id)->getRowArray();
         if (empty($package)) {
@@ -162,7 +165,7 @@ class Package extends ResourcePresenter
             'title' => $package['name'],
             'data' => $package,
             'data2' => $contents2,
-            'reviews' => $review,
+            'comment' => $comment,
             'serviceinclude' => $serviceinclude,
             'serviceexclude' => $serviceexclude,
             'day' => $getday,
@@ -576,54 +579,83 @@ class Package extends ResourcePresenter
         }
     }
 
-    public function createReview()
+    public function createComment()
     {
         $request = $this->request->getPost();
         $id = $request['id'];
-        $user_id = user()->id;
-        $review = [
+        $review_text = $request['review'];
+        $user_id = user_id();
+
+        // Check if the user has already reviewed this package
+        if ($this->packageReviewModel->getReviewByUser($id, $user_id)) {
+            session()->setFlashdata('error', 'You have already reviewed this package.');
+            return redirect()->to(base_url('web/package/' . $id));
+        }
+
+        $data = [
             'package_id' => $id,
             'user_id' => $user_id,
             'rating' => $request['rating'],
-            'review' => $request['review']
+            'review_text' => $review_text,
+            'is_approved' => 0,
         ];
 
-        // Check if the user has already reviewed this package
-        if ($this->reservationModel->getReviewByUser($id, $user_id)) {
-            return redirect()->back()->with('error', 'You have already reviewed this package.');
-        }
-
-        // Insert the review
-        if ($this->reservationModel->createReview($review)) {
-            return redirect()->back()->with('success', 'Review submitted successfully.');
+        if ($this->packageReviewModel->createReview($data)) {
+            session()->setFlashdata('success', 'Review submitted successfully.');
+            return redirect()->to(base_url('web/package/' . $id));
         } else {
-            return redirect()->back()->with('error', 'Failed to submit review.');
+            session()->setFlashdata('error', 'Failed to submit review.');
+            return redirect()->back()->withInput();
         }
     }
 
-    public function updateReview($id = null)
+    public function updateComment($id = null)
     {
         $request = $this->request->getPost();
-        $review = [
-            'rating' => $request['rating'],
-            'review' => $request['review']
+        $review_text = $request['review'];
+
+        // Fetch the review to check ownership
+        $review = $this->packageReviewModel->find($id);
+        if (!$review || $review['user_id'] != user_id()) {
+            session()->setFlashdata('error', 'You are not authorized to edit this review.');
+            return redirect()->back()->withInput();
+        }
+        $package_id = $review['package_id'];
+
+        $data = [
+            'review_text' => $review_text,
+            'rating' => $request['rating'] ?? null,
+            'user_id' => user_id(),
         ];
 
-        // Update the review
-        if ($this->reservationModel->update_review($id, $review)) {
-            return redirect()->back()->with('success', 'Review updated successfully.');
+        if ($this->packageReviewModel->update_review($id, $data)) {
+            session()->setFlashdata('success', 'Review updated successfully.');
+            return redirect()->to(base_url('web/package/' . $package_id));
         } else {
-            return redirect()->back()->with('error', 'Failed to update review.');
+            session()->setFlashdata('error', 'Failed to update review.');
+            return redirect()->back()->withInput();
         }
     }
 
-    public function deleteReview($id = null)
+    public function deleteComment($id = null)
     {
-        // Delete the review
-        if ($this->reservationModel->delete_review($id)) {
-            return redirect()->back()->with('success', 'Review deleted successfully.');
+        $request = $this->request->getPost();
+        $commentId = $request['comment_id'];
+
+        // Fetch the review to check ownership
+        $review = $this->packageReviewModel->find($commentId);
+        if (!$review || $review['user_id'] != user_id()) {
+            session()->setFlashdata('error', 'You are not authorized to delete this review.');
+            return redirect()->back()->withInput();
+        }
+        $package_id = $review['package_id'];
+
+        if ($this->packageReviewModel->deleteReview($commentId)) {
+            session()->setFlashdata('success', 'Review deleted successfully.');
+            return redirect()->to(base_url('web/package/' . $package_id));
         } else {
-            return redirect()->back()->with('error', 'Failed to delete review.');
+            session()->setFlashdata('error', 'Failed to delete review.');
+            return redirect()->back()->withInput();
         }
     }
 

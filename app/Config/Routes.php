@@ -111,6 +111,9 @@ $routes->group('web', ['namespace' => 'App\Controllers\Web'], function ($routes)
     $routes->post('homestay/createComment', 'Homestay::createComment');
     $routes->post('homestay/updateComment/(:segment)', 'Homestay::updateComment/$1');
     $routes->post('homestay/deleteComment/(:segment)', 'Homestay::deleteComment/$1');
+    $routes->post('package/createComment', 'Package::createComment');
+    $routes->post('package/updateComment/(:segment)', 'Package::updateComment/$1');
+    $routes->post('package/deleteComment/(:segment)', 'Package::deleteComment/$1');
 
 
     $routes->presenter('cart', ['filter' => 'login']);
