@@ -445,7 +445,7 @@
             <div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form action="<?= base_url('web/package/createComment') ?>" method="post">
+                        <form id="addReviewForm" action="<?= base_url('web/package/createComment') ?>" method="post" onsubmit="return validateReviewForm('addReviewForm')">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addReviewModalLabel">Add Review</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -465,6 +465,7 @@
                                         <?php endfor; ?>
                                     </div>
                                 </div>
+                                <div id="review-error" class="text-danger" style="display:none;"></div>
                                 <style>
                                     #star-rating .fa-star {
                                         cursor: pointer;
@@ -478,6 +479,19 @@
                                     }
                                 </style>
                                 <script>
+                                    function validateReviewForm(formId) {
+                                        var form = document.getElementById(formId);
+                                        var ratingChecked = form.querySelector('input[name="rating"]:checked');
+                                        var reviewText = form.querySelector('textarea[name="review"]').value.trim();
+                                        var errorDiv = form.querySelector('#review-error');
+                                        if (!ratingChecked || reviewText === '') {
+                                            errorDiv.style.display = 'block';
+                                            errorDiv.textContent = 'Please provide both a rating and review text.';
+                                            return false;
+                                        }
+                                        errorDiv.style.display = 'none';
+                                        return true;
+                                    }
                                     document.addEventListener('DOMContentLoaded', function() {
                                         const stars = document.querySelectorAll('#star-rating .fa-star');
                                         const radios = document.querySelectorAll('#star-rating input[type="radio"]');
