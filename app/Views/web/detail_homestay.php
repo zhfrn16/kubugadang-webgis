@@ -91,144 +91,220 @@
                 </div>
             </div>
 
-            <!-- Start Card Unit Homestay -->
-            <?php if ($data['homestay_status'] == '1') : ?>
-                <div>
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-3"> </div>
-                            <div class="col-6">
-                                <h4 class="card-title text-center">Homestay Unit</h4>
-                            </div>
-                            <div class="col-3">
-                            </div>
+            <!-- Start Review Section -->
+            <div>
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            <h4 class="card-title text-center">Reviews</h4>
+                        </div>
+                        <div class="col-3 text-end">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addReviewModal">
+                                <i class="fa fa-plus"></i> Add Review
+                            </button>
                         </div>
                     </div>
+                                    <div class="card-body">
+                    <?php if (isset($comment) && count($comment) > 0) : ?>
+                        <?php foreach ($comment as $review) : ?>
+                            <div class="mb-4 border-bottom pb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>@<?= esc($review['fullname']) ?></strong>
+                                        <span class="text-muted small ms-2">(<?= esc(date('d M Y H:i', strtotime($review['created_at']))) ?>)</span>
+                                    </div>
+                                    <?php if (user_id() == $review['user_id']) : ?>
+                                        <div>
 
-                    <?php if (isset($unit)) : ?>
-                        <div class="row sm-8">
-                            <?php foreach ($unit as $item) : ?>
-                                <div class="col-sm-6">
-                                    <div class="card">
-                                        <div class="card-body">
-                                        <h5 class="card-title"><?= esc($item['unit_name']); ?></h5>
-                                            <div class="rating text-center ">
-                                                <?php foreach ($rating as $date) : ?>
-                                                    <?php foreach ($date as $dt => $rate) : ?>
-                                                        <?php if ($rate['rating'] != null) : ?>
-                                                            <?php if ($rate['unit_number'] == $item['unit_number'] && $rate['homestay_id'] == $item['homestay_id'] && $rate['unit_type'] == $item['unit_type']) : ?>
-                                                                <?php for ($i = 1; $i <= 5; $i++) : ?>
-                                                                    <?php if ($i <= $rate['rating']) : ?>
-                                                                        <i name="rating" class="fas fa-star"></i>
-                                                                    <?php else : ?>
-                                                                        <i name="rating" class="far fa-star"></i>
-                                                                    <?php endif; ?>
-                                                                <?php endfor; ?>
-                                                            <?php endif; ?>
-                                                        <?php endif; ?>
-                                                    <?php endforeach; ?>
-                                                <?php endforeach; ?>
-                                            </div>
-                                            <p class="card-text">
-                                                Price : <?= 'Rp ' . number_format(esc($item['price']), 0, ',', '.'); ?> <br>
-                                                Capacity : <?= esc($item['capacity']); ?> orang
-                                            </p>
-
-                                            <p class="card-text"><?= esc($item['description']); ?></p>
-                                            <p class="card-text">Facility :
-                                                <?php if (isset($facility)) : ?>
-                                                    <?php foreach ($facility as $dt_fc) : ?>
-                                                        <?php foreach ($dt_fc as $dt) : ?>
-                                                            <?php if ($dt['unit_number'] == $item['unit_number'] && $dt['homestay_id'] == $item['homestay_id'] && $dt['unit_type'] == $item['unit_type']) : ?>
-                                                                <li>
-                                                                    <?= esc($dt['name']); ?> (<?= esc($dt['description']); ?>)
-                                                                </li>
-                                                            <?php endif; ?>
-                                                        <?php endforeach; ?>
-                                                    <?php endforeach; ?>
-                                                <?php endif; ?>
-                                            </p>
-                                            <p class="d-inline-flex gap-1">
-                                                <button type="button" class="btn btn-outline-primary float-end" data-bs-toggle="modal" data-bs-target="#exampleModal<?= esc($item['unit_number']) ?><?= esc($item['unit_type']) ?>" data-bs-whatever="@getbootstrap"><i class="fa fa-photo"></i></button>
-                                                <button class="btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= esc($item['unit_number']); ?><?= esc($item['unit_type']); ?>" aria-expanded="false" aria-controls="collapseExample">
-                                                    <i class="fa fa-comments"></i>
-                                                </button>
-                                            </p>
-                                            <?php foreach ($review as $dt) : ?>
-                                                <?php foreach ($dt as $value => $d) : ?>
-                                                    <?php if ($d['unit_number'] == $item['unit_number'] && $d['homestay_id'] == $item['homestay_id'] && $d['unit_type'] == $item['unit_type']) : ?>
-                                                        <div class="collapse" id="collapse<?= esc($d['unit_number']); ?><?= esc($d['unit_type']); ?>">
-                                                            <strong>@<?= esc($d['username']) ?></strong>
-                                                            <p>Rating :
-                                                            <div class="rating2 ">
-                                                                <?php for ($i = 1; $i <= 5; $i++) : ?>
-                                                                    <?php if ($i <= $d['rating']) : ?>
-                                                                        <i name="rating2" class="fas fa-star"></i>
-                                                                    <?php else : ?>
-                                                                        <i name="rating2" class="far fa-star"></i>
-                                                                    <?php endif; ?>
-                                                                <?php endfor; ?>
-                                                            </div>
-                                                            </p>
-                                                            <div>Review : <?= esc($d['review']) ?></div>
-                                                            <hr>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                <?php endforeach; ?>
-                                            <?php endforeach; ?>
-
-                                            <!-- modal foto unit -->
-                                            <div class="modal fade" id="exampleModal<?= esc($item['unit_number']) ?><?= esc($item['unit_type']) ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Gallery Unit</h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div id="GalleryUnitcarousel<?= esc($item['unit_number']) ?><?= esc($item['unit_type']) ?>" class="carousel slide carousel-fade" data-bs-ride="carousel">
-                                                                <div class="carousel-indicators">
-                                                                    <?php $i = 0; ?>
-                                                                    <?php foreach ($gallery_unit as $dt => $x) : ?>
-                                                                        <button type="button" data-bs-target="#GalleryUnitcarousel<?= esc($item['unit_number']) ?><?= esc($item['unit_type']) ?>" data-bs-slide-to="<?= esc($i); ?>" class="<?= ($i == 0) ? 'active' : ''; ?>"></button>
-                                                                        <?php $i++; ?>
-                                                                    <?php endforeach; ?>
-                                                                </div>
-                                                                <div class="carousel-inner">
-                                                                    <?php $i = 0; ?>
-                                                                    <?php foreach ($gallery_unit as $g) : ?>
-                                                                        <?php if ($g['unit_number'] == $item['unit_number']  &&  $g['unit_type'] == $item['unit_type']) : ?>
-                                                                            <div class="carousel-item<?= ($i == 0) ? ' active' : ''; ?>">
-                                                                                <img class="d-block w-100" src="<?= base_url('media/photos/unithomestay/' . esc($g['url'])) ?>">
-                                                                            </div>
-                                                                            <?php $i++; ?>
-                                                                        <?php endif; ?>
-                                                                    <?php endforeach; ?>
-                                                                </div>
-                                                                <a class="carousel-control-prev" href="#GalleryUnitcarousel<?= esc($item['unit_number']) ?><?= esc($item['unit_type']) ?>" role="button" type="button" data-bs-slide="prev">
-                                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                                </a>
-                                                                <a class="carousel-control-next" href="#GalleryUnitcarousel<?= esc($item['unit_number']) ?><?= esc($item['unit_type']) ?>" role="button" data-bs-slide="next">
-                                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editReviewModal<?= esc($review['id']) ?>">
+                                                <i class="fa fa-edit"></i> Edit
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteReviewModal<?= esc($review['id']) ?>">
+                                                <i class="fa fa-trash"></i> Delete
+                                            </button>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="rating2 mb-1">
+                                    <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                        <?php if ($i <= $review['rating']) : ?>
+                                            <i name="rating2" class="fas fa-star"></i>
+                                        <?php else : ?>
+                                            <i name="rating2" class="far fa-star"></i>
+                                        <?php endif; ?>
+                                    <?php endfor; ?>
+                                </div>
+                                <div><?= esc($review['review_text']) ?></div>
+                            </div>
+                            <?php if (user_id() == $review['user_id']) : ?>
+                                <!-- Edit Review Modal -->
+                                <div class="modal fade" id="editReviewModal<?= esc($review['id']) ?>" tabindex="-1" aria-labelledby="editReviewModalLabel<?= esc($review['id']) ?>" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form action="<?= base_url('web/homestay/updateComment/' . $review['id']) ?>" method="post">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editReviewModalLabel<?= esc($review['id']) ?>">Edit Review</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="hidden" name="id" value="<?= esc($data['id']) ?>">
+                                                    <div class="mb-3">
+                                                        <label for="edit_review_text<?= esc($review['id']) ?>" class="form-label">Review</label>
+                                                        <textarea class="form-control" id="edit_review_text<?= esc($review['id']) ?>" name="comment" rows="3" required><?= esc($review['review_text']) ?></textarea>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Rating</label>
+                                                        <div id="edit-star-rating<?= esc($review['id']) ?>" class="rating">
+                                                            <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                                                <input type="radio" class="btn-check" name="rating" id="edit-star<?= esc($review['id']) ?>-<?= $i ?>" value="<?= $i ?>" autocomplete="off" <?= ($review['rating'] == $i) ? 'checked' : '' ?>>
+                                                                <label class="fa fa-star<?= ($i <= $review['rating']) ? ' selected' : '' ?>" for="edit-star<?= esc($review['id']) ?>-<?= $i ?>"></label>
+                                                            <?php endfor; ?>
                                                         </div>
                                                     </div>
+                                                    <style>
+                                                        #edit-star-rating<?= esc($review['id']) ?> .fa-star {
+                                                            cursor: pointer;
+                                                            font-size: 2rem;
+                                                            color: #ccc;
+                                                        }
+                                                        #edit-star-rating<?= esc($review['id']) ?> .fa-star.selected,
+                                                        #edit-star-rating<?= esc($review['id']) ?> .fa-star.hovered {
+                                                            color: orange;
+                                                        }
+                                                    </style>
+                                                    <script>
+                                                        document.addEventListener('DOMContentLoaded', function () {
+                                                            const stars = document.querySelectorAll('#edit-star-rating<?= esc($review['id']) ?> .fa-star');
+                                                            const radios = document.querySelectorAll('#edit-star-rating<?= esc($review['id']) ?> input[type="radio"]');
+                                                            let selected = <?= (int) $review['rating'] ?>;
+                                                            stars.forEach((star, idx) => {
+                                                                star.addEventListener('mouseenter', function () {
+                                                                    for (let i = 0; i <= idx; i++) stars[i].classList.add('hovered');
+                                                                });
+                                                                star.addEventListener('mouseleave', function () {
+                                                                    for (let i = 0; i < stars.length; i++) stars[i].classList.remove('hovered');
+                                                                });
+                                                                star.addEventListener('click', function () {
+                                                                    selected = idx + 1;
+                                                                    radios[idx].checked = true;
+                                                                    for (let i = 0; i < stars.length; i++) {
+                                                                        if (i <= idx) stars[i].classList.add('selected');
+                                                                        else stars[i].classList.remove('selected');
+                                                                    }
+                                                                });
+                                                            });
+                                                        });
+                                                    </script>
                                                 </div>
-                                            </div>
-                                            <!-- end modal foto unit -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Update Review</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
-                            <?php endforeach; ?>
-                        </div>
+                                <!-- End Edit Review Modal -->
+                                <!-- Delete Review Modal -->
+                                <div class="modal fade" id="deleteReviewModal<?= esc($review['id']) ?>" tabindex="-1" aria-labelledby="deleteReviewModalLabel<?= esc($review['id']) ?>" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form action="<?= base_url('web/homestay/deleteComment/' . $review['id']) ?>" method="post">
+                                                <input type="hidden" name="comment_id" value="<?= esc($review['id']) ?>">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteReviewModalLabel<?= esc($review['id']) ?>">Delete Review</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this review?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Delete Review Modal -->
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <p class="text-center">No reviews yet.</p>
                     <?php endif; ?>
                 </div>
-            <?php endif; ?>
-            <!-- End Card Unit Homestay -->
+                </div>
+
+            </div>
+            <!-- Add Review Modal -->
+            <div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="<?= base_url('web/homestay/createComment') ?>" method="post">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addReviewModalLabel">Add Review</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="id" value="<?= esc($data['id']) ?>">
+                                <div class="mb-3">
+                                    <label for="review_text" class="form-label">Review</label>
+                                    <textarea class="form-control" id="review_text" name="comment" rows="3" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Rating</label>
+                                    <div id="star-rating" class="rating">
+                                        <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                            <input type="radio" class="btn-check" name="rating" id="star<?= $i ?>" value="<?= $i ?>" autocomplete="off">
+                                            <label class="fa fa-star" for="star<?= $i ?>"></label>
+                                        <?php endfor; ?>
+                                    </div>
+                                </div>
+                                <style>
+                                    #star-rating .fa-star {
+                                        cursor: pointer;
+                                        font-size: 2rem;
+                                        color: #ccc;
+                                    }
+                                    #star-rating .fa-star.selected,
+                                    #star-rating .fa-star.hovered {
+                                        color: orange;
+                                    }
+                                </style>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        const stars = document.querySelectorAll('#star-rating .fa-star');
+                                        const radios = document.querySelectorAll('#star-rating input[type="radio"]');
+                                        let selected = 0;
+                                        stars.forEach((star, idx) => {
+                                            star.addEventListener('mouseenter', function () {
+                                                for (let i = 0; i <= idx; i++) stars[i].classList.add('hovered');
+                                            });
+                                            star.addEventListener('mouseleave', function () {
+                                                for (let i = 0; i < stars.length; i++) stars[i].classList.remove('hovered');
+                                            });
+                                            star.addEventListener('click', function () {
+                                                selected = idx + 1;
+                                                radios[idx].checked = true;
+                                                for (let i = 0; i < stars.length; i++) {
+                                                    if (i <= idx) stars[i].classList.add('selected');
+                                                    else stars[i].classList.remove('selected');
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Submit Review</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- End Review Section -->
         </div>
 
         <div class="col-md-5 col-12">

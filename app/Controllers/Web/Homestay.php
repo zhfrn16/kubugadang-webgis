@@ -3,6 +3,7 @@
 namespace App\Controllers\Web;
 
 use App\Models\HomestayModel;
+use App\Models\HomestayReviewModel;
 use App\Models\KubuGadangModel;
 use App\Models\GalleryHomestayModel;
 use App\Models\GalleryUnitModel;
@@ -18,6 +19,7 @@ use CodeIgniter\Files\File;
 class Homestay extends ResourcePresenter
 {
     protected $homestayModel;
+    protected $homestayReviewModel;
     protected $KubuGadangModel;
     protected $galleryHomestayModel;
     protected $galleryUnitModel;
@@ -33,6 +35,7 @@ class Homestay extends ResourcePresenter
     public function __construct()
     {
         $this->homestayModel = new HomestayModel();
+        $this->homestayReviewModel = new HomestayReviewModel();
         $this->KubuGadangModel = new KubuGadangModel();
         $this->galleryHomestayModel = new GalleryHomestayModel();
         $this->galleryUnitModel = new GalleryUnitModel();
@@ -103,7 +106,7 @@ class Homestay extends ResourcePresenter
     {
         $homestay = $this->homestayModel->get_homestay_by_id($id)->getRowArray();
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
-        $homestayComment = $this->homestayModel->getCommentByHomestayId($id)->getResultArray();
+        $homestayComment = $this->homestayReviewModel->getReviewsByHomestay($id);
 
         if (empty($homestay)) {
             return redirect()->to(substr(current_url(), 0, -strlen($id)));
@@ -151,7 +154,7 @@ class Homestay extends ResourcePresenter
             'title' => $homestay['name'],
             'data' => $homestay,
             'data2' => $contents2,
-            'reservation' => $homestayComment,
+            'comment' => $homestayComment,
             'facilityhome' => $list_facility_rumah,
             'unit' => $list_unit,
             'gallery_unit' => $list_gallery_unit,
@@ -364,20 +367,21 @@ class Homestay extends ResourcePresenter
     {
         $request = $this->request->getPost();
         $id = $request['id'];
-        $comment = $request['comment'];
+        $review_text = $request['comment'];
 
         $data = [
             'homestay_id' => $id,
-            'comment' => $comment,
+            'review_text' => $review_text,
             'user_id' => user_id(),
             'rating' => $request['rating'] ?? null,
+            'is_approved' => 0,
         ];
 
-        if ($this->homestayModel->createComment($data)) {
-            session()->setFlashdata('success', 'Comment added successfully.');
-            return redirect()->to(base_url('dashboard/homestay/' . $id));
+        if ($this->homestayReviewModel->createReview($data)) {
+            session()->setFlashdata('success', 'Review added successfully.');
+            return redirect()->to(base_url('web/homestay/' . $id));
         } else {
-            session()->setFlashdata('error', 'Failed to add comment.');
+            session()->setFlashdata('error', 'Failed to add review.');
             return redirect()->back()->withInput();
         }
     }
@@ -385,19 +389,28 @@ class Homestay extends ResourcePresenter
     public function updateComment($id = null)
     {
         $request = $this->request->getPost();
-        $comment = $request['comment'];
+        $review_text = $request['comment'];
+
+        // Fetch the review to check ownership
+        $review = $this->homestayReviewModel->find($id);
+        if (!$review || $review['user_id'] != user_id()) {
+            session()->setFlashdata('error', 'You are not authorized to edit this review.');
+            return redirect()->back()->withInput();
+        }
+
+        $homestay_id = $review['homestay_id'];
 
         $data = [
-            'comment' => $comment,
+            'review_text' => $review_text,
             'rating' => $request['rating'] ?? null,
             'user_id' => user_id(),
         ];
 
-        if ($this->homestayModel->updateComment($id, $data)) {
-            session()->setFlashdata('success', 'Comment updated successfully.');
-            return redirect()->to(base_url('dashboard/homestay/' . $id));
+        if ($this->homestayReviewModel->update_review($id, $data)) {
+            session()->setFlashdata('success', 'Review updated successfully.');
+            return redirect()->to(base_url('web/homestay/' . $homestay_id));
         } else {
-            session()->setFlashdata('error', 'Failed to update comment.');
+            session()->setFlashdata('error', 'Failed to update review.');
             return redirect()->back()->withInput();
         }
     }
@@ -407,11 +420,19 @@ class Homestay extends ResourcePresenter
         $request = $this->request->getPost();
         $commentId = $request['comment_id'];
 
-        if ($this->homestayModel->deleteComment($commentId)) {
-            session()->setFlashdata('success', 'Comment deleted successfully.');
-            return redirect()->to(base_url('dashboard/homestay/' . $id));
+        // Fetch the review to check ownership
+        $review = $this->homestayReviewModel->find($commentId);
+        if (!$review || $review['user_id'] != user_id()) {
+            session()->setFlashdata('error', 'You are not authorized to delete this review.');
+            return redirect()->back()->withInput();
+        }
+        $homestay_id = $review['homestay_id'];
+
+        if ($this->homestayReviewModel->deleteReview($commentId)) {
+            session()->setFlashdata('success', 'Review deleted successfully.');
+            return redirect()->to(base_url('web/homestay/' . $homestay_id));
         } else {
-            session()->setFlashdata('error', 'Failed to delete comment.');
+            session()->setFlashdata('error', 'Failed to delete review.');
             return redirect()->back()->withInput();
         }
     }

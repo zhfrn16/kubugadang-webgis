@@ -101,6 +101,36 @@
                         </div>
                     </div>
 
+                    <!-- Start Review Section -->
+                    <div class="mt-4">
+                        <div class="card-header">
+                            <h4 class="card-title text-center">Reviews</h4>
+                        </div>
+                        <div class="card-body">
+                            <?php if (isset($comment) && count($comment) > 0) : ?>
+                                <?php foreach ($comment as $review) : ?>
+                                    <div class="mb-4 border-bottom pb-2">
+                                        <strong>@<?= esc($review['fullname']) ?></strong>
+                                        <span class="text-muted small ms-2">(<?= esc(date('d M Y H:i', strtotime($review['created_at']))) ?>)</span>
+                                        <div class="rating2 mb-1">
+                                            <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                                <?php if ($i <= $review['rating']) : ?>
+                                                    <i name="rating2" class="fas fa-star"></i>
+                                                <?php else : ?>
+                                                    <i name="rating2" class="far fa-star"></i>
+                                                <?php endif; ?>
+                                            <?php endfor; ?>
+                                        </div>
+                                        <div><?= esc($review['review_text']) ?></div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <p class="text-center">No reviews yet.</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <!-- End Review Section -->
+
                 </div>
             </div>
         </div>

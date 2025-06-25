@@ -44,17 +44,21 @@ class HomestayReviewModel extends Model
     // Get all reviews for a homestay
     public function getReviewsByHomestay($homestay_id)
     {
-        return $this->where('homestay_id', $homestay_id)
-            ->orderBy('created_at', 'DESC')
+        return $this->select('homestay_review.*, users.username, users.fullname')
+            ->join('users', 'users.id = homestay_review.user_id', 'left')
+            ->where('homestay_review.homestay_id', $homestay_id)
+            ->orderBy('homestay_review.created_at', 'DESC')
             ->findAll();
     }
 
     // Get a review by user for a homestay
     public function getReviewByUser($homestay_id, $user_id)
     {
-        return $this->where([
-                'homestay_id' => $homestay_id,
-                'user_id' => $user_id
+        return $this->select('homestay_review.*, users.username, users.fullname')
+            ->join('users', 'users.id = homestay_review.user_id', 'left')
+            ->where([
+                'homestay_review.homestay_id' => $homestay_id,
+                'homestay_review.user_id' => $user_id
             ])
             ->first();
     }

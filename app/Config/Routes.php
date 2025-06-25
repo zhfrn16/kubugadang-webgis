@@ -100,12 +100,18 @@ $routes->group('web', ['namespace' => 'App\Controllers\Web'], function ($routes)
     $routes->resource('packagetype');
     $routes->presenter('servicepackage');
     $routes->resource('servicepackage');
-    $routes->post('servicepackage/createservicepackage/(:segment)', 'ServicePackage::createservicepackage/$1');
-    $routes->delete('servicepackage/delete/(:any)', 'ServicePackage::delete/$1');
+    $routes->post('servicepackage/createservicepackage/(:segment)', 'Servicepackage::createservicepackage/$1');
+    $routes->delete('servicepackage/delete/(:any)', 'Servicepackage::delete/$1');
     $routes->delete('package/deletepackage/(:any)', 'Package::delete/$1');
+    
+    
 
 
     $routes->get('homestayhomestay', 'Homestay::indexhomestay');
+    $routes->post('homestay/createComment', 'Homestay::createComment');
+    $routes->post('homestay/updateComment/(:segment)', 'Homestay::updateComment/$1');
+    $routes->post('homestay/deleteComment/(:segment)', 'Homestay::deleteComment/$1');
+
 
     $routes->presenter('cart', ['filter' => 'login']);
     $routes->resource('cart', ['filter' => 'login']);
@@ -229,8 +235,8 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers\Web', 'filter' => '
     $routes->resource('facilitytype');
     $routes->presenter('servicepackage');
     $routes->resource('servicepackage');
-    $routes->post('servicepackage/createservicepackage/(:segment)', 'ServicePackage::createservicepackage/$1');
-    $routes->delete('servicepackage/delete/(:any)', 'ServicePackage::delete/$1');
+    $routes->post('servicepackage/createservicepackage/(:segment)', 'Servicepackage::createservicepackage/$1');
+    $routes->delete('servicepackage/delete/(:any)', 'Servicepackage::delete/$1');
 
     $routes->post('announcement/add', 'Sumpu::createannouncement');
     $routes->post('announcement/update/(:any)', 'Sumpu::updateannouncement/$1');
@@ -256,7 +262,7 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers\Web', 'filter' => '
     $routes->post('package/deleteobject/(:any)', 'Package::deleteobject/$1');
     $routes->post('packagetype/deleteobject/(:any)', 'PackageType::deleteobject/$1');
     $routes->post('homestay/deleteobject/(:any)', 'Homestay::deleteobject/$1');
-    $routes->post('servicepackage/deleteobject/(:any)', 'ServicePackage::deleteobject/$1');
+    $routes->post('servicepackage/deleteobject/(:any)', 'Servicepackage::deleteobject/$1');
 
 
 });
