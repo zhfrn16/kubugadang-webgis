@@ -124,18 +124,18 @@ $uri3 = $uri[3] ?? '';
                                 <i class="fa-solid fa-bed"></i><span>Manage Event</span>
                             </a>
                         </li>
-                        <li class="sidebar-item <?= ($uri1 == 'worshipPlace') ? 'active' : '' ?>">
-                            <a href="<?= base_url('dashboard/worshipPlace'); ?>" class="sidebar-link">
+                        <li class="sidebar-item <?= ($uri1 == 'worshipplace') ? 'active' : '' ?>">
+                            <a href="<?= base_url('dashboard/worshipplace'); ?>" class="sidebar-link">
                                 <i class="fa-solid fa-bed"></i><span>Manage Worship</span>
                             </a>
                         </li>
-                        <li class="sidebar-item <?= ($uri1 == 'souvenirPlace') ? 'active' : '' ?>">
-                            <a href="<?= base_url('dashboard/souvenirPlace'); ?>" class="sidebar-link">
+                        <li class="sidebar-item <?= ($uri1 == 'souvenirplace') ? 'active' : '' ?>">
+                            <a href="<?= base_url('dashboard/souvenirplace'); ?>" class="sidebar-link">
                                 <i class="fa-solid fa-bed"></i><span>Manage Souvenir</span>
                             </a>
                         </li>
-                        <li class="sidebar-item <?= ($uri1 == 'culinaryPlace') ? 'active' : '' ?>">
-                            <a href="<?= base_url('dashboard/culinaryPlace'); ?>" class="sidebar-link">
+                        <li class="sidebar-item <?= ($uri1 == 'culinaryplace') ? 'active' : '' ?>">
+                            <a href="<?= base_url('dashboard/culinaryplace'); ?>" class="sidebar-link">
                                 <i class="fa-solid fa-bed"></i><span>Manage Culinary</span>
                             </a>
                         </li>
