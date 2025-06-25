@@ -199,17 +199,7 @@ class Servicepackage extends ResourcePresenter
             $addSP = $this->detailServicePackageModel->add_new_detail_service($id, $requestData);
 
             if ($addSP) {
-                $combinedDataPrice = $this->detailPackageModel->getCombinedDataPrice($id);
-                $combinedServicePrice = $this->detailServicePackageModel->getCombinedServicePrice($id);
-
-                $requestDataPrice = [
-                    'id' => $id,
-                    'price' => $combinedDataPrice + $combinedServicePrice
-                ];
-                $updatePA = $this->packageModel->update_package_price($id, $requestDataPrice);
-
                 session()->setFlashdata('success', 'The service package has been successfully added.');
-
                 return redirect()->back();
             } else {
                 return redirect()->back()->withInput();
@@ -232,21 +222,7 @@ class Servicepackage extends ResourcePresenter
         $deleteDSP = $this->detailServicePackageModel->where($array)->delete();
     
         if ($deleteDSP) {
-            $combinedDataPrice = $this->detailPackageModel->getCombinedDataPrice($package_id);
-            $combinedServicePrice = $this->detailServicePackageModel->getCombinedServicePrice($package_id);
-
-            $requestDataPrice = [
-                'id' => $package_id,
-                'price' => $combinedDataPrice + $combinedServicePrice
-            ];
-            $updatePA = $this->packageModel->update_package_price($id, $requestDataPrice);
-    
-            if ($updatePA) {
-                session()->setFlashdata('success', 'The service package has been successfully deleted.');
-            } else {
-                session()->setFlashdata('error', 'Failed to update package price.');
-            }
-    
+            session()->setFlashdata('success', 'The service package has been successfully deleted.');
             return redirect()->back();
         } else {
             session()->setFlashdata('error', 'Failed to delete service package.');

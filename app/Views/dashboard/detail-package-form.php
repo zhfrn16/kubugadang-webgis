@@ -187,7 +187,7 @@ $edit = in_array('edit', $uri);
                                 </tr>
                                 <tr>
                                     <td class="fw-bold">Price</td>
-                                    <td> <input readonly type="number" id="price" class="form-control" name="price" placeholder="Price" aria-label="Price" aria-describedby="price" value="<?= esc($data['price']); ?>">
+                                    <td> <input type="number" id="price" class="form-control" name="price" placeholder="Price" aria-label="Price" aria-describedby="price" value="<?= esc($data['price']); ?>">
                                     </td>
                                 </tr>
                                 <tr hidden>

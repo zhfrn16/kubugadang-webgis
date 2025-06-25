@@ -189,7 +189,7 @@ $edit = in_array('edit', $uri);
                                 <label for="price" class="mb-2">Price</label>
                                 <div class="input-group">
                                     <span class="input-group-text">Rp </span>
-                                    <input readonly type="text" id="price" class="form-control" name="price" placeholder="Price" aria-label="Price" aria-describedby="price" value="<?= ($edit) ? $data['price'] : old('price'); ?>">
+                                    <input type="text" id="price" class="form-control" name="price" placeholder="Price" aria-label="Price" aria-describedby="price" value="<?= ($edit) ? $data['price'] : old('price'); ?>">
                                 </div>
                             </div>
                             <div class="form-group mb-4">
