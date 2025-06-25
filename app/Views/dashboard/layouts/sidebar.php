@@ -124,6 +124,27 @@ $uri3 = $uri[3] ?? '';
                                 <i class="fa-solid fa-bed"></i><span>Manage Event</span>
                             </a>
                         </li>
+                        <li class="sidebar-item <?= ($uri1 == 'worshipPlace') ? 'active' : '' ?>">
+                            <a href="<?= base_url('dashboard/worshipPlace'); ?>" class="sidebar-link">
+                                <i class="fa-solid fa-bed"></i><span>Manage Worship</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item <?= ($uri1 == 'souvenirPlace') ? 'active' : '' ?>">
+                            <a href="<?= base_url('dashboard/souvenirPlace'); ?>" class="sidebar-link">
+                                <i class="fa-solid fa-bed"></i><span>Manage Souvenir</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item <?= ($uri1 == 'culinaryPlace') ? 'active' : '' ?>">
+                            <a href="<?= base_url('dashboard/culinaryPlace'); ?>" class="sidebar-link">
+                                <i class="fa-solid fa-bed"></i><span>Manage Culinary</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item <?= ($uri1 == 'attraction') ? 'active' : '' ?>">
+                            <a href="<?= base_url('dashboard/attraction'); ?>" class="sidebar-link">
+                                <i class="fa-solid fa-bed"></i><span>Manage Attraction</span>
+                            </a>
+                        </li>
+
                     <?php endif;
                     ?>
 
