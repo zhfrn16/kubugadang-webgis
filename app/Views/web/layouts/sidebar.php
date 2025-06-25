@@ -98,7 +98,7 @@ $uri3 = $uri[3] ?? '';
 
                     <?php if (in_groups(['admin']) || in_groups(['master'])) : ?>
                         <li class="sidebar-item">
-                            <a href="<?= base_url('dashboard/managereservation'); ?>" class="sidebar-link">
+                            <a href="<?= base_url('dashboard/'); ?>" class="sidebar-link">
                                 <i class="bi bi-grid-fill"></i><span>Dashboard</span>
                             </a>
                         </li>

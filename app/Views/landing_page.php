@@ -120,7 +120,7 @@
                         <!-- <a href="/web" class="btn btn-primary py-sm-3 px-3 px-sm-5 me-5"
                         >Explore Ulakan</a
                         > -->
-                        <button type="button" class="btn-play" data-bs-toggle="modal" data-src="<?= base_url('media/videos/landing_page.mp4'); ?>" data-bs-target="#videoModal">
+                        <button type="button" class="btn-play" data-bs-toggle="modal" data-src="<?= base_url('media/videos/videokuga.mp4'); ?>" data-bs-target="#videoModal">
                             <span></span>
                         </button>
                         <h6 class="text-white m-0 ms-4 d-none d-sm-block">Watch Video</h6>
