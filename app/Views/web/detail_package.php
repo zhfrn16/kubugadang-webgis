@@ -258,7 +258,7 @@
                             <p class="fw-bold">Service exclude <br>
                             <ul>
                                 <?php foreach ($serviceexclude as $ls) : ?>
-                                    <li><?= esc($ls['name']); ?></li>
+                                    <li><?= esc($ls['name']); ?> (<?= 'Rp ' . number_format(esc($ls['price']), 0, ',', '.'); ?>)</li>
                                 <?php endforeach; ?>
                             </ul>
                             </p>
