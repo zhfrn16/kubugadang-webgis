@@ -470,14 +470,14 @@ class Package extends ResourcePresenter
         // Update package data
         $updatePA = $this->packageModel->update_package($id, $requestData);
 
-        $combinedDataPrice = $this->detailPackageModel->getCombinedDataPrice($id);
-        $combinedServicePrice = $this->detailServicePackageModel->getCombinedServicePrice($id);
+        // $combinedDataPrice = $this->detailPackageModel->getCombinedDataPrice($id);
+        // $combinedServicePrice = $this->detailServicePackageModel->getCombinedServicePrice($id);
 
-        $requestDataPrice = [
-            'id' => $id,
-            'price' => $combinedDataPrice + $combinedServicePrice
-        ];
-        $updatePAA = $this->packageModel->update_package_price($id, $requestDataPrice);
+        // $requestDataPrice = [
+        //     'id' => $id,
+        //     'price' => $combinedDataPrice + $combinedServicePrice
+        // ];
+        // $updatePAA = $this->packageModel->update_package_price($id, $requestDataPrice);
 
         // Handle gallery files
         if (isset($request['gallery'])) {
