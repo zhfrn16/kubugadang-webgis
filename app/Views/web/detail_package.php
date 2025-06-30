@@ -251,9 +251,27 @@
                             <h4 class="card-title">Package Review</h4>
                         </div>
                         <div class="col-6 text-end">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addReviewModal">
-                                <i class="fa fa-plus"></i> Add Review
-                            </button>
+                            <?php if (logged_in()) : ?>
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addReviewModal">
+                                        <i class="fa fa-plus"></i> Add Review
+                                    </button>
+                            <?php else : ?>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="redirectToLogin()">
+                                    <i class="fa fa-plus"></i> Add Review
+                                </button>
+                                <script>
+                                    function redirectToLogin() {
+                                        Swal.fire({
+                                            icon: 'warning',
+                                            title: 'You are not logged in',
+                                            text: 'Please log in to proceed.',
+                                            confirmButtonText: 'OK',
+                                        }).then(() => {
+                                            window.location.href = '<?= base_url('/login'); ?>';
+                                        });
+                                    }
+                                </script>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
