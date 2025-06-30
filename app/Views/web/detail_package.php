@@ -78,7 +78,7 @@
                         </div>
                         <div class="rating text-center">
                             <?php for ($i = 1; $i <= 5; $i++) : ?>
-                                <?php if ($i <= $rating['rating']) : ?>
+                                <?php if ($i <= $rating) : ?>
                                     <i name="rating" class="fas fa-star"></i>
                                 <?php else : ?>
                                     <i name="rating" class="far fa-star"></i>

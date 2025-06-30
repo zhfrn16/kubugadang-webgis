@@ -159,8 +159,9 @@ class Package extends ResourcePresenter
         $getday = $this->packageDayModel->get_list_package_day($id)->getResultArray();
         $combinedData = $this->detailPackageModel->getCombinedData($id);
         $review = $this->reservationModel->getReview($id)->getResultArray();
-        $rating = $this->reservationModel->getRating($id)->getRowArray();
-
+        // $rating = $this->reservationModel->getRating($id)->getRowArray();
+        $rating = $this->packageReviewModel->getAverageRatingPerPackage($id);
+        // dd($comment);
         $data = [
             'title' => $package['name'],
             'data' => $package,
