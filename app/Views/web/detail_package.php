@@ -78,7 +78,7 @@
                         </div>
                         <div class="rating text-center">
                             <?php for ($i = 1; $i <= 5; $i++) : ?>
-                                <?php if ($i <= $rating['rating']) : ?>
+                                <?php if ($i <= $rating) : ?>
                                     <i name="rating" class="fas fa-star"></i>
                                 <?php else : ?>
                                     <i name="rating" class="far fa-star"></i>
@@ -153,60 +153,6 @@
                         <div class="col-7">
                             <h4 class="card-title text-end">Package Information</h4>
                         </div>
-                        <div class="col-5">
-                            <div class="text-end">
-                                <?php if (logged_in()) : ?>
-                                    <?php if (in_groups(['admin']) || in_groups(['master'])) : ?>
-                                        <button type="submit" class="btn icon btn-outline-primary" title="Extend Package" disabled><i class="fa-solid fa-plus-square"></i> Extend</button>&nbsp;&nbsp;
-                                        <button type="submit" class="btn icon btn-outline-primary" title="Custom Package" disabled><i class="fa-solid fa-puzzle-piece"></i> Custom</button>
-                                    <?php else : ?>
-                                        <div class="d-flex justify-content-end align-items-center gap-2">
-                                            <!-- Form Extend -->
-                                            <form id="customForm" action="<?= base_url('/web/detailreservation/addextend'); ?>/<?= esc($data['id']); ?>" method="post" onsubmit="checkRequired(event)" enctype="multipart/form-data">
-                                                <?= csrf_field(); ?>
-                                                <button type="submit" class="btn icon btn-outline-primary" title="Extend Package">
-                                                    <i class="fa-solid fa-plus-square"></i> Extend
-                                                </button>
-                                            </form>
-
-                                            <!-- Form Custom -->
-                                            <form id="customizeForm" action="<?= base_url('/web/detailreservation/addcustompackage'); ?>/<?= esc($data['id']); ?>" method="post" onsubmit="checkRequired(event)" enctype="multipart/form-data">
-                                                <?= csrf_field(); ?>
-                                                <button type="submit" class="btn icon btn-outline-primary" title="Custom Package">
-                                                    <i class="fa-solid fa-puzzle-piece"></i> Custom
-                                                </button>
-                                            </form>
-                                        </div>
-                                    <?php endif; ?>
-
-                                <?php else : ?>
-                                    <div class="d-flex justify-content-end align-items-center gap-2">
-                                        <!-- Button Extend -->
-                                        <button type="button" class="btn icon btn-outline-primary" title="Extend Package" onclick="redirectToLogin()">
-                                            <i class="fa-solid fa-plus-square"></i> Extend
-                                        </button>
-
-                                        <!-- Button Custom -->
-                                        <button type="button" class="btn icon btn-outline-primary" title="Custom Package" onclick="redirectToLogin()">
-                                            <i class="fa-solid fa-puzzle-piece"></i> Custom
-                                        </button>
-                                    </div>
-                                    <script>
-                                        function redirectToLogin() {
-                                            Swal.fire({
-                                                icon: 'warning',
-                                                title: 'You are not logged in',
-                                                text: 'Please log in to proceed.',
-                                                confirmButtonText: 'OK',
-                                            }).then(() => {
-                                                window.location.href = '<?= base_url('/login'); ?>';
-                                            });
-                                        }
-                                    </script>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 
@@ -305,9 +251,27 @@
                             <h4 class="card-title">Package Review</h4>
                         </div>
                         <div class="col-6 text-end">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addReviewModal">
-                                <i class="fa fa-plus"></i> Add Review
-                            </button>
+                            <?php if (logged_in()) : ?>
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addReviewModal">
+                                        <i class="fa fa-plus"></i> Add Review
+                                    </button>
+                            <?php else : ?>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="redirectToLogin()">
+                                    <i class="fa fa-plus"></i> Add Review
+                                </button>
+                                <script>
+                                    function redirectToLogin() {
+                                        Swal.fire({
+                                            icon: 'warning',
+                                            title: 'You are not logged in',
+                                            text: 'Please log in to proceed.',
+                                            confirmButtonText: 'OK',
+                                        }).then(() => {
+                                            window.location.href = '<?= base_url('/login'); ?>';
+                                        });
+                                    }
+                                </script>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

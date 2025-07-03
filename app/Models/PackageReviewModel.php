@@ -94,4 +94,13 @@ class PackageReviewModel extends Model
     {
         return $this->delete($id);
     }
+    public function getAverageRatingPerPackage($package_id)
+    {
+        $result = $this->selectAvg('rating')
+            ->where('package_id', $package_id)
+            ->get()
+            ->getRow();
+
+        return isset($result->rating) ? (float) $result->rating : 0;
+    }
 }

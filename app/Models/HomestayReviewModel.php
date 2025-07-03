@@ -95,4 +95,13 @@ class HomestayReviewModel extends Model
     {
         return $this->delete($id);
     }
+    
+    public function getAverageRatingPerPackage($package_id)
+    {
+        return $this->selectAvg('rating')
+            ->where('package_id', $package_id)
+            ->get()
+            ->getRow()
+            ->rating;
+    }
 }
