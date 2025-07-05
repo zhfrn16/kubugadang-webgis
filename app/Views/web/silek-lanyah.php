@@ -134,5 +134,7 @@
     $('#check-nearby-col').hide();
     $('#result-track-col').hide();
     $('#result-nearby-col').hide();
+
+    currentPage = 'silek';
 </script>
 <?= $this->endSection() ?>
