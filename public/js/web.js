@@ -5399,10 +5399,6 @@ function getLegend() {
       name: "Facility",
       icon: baseUrl + "/media/icon/facility.png",
     },
-    ev: {
-      name: "Event",
-      icon: baseUrl + "/media/icon/facility.png",
-    },
   };
 
   const title = '<p class="fw-bold fs-6">Legend</p>';
