@@ -81,7 +81,7 @@ $uri3 = $uri[3] ?? '';
 
                     <li class="sidebar-item <?= ($uri1 == 'event') ? 'active' : '' ?>">
                         <a href="<?= base_url('/web/event'); ?>" class="sidebar-link">
-                            <i class="fa-solid fa-bed"></i><span>Events</span>
+                            <i class="fa-solid fa-calendar-check"></i><span>Events</span>
                         </a>
                     </li>
 

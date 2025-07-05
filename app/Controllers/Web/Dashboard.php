@@ -72,7 +72,7 @@ class Dashboard extends BaseController
         ];
         return view('dashboard/analytics', $data);
     }
-    
+
 
     // public function gtp()
     // {
@@ -93,7 +93,7 @@ class Dashboard extends BaseController
     //     return view('dashboard/manage-gtp', $data);
     // }
 
-    public function sumpu()
+    public function kubugadang()
     {
         $contents = $this->KubuGadangModel->get_sumpu()->getRowArray();
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
@@ -169,7 +169,7 @@ class Dashboard extends BaseController
             'dataSP' => $contentsSP,
             'dataWP' => $contentsWP,
             'dataHM' => $contentsHM,
-            
+
         ];
 
         return view('web/list_all_buildings', $data);

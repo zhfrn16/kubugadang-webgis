@@ -38,28 +38,8 @@
                         <p class="fs-5"><?= esc($data['close']); ?></p>
                     </div>
                     <div class="mb-5">
-                        <p class="text-primary mb-2">Ticket Price</p>
-                        <p class="fs-5"><?= esc($data['ticket_price']); ?></p>
-                    </div>
-                    <div class="mb-5">
                         <p class="text-primary mb-2">Contact Person</p>
                         <p class="fs-5"><?= esc($data['contact_person']); ?></p>
-                    </div>
-                    <div class="mb-5">
-                        <p class="text-primary mb-2">Bank Name</p>
-                        <p class="fs-5"><?= esc($data['bank_name']); ?></p>
-                    </div>
-                    <div class="mb-5">
-                        <p class="text-primary mb-2">Bank Code</p>
-                        <p class="fs-5"><?= esc($data['bank_code']); ?></p>
-                    </div>
-                    <div class="mb-5">
-                        <p class="text-primary mb-2">Bank Account Holder Name</p>
-                        <p class="fs-5"><?= esc($data['bank_account_holder']); ?></p>
-                    </div>
-                    <div class="mb-5">
-                        <p class="text-primary mb-2">Bank Account Number</p>
-                        <p class="fs-5"><?= esc($data['bank_account_number']); ?></p>
                     </div>
                 </div>
                 <div class="col-md-6 col-12 order-md-last order-first mb-5">
@@ -75,18 +55,6 @@
                             </div>
                             <?php $i++; ?>
                         <?php endforeach; ?>
-                    </div>
-                </div>
-                <div class="col-md-6 col-12 order-md-last order-first mb-5">
-                    <p class="text-primary mb-2">QR Code</p>
-                    <div class="row gallery" data-bs-toggle="modal" data-bs-target="#qrModal">
-                        <?php if ($data['qr_url'] != null) : ?>
-                            <div class="col-6 col-sm-6 col-lg-3 mt-2 mt-md-2 mb-md-2 mb-2">
-                                <a href="#">
-                                    <img class="w-100 active" src="<?= base_url('media/photos/sumpu/' . $data['qr_url']); ?>"" data-bs-target="#Qrcarousel" />
-                                </a>
-                            </div>
-                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -155,11 +123,11 @@
                     <div id="Qrcarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
                         <div class="carousel-indicators">
                             <?php if ($data['qr_url'] != null) : ?>
-                                <button type="button" data-bs-target="#Qrcarousel" ></button>
+                                <button type="button" data-bs-target="#Qrcarousel"></button>
                             <?php endif; ?>
                         </div>
                         <div class="carousel-inner">
-                        <?php if ($data['qr_url'] != null) : ?>
+                            <?php if ($data['qr_url'] != null) : ?>
                                 <div class="carousel-item<?= ($data['qr_url']) ? ' active' : ''; ?>">
                                     <img class="d-block w-100" src="<?= base_url('media/photos/sumpu/' . $data['qr_url']); ?>">
                                 </div>

@@ -59,7 +59,7 @@ $uri3 = $uri[3] ?? '';
                             <ul class="submenu <?= ($uri1 == 'sumpu' || $uri1 == 'announcement') ? 'active' : '' ?>">
                                 <!-- List Package -->
                                 <li class="submenu-item <?= ($uri1 == 'sumpu') ? 'active' : '' ?>" id="pa-list">
-                                    <a href="<?= base_url('dashboard/sumpu'); ?>"><i class="fa-brands fa-pagelines"></i> Data Village</a>
+                                    <a href="<?= base_url('dashboard/kubugadang'); ?>"><i class="fa-brands fa-pagelines"></i> Data Village</a>
                                 </li>
                                 <!-- List Package type-->
                                 <li class="submenu-item <?= ($uri1 == 'announcement') ? 'active' : '' ?>" id="pa-list">
@@ -114,6 +114,22 @@ $uri3 = $uri[3] ?? '';
                                 </li>
                             </ul>
                         </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="" class="sidebar-link">
+                                <i class="fa-solid fa-square-poll-horizontal"></i><span>Manage Facility</span>
+                            </a>
+                            <ul class="submenu <?= ($uri1 == 'facility' || $uri1 == 'facilitytype') ? 'active' : '' ?>">
+                                <!-- Facility -->
+                                <li class="submenu-item <?= ($uri1 == 'facility') ? 'active' : '' ?>" id="pa-list">
+                                    <a href="<?= base_url('dashboard/facility'); ?>"><i class="fa-solid fa-square-poll-horizontal"></i> Data Facility</a>
+                                </li>
+                                <!-- List Facility type-->
+                                <li class="submenu-item <?= ($uri1 == 'facilitytype') ? 'active' : '' ?>" id="pa-list">
+                                    <a href="<?= base_url('dashboard/facilitytype'); ?>"><i class="fa-solid fa-puzzle-piece"></i> Facility Type</a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <li class="sidebar-item <?= ($uri1 == 'homestay') ? 'active' : '' ?>">
                             <a href="<?= base_url('dashboard/homestay'); ?>" class="sidebar-link">
                                 <i class="fa-solid fa-bed"></i><span>Manage Homestay</span>
@@ -121,30 +137,29 @@ $uri3 = $uri[3] ?? '';
                         </li>
                         <li class="sidebar-item <?= ($uri1 == 'event') ? 'active' : '' ?>">
                             <a href="<?= base_url('dashboard/event'); ?>" class="sidebar-link">
-                                <i class="fa-solid fa-bed"></i><span>Manage Event</span>
+                                <i class="fa-solid fa-calendar-check"></i></i><span>Manage Event</span>
                             </a>
                         </li>
                         <li class="sidebar-item <?= ($uri1 == 'worshipplace') ? 'active' : '' ?>">
                             <a href="<?= base_url('dashboard/worshipplace'); ?>" class="sidebar-link">
-                                <i class="fa-solid fa-bed"></i><span>Manage Worship</span>
+                                <i class="fa-solid fa-place-of-worship"></i><span>Manage Worship</span>
                             </a>
                         </li>
                         <li class="sidebar-item <?= ($uri1 == 'souvenirplace') ? 'active' : '' ?>">
                             <a href="<?= base_url('dashboard/souvenirplace'); ?>" class="sidebar-link">
-                                <i class="fa-solid fa-bed"></i><span>Manage Souvenir</span>
+                                <i class="fa-solid fa-bag-shopping"></i><span>Manage Souvenir</span>
                             </a>
                         </li>
                         <li class="sidebar-item <?= ($uri1 == 'culinaryplace') ? 'active' : '' ?>">
                             <a href="<?= base_url('dashboard/culinaryplace'); ?>" class="sidebar-link">
-                                <i class="fa-solid fa-bed"></i><span>Manage Culinary</span>
+                                <i class="fa-solid fa-utensils"></i><span>Manage Culinary</span>
                             </a>
                         </li>
                         <li class="sidebar-item <?= ($uri1 == 'attraction') ? 'active' : '' ?>">
                             <a href="<?= base_url('dashboard/attraction'); ?>" class="sidebar-link">
-                                <i class="fa-solid fa-bed"></i><span>Manage Attraction</span>
+                                <i class="fa-solid fa-star"></i><span>Manage Attraction</span>
                             </a>
                         </li>
-
                     <?php endif;
                     ?>
 
