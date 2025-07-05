@@ -1080,6 +1080,37 @@ function digitFacility(idfc) {
     },
   });
 }
+function digitEvent(idev) {
+  const digitasi = new google.maps.Data();
+
+  // if (idfc < 10) {
+  //   digitasiValue = "FC00" + idfc;
+  // } else if (idfc >= 10) {
+  //   digitasiValue = "FC0" + idfc;
+  // }
+
+  $.ajax({
+    url: baseUrl + "/api/event",
+    type: "POST",
+    data: {
+      // digitasi: digitasiValue,
+      digitasi: idev,
+    },
+    dataType: "json",
+    success: function (response) {
+      const data = response.data;
+      digitasi.addGeoJson(data);
+      digitasi.setStyle({
+        fillColor: "#898c87",
+        strokeWeight: 0.4,
+        strokeColor: "#ffffff",
+        fillOpacity: 0.4,
+      });
+      digitasi.setMap(map);
+      digitasiArray[idev] = digitasi;
+    },
+  });
+}
 
 //GTP
 // function digitVillage1() {
@@ -1225,7 +1256,7 @@ function digitVillage3(iddesa) {
   digitasiValue = "map-v1r2";
 
   $.ajax({
-    url: baseUrl + "media/map/output_folder3/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
+    url: baseUrl + "media/map/kubugadang/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
     type: "GET",
     dataType: "json",
     success: function (response) {
@@ -1233,10 +1264,10 @@ function digitVillage3(iddesa) {
 
       digitasi.addGeoJson(data);
       digitasi.setStyle({
-        fillColor: "#03C988",
+        fillColor: "#fff",
         strokeWeight: 1,
         strokeColor: "#ffffff",
-        fillOpacity: 0.3,
+        fillOpacity: 0.1,
         clickable: true, // Set clickable to true to enable click event
       });
       digitasi.setMap(map);
@@ -1540,6 +1571,10 @@ function objectMarker(id, lat, lng, status, homestay_status, anim = true) {
     icon = baseUrl + "/media/icon/facility.png";
     const idfc = id;
     digitFacility(idfc);
+  } else if (id.substring(0, 2) === "EV") {
+    icon = baseUrl + "/media/icon/facility.png";
+    const idev = id;
+    digitFacility(idev);
   }
 
   markerOption = {
@@ -1583,6 +1618,8 @@ function objectMarkerRoute(id, lat, lng, anim = true) {
     digitAttraction(idattraction);
   } else if (id.substring(0, 2) === "EV") {
     icon = baseUrl + "/media/icon/event.png";
+    const idev = id;
+    digitEvent(idev);
   } else if (id.substring(0, 1) === "P") {
     icon = baseUrl + "/media/icon/package.png";
   } else if (id.substring(0, 2) === "HO") {
@@ -1723,6 +1760,8 @@ function objectMarkerRouteMobile(id, lat, lng, anim = true) {
     digitAttraction(idattraction);
   } else if (id.substring(0, 2) === "EV") {
     icon = baseUrl + "/media/icon/event.png";
+    const idev = id;
+    digitEvent(idev);
   } else if (id.substring(0, 1) === "P") {
     icon = baseUrl + "/media/icon/package.png";
   } else if (id.substring(0, 2) === "HO") {
@@ -3198,6 +3237,24 @@ function objectInfoWindowRouteMobile(id) {
         infoWindow.setContent(content);
       },
     });
+  } else if (id.substring(0, 2) === "EV") {
+    $.ajax({
+      url: baseUrl + "/api/event/" + id,
+      dataType: "json",
+      success: function (response) {
+        let data = response.data;
+        let name = data.name;
+
+        content =
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
+          '<p class="fw-bold fs-6">' +
+          name +
+          "</p>" +
+          "</div>";
+
+        infoWindow.setContent(content);
+      },
+    });
   } else if (id.substring(0, 2) === "HO") {
     $.ajax({
       url: baseUrl + "/api/homestay/" + id,
@@ -3813,6 +3870,8 @@ function checkExplore() {
   $("#table-cp").empty();
   $("#table-sp").empty();
   $("#table-wp").empty();
+  $("#table-ev").empty();
+  $("#table-fc").empty();
 
   $("#table-lsa").hide();
   $("#table-at").hide();
@@ -3821,6 +3880,8 @@ function checkExplore() {
   $("#table-cp").hide();
   $("#table-sp").hide();
   $("#table-wp").hide();
+  $("#table-ev").hide();
+  $("#table-fc").hide();
 
   let pos = new google.maps.LatLng(currentLat, currentLng);
   let radiusValue =
@@ -3833,6 +3894,8 @@ function checkExplore() {
   const checkCP = document.getElementById("check-cp").checked;
   const checkSP = document.getElementById("check-sp").checked;
   const checkWP = document.getElementById("check-wp").checked;
+  const checkEV = document.getElementById("check-ev").checked;
+  const checkFC = document.getElementById("check-fc").checked;
 
   if (!checkHO && !checkCP && !checkSP && !checkWP) {
     document.getElementById("radiusValueNearby").innerHTML = "0 m";
@@ -3855,6 +3918,14 @@ function checkExplore() {
   if (checkWP) {
     findExplore("wp", radiusValue);
     $("#table-wp").show();
+  }
+  if (checkEV) {
+    findExplore("ev", radiusValue);
+    $("#table-ev").show();
+  }
+  if (checkFC) {
+    findExplore("fc", radiusValue);
+    $("#table-fc").show();
   }
 
   drawRadius(new google.maps.LatLng(currentLat, currentLng), radiusValue);
@@ -4074,6 +4145,8 @@ function checkObject() {
   $("#table-cp").empty().hide();
   $("#table-sp").empty().hide();
   $("#table-wp").empty().hide();
+  $("#table-ev").empty().hide();
+  $("#table-fc").empty().hide();
 
   // Koordinat posisi default (misal pusat peta)
   let pos = new google.maps.LatLng(currentLat, currentLng);
@@ -4104,6 +4177,16 @@ function checkObject() {
     clearAllAll();
     findAll("wp");
     $("#table-wp").show();
+  }
+  if (document.getElementById("check-oev").checked) {
+    clearAllAll();
+    findAll("ev");
+    $("#table-ev").show();
+  }
+  if (document.getElementById("check-ofc").checked) {
+    clearAllAll();
+    findAll("fc");
+    $("#table-fc").show();
   }
 
   // Atur bound ke objek yang ditemukan
@@ -4137,6 +4220,10 @@ function clickExplore() {
   checkOSP.checked = true;
   const checkOWP = document.getElementById("check-owp");
   checkOWP.checked = true;
+  const checkOEV = document.getElementById("check-oev");
+  checkOEV.checked = true;
+  const checkOFC = document.getElementById("check-ofc");
+  checkOFC.checked = true;
 
   let buttons = document.querySelectorAll(".day-route-btn");
   let dayDetails = document.querySelectorAll(".div-day-detail");
@@ -4166,7 +4253,7 @@ function clickExplore() {
   map.panTo(pos);
 
   // let categories = ["lsa", "at", "th"];
-  let categories = ["lsa", "at", "th", "ho", "cp", "sp", "wp"];
+  let categories = ["lsa", "at", "th", "ho", "cp", "sp", "wp", "ev", "fc"];
   let promises = categories.map((category) => findAll(category));
 
   digitVillage1zoom();
@@ -4381,6 +4468,28 @@ function findAll(category) {
         boundToObject();
       },
     });
+  } else if (category === "ev") {
+    $.ajax({
+      url: baseUrl + "/api/event/findAll",
+      type: "POST",
+      data: {},
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+        boundToObject();
+      },
+    });
+  } else if (category === "fc") {
+    $.ajax({
+      url: baseUrl + "/api/facility/findAll",
+      type: "POST",
+      data: {},
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+        boundToObject();
+      },
+    });
   }
 }
 
@@ -4471,6 +4580,34 @@ function findExplore(category, radius) {
         displayExploreResult(category, response);
       },
     });
+  } else if (category === "ev") {
+    $.ajax({
+      url: baseUrl + "api/event/findByRadius",
+      type: "POST",
+      data: {
+        lat: currentLat,
+        long: currentLng,
+        radius: radius,
+      },
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+      },
+    });
+  } else if (category === "fc") {
+    $.ajax({
+      url: baseUrl + "api/facility/findByRadius",
+      type: "POST",
+      data: {
+        lat: currentLat,
+        long: currentLng,
+        radius: radius,
+      },
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+      },
+    });
   }
 }
 
@@ -4542,6 +4679,10 @@ function displayExploreResult(category, response) {
     headerName = "Souvenir Place";
   } else if (category === "wp") {
     headerName = "Worship Place";
+  } else if (category === "ev") {
+    headerName = "Event";
+  } else if (category === "fc") {
+    headerName = "Facility";
   }
 
   let table =
@@ -4661,6 +4802,22 @@ function objectMarkerExplore(
     }
     const idtraditional = id;
     digitTraditional(idtraditional);
+  } else if (id.substring(0, 2) === "EV") {
+    if (status === "1") {
+      icon = baseUrl + "/media/icon/marker_rg.png";
+    } else {
+      icon = baseUrl + "/media/icon/marker_rg.png";
+    }
+    const idevent = id;
+    digitEvent(idevent);
+  } else if (id.substring(0, 2) === "FC") {
+    if (status === "1") {
+      icon = baseUrl + "/media/icon/marker_rg.png";
+    } else {
+      icon = baseUrl + "/media/icon/marker_rg.png";
+    }
+    const idfc = id;
+    digitFacility(idfc);
   }
 
   markerOption = {
@@ -5241,7 +5398,11 @@ function getLegend() {
     fc: {
       name: "Facility",
       icon: baseUrl + "/media/icon/facility.png",
-    }
+    },
+    ev: {
+      name: "Event",
+      icon: baseUrl + "/media/icon/facility.png",
+    },
   };
 
   const title = '<p class="fw-bold fs-6">Legend</p>';
@@ -5312,6 +5473,10 @@ function getLegendMobile() {
     },
     fc: {
       name: "Facility",
+      icon: baseUrl + "/media/icon/facility.png",
+    },
+    ev: {
+      name: "Event",
       icon: baseUrl + "/media/icon/facility.png",
     },
   };
@@ -5486,6 +5651,8 @@ function showMapExplore(category = null) {
     ho: baseUrl + "/api/homestayhomestay",
     sp: baseUrl + "/api/souvenirPlace",
     at: baseUrl + "/api/attraction",
+    ev: baseUrl + "/api/event",
+    fc: baseUrl + "/api/facility",
   };
 
   // Tentukan kategori yang ingin diambil
@@ -5573,6 +5740,10 @@ function showMap(id = null) {
     URI = baseUrl + "/api/souvenirPlace";
   } else if (id == "wp") {
     URI = baseUrl + "/api/worshipPlace";
+  } else if (id == "ev") {
+    URI = baseUrl + "/api/event";
+  } else if (id == "fc") {
+    URI = baseUrl + "/api/facility";
   }
 
   // currentUrl = '';
