@@ -35,9 +35,7 @@ class Attraction extends ResourcePresenter
      *
      * @return mixed
      */
-    public function index()
-    {
-    }
+    public function index() {}
 
     public function new()
     {
@@ -76,7 +74,7 @@ class Attraction extends ResourcePresenter
 
         if (url_is('*dashboard*')) {
             return view('dashboard/detail_attraction', $data);
-        } else{
+        } else {
             return view('web/detail_attraction', $data);
         }
     }
@@ -203,6 +201,35 @@ class Attraction extends ResourcePresenter
             return redirect()->to(base_url('dashboard/attraction') . '/' . $id);
         } else {
             return redirect()->back()->withInput();
+        }
+    }
+
+    public function deleteobject($id = null)
+    {
+        $request = $this->request->getPost();
+
+        $id = $request['id'];
+        $array1 = array('id' => $id);
+        $deleteAT = $this->attractionModel->where($array1)->delete();
+
+        if ($deleteAT) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete attraction"
+                ]
+            ];
+            session()->setFlashdata('success', 'attraction "' . $id . '" Deleted Successfully.');
+
+            return redirect()->to(base_url('dashboard/attraction'));
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "attraction failed to delete"
+                ]
+            ];
+            return $this->failNotFound($response);
         }
     }
 }

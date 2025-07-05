@@ -65,7 +65,16 @@ $users = in_array('users', $uri);
                                                 <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
-                                                <i class="fa-solid fa-trash"></i>
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </form>
+                                        <?php elseif ($manage == 'Facility') : ?>
+                                            <form action="<?= base_url('dashboard/facility/deleteobject/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
+                                                    <i class="fa-solid fa-trash"></i>
                                                 </a>
                                             </form>
                                         <?php elseif ($manage == 'Package Type') : ?>
@@ -83,7 +92,52 @@ $users = in_array('users', $uri);
                                                 <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
-                                                <i class="fa-solid fa-trash"></i>
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </form>
+                                        <?php elseif ($manage == 'Event') : ?>
+                                            <form action="<?= base_url('dashboard/event/deleteobject/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </form>
+                                        <?php elseif ($manage == 'Worship Place') : ?>
+                                            <form action="<?= base_url('dashboard/worshipPlace/deleteobject/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </form>
+                                        <?php elseif ($manage == 'Souvenir Place') : ?>
+                                            <form action="<?= base_url('dashboard/souvenirPlace/deleteobject/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </form>
+                                        <?php elseif ($manage == 'Culinary Place') : ?>
+                                            <form action="<?= base_url('dashboard/culinaryPlace/deleteobject/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </form>
+                                        <?php elseif ($manage == 'Attraction') : ?>
+                                            <form action="<?= base_url('dashboard/attraction/deleteobject/') . $item['id']; ?>" method="post" class="d-inline" id="deleteForm<?= esc($item['id']) ?>">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="id" id="id" value="<?= esc($item['id']); ?>">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" class="btn icon btn-outline-danger mx-1" onclick="deleteObject('<?= esc($item['id']); ?>', '<?= esc($item['name']); ?>', <?= ($users) ? 'true' : 'false'; ?>)">
+                                                    <i class="fa-solid fa-trash"></i>
                                                 </a>
                                             </form>
                                         <?php else : ?>

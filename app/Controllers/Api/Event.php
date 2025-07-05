@@ -19,6 +19,12 @@ class Event extends ResourceController
         $this->eventModel = new EventModel();
         $this->galleryEventModel = new GalleryEventModel();
     }
+    /**
+     * Instance of the main Request object.
+     *
+     * @var HTTP\IncomingRequest
+     */
+    protected $request;
 
     /**
      * Return an array of resource objects, themselves in array format
@@ -84,10 +90,37 @@ class Event extends ResourceController
      *
      * @return mixed
      */
-    public function delete($id = null)
+    // public function delete($id = null)
+    // {
+    //     $deleteGEV = $this->galleryEventModel->delete(['event_id' => $id]);
+    //     $deleteEV = $this->eventModel->delete(['id' => $id]);
+    //     if ($deleteEV) {
+    //         $response = [
+    //             'status' => 200,
+    //             'message' => [
+    //                 "Success delete event"
+    //             ]
+    //         ];
+    //         return $this->respondDeleted($response);
+    //     } else {
+    //         $response = [
+    //             'status' => 404,
+    //             'message' => [
+    //                 "Event not found"
+    //             ]
+    //         ];
+    //         return $this->failNotFound($response);
+    //     }
+    // }
+
+    public function deleteobject($id = null)
     {
-        $deleteGEV = $this->galleryEventModel->delete(['event_id' => $id]);
-        $deleteEV = $this->eventModel->delete(['id' => $id]);
+        $request = $this->request->getPost();
+
+        $id = $request['id'];
+        $array1 = array('id' => $id);
+        $deleteEV = $this->eventModel->where($array1)->delete();
+
         if ($deleteEV) {
             $response = [
                 'status' => 200,
@@ -95,19 +128,22 @@ class Event extends ResourceController
                     "Success delete event"
                 ]
             ];
-            return $this->respondDeleted($response);
-            // } else {
-            //     $response = [
-            //         'status' => 404,
-            //         'message' => [
-            //             "Event not found"
-            //         ]
-            //     ];
-            //     return $this->failNotFound($response);
+            session()->setFlashdata('success', 'event "' . $id . '" Deleted Successfully.');
+
+            return redirect()->to(base_url('dashboard/event'));
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "Event failed to delete"
+                ]
+            ];
+            return $this->failNotFound($response);
         }
     }
 
-    public function maps() {
+    public function maps()
+    {
         $contents = $this->eventModel->get_list_event_api()->getResultArray();
         $data = [
             'title' => 'Event',

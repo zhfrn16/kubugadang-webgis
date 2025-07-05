@@ -28,9 +28,7 @@ class CulinaryPlace extends ResourcePresenter
      *
      * @return mixed
      */
-    public function index()
-    {
-    }
+    public function index() {}
 
     public function new()
     {
@@ -183,19 +181,19 @@ class CulinaryPlace extends ResourcePresenter
                 $filepath = WRITEPATH . 'uploads/' . $folder;
                 $filenames = get_filenames($filepath);
                 $fileImg = new File($filepath . '/' . $filenames[0]);
-    
+
                 // Remove old file with the same name, if exists
                 $existingFile = FCPATH . 'media/photos/culinary_place/' . $fileImg->getFilename();
                 if (file_exists($existingFile)) {
                     unlink($existingFile);
                 }
-    
+
                 $fileImg->move(FCPATH . 'media/photos/culinary_place');
                 delete_files($filepath);
                 rmdir($filepath);
                 $gallery[] = $fileImg->getFilename();
             }
-    
+
             // Update or add gallery data
             if ($this->galleryCulinaryPlaceModel->isGalleryExist($id)) {
                 // Update gallery with the new or existing file names
@@ -213,6 +211,34 @@ class CulinaryPlace extends ResourcePresenter
             return redirect()->to(base_url('dashboard/culinaryplace') . '/' . $id);
         } else {
             return redirect()->back()->withInput();
+        }
+    }
+    public function deleteobject($id = null)
+    {
+        $request = $this->request->getPost();
+
+        $id = $request['id'];
+        $array1 = array('id' => $id);
+        $deleteCP = $this->culinaryPlaceModel->where($array1)->delete();
+
+        if ($deleteCP) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete culinary"
+                ]
+            ];
+            session()->setFlashdata('success', 'culinary "' . $id . '" Deleted Successfully.');
+
+            return redirect()->to(base_url('dashboard/culinaryPlace'));
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "culinary failed to delete"
+                ]
+            ];
+            return $this->failNotFound($response);
         }
     }
 }

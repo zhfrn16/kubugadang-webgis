@@ -250,4 +250,33 @@ class Event extends ResourcePresenter
             return redirect()->back()->withInput();
         }
     }
+
+    public function deleteobject($id = null)
+    {
+        $request = $this->request->getPost();
+
+        $id = $request['id'];
+        $array1 = array('id' => $id);
+        $deleteEV = $this->eventModel->where($array1)->delete();
+
+        if ($deleteEV) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete Event"
+                ]
+            ];
+            session()->setFlashdata('success', 'Event "' . $id . '" Deleted Successfully.');
+
+            return redirect()->to(base_url('dashboard/facility'));
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "Event failed to delete"
+                ]
+            ];
+            return $this->failNotFound($response);
+        }
+    }
 }

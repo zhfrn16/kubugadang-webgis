@@ -28,9 +28,7 @@ class SouvenirPlace extends ResourcePresenter
      *
      * @return mixed
      */
-    public function index()
-    {
-    }
+    public function index() {}
 
     public function new()
     {
@@ -128,7 +126,7 @@ class SouvenirPlace extends ResourcePresenter
 
     public function edit($id = null)
     {
-        $sp= $this->souvenirPlaceModel->get_sp_by_id($id)->getRowArray();
+        $sp = $this->souvenirPlaceModel->get_sp_by_id($id)->getRowArray();
         if (empty($sp)) {
             return redirect()->to('dashboard/souvenirplace');
         }
@@ -180,19 +178,19 @@ class SouvenirPlace extends ResourcePresenter
                 $filepath = WRITEPATH . 'uploads/' . $folder;
                 $filenames = get_filenames($filepath);
                 $fileImg = new File($filepath . '/' . $filenames[0]);
-    
+
                 // Remove old file with the same name, if exists
                 $existingFile = FCPATH . 'media/photos/souvenir_place/' . $fileImg->getFilename();
                 if (file_exists($existingFile)) {
                     unlink($existingFile);
                 }
-    
+
                 $fileImg->move(FCPATH . 'media/photos/souvenir_place');
                 delete_files($filepath);
                 rmdir($filepath);
                 $gallery[] = $fileImg->getFilename();
             }
-    
+
             // Update or add gallery data
             if ($this->gallerySouvenirPlaceModel->isGalleryExist($id)) {
                 // Update gallery with the new or existing file names
@@ -210,6 +208,35 @@ class SouvenirPlace extends ResourcePresenter
             return redirect()->to(base_url('dashboard/souvenirplace') . '/' . $id);
         } else {
             return redirect()->back()->withInput();
+        }
+    }
+
+    public function deleteobject($id = null)
+    {
+        $request = $this->request->getPost();
+
+        $id = $request['id'];
+        $array1 = array('id' => $id);
+        $deleteSP = $this->souvenirPlaceModel->where($array1)->delete();
+
+        if ($deleteSP) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete souvenir"
+                ]
+            ];
+            session()->setFlashdata('success', 'souvenir "' . $id . '" Deleted Successfully.');
+
+            return redirect()->to(base_url('dashboard/souvenirPlace'));
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "souvenir failed to delete"
+                ]
+            ];
+            return $this->failNotFound($response);
         }
     }
 }

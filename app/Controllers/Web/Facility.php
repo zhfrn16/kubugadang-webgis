@@ -38,9 +38,7 @@ class Facility extends ResourcePresenter
      *
      * @return mixed
      */
-    public function index()
-    {
-    }
+    public function index() {}
 
     public function show($id = null)
     {
@@ -202,6 +200,34 @@ class Facility extends ResourcePresenter
             return redirect()->to(base_url('dashboard/facility') . '/' . $id);
         } else {
             return redirect()->back()->withInput();
+        }
+    }
+    public function deleteobject($id = null)
+    {
+        $request = $this->request->getPost();
+
+        $id = $request['id'];
+        $array1 = array('id' => $id);
+        $deleteFC = $this->facilityModel->where($array1)->delete();
+
+        if ($deleteFC) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete Facility"
+                ]
+            ];
+            session()->setFlashdata('success', 'Facility "' . $id . '" Deleted Successfully.');
+
+            return redirect()->to(base_url('dashboard/facility'));
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "Facility failed to delete"
+                ]
+            ];
+            return $this->failNotFound($response);
         }
     }
 }

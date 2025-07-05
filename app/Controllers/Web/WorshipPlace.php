@@ -28,9 +28,7 @@ class WorshipPlace extends ResourcePresenter
      *
      * @return mixed
      */
-    public function index()
-    {
-    }
+    public function index() {}
 
     public function new()
     {
@@ -178,19 +176,19 @@ class WorshipPlace extends ResourcePresenter
                 $filepath = WRITEPATH . 'uploads/' . $folder;
                 $filenames = get_filenames($filepath);
                 $fileImg = new File($filepath . '/' . $filenames[0]);
-    
+
                 // Remove old file with the same name, if exists
                 $existingFile = FCPATH . 'media/photos/worship_place/' . $fileImg->getFilename();
                 if (file_exists($existingFile)) {
                     unlink($existingFile);
                 }
-    
+
                 $fileImg->move(FCPATH . 'media/photos/worship_place');
                 delete_files($filepath);
                 rmdir($filepath);
                 $gallery[] = $fileImg->getFilename();
             }
-    
+
             // Update or add gallery data
             if ($this->galleryWorshipPlaceModel->isGalleryExist($id)) {
                 // Update gallery with the new or existing file names
@@ -209,6 +207,34 @@ class WorshipPlace extends ResourcePresenter
             return redirect()->to(base_url('dashboard/worshipplace') . '/' . $id);
         } else {
             return redirect()->back()->withInput();
+        }
+    }
+    public function deleteobject($id = null)
+    {
+        $request = $this->request->getPost();
+
+        $id = $request['id'];
+        $array1 = array('id' => $id);
+        $deleteWP = $this->worshipPlaceModel->where($array1)->delete();
+
+        if ($deleteWP) {
+            $response = [
+                'status' => 200,
+                'message' => [
+                    "Success delete Worship"
+                ]
+            ];
+            session()->setFlashdata('success', 'Worship "' . $id . '" Deleted Successfully.');
+
+            return redirect()->to(base_url('dashboard/worshipPlace'));
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    "Worship failed to delete"
+                ]
+            ];
+            return $this->failNotFound($response);
         }
     }
 }
