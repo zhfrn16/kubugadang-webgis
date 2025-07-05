@@ -37,7 +37,7 @@ class Kubugadang extends ResourcePresenter
      */
     public function index()
     {
-        $contents = $this->KubuGadangModel->get_sumpu()->getResultArray();
+        $contents = $this->KubuGadangModel->get_kubuGadang()->getResultArray();
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
         $contents3 = $this->KubuGadangModel->get_announcement_info()->getResultArray();
 
@@ -69,11 +69,11 @@ class Kubugadang extends ResourcePresenter
 
     public function edit($id = null)
     {
-        $contents = $this->KubuGadangModel->get_sumpu()->getRowArray();
+        $contents = $this->KubuGadangModel->get_kubuGadang()->getRowArray();
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         if (empty($contents)) {
-            return redirect()->to('dashboard/sumpu');
+            return redirect()->to('dashboard/kubuGadang');
         }
 
         $list_gallery = $this->galleryKubuGadangModel->get_gallery($id)->getResultArray();
@@ -88,7 +88,7 @@ class Kubugadang extends ResourcePresenter
             'data' => $contents,
             'data2' => $contents2,
         ];
-        return view('dashboard/sumpu-form', $data);
+        return view('dashboard/kubuGadang-form', $data);
     }
 
     public function update($id = null)
@@ -118,13 +118,13 @@ class Kubugadang extends ResourcePresenter
             $filepath = WRITEPATH . 'uploads/' . $folder;
             $filenames = get_filenames($filepath);
             $qrFile = new File($filepath . '/' . $filenames[0]);
-            $qrFile->move(FCPATH . 'media/photos/sumpu');
+            $qrFile->move(FCPATH . 'media/photos/kubuGadang');
             delete_files($filepath);
             rmdir($filepath);
             $requestData['qr_url'] = $qrFile->getFilename();
         }
 
-        $updateVillage = $this->KubuGadangModel->update_sumpu($id, $requestData);
+        $updateVillage = $this->KubuGadangModel->update_kubuGadang($id, $requestData);
 
         // Handle gallery files
         if (isset($request['gallery'])) {
@@ -136,12 +136,12 @@ class Kubugadang extends ResourcePresenter
                 $fileImg = new File($filepath . '/' . $filenames[0]);
 
                 // Remove old file with the same name, if exists
-                $existingFile = FCPATH . 'media/photos/sumpu/' . $fileImg->getFilename();
+                $existingFile = FCPATH . 'media/photos/kubuGadang/' . $fileImg->getFilename();
                 if (file_exists($existingFile)) {
                     unlink($existingFile);
                 }
 
-                $fileImg->move(FCPATH . 'media/photos/sumpu');
+                $fileImg->move(FCPATH . 'media/photos/kubuGadang');
                 delete_files($filepath);
                 rmdir($filepath);
                 $gallery[] = $fileImg->getFilename();
@@ -161,7 +161,7 @@ class Kubugadang extends ResourcePresenter
         }
 
         if ($updateVillage) {
-            return redirect()->to(base_url('dashboard/sumpu'));
+            return redirect()->to(base_url('dashboard/kubuGadang'));
         } else {
             return redirect()->back()->withInput();
         }
@@ -199,7 +199,7 @@ class Kubugadang extends ResourcePresenter
     public function updateannouncement($id = null)
     {
         $request = $this->request->getPost();
-       
+
 
         $requestData = [
             'announcement' => $request['announcement'],
@@ -226,9 +226,9 @@ class Kubugadang extends ResourcePresenter
 
     public function deleteobject($id = null)
     {
-        $request = $this->request->getPost();  
+        $request = $this->request->getPost();
 
-        $id = $request['id'];    
+        $id = $request['id'];
         $array1 = array('id' => $id);
         $deleteAN = $this->KubuGadangModel->delete_announcement($id);
 
@@ -242,7 +242,6 @@ class Kubugadang extends ResourcePresenter
             session()->setFlashdata('success', 'Announcement "' . $id . '" Deleted Successfully.');
 
             return redirect()->to(base_url('dashboard/homestay'));
-
         } else {
             $response = [
                 'status' => 404,
@@ -253,6 +252,4 @@ class Kubugadang extends ResourcePresenter
             return $this->failNotFound($response);
         }
     }
-
-    
 }

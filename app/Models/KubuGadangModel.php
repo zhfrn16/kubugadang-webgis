@@ -11,8 +11,23 @@ class KubuGadangModel extends Model
     protected $primaryKey       = 'id';
     protected $returnType       = 'array';
     protected $allowedFields    = [
-        'id', 'name', 'type_of_tourism', 'address', 'open', 'close', 'ticket_price',
-        'contact_person', 'description', 'geom', 'lat', 'lng', 'bank_name', 'bank_code',  'bank_account_holder', 'bank_account_number', 'qr_url'
+        'id',
+        'name',
+        'type_of_tourism',
+        'address',
+        'open',
+        'close',
+        'ticket_price',
+        'contact_person',
+        'description',
+        'geom',
+        'lat',
+        'lng',
+        'bank_name',
+        'bank_code',
+        'bank_account_holder',
+        'bank_account_number',
+        'qr_url'
     ];
 
     // Dates
@@ -25,7 +40,7 @@ class KubuGadangModel extends Model
     protected $cleanValidationRules = true;
 
     // API
-    public function get_sumpu()
+    public function get_kubuGadang()
     {
         // $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
         $coords = "{$this->table}.lat,{$this->table}.lng";
@@ -73,36 +88,36 @@ class KubuGadangModel extends Model
 
     public function get_new_announcement_id()
     {
-        $builder = $this->db->table('announcement');     
+        $builder = $this->db->table('announcement');
         $lastId = $builder->select('id')->orderBy('id', 'DESC')->get()->getFirstRow('array');
-        
+
         if ($lastId) {
             $count = (int)substr($lastId['id'], 2);
-            $newCount = $count + 1; 
+            $newCount = $count + 1;
         } else {
-            $newCount = 1; 
+            $newCount = 1;
         }
-        
-        $id = sprintf('AN%03d', $newCount); 
+
+        $id = sprintf('AN%03d', $newCount);
         return $id;
     }
 
     public function add_new_announcement($announcement = null)
     {
-       
+
         $insert = $this->db->table('announcement')
             ->insert($announcement);
         return $insert;
     }
 
-    public function update_announcement ($id = null, $announcement = null)
+    public function update_announcement($id = null, $announcement = null)
     {
         foreach ($announcement as $key => $value) {
             if (empty($value)) {
                 unset($announcement[$key]);
             }
         }
-        
+
         $query = $this->db->table('announcement')
             ->where('id', $id)
             ->update($announcement);
@@ -112,9 +127,9 @@ class KubuGadangModel extends Model
     public function delete_announcement($id = null)
     {
         $query = $this->db->table('announcement')
-        ->where('id', $id)
-        ->delete();
-    return $query;
+            ->where('id', $id)
+            ->delete();
+        return $query;
     }
 
     public function get_id_province_desa_wisata_info()
@@ -136,7 +151,7 @@ class KubuGadangModel extends Model
         return $query;
     }
 
-    public function get_sumpu_marker($id = null)
+    public function get_kubuGadang_marker($id = null)
     {
         // $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
         // $columns = "{$this->table}.id,{$this->table}.name";
@@ -156,17 +171,17 @@ class KubuGadangModel extends Model
         return $query;
     }
 
-    public function update_sumpu($id = null, $sumpu = null)
+    public function update_kubuGadang($id = null, $kubuGadang = null)
     {
-        foreach ($sumpu as $key => $value) {
+        foreach ($kubuGadang as $key => $value) {
             if (empty($value)) {
-                unset($sumpu[$key]);
+                unset($kubuGadang[$key]);
             }
         }
 
         $query = $this->db->table($this->table)
             ->where('id', $id)
-            ->update($sumpu);
+            ->update($kubuGadang);
         return $query;
     }
 }
