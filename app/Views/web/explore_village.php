@@ -194,6 +194,10 @@
                                                                     // Tambahkan rute dari titik 0 ke aktivitas 1
                                                                     routeBetweenObjects(-0.4761815168531753, 100.43223933779609, lat1, lng1);
                                                                 }
+
+                                                                
+
+                                                                    digitVillage3();
                                                             </script>
 
                                                             <script>
@@ -288,8 +292,6 @@
                                                                         infowindow.open(map, marker);
                                                                     });
                                                                     markerArray[id] = marker;
-
-
 
                                                                     <?php foreach ($activitiesForDay as $object) {
                                                                         $loop++;

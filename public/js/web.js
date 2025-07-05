@@ -27,7 +27,7 @@ let digitNagari1Layers = [];
 let digitVillage1Layers = [];
 let isLabelChecked = false;
 let isTerrainChecked = false;
-
+let currentPage = null;
 let bounds = new google.maps.LatLngBounds();
 let selectedShape,
   drawingManager = new google.maps.drawing.DrawingManager();
@@ -1813,7 +1813,25 @@ function howToReachSumpu() {
   clearRoute();
   clearRadius();
 
-  objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+    if(currentPage == 'silek') {
+    $.ajax({
+        url: baseUrl + '/api/attraction',
+        type: 'POST',
+        data: {
+            digitasi: 'AT001'
+        },
+        dataType: 'json',
+        success: function (response) {
+            const data = response.data.properties;
+            console.log(data);
+            objectMarker(data.id, data.lat, data.lng);
+        }
+    });
+    console.log('halaman silek')
+  } else {
+    objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+    console.log('halaman bukan silek')
+  }
 
   // 1.192689, 103.910130
 
@@ -2021,11 +2039,21 @@ function zoomToSumpuMarkers() {
   console.log("markerArray:", markerArray); // Debugging marker array
 
   for (const id in markerArray) {
+    if(currentPage == 'silek') {
+      if (id.substring(0, 2) === "AT") {
+        const marker = markerArray[id];
+        console.log("Found marker:", marker); // Debug marker
+        map.setCenter(marker.getPosition());
+        map.setZoom(16);
+      }
+    } else {
     if (id.substring(0, 3) === "SUM") {
       const marker = markerArray[id];
       console.log("Found marker:", marker); // Debug marker
       map.setCenter(marker.getPosition());
       map.setZoom(16);
+    }
+
     }
   }
   // objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
@@ -3841,7 +3869,25 @@ function clearAllAll() {
   clearOverlay();
   clearAirplaneMarkers();
   clearCarMarkers();
-  objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+    if(currentPage == 'silek') {
+    $.ajax({
+        url: baseUrl + '/api/attraction',
+        type: 'POST',
+        data: {
+            digitasi: 'AT001'
+        },
+        dataType: 'json',
+        success: function (response) {
+            const data = response.data.properties;
+            console.log(data);
+            objectMarker(data.id, data.lat, data.lng);
+        }
+    });
+    console.log('halaman silek')
+  } else {
+    objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+    console.log('halaman bukan silek')
+  }
 }
 
 function checkLayer() {
@@ -3852,7 +3898,25 @@ function checkLayer() {
   // clearAllDigitasi();
 
   // initMap5();
-  objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+    if(currentPage == 'silek') {
+    $.ajax({
+        url: baseUrl + '/api/attraction',
+        type: 'POST',
+        data: {
+            digitasi: 'AT001'
+        },
+        dataType: 'json',
+        success: function (response) {
+            const data = response.data.properties;
+            console.log(data);
+            objectMarker(data.id, data.lat, data.lng);
+        }
+    });
+    console.log('halaman silek')
+  } else {
+    objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+    console.log('halaman bukan silek')
+  }
 
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
@@ -3979,8 +4043,26 @@ function checkObject() {
   clearAllDigitasi();
   clearAirplaneMarkers();
   clearCarMarkers();
-  // initMap5();
-  objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+  // initMap5(); 
+  if(currentPage == 'silek') {
+    $.ajax({
+        url: baseUrl + '/api/attraction',
+        type: 'POST',
+        data: {
+            digitasi: 'AT001'
+        },
+        dataType: 'json',
+        success: function (response) {
+            const data = response.data.properties;
+            console.log(data);
+            objectMarker(data.id, data.lat, data.lng);
+        }
+    });
+    console.log('halaman silek')
+  } else {
+    objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+    console.log('halaman bukan silek')
+  }
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
 
@@ -4145,7 +4227,25 @@ function clickLayer() {
   });
 
   // initMap5();
-  objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+    if(currentPage == 'silek') {
+    $.ajax({
+        url: baseUrl + '/api/attraction',
+        type: 'POST',
+        data: {
+            digitasi: 'AT001'
+        },
+        dataType: 'json',
+        success: function (response) {
+            const data = response.data.properties;
+            console.log(data);
+            objectMarker(data.id, data.lat, data.lng);
+        }
+    });
+    console.log('halaman silek')
+  } else {
+    objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+    console.log('halaman bukan silek')
+  }
 
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
@@ -7453,13 +7553,13 @@ function weatherNow() {
 
 function initMap6() {
     initMap();
-    digitEstuaria();
+    digitSilekLanyah();
 }
 
 function digitSilekLanyah() {
     const digitasi = new google.maps.Data();
     $.ajax({
-        url: baseUrl + '/api/village',
+        url: baseUrl + '/api/attraction',
         type: 'POST',
         data: {
             digitasi: 'AT001'
@@ -7467,6 +7567,7 @@ function digitSilekLanyah() {
         dataType: 'json',
         success: function (response) {
             const data = response.data;
+            console.log(data);
             digitasi.addGeoJson(data);
             digitasi.setStyle({
                 fillColor:'#FF0000',

@@ -11,7 +11,7 @@
 
     <?php
     $currentURL = $_SERVER['REQUEST_URI'];
-    if ($currentURL === '/web' || $currentURL === '/web/explore' || $currentURL === '/web/mypackage' || $currentURL === '/web/silek') {
+    if ($currentURL === '/web' || $currentURL === '/web/explore' || $currentURL === '/web/mypackage') {
         // Jika URL adalah '/web', tampilkan tombol
         echo '<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="How to Reach Kubu Gadang" class="btn icon btn-primary mx-1" id="go-to" onclick="howToReachSumpu()">
         <i style="height:1.72rem;width:1.5rem" class="fa-solid fa-person-walking-luggage"></i>
@@ -21,9 +21,28 @@
 
     <?php
     $currentURL = $_SERVER['REQUEST_URI'];
-    if ($currentURL === '/web' || $currentURL === '/web/explore' || $currentURL === '/web/mypackage' || $currentURL === '/web/silek') {
+    if ($currentURL === '/web' || $currentURL === '/web/explore' || $currentURL === '/web/mypackage') {
         // Jika URL adalah '/web', tampilkan tombol
         echo '<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Zoom to Kubu Gadang Village" class="btn icon btn-primary mx-1" id="go-to" onclick="zoomToSumpuMarkers()">
+        <i style="height:1.72rem;width:1.5rem"  class="fa-solid fa-location-arrow"></i>
+        </a>';
+    }
+    ?>
+    <?php
+    $currentURL = $_SERVER['REQUEST_URI'];
+    if ($currentURL === '/web/silek') {
+        // Jika URL adalah '/web', tampilkan tombol
+        echo '<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="How to Reach Silek Lanyah" class="btn icon btn-primary mx-1" id="go-to" onclick="howToReachSumpu()">
+        <i style="height:1.72rem;width:1.5rem" class="fa-solid fa-person-walking-luggage"></i>
+    </a>';
+    }
+    ?>
+
+    <?php
+    $currentURL = $_SERVER['REQUEST_URI'];
+    if ($currentURL === '/web/silek') {
+        // Jika URL adalah '/web', tampilkan tombol
+        echo '<a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Zoom to Silek Lanyah" class="btn icon btn-primary mx-1" id="go-to" onclick="zoomToSumpuMarkers()">
         <i style="height:1.72rem;width:1.5rem"  class="fa-solid fa-location-arrow"></i>
         </a>';
     }
@@ -100,7 +119,7 @@
 
     <?php
     $currentURL = $_SERVER['REQUEST_URI'];
-    if ($currentURL === '/web' || $currentURL === '/web/explore' || $currentURL === '/web/mypackage') {
+    if ($currentURL === '/web' || $currentURL === '/web/explore' || $currentURL === '/web/mypackage' || $currentURL === '/web/silek') {
         // Jika URL adalah '/web', tampilkan tombol
         echo '<div class="btn-group mx-1">        
         <button style="height:2.8rem"  class="btn btn-primary" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View All Objects" onclick="clickExplore()">Object</button>
