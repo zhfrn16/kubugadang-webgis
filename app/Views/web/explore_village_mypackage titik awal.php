@@ -78,7 +78,7 @@
                                                                 }
 
                                                                 if ($activity1) {
-                                                                    echo '<li><button type="button" onclick="routeBetweenObjects(-0.52210813, 100.49432448, ' . esc($activity1['lat']) . ', ' . esc($activity1['lng']) . ')" class="btn btn-outline-primary"><i class="fa fa-road"></i> Titik 0 ke 1</button></li>';
+                                                                    echo '<li><button type="button" onclick="routeBetweenObjects(-0.4761815168531753, 100.43223933779609, ' . esc($activity1['lat']) . ', ' . esc($activity1['lng']) . ')" class="btn btn-outline-primary"><i class="fa fa-road"></i> Titik 0 ke 1</button></li>';
                                                                 }
                                                                 ?>
                                                                 <?php

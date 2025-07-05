@@ -1106,7 +1106,7 @@ class Package extends ResourcePresenter
         }
 
         $data = [
-            'title' => 'Explore Sumpu',
+            'title' => 'Explore Kubu Gadang',
             'data2' => $contents2,
             'datapackage' => $packages,
 

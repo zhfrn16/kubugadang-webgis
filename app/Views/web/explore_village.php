@@ -48,7 +48,7 @@
                                     // clearRadius();
                                     // clearRoute();
                                     // explorePackage();
-                                    // objectMarker("SUM01", -0.52210813, 100.49432448);
+                                    // objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
                                 </script>
                                 <table class="table table-hover mb-0 table-lg">
                                     <thead>
@@ -98,7 +98,7 @@
                                                                 }
 
                                                                 if ($activity1) {
-                                                                    echo '<li><button type="button" onclick="routeBetweenObjects(-0.52210813, 100.49432448, ' . esc($activity1['lat']) . ', ' . esc($activity1['lng']) . '); addOnly' . esc($day['day']) . ''  . esc($package['data']['id']) . '()" class="btn btn-outline-primary"><i class="fa fa-road"></i> Titik 0 ke 1</button></li>';
+                                                                    echo '<li><button type="button" onclick="routeBetweenObjects(-0.4761815168531753, 100.43223933779609, ' . esc($activity1['lat']) . ', ' . esc($activity1['lng']) . '); addOnly' . esc($day['day']) . ''  . esc($package['data']['id']) . '()" class="btn btn-outline-primary"><i class="fa fa-road"></i> Titik 0 ke 1</button></li>';
                                                                 }
                                                                 ?>
                                                                 <?php
@@ -124,7 +124,7 @@
                                                                 routeArray = [];
                                                                 markerArray = [];
 
-                                                                objectMarker("SUM01", -0.52210813, 100.49432448);
+                                                                objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
 
 
                                                                 // Menambahkan titik 0 dan rute dari titik 0 ke aktivitas 1
@@ -137,8 +137,8 @@
 
                                                                     var marker = new google.maps.Marker({
                                                                         position: {
-                                                                            lat: -0.52210813,
-                                                                            lng: 100.49432448
+                                                                            lat: -0.4761815168531753,
+                                                                            lng: 100.43223933779609
                                                                         },
                                                                         map: map,
                                                                         icon: image,
@@ -150,8 +150,8 @@
                                                                     //     content: '<div style="line-height:1.35;font-weight:bold;overflow:hidden;white-space:nowrap;">Gerbang Desa</div>'
                                                                     // });
 
-                                                                    var startLat = -0.52210813;
-                                                                    var startLng = 100.49432448;
+                                                                    var startLat = -0.4761815168531753;
+                                                                    var startLng = 100.43223933779609;
 
                                                                     // // Tambahkan infowindow untuk titik awal
                                                                     // let infowindow = new google.maps.InfoWindow({
@@ -192,7 +192,7 @@
                                                                     <?php endforeach; ?>
 
                                                                     // Tambahkan rute dari titik 0 ke aktivitas 1
-                                                                    routeBetweenObjects(-0.52210813, 100.49432448, lat1, lng1);
+                                                                    routeBetweenObjects(-0.4761815168531753, 100.43223933779609, lat1, lng1);
                                                                 }
                                                             </script>
 
@@ -247,8 +247,8 @@
                                                                     map.setZoom(15);
 
                                                                     // Inisialisasi koordinat titik awal (gerbang desa)
-                                                                    let startLat = -0.52210813;
-                                                                    let startLng = 100.49432448;
+                                                                    let startLat = -0.4761815168531753;
+                                                                    let startLng = 100.43223933779609;
 
                                                                     // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                                                     let image = {

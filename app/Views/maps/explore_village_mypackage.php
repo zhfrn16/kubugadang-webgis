@@ -138,8 +138,8 @@
 
                                                                 if ($activity1) {
                                                                     // Tentukan lat dan lng untuk $activity1
-                                                                    $activity0_lat = $package['lat'] ?? '-0.52210813'; // Jika $activity1['lat'] null, gunakan $gerbang_desa_lat
-                                                                    $activity0_lng = $package['lng'] ?? '100.49432448'; // Jika $activity1['lng'] null, gunakan $gerbang_desa_lng
+                                                                    $activity0_lat = $package['lat'] ?? '-0.4761815168531753'; // Jika $activity1['lat'] null, gunakan $gerbang_desa_lat
+                                                                    $activity0_lng = $package['lng'] ?? '100.43223933779609'; // Jika $activity1['lng'] null, gunakan $gerbang_desa_lng
 
                                                                     // Output tombol dengan koordinat yang telah ditentukan
                                                                     echo '<li><button type="button" onclick="routeBetweenObjects(' . esc($activity0_lat) . ',' . esc($activity0_lng) . ',' . esc($activity1['lat']) . ', ' . esc($activity1['lng']) . ')" class="btn btn-outline-primary"><i class="fa fa-road"></i> Titik 0 ke 1</button></li>';
@@ -173,10 +173,10 @@
 
                                                                     var marker = new google.maps.Marker({
                                                                         position: {
-                                                                            // lat: -0.52210813,
-                                                                            // lng: 100.49432448
-                                                                            lat = <?= $package['lat'] ?? '-0.52210813'; ?>;
-                                                                            lng = <?= $package['lng'] ?? '100.49432448'; ?>;
+                                                                            // lat: -0.4761815168531753,
+                                                                            // lng: 100.43223933779609
+                                                                            lat = <?= $package['lat'] ?? '-0.4761815168531753'; ?>;
+                                                                            lng = <?= $package['lng'] ?? '100.43223933779609'; ?>;
                                                                         },
                                                                         map: map,
                                                                         icon: image,
@@ -202,7 +202,7 @@
                                                                     <?php endforeach; ?>
 
                                                                     // Tambahkan rute dari titik 0 ke aktivitas 1
-                                                                    // routeBetweenObjects(-0.52210813, 100.49432448, lat1, lng1);
+                                                                    // routeBetweenObjects(-0.4761815168531753, 100.43223933779609, lat1, lng1);
                                                                     routeBetweenObjects(lat, lng, lat1, lng1);
                                                                 }
                                                             </script>
@@ -215,11 +215,11 @@
                                                                     map.setZoom(15);
 
                                                                     // Inisialisasi koordinat titik awal (gerbang desa)
-                                                                    // var startLat = -0.52210813;
-                                                                    // var startLng = 100.49432448;
+                                                                    // var startLat = -0.4761815168531753;
+                                                                    // var startLng = 100.43223933779609;
 
-                                                                    var startLat = <?= $package['lat'] ?? '-0.52210813'; ?>;
-                                                                    var startLng = <?= $package['lng'] ?? '100.49432448'; ?>;
+                                                                    var startLat = <?= $package['lat'] ?? '-0.4761815168531753'; ?>;
+                                                                    var startLng = <?= $package['lng'] ?? '100.43223933779609'; ?>;
 
                                                                     // var titleMarker = <?= $package['homestay_name'] ?? 'Gerbang Desa'; ?>;
 
