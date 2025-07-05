@@ -328,6 +328,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->post('souvenir', 'SouvenirPlace::getData');
     $routes->post('worship', 'WorshipPlace::getData');
     $routes->post('facility', 'Facility::getData');
+    $routes->post('event', 'Event::getData');
     $routes->post('facilitytype', 'FacilityType::getData');
 
     // $routes->get('mypackageMobile', 'Explore::exploremypackageMobile');
@@ -342,9 +343,12 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->resource('attraction');
     $routes->resource('servicepackage');
     $routes->resource('facility');
+    $routes->post('facility/findAll', 'Facility::findAll');
     $routes->post('facility/findByRadius', 'Facility::findByRadius');
     $routes->post('facility/findByTrack', 'Facility::findByTrack');
     $routes->resource('event');
+    $routes->post('event/findByRadius', 'Event::findByRadius');
+    $routes->post('event/findAll', 'Event::findAll');
 
     $routes->get('package/detail/(:any)', 'Package::detail/$1');
     $routes->get('package/type', 'Package::type');

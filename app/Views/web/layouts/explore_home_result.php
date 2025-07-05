@@ -21,6 +21,10 @@
                 </table>
                 <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-wp">
                 </table>
+                <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-ev">
+                </table>
+                <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-fc">
+                </table>
             </div>
             <?php
             $currentURL = $_SERVER['REQUEST_URI'];

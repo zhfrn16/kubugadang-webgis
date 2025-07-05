@@ -58,6 +58,89 @@ class Event extends ResourceController
         return $this->respond($response);
     }
 
+    public function findAll()
+    {
+        $request = $this->request->getPost();
+        $contents = $this->eventModel->get_list_event()->getResult();
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success find all event"
+            ]
+        ];
+        return $this->respond($response);
+    }
+
+    public function findByRadius()
+    {
+        $request = $this->request->getPost();
+        $contents = $this->eventModel->get_event_by_radius($request)->getResult();
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success find event by radius"
+            ]
+        ];
+        return $this->respond($response);
+    }
+
+    public function findByTrack()
+    {
+        $request = $this->request->getPost();
+        $contents = $this->eventModel->get_event_by_radius($request)->getResult();
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success find event by track"
+            ]
+        ];
+        return $this->respond($response);
+    }
+
+        public function getData()
+    {
+        $request = $this->request->getPost();
+        $digitasi = $request['digitasi'];
+
+        for($h=1; $h<20; $h++){
+            if ($h < 10) {
+                $value= 'EV00'.$h;
+            } elseif ($h > 9) {
+                $value= 'EV0'.$h;
+            }
+
+            if ($digitasi == $value) {
+                $digiProperty = $this->eventModel->get_object($value)->getRowArray();
+                $geoJson = json_decode($this->eventModel->get_geoJson($value)->getRowArray()['geoJson']);
+            } 
+        }
+        
+        $content = [
+            'type' => 'Feature',
+            'geometry' => $geoJson,
+            'properties' => [
+                'id' => $digiProperty['id'],
+                'name' => $digiProperty['name'],
+                'lat' => $digiProperty['lat'],
+                'lng' => $digiProperty['lng'],
+            ]
+        ];
+        $response = [
+            'data' => $content,
+            'status' => 200,
+            'message' => [
+                "Success"
+            ]
+        ];
+        return $this->respond($response);
+    }
+
     public function detail($id = null)
     {
         $event = $this->eventModel->get_event_by_id($id)->getRowArray();

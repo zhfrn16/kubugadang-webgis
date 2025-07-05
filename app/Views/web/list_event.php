@@ -9,9 +9,6 @@
         <div class="card">
             <div class="card-header">
                 <div class="row align-items-center">
-                    <div class="col-md-auto">
-                        <h5 class="card-title">Google Maps with Location</h5>
-                    </div>
                     <?= $this->include('web/layouts/map-head'); ?>
                 </div>
             </div>

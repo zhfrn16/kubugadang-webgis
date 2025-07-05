@@ -68,16 +68,16 @@ class Facility extends ResourceController
         return $this->respond($response);
     }
 
-    public function findByTrack()
+    public function findAll()
     {
         $request = $this->request->getPost();
-        $contents = $this->detailFacilityModel->get_facility_by_track($request)->getResult();
+        $contents = $this->facilityModel->get_list_facility()->getResult();
 
         $response = [
             'data' => $contents,
             'status' => 200,
             'message' => [
-                "Success find facility by track"
+                "Success find all culinary place"
             ]
         ];
         return $this->respond($response);
@@ -95,8 +95,21 @@ class Facility extends ResourceController
                 "Success find facility by radius"
             ]
         ];
+        return $this->respond($response);
+    }
 
-        // dd($findByRadius);
+    public function findByTrack()
+    {
+        $request = $this->request->getPost();
+        $contents = $this->facilityModel->get_facility_by_radius($request)->getResult();
+
+        $response = [
+            'data' => $contents,
+            'status' => 200,
+            'message' => [
+                "Success find facility by track"
+            ]
+        ];
         return $this->respond($response);
     }
 
