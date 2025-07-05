@@ -1841,8 +1841,8 @@ function howToReachSumpu() {
   const jakarta = { lat: -6.516948, lng: 106.930035 }; // Jakarta
   const padang = { lat: -0.9478502987473912, lng: 100.3628232695202 }; // Padang
   const bandaAceh = { lat: 5.537368838813003, lng: 95.50780215398227 }; // Banda Aceh
-  const nagariSumpu = { lat: -0.4761815168531753, lng: 100.43223933779609 }; // Nagari Sumpu
-  const desaKubuGadang = { lat: -0.4761815168531753, lng: 100.43223933779609 }; // Nagari Sumpu
+  // const nagariSumpu = { lat: -0.4761815168531753, lng: 100.43223933779609 }; // Nagari Sumpu
+  const desaKubuGadang = { lat: -0.4761815168531753, lng: 100.43223933779609 }; // desa kuga
 
   // Animate flight
   function animateFlight(map, fromLatLng, toLatLng) {
@@ -5210,13 +5210,17 @@ function getLegend() {
       name: "Attraction",
       icon: baseUrl + "/media/icon/package.png",
     },
-    lsa: {
-      name: "Lake Singkarak Act",
-      icon: baseUrl + "/media/icon/water.png",
-    },
-    rg: {
-      name: "Traditional House",
-      icon: baseUrl + "/media/icon/marker_rg.png",
+    // lsa: {
+    //   name: "Lake Singkarak Act",
+    //   icon: baseUrl + "/media/icon/water.png",
+    // },
+    // rg: {
+    //   name: "Traditional House",
+    //   icon: baseUrl + "/media/icon/marker_rg.png",
+    // },
+    event: {
+      name:"Event",
+      icon: baseUrl + "/media/icon/event.png"
     },
     ho: {
       name: "Homestay",
@@ -5237,7 +5241,7 @@ function getLegend() {
     fc: {
       name: "Facility",
       icon: baseUrl + "/media/icon/facility.png",
-    },
+    }
   };
 
   const title = '<p class="fw-bold fs-6">Legend</p>';
@@ -5986,6 +5990,9 @@ function deleteObject(id = null, name = null, user = false) {
   } else if (id.substring(0, 2) === "FC") {
     content = "Facility";
     apiUri = "facility/";
+  } else if (id.substring(0, 1) === "F") {
+    content = "Facility Type";
+    apiUri = "facilitytype/";
   } else if (id.substring(0, 2) === "AT") {
     content = "Attraction";
     apiUri = "attraction/";
