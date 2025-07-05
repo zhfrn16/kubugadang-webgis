@@ -251,7 +251,7 @@
                 <div class="col-lg-9 col-md-6">
                     <h5 class="text-light mb-4">Address</h5>
                     <p class="mb-2">
-                        <i class="fa fa-map-marker-alt me-3"></i>Nagari Sumpu, Batipuh Selatan, Kabupaten Tanah Datar, Sumatera Barat
+                        <i class="fa fa-map-marker-alt me-3"></i>Desa Kubu Gadang, Kota Padangpanjang, Sumatera Barat
                     </p>
                     <p class="mb-2">
                         <i class="fa fa-phone-alt me-3"></i>+62 813 7451 9594

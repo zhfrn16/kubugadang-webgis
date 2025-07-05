@@ -416,8 +416,8 @@
                                                     map.setZoom(15);
 
                                                     // Inisialisasi koordinat titik awal (gerbang desa)
-                                                    var startLat = -0.52210813;
-                                                    var startLng = 100.49432448;
+                                                    var startLat = -0.4761815168531753;
+                                                    var startLng = 100.43223933779609;
 
                                                     // // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                                     // var image = {
@@ -441,8 +441,8 @@
                                                         title: 'Village Gate'
                                                     });
 
-                                                    var startLat = -0.52210813;
-                                                    var startLng = 100.49432448;
+                                                    var startLat = -0.4761815168531753;
+                                                    var startLng = 100.43223933779609;
 
                                                     // // Tambahkan infowindow untuk titik awal
                                                     // let infowindow = new google.maps.InfoWindow({
@@ -600,7 +600,7 @@
                                                             <li>
                                                                 <button
                                                                     type="button"
-                                                                    onclick="routeBetweenObjects(-0.52210813,100.49432448,<?= esc($firstActivity['lat']); ?>,<?= esc($firstActivity['lng']); ?>); addOnly<?= esc($d['day']), esc($d['package_id']); ?>();" class="btn btn-outline-primary">
+                                                                    onclick="routeBetweenObjects(-0.4761815168531753,100.43223933779609,<?= esc($firstActivity['lat']); ?>,<?= esc($firstActivity['lng']); ?>); addOnly<?= esc($d['day']), esc($d['package_id']); ?>();" class="btn btn-outline-primary">
                                                                     <i class="fa fa-road"></i> Titik 0 ke 1
                                                                 </button>
                                                             </li>

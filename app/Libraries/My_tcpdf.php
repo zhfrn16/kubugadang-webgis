@@ -23,9 +23,9 @@ class MY_TCPDF extends TCPDF
         // Title
         $this->SetFont('helvetica', '', 9);
         $this->SetX(40);
-        $this->Cell(0, 2, 'Nagari Sumpu, Batipuh Selatan', 0, 1, '', 0, '', 0);
+        $this->Cell(0, 2, 'Desa Kubu Gadang, Kelurahan Ikua Lubuak', 0, 1, '', 0, '', 0);
         $this->SetX(40);
-        $this->Cell(0, 2, 'Kabupaten Tanah Datar, Sumatera Barat ', 0, 1, '', 0, '', 0);
+        $this->Cell(0, 2, 'Kota Padangpanjang, Sumatera Barat ', 0, 1, '', 0, '', 0);
 
         // QRCODE,H : QR-CODE Best error correction
         // $this->write2DBarcode('https://sobatcdoing.com', 'QRCODE,H', 0, 3, 20, 20, ['position' => 'R'], 'N');

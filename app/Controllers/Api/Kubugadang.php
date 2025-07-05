@@ -57,7 +57,7 @@ class Kubugadang extends ResourceController
             'data' => $sumpu,
             'status' => 200,
             'message' => [
-                "Success display detail information of Sumpu"
+                "Success display detail information of Kubu Gadang"
             ]
         ];
         return $this->respond($response);

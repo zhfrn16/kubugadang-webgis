@@ -85,7 +85,7 @@ class Explore extends ResourceController
         }
 
         $data = [
-            'title' => 'Explore Sumpu',
+            'title' => 'Explore Kubu Gadang',
             'data' => $kecamatans,
             'data2' => $contents2,
             'datapackage' => $packages,
@@ -146,7 +146,7 @@ class Explore extends ResourceController
         }
 
         $data = [
-            'title' => 'Explore Sumpu',
+            'title' => 'Explore Kubu Gadang',
             'data' => $kecamatans,
             'data2' => $contents2,
             'datapackage' => $packages,
@@ -258,7 +258,7 @@ class Explore extends ResourceController
         }
 
         $data = [
-            'title' => 'Explore Sumpu',
+            'title' => 'Explore Kubu Gadang',
             'data' => $kecamatans,
             'data2' => $contents2,
             'datapackage' => $packages,
@@ -319,7 +319,7 @@ class Explore extends ResourceController
         }
 
         $data = [
-            'title' => 'Explore Sumpu',
+            'title' => 'Explore Kubu Gadang',
             'data' => $kecamatans,
             'data2' => $contents2,
             'datapackage' => $packages,
