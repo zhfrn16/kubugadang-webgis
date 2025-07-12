@@ -158,7 +158,7 @@ class Package extends ResourcePresenter
         $detailPackage = $this->detailPackageModel->get_detailPackage_by_id($id)->getResultArray();
         $getday = $this->packageDayModel->get_list_package_day($id)->getResultArray();
         $combinedData = $this->detailPackageModel->getCombinedData($id);
-        $review = $this->reservationModel->getReview($id)->getResultArray();
+        // $review = $this->reservationModel->getReview($id)->getResultArray();
         // $rating = $this->reservationModel->getRating($id)->getRowArray();
         $rating = $this->packageReviewModel->getAverageRatingPerPackage($id);
         // dd($comment);
@@ -171,7 +171,7 @@ class Package extends ResourcePresenter
             'serviceexclude' => $serviceexclude,
             'day' => $getday,
             'activity' => $combinedData,
-            'review' => $review,
+            // 'review' => $review,
             'rating' => $rating,
             'folder' => 'package'
         ];
@@ -384,7 +384,7 @@ class Package extends ResourcePresenter
 
         $packageDay = $this->packageDayModel->get_package_day_by_id($id)->getResultArray();
         $culinary = $this->culinaryPlaceModel->get_list_cp()->getResultArray();
-        $traditional = $this->traditionalHouseModel->get_list_th()->getResultArray();
+        // $traditional = $this->traditionalHouseModel->get_list_th()->getResultArray();
         $worship = $this->worshipPlaceModel->get_list_wp()->getResultArray();
         $facility = $this->facilityModel->get_list_facility()->getResultArray();
         $souvenir = $this->souvenirPlaceModel->get_list_sp()->getResultArray();
@@ -401,7 +401,7 @@ class Package extends ResourcePresenter
 
         $object = [
             'culinary' => $culinary,
-            'traditional' => $traditional,
+            // 'traditional' => $traditional,
             'worship' => $worship,
             'facility' => $facility,
             'souvenir' => $souvenir,

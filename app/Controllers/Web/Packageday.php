@@ -77,9 +77,7 @@ class PackageDay extends ResourcePresenter
      *
      * @return mixed
      */
-    public function index()
-    {
-    }
+    public function index() {}
 
     public function show($id = null)
     {
@@ -113,7 +111,7 @@ class PackageDay extends ResourcePresenter
         $packageDay = $this->packageDayModel->get_package_day_by_id($package_id)->getResultArray();
 
         $culinary = $this->culinaryPlaceModel->get_list_cp()->getResultArray();
-        $traditional = $this->traditionalHouseModel->get_list_th()->getResultArray();
+        // $traditional = $this->traditionalHouseModel->get_list_th()->getResultArray();
         $worship = $this->worshipPlaceModel->get_list_wp()->getResultArray();
         $facility = $this->facilityModel->get_list_facility()->getResultArray();
         $souvenir = $this->souvenirPlaceModel->get_list_sp()->getResultArray();
@@ -130,7 +128,7 @@ class PackageDay extends ResourcePresenter
 
         $object = [
             'culinary' => $culinary,
-            'traditional' => $traditional,
+            // 'traditional' => $traditional,
             'worship' => $worship,
             'facility' => $facility,
             'souvenir' => $souvenir,
@@ -299,7 +297,7 @@ class PackageDay extends ResourcePresenter
         }
     }
 
-    
+
     public function deleteday($package_id = null, $day = null, $description = null)
     {
         $request = $this->request->getPost();

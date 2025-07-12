@@ -197,11 +197,11 @@ class DetailPackageModel extends Model
             ->where('detail_package.package_id', $package_id)
             ->get()->getResultArray();
 
-        $traditionalHouseData = $traditionalHouseModel->select('traditional_house.ticket_price as traditional_house_price, traditional_house.min_capacity as min_capacity, package.min_capacity as package_min_capacity')
-            ->join('detail_package', 'detail_package.object_id = traditional_house.id')
-            ->where('detail_package.package_id', $package_id)
-            ->join('package', 'detail_package.package_id = package.id')
-            ->get()->getResultArray();
+        // $traditionalHouseData = $traditionalHouseModel->select('traditional_house.ticket_price as traditional_house_price, traditional_house.min_capacity as min_capacity, package.min_capacity as package_min_capacity')
+        //     ->join('detail_package', 'detail_package.object_id = traditional_house.id')
+        //     ->where('detail_package.package_id', $package_id)
+        //     ->join('package', 'detail_package.package_id = package.id')
+        //     ->get()->getResultArray();
 
         // Inisialisasi variabel untuk total harga
         $combinedDataPriceAT = 0;
@@ -217,54 +217,54 @@ class DetailPackageModel extends Model
                 $totalPeople = $attraction['package_min_capacity'];
 
 
-                $numberOfServices = floor($totalPeople / $capacity);
-                $remainder = $totalPeople % $capacity;
+                // $numberOfServices = floor($totalPeople / $capacity);
+                // $remainder = $totalPeople % $capacity;
 
-                if ($numberOfServices !== 0) {
-                    $add = 0;
-                    if ($remainder !== 0 && $remainder < 5) {
-                        $add = 1;
-                    } elseif ($remainder >= 5) {
-                        $add = 1;
-                    }
+                // if ($numberOfServices !== 0) {
+                //     $add = 0;
+                //     if ($remainder !== 0 && $remainder < 5) {
+                //         $add = 1;
+                //     } elseif ($remainder >= 5) {
+                //         $add = 1;
+                //     }
 
-                    $order = $numberOfServices + $add;
-                } else {
-                    $order = 1;
-                }
+                //     $order = $numberOfServices + $add;
+                // } else {
+                //     $order = 1;
+                // }
 
-                $combinedDataPriceAT += $attraction['attraction_price'] * $order;
+                // $combinedDataPriceAT += $attraction['attraction_price'] * $order;
             }
         }
 
         // Iterasi melalui data tiket rumah tradisional
-        foreach ($traditionalHouseData as $traditionalHouse) {
-            // Periksa apakah 'traditional_house_price' ada dan memiliki nilai
-            if (isset($traditionalHouse['traditional_house_price']) && is_numeric($traditionalHouse['traditional_house_price']) && isset($traditionalHouse['min_capacity']) && is_numeric($traditionalHouse['min_capacity'])) {
-                // Tambahkan 'traditional_house_price' ke total harga
-                $capacity = $traditionalHouse['min_capacity'];
-                $totalPeople = $traditionalHouse['package_min_capacity'];
+        // foreach ($traditionalHouseData as $traditionalHouse) {
+        //     // Periksa apakah 'traditional_house_price' ada dan memiliki nilai
+        //     if (isset($traditionalHouse['traditional_house_price']) && is_numeric($traditionalHouse['traditional_house_price']) && isset($traditionalHouse['min_capacity']) && is_numeric($traditionalHouse['min_capacity'])) {
+        //         // Tambahkan 'traditional_house_price' ke total harga
+        //         $capacity = $traditionalHouse['min_capacity'];
+        //         $totalPeople = $traditionalHouse['package_min_capacity'];
 
 
-                $numberOfServices = floor($totalPeople / $capacity);
-                $remainder = $totalPeople % $capacity;
+        //         $numberOfServices = floor($totalPeople / $capacity);
+        //         $remainder = $totalPeople % $capacity;
 
-                if ($numberOfServices !== 0) {
-                    $add = 0;
-                    if ($remainder !== 0 && $remainder < 5) {
-                        $add = 1;
-                    } elseif ($remainder >= 5) {
-                        $add = 1;
-                    }
+        //         if ($numberOfServices !== 0) {
+        //             $add = 0;
+        //             if ($remainder !== 0 && $remainder < 5) {
+        //                 $add = 1;
+        //             } elseif ($remainder >= 5) {
+        //                 $add = 1;
+        //             }
 
-                    $order = $numberOfServices + $add;
-                } else {
-                    $order = 1;
-                }
+        //             $order = $numberOfServices + $add;
+        //         } else {
+        //             $order = 1;
+        //         }
 
-                $combinedDataPriceTH += $traditionalHouse['traditional_house_price'] * $order;
-            }
-        }
+        //         $combinedDataPriceTH += $traditionalHouse['traditional_house_price'] * $order;
+        //     }
+        // }
 
         $combinedDataPriceATTH = $combinedDataPriceAT + $combinedDataPriceTH;
         return $combinedDataPriceATTH;
