@@ -107,7 +107,7 @@ $routes->group('web', ['namespace' => 'App\Controllers\Web'], function ($routes)
 
 
 
-    $routes->get('homestayhomestay', 'Homestay::indexhomestay');
+    // $routes->get('homestayhomestay', 'Homestay::indexhomestay');
     $routes->post('homestay/createComment', 'Homestay::createComment');
     $routes->post('homestay/updateComment/(:segment)', 'Homestay::updateComment/$1');
     $routes->post('homestay/deleteComment/(:segment)', 'Homestay::deleteComment/$1');
@@ -328,7 +328,6 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->post('souvenir', 'SouvenirPlace::getData');
     $routes->post('worship', 'WorshipPlace::getData');
     $routes->post('facility', 'Facility::getData');
-    $routes->post('event', 'Event::getData');
     $routes->post('facilitytype', 'FacilityType::getData');
 
     // $routes->get('mypackageMobile', 'Explore::exploremypackageMobile');
@@ -343,12 +342,9 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->resource('attraction');
     $routes->resource('servicepackage');
     $routes->resource('facility');
-    $routes->post('facility/findAll', 'Facility::findAll');
     $routes->post('facility/findByRadius', 'Facility::findByRadius');
     $routes->post('facility/findByTrack', 'Facility::findByTrack');
     $routes->resource('event');
-    $routes->post('event/findByRadius', 'Event::findByRadius');
-    $routes->post('event/findAll', 'Event::findAll');
 
     $routes->get('package/detail/(:any)', 'Package::detail/$1');
     $routes->get('package/type', 'Package::type');
@@ -364,7 +360,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->get('homestay/maps', 'Homestay::maps');
     $routes->resource('homestay');
     $routes->post('homestay/findByRadius', 'Homestay::findByRadius');
-    $routes->get('homestayhomestay', 'Homestay::indexhomestay');
+    // $routes->get('homestayhomestay', 'Homestay::indexhomestay');
 
 
     $routes->get('reservation/custombooking/(:segment)', 'Package::detailapi/$1');

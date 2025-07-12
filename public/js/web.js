@@ -5644,7 +5644,7 @@ function showMapExplore(category = null) {
     cp: baseUrl + "/api/culinaryPlace",
     th: baseUrl + "/api/traditionalHouse",
     wp: baseUrl + "/api/worshipPlace",
-    ho: baseUrl + "/api/homestayhomestay",
+    ho: baseUrl + "/api/homestay",
     sp: baseUrl + "/api/souvenirPlace",
     at: baseUrl + "/api/attraction",
     ev: baseUrl + "/api/event",
@@ -5731,7 +5731,7 @@ function showMap(id = null) {
   } else if (id == "rg") {
     URI = baseUrl + "/api/homestay";
   } else if (id == "ho") {
-    URI = baseUrl + "/api/homestayhomestay";
+    URI = baseUrl + "/api/homestay";
   } else if (id == "sp") {
     URI = baseUrl + "/api/souvenirPlace";
   } else if (id == "wp") {

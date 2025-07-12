@@ -74,7 +74,7 @@ $uri3 = $uri[3] ?? '';
                     </li>
 
                     <li class="sidebar-item <?= ($uri1 == 'homestay') ? 'active' : '' ?>">
-                        <a href="<?= base_url('/web/homestayhomestay'); ?>" class="sidebar-link">
+                        <a href="<?= base_url('/web/homestay'); ?>" class="sidebar-link">
                             <i class="fa-solid fa-bed"></i><span>Homestay</span>
                         </a>
                     </li>
