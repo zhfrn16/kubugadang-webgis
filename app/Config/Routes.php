@@ -328,6 +328,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->post('souvenir', 'SouvenirPlace::getData');
     $routes->post('worship', 'WorshipPlace::getData');
     $routes->post('facility', 'Facility::getData');
+    $routes->post('event', 'Event::getData');
     $routes->post('facilitytype', 'FacilityType::getData');
 
     // $routes->get('mypackageMobile', 'Explore::exploremypackageMobile');
