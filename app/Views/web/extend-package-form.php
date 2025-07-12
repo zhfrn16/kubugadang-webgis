@@ -951,7 +951,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s',);
                     </div>
                 </div>
                 <script>
-                    initMap(-0.54145013, 100.48094882);
+                    initMap(-0.4761815168531753, 100.43223933779609);
 
                     window.onload = function() {
                         try {

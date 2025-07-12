@@ -248,7 +248,7 @@ function addCustomLabelsCountry(map) {
   });
 }
 
-function initMap5(lat = -0.54145013, lng = 100.48094882) {
+function initMap5(lat = -0.4761815168531753, lng = 100.43223933779609) {
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
   map = new google.maps.Map(document.getElementById("googlemaps"), {
@@ -351,7 +351,7 @@ function checkRoadMap() {
   }
 }
 
-function initMap7(lat = -0.54145013, lng = 100.48094882) {
+function initMap7(lat = -0.4761815168531753, lng = 100.43223933779609) {
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
   map = new google.maps.Map(document.getElementById("googlemaps"), {
@@ -392,7 +392,7 @@ function initMap7(lat = -0.54145013, lng = 100.48094882) {
 //   });
 // }
 
-function initMap4(lat = -0.54145013, lng = 100.48094882) {
+function initMap4(lat = -0.4761815168531753, lng = 100.43223933779609) {
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
   map = new google.maps.Map(document.getElementById("googlemaps"), {
@@ -3684,7 +3684,7 @@ function boundToObject() {
     }
     map.fitBounds(bounds, 80);
   } else {
-    let pos = new google.maps.LatLng(-0.54145013, 100.48094882);
+    let pos = new google.maps.LatLng(-0.4761815168531753, 100.43223933779609);
     map.panTo(pos);
   }
 }
@@ -4249,7 +4249,7 @@ function clickExplore() {
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
 
-  let pos = new google.maps.LatLng(-0.54145013, 100.48094882);
+  let pos = new google.maps.LatLng(-0.4761815168531753, 100.43223933779609);
   map.panTo(pos);
 
   // let categories = ["lsa", "at", "th"];
@@ -4337,7 +4337,7 @@ function clickLayer() {
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
 
-  // let pos = new google.maps.LatLng(-0.54145013, 100.48094882);
+  // let pos = new google.maps.LatLng(-0.4761815168531753, 100.43223933779609);
   // map.panTo(pos);
 
   for (let n = 1; n < 4; n++) {
