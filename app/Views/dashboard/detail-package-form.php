@@ -342,7 +342,7 @@ $edit = in_array('edit', $uri);
                                                         <select class="form-select" name="activity_type" id="activity_type" required onchange="objectOptions()">
                                                             <option value="" selected>Select Type</option>
                                                             <option value="A">Attraction</option>
-                                                            <option value="TH">Traditional House</option>
+                                                            <!-- <option value="TH">Traditional House</option> -->
                                                             <!-- <option value="HO">Homestay</option> -->
                                                             <!-- <option value="EV">Event</option> -->
                                                             <option value="CP">Culinary Place</option>
@@ -440,7 +440,7 @@ $edit = in_array('edit', $uri);
                                                                 <td><?= esc($value['traditional_house_price']); ?></td>
                                                             <?php else : ?>
                                                                 <td> 0 </td>
-                                                            <?php endif; ?>                                                            
+                                                            <?php endif; ?>
                                                             <td><?= esc($value['description']); ?></td>
                                                             <td>
                                                                 <!-- <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a> -->
@@ -469,7 +469,7 @@ $edit = in_array('edit', $uri);
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
-                    
+
                 </div>
             </div>
         </div>
