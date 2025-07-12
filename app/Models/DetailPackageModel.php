@@ -118,7 +118,7 @@ class DetailPackageModel extends Model
     public function getCombinedData($package_id)
     {
         $culinaryPlaceModel = new CulinaryPlaceModel();
-        $traditionalHouseModel = new TraditionalHouseModel();
+        // $traditionalHouseModel = new TraditionalHouseModel();
         $souvenirPlaceModel = new SouvenirPlaceModel();
         $worshipPlaceModel = new WorshipPlaceModel();
         $facilityModel = new FacilityModel();
@@ -131,10 +131,10 @@ class DetailPackageModel extends Model
             ->where('detail_package.package_id', $package_id)
             ->get()->getResultArray();
 
-        $traditionalData = $traditionalHouseModel->select('package_id, day, ticket_price as traditional_house_price, activity, activity_type, object_id, detail_package.status, detail_package.description, name, geom, ST_Y(ST_Centroid(geom)) AS lat, ST_X(ST_Centroid(geom)) AS lng')
-            ->join('detail_package', 'detail_package.object_id=traditional_house.id')
-            ->where('detail_package.package_id', $package_id)
-            ->get()->getResultArray();
+        // $traditionalData = $traditionalHouseModel->select('package_id, day, ticket_price as traditional_house_price, activity, activity_type, object_id, detail_package.status, detail_package.description, name, geom, ST_Y(ST_Centroid(geom)) AS lat, ST_X(ST_Centroid(geom)) AS lng')
+        //     ->join('detail_package', 'detail_package.object_id=traditional_house.id')
+        //     ->where('detail_package.package_id', $package_id)
+        //     ->get()->getResultArray();
 
         $souvenirData = $souvenirPlaceModel->select('package_id, day, activity, activity_type, object_id, detail_package.status, detail_package.description, name, geom, ST_Y(ST_Centroid(geom)) AS lat, ST_X(ST_Centroid(geom)) AS lng')
             ->join('detail_package', 'detail_package.object_id=souvenir_place.id')
@@ -167,7 +167,7 @@ class DetailPackageModel extends Model
             ->get()->getResultArray();
 
         // Gabungkan hasil dari kedua model
-        $combinedData = array_merge($culinaryData, $traditionalData, $souvenirData, $worshipData, $facilityData, $attractionData, $eventData, $homestayData);
+        $combinedData = array_merge($culinaryData, $souvenirData, $worshipData, $facilityData, $attractionData, $eventData, $homestayData);
 
         usort($combinedData, function ($a, $b) {
             $dayComparison = $a['day'] - $b['day']; // Bandingkan secara numerik berdasarkan 'day'
