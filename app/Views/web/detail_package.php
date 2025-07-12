@@ -102,43 +102,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <!-- Tombol Add to Cart dan Book Now -->
-                            <div class="col-12 mb-3">
-                                <?php if (logged_in()) : ?>
-                                    <?php if (in_groups(['admin']) || in_groups(['master'])) : ?>
-                                        <button class="btn icon btn-outline-primary me-2" disabled>
-                                            <i class="fa fa-cart-plus"></i> Add to Cart
-                                        </button>
-                                        <button class="btn btn-success" disabled>
-                                            Book Now
-                                        </button>
-                                    <?php else : ?>
-                                        <a class="btn icon btn-outline-primary me-2" onclick="addToCart('<?= esc($data['id']); ?>');">
-                                            <i class="fa fa-cart-plus"></i> Add to Cart
-                                        </a>
-                                        <a href="<?= base_url('web/reservation/custombooking/') . $data['id']; ?>" class="btn btn-success">Book Now</a>
-                                    <?php endif; ?>
-                                <?php else : ?>
-                                    <a class="btn icon btn-outline-primary me-2" onclick="redirectToLogin()">
-                                        <i class="fa fa-cart-plus"></i> Add to Cart
-                                    </a>
-                                    <a class="btn btn-success" onclick="redirectToLogin()">Book Now</a>
-                                    <script>
-                                        function redirectToLogin() {
-                                            Swal.fire({
-                                                icon: 'warning',
-                                                title: 'You are not logged in',
-                                                text: 'Please log in to proceed.',
-                                                confirmButtonText: 'OK',
-                                            }).then(() => {
-                                                // Optionally, redirect to the login page
-                                                window.location.href = '<?= base_url('/login'); ?>';
-                                            });
-                                        }
-                                    </script>
-                                <?php endif; ?>
-
-                            </div>
                         </div>
                     </div>
 
