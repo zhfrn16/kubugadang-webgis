@@ -53,6 +53,8 @@ class Unik extends ResourcePresenter
     public function silek()
     {
         $contents = $this->attractionModel->get_silek()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
+        $contents3 = $this->KubuGadangModel->get_announcement_info()->getResultArray();
 
         $facility = $this->facilityTypeModel->get_list_facility_type()->getResultArray();
 
@@ -69,6 +71,8 @@ class Unik extends ResourcePresenter
             'title' => 'Silek Lanyah',
             'folder' => 'attraction',
             'data' => $contents,
+            'data2' => $contents2,
+            'data3' => $contents3,
             'facility' => $facility
         ];
 
