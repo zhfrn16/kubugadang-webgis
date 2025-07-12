@@ -78,67 +78,67 @@ class Homestay extends ResourceController
      * @return mixed
      */
     public function show($id = null)
-{
-    $homestay = $this->homestayModel->get_homestay_by_id($id)->getRowArray();
-    $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($id)->getResultArray();
+    {
+        $homestay = $this->homestayModel->get_homestay_by_id($id)->getRowArray();
+        $list_facility_rumah = $this->facilityHomestayDetailModel->get_detailFacilityHomestay_by_id($id)->getResultArray();
 
-    if (empty($homestay)) {
+        if (empty($homestay)) {
+            $response = [
+                'status' => 404,
+                'message' => [
+                    'Homestay not found'
+                ]
+            ];
+            return $this->respond($response, 404);
+        }
+
+        // $list_unit = $this->unitHomestayModel->get_unit_homestay($id)->getResultArray();
+
+        $facilities = array();
+        // foreach ($list_unit as $unit) {
+        //     $unit_number = $unit['unit_number'];
+        //     $homestay_id = $unit['homestay_id'];
+        //     $unit_type = $unit['unit_type'];
+        //     $list_facility = $this->facilityUnitDetailModel->get_data_facility_unit_detail($unit_number, $homestay_id, $unit_type)->getResultArray();
+        //     $facilities[] = $list_facility;
+        // }
+        $fc = $facilities;
+
+        // $list_gallery_unit = $this->galleryUnitModel->get_gallery($id)->getResultArray();
+
+        $datareview = array();
+        $datarating = array();
+        // foreach ($list_unit as $unit) {
+        //     $unit_number = $unit['unit_number'];
+        //     $homestay_id = $unit['homestay_id'];
+        //     $unit_type = $unit['unit_type'];
+        //     $dreview = $this->detailReservationModel->getReview($unit_number, $homestay_id, $unit_type)->getResultArray();
+        //     $drating = $this->detailReservationModel->getRating($unit_number, $homestay_id, $unit_type)->getResultArray();
+        //     $datareview[] = $dreview;
+        //     $datarating[] = $drating;
+        // }
+
+        $review = $datareview;
+        $rating = $datarating;
+
         $response = [
-            'status' => 404,
+            'data' => $homestay,
+            'facilityhome' => $list_facility_rumah,
+            'facilityunit' => $fc,
+            // 'unit' => $list_unit,
+            // 'gallery_unit' => $list_gallery_unit,
+            'review' => $review,
+            'rating' => $rating,
+            'status' => 200,
             'message' => [
-                'Homestay not found'
+                "Success display detail information of Homestay"
             ]
         ];
-        return $this->respond($response, 404);
+
+        return $this->respond($response);
     }
 
-    $list_unit = $this->unitHomestayModel->get_unit_homestay($id)->getResultArray();
-
-    $facilities = array();
-    foreach ($list_unit as $unit) {
-        $unit_number = $unit['unit_number'];
-        $homestay_id = $unit['homestay_id'];
-        $unit_type = $unit['unit_type'];
-        $list_facility = $this->facilityUnitDetailModel->get_data_facility_unit_detail($unit_number, $homestay_id, $unit_type)->getResultArray();
-        $facilities[] = $list_facility;
-    }
-    $fc = $facilities;
-
-    $list_gallery_unit = $this->galleryUnitModel->get_gallery($id)->getResultArray();
-
-    $datareview = array();
-    $datarating = array();
-    foreach ($list_unit as $unit) {
-        $unit_number = $unit['unit_number'];
-        $homestay_id = $unit['homestay_id'];
-        $unit_type = $unit['unit_type'];
-        $dreview = $this->detailReservationModel->getReview($unit_number, $homestay_id, $unit_type)->getResultArray();
-        $drating = $this->detailReservationModel->getRating($unit_number, $homestay_id, $unit_type)->getResultArray();
-        $datareview[] = $dreview;
-        $datarating[] = $drating;
-    }
-
-    $review = $datareview;
-    $rating = $datarating;
-
-    $response = [
-        'data' => $homestay,
-        'facilityhome' => $list_facility_rumah,
-        'facilityunit' => $fc,
-        'unit' => $list_unit,
-        'gallery_unit' => $list_gallery_unit,
-        'review' => $review,
-        'rating' => $rating,
-        'status' => 200,
-        'message' => [
-            "Success display detail information of Homestay"
-        ]
-    ];
-
-    return $this->respond($response);
-}
-
-public function findAll()
+    public function findAll()
     {
         $request = $this->request->getPost();
         $contents = $this->homestayModel->get_list_hm_api()->getResult();
@@ -245,7 +245,7 @@ public function findAll()
         }
         $fc = $facilities;
 
-        $list_gallery_unit = $this->galleryUnitModel->get_gallery($id)->getResultArray();
+        // $list_gallery_unit = $this->galleryUnitModel->get_gallery($id)->getResultArray();
 
         $datareview = array();
         $datarating = array();
@@ -267,19 +267,19 @@ public function findAll()
             'data' => $homestay,
             'facilityrumah' => $list_facility_rumah,
             'unit' => $list_unit,
-            'gallery_unit' => $list_gallery_unit,
+            // 'gallery_unit' => $list_gallery_unit,
             'facility' => $fc,
             'review' => $review,
             'rating' => $rating,
             'folder' => 'homestay'
         ];
 
-      
+
 
         return view('maps/detail_homestay', $data);
     }
 
-    
+
 
     public function getData()
     {

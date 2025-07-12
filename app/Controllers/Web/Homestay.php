@@ -52,21 +52,21 @@ class Homestay extends ResourcePresenter
      *
      * @return mixed
      */
+    // public function index()
+    // {
+    //     $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
+    //     $contents = $this->homestayModel->get_list_homestay()->getResultArray();
+
+    //     $data = [
+    //         'title' => 'Homestay',
+    //         'data' => $contents,
+    //         'data2' => $contents2,
+    //     ];
+
+    //     return view('web/list_homestay', $data);
+    // }
+
     public function index()
-    {
-        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
-        $contents = $this->homestayModel->get_list_homestay()->getResultArray();
-
-        $data = [
-            'title' => 'Homestay',
-            'data' => $contents,
-            'data2' => $contents2,
-        ];
-
-        return view('web/list_homestay', $data);
-    }
-
-    public function indexhomestay()
     {
         $contents = $this->homestayModel->get_list_homestay_homestay()->getResultArray();
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
@@ -121,31 +121,31 @@ class Homestay extends ResourcePresenter
         }
         $homestay['gallery'] = $galleries;
 
-        $list_unit = $this->unitHomestayModel->get_unit_homestay($id)->getResultArray();
+        // $list_unit = $this->unitHomestayModel->get_unit_homestay($id)->getResultArray();
 
         $facilities = array();
-        foreach ($list_unit as $unit) {
-            $unit_number = $unit['unit_number'];
-            $homestay_id = $unit['homestay_id'];
-            $unit_type = $unit['unit_type'];
-            $list_facility = $this->facilityUnitDetailModel->get_data_facility_unit_detail($unit_number, $homestay_id, $unit_type)->getResultArray();
-            $facilities[] = $list_facility;
-        }
+        // foreach ($list_unit as $unit) {
+        //     $unit_number = $unit['unit_number'];
+        //     $homestay_id = $unit['homestay_id'];
+        //     $unit_type = $unit['unit_type'];
+        //     $list_facility = $this->facilityUnitDetailModel->get_data_facility_unit_detail($unit_number, $homestay_id, $unit_type)->getResultArray();
+        //     $facilities[] = $list_facility;
+        // }
         $fc = $facilities;
 
-        $list_gallery_unit = $this->galleryUnitModel->get_gallery($id)->getResultArray();
+        // $list_gallery_unit = $this->galleryUnitModel->get_gallery($id)->getResultArray();
 
         $datareview = array();
         $datarating = array();
-        foreach ($list_unit as $unit) {
-            $unit_number = $unit['unit_number'];
-            $homestay_id = $unit['homestay_id'];
-            $unit_type = $unit['unit_type'];
-            $dreview = $this->detailReservationModel->getReview($unit_number, $homestay_id, $unit_type)->getResultArray();
-            $drating = $this->detailReservationModel->getRating($unit_number, $homestay_id, $unit_type)->getResultArray();
-            $datareview[] = $dreview;
-            $datarating[] = $drating;
-        }
+        // foreach ($list_unit as $unit) {
+        //     $unit_number = $unit['unit_number'];
+        //     $homestay_id = $unit['homestay_id'];
+        //     $unit_type = $unit['unit_type'];
+        //     $dreview = $this->detailReservationModel->getReview($unit_number, $homestay_id, $unit_type)->getResultArray();
+        //     $drating = $this->detailReservationModel->getRating($unit_number, $homestay_id, $unit_type)->getResultArray();
+        //     $datareview[] = $dreview;
+        //     $datarating[] = $drating;
+        // }
 
         $review = $datareview;
         $rating = $datarating;
@@ -156,8 +156,8 @@ class Homestay extends ResourcePresenter
             'data2' => $contents2,
             'comment' => $homestayComment,
             'facilityhome' => $list_facility_rumah,
-            'unit' => $list_unit,
-            'gallery_unit' => $list_gallery_unit,
+            // 'unit' => $list_unit,
+            // 'gallery_unit' => $list_gallery_unit,
             'facility' => $fc,
             'review' => $review,
             'rating' => $rating,
