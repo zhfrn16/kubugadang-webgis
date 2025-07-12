@@ -506,7 +506,7 @@ $batasdp = date('Y-m-d H:i:s', $check_in_plus_2_days);
                                                             <li>Account number: <?= esc($item['bank_account_number']); ?></li>
                                                             <li>In the name of: <?= esc($item['bank_account_holder']); ?></li>
                                                         </ul>
-                                                        <img src="<?= base_url('media/photos/sumpu/' . esc($item['qr_url'])); ?>" style="max-width:200px; max-height:200px; object-fit: cover;" class="me-2"> <!-- Gambar QR Code -->
+                                                        <img src="<?= base_url('media/photos/kubuGadang/' . esc($item['qr_url'])); ?>" style="max-width:200px; max-height:200px; object-fit: cover;" class="me-2"> <!-- Gambar QR Code -->
                                                     <?php endforeach; ?>
                                                 <?php endif; ?>
                                             </div>

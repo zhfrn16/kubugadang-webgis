@@ -10,6 +10,9 @@
             <div class="card-header">
                 <div class="row align-items-center">
                     <?= $this->include('web/layouts/map-head'); ?>
+                    <script>
+                        digitEvent();
+                    </script>
                 </div>
             </div>
             <?= $this->include('web/layouts/map-body'); ?>
@@ -87,5 +90,7 @@
     $('#check-nearby-col').hide();
     $('#result-track-col').hide();
     $('#result-nearby-col').hide();
+
+    currentPage = 'event';
 </script>
 <?= $this->endSection() ?>

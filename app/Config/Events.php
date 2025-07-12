@@ -4,6 +4,7 @@ namespace Config;
 
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
+use Myth\Auth\Authorization\GroupModel;
 
 /*
  * --------------------------------------------------------------------
@@ -32,7 +33,7 @@ Events::on('pre_system', static function () {
             ob_end_flush();
         }
 
-        ob_start(static fn ($buffer) => $buffer);
+        ob_start(static fn($buffer) => $buffer);
     }
 
     /*
@@ -45,4 +46,8 @@ Events::on('pre_system', static function () {
         Events::on('DBQuery', 'CodeIgniter\Debug\Toolbar\Collectors\Database::collect');
         Services::toolbar()->respond();
     }
+});
+Events::on('register', function ($user) {
+    $groupModel = new GroupModel();
+    $groupModel->addUserToGroup($user->id, 'customer');
 });

@@ -11,7 +11,7 @@
 
                 <?= view('Myth\Auth\Views\_message_block') ?>
 
-                <form action="<?= url_to('register') ?>" method="post">
+                <form action="<?= url_to('registercustom') ?>" method="post">
                     <?= csrf_field() ?>
 
                     <div class="form-group">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
 
-                    <script>
+                    <!-- <script>
                         document.querySelector('form').addEventListener('submit', function(event) {
                             const emailInput = document.querySelector('input[name="email"]');
                             const emailValue = emailInput.value.trim();
@@ -34,7 +34,7 @@
                                 event.preventDefault();
                             }
                         });
-                    </script>
+                    </script> -->
 
                     <div class="form-group">
                         <label for="username"><?= lang('Auth.username') ?></label>

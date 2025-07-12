@@ -37,6 +37,7 @@ $routes->get('/', 'Home::landingPage');
 $routes->get('/403', 'Home::error403');
 $routes->get('/login', 'Web\Admin::login');
 $routes->get('/register', 'Web\Admin::register');
+$routes->post('/registercustom', 'Api\Auth::register');
 $routes->get('/failedlogin', 'Web\Admin::failedlogin');
 // $routes->get('/login', 'Login::index');
 // $routes->get('/.auth/login/google/callback', 'Login::callback');

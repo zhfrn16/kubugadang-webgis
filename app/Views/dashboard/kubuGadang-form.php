@@ -24,7 +24,7 @@ $edit = in_array('edit', $uri);
             <h3 class="card-title"><?= esc($title); ?></h3>
         </div>
         <div class="card-body">
-            <form class="form form-vertical" action="<?= ($edit) ? base_url('dashboard/sumpu/update') . '/' . $data['id'] : base_url('dashboard/sumpu'); ?>" method="post" enctype="multipart/form-data">
+            <form class="form form-vertical" action="<?= ($edit) ? base_url('dashboard/kubugadang/update') . '/' . $data['id'] : base_url('dashboard/sumpu'); ?>" method="post" enctype="multipart/form-data">
                 <div class="form-body">
                     <div class="row gx-md-5">
                         <div class="col-md-6 col-12 order-md-first order-last">
@@ -71,34 +71,7 @@ $edit = in_array('edit', $uri);
                                         <input type="text" id="contact_person" class="form-control" name="contact_person" placeholder="contact_person" value="<?= ($edit) ? $data['contact_person'] : old('contact_person'); ?>">
                                     </div>
                                 </div>
-                                <div class="col-12 mb-3">
-                                    <div class="form-group">
-                                        <label for="bank_name" class="mb-2">Bank Name</label>
-                                        <input type="text" id="bank_name" class="form-control" name="bank_name" placeholder="bank_name" value="<?= ($edit) ? $data['bank_name'] : old('bank_name'); ?>">
-                                    </div>
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <div class="form-group">
-                                        <label for="bank_code" class="mb-2">Bank Code</label>
-                                        <input type="text" id="bank_code" class="form-control" name="bank_code" placeholder="bank_code" value="<?= ($edit) ? $data['bank_code'] : old('bank_code'); ?>">
-                                    </div>
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <div class="form-group">
-                                        <label for="bank_account_holder" class="mb-2">Bank Account Holder Name</label>
-                                        <input type="text" id="bank_account_holder" class="form-control" name="bank_account_holder" placeholder="bank_account_holder" value="<?= ($edit) ? $data['bank_account_holder'] : old('bank_account_holder'); ?>">
-                                    </div>
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <div class="form-group">
-                                        <label for="bank_account_number" class="mb-2">Bank Account Number</label>
-                                        <input type="text" id="bank_account_number" class="form-control" name="bank_account_number" placeholder="bank_account_number" value="<?= ($edit) ? $data['bank_account_number'] : old('bank_account_number'); ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label for="qr_url" class="form-label">QR Image</label>
-                                    <input class="form-control" accept="image/*" type="file" name="qr_url" id="qr_url">
-                                </div>
+
                                 <!-- <div class="col-12 d-flex justify-content-end mb-3"> -->
                                 <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
                                 <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
@@ -153,7 +126,7 @@ $edit = in_array('edit', $uri);
         credits: false,
     });
 
-    const pond2 = FilePond.create(qr_url, {       
+    const pond2 = FilePond.create(qr_url, {
         imageResizeTargetHeight: 720,
         imageResizeUpscale: false,
         credits: false,
@@ -161,7 +134,7 @@ $edit = in_array('edit', $uri);
 
     <?php if ($edit && count($data['gallery']) > 0) : ?>
         pond.addFiles(
-            <?php foreach ($data['gallery'] as $g) : ?> `<?= base_url('media/photos/sumpu/' . $g); ?>`,
+            <?php foreach ($data['gallery'] as $g) : ?> `<?= base_url('media/photos/kubuGadang/' . $g); ?>`,
             <?php endforeach; ?>
         );
     <?php endif; ?>
@@ -170,7 +143,7 @@ $edit = in_array('edit', $uri);
     });
 
     <?php if ($edit && $data['qr_url'] != null) : ?>
-        pond2.addFile(`<?= base_url('media/photos/sumpu/' . $data['qr_url']); ?>`)
+        pond2.addFile(`<?= base_url('media/photos/kubuGadang/' . $data['qr_url']); ?>`)
     <?php endif; ?>
     pond2.setOptions({
         server: '/upload/qr_url'

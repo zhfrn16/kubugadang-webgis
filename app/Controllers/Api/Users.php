@@ -15,7 +15,6 @@ class Users extends ResourceController
     public function __construct()
     {
         $this->userModel = new UserModel();
-
     }
 
     /**
@@ -57,8 +56,10 @@ class Users extends ResourceController
 
     public function delete($id = null)
     {
+        $groupModel = model('Myth\Auth\Models\GroupModel');
+        $groupModel->removeUserFromAllGroups($id);
+
         $deleteUS = $this->userModel->delete(['id' => $id]);
-        // dd($deleteUS);
         if ($deleteUS) {
             $response = [
                 'status' => 200,
@@ -67,6 +68,14 @@ class Users extends ResourceController
                 ]
             ];
             return $this->respondDeleted($response);
+        } else {
+            $response = [
+                'status' => 400,
+                'message' => [
+                    "Failed to delete user"
+                ]
+            ];
+            return $this->fail($response);
         }
     }
 
@@ -83,6 +92,4 @@ class Users extends ResourceController
         ];
         return $this->respond($response);
     }
-
-    
 }

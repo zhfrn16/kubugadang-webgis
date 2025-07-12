@@ -387,7 +387,7 @@ class DetailReservation extends ResourcePresenter
     // {
     //     $contents = $this->packageModel->get_list_package_distinct()->getResultArray();
     //     $datareservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
-    //     $datatourismvillage = $this->KubuGadangModel->get_sumpu()->getResultArray();
+    //     $datatourismvillage = $this->KubuGadangModel->get_kubuGadang()->getResultArray();
     //     $package_id_reservation = $datareservation['package_id'];
 
     //     //detail package 
@@ -550,7 +550,7 @@ class DetailReservation extends ResourcePresenter
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $datareservation = $this->reservationModel->get_reservation_by_id($id)->getRowArray();
-        $datatourismvillage = $this->KubuGadangModel->get_sumpu()->getResultArray();
+        $datatourismvillage = $this->KubuGadangModel->get_kubuGadang()->getResultArray();
         $package_reservation = $datareservation['package_id'];
 
         //detail package 
@@ -943,7 +943,7 @@ class DetailReservation extends ResourcePresenter
         $updateDR = $this->reservationModel->update_reservation($id, $requestData);
 
         $requestData2 = [
-            'unit_status' => $request['status'],           
+            'unit_status' => $request['status'],
         ];
 
         foreach ($requestData2 as $key => $value) {

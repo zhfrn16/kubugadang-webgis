@@ -95,7 +95,7 @@ class Dashboard extends BaseController
 
     public function kubugadang()
     {
-        $contents = $this->KubuGadangModel->get_sumpu()->getRowArray();
+        $contents = $this->KubuGadangModel->get_kubuGadang()->getRowArray();
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         $list_gallery = $this->galleryKubuGadangModel->get_all_gallery()->getResultArray();
@@ -109,7 +109,7 @@ class Dashboard extends BaseController
             'title' => 'Manage Village Information',
             'data' => $contents,
             'data2' => $contents2,
-            'folder' => 'sumpu'
+            'folder' => 'kubuGadang'
         ];
         return view('dashboard/manage-sumpu', $data);
     }

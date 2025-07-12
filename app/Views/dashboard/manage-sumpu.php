@@ -10,7 +10,7 @@
                     <h3 class="card-title"><?= $title; ?></h3>
                 </div>
                 <div class="col">
-                    <a href="<?= base_url('dashboard/sumpu/edit'); ?>/<?= esc($data['id']); ?>" class="btn btn-primary float-end"><i class="fa-solid fa-pencil me-3"></i>Edit Information</a>
+                    <a href="<?= base_url('dashboard/kubugadang/edit'); ?>/<?= esc($data['id']); ?>" class="btn btn-primary float-end"><i class="fa-solid fa-pencil me-3"></i>Edit Information</a>
                 </div>
             </div>
         </div>
@@ -129,7 +129,7 @@
                         <div class="carousel-inner">
                             <?php if ($data['qr_url'] != null) : ?>
                                 <div class="carousel-item<?= ($data['qr_url']) ? ' active' : ''; ?>">
-                                    <img class="d-block w-100" src="<?= base_url('media/photos/sumpu/' . $data['qr_url']); ?>">
+                                    <img class="d-block w-100" src="<?= base_url('media/photos/kubuGadang/' . $data['qr_url']); ?>">
                                 </div>
                             <?php endif; ?>
                         </div>

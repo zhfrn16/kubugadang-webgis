@@ -37,7 +37,7 @@ class Sumpu extends ResourcePresenter
      */
     public function index()
     {
-        $contents = $this->KubuGadangModel->get_sumpu()->getResultArray();
+        $contents = $this->KubuGadangModel->get_kubuGadang()->getResultArray();
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
         $contents3 = $this->KubuGadangModel->get_announcement_info()->getResultArray();
 
@@ -69,7 +69,7 @@ class Sumpu extends ResourcePresenter
 
     public function edit($id = null)
     {
-        $contents = $this->KubuGadangModel->get_sumpu()->getRowArray();
+        $contents = $this->KubuGadangModel->get_kubuGadang()->getRowArray();
         $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
 
         if (empty($contents)) {
@@ -136,7 +136,7 @@ class Sumpu extends ResourcePresenter
                 $fileImg = new File($filepath . '/' . $filenames[0]);
 
                 // Remove old file with the same name, if exists
-                $existingFile = FCPATH . 'media/photos/sumpu/' . $fileImg->getFilename();
+                $existingFile = FCPATH . 'media/photos/kubuGadang/' . $fileImg->getFilename();
                 if (file_exists($existingFile)) {
                     unlink($existingFile);
                 }
@@ -199,7 +199,7 @@ class Sumpu extends ResourcePresenter
     public function updateannouncement($id = null)
     {
         $request = $this->request->getPost();
-       
+
 
         $requestData = [
             'announcement' => $request['announcement'],
@@ -226,9 +226,9 @@ class Sumpu extends ResourcePresenter
 
     public function deleteobject($id = null)
     {
-        $request = $this->request->getPost();  
+        $request = $this->request->getPost();
 
-        $id = $request['id'];    
+        $id = $request['id'];
         $array1 = array('id' => $id);
         $deleteAN = $this->KubuGadangModel->delete_announcement($id);
 
@@ -242,7 +242,6 @@ class Sumpu extends ResourcePresenter
             session()->setFlashdata('success', 'Announcement "' . $id . '" Deleted Successfully.');
 
             return redirect()->to(base_url('dashboard/homestay'));
-
         } else {
             $response = [
                 'status' => 404,
@@ -253,6 +252,4 @@ class Sumpu extends ResourcePresenter
             return $this->failNotFound($response);
         }
     }
-
-    
 }

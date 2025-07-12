@@ -138,7 +138,7 @@
                                         <?php foreach ($item['gallery'] as $g) : ?>
                                             <div class="carousel-item<?= ($i == 0) ? ' active' : ''; ?>">
                                                 <a>
-                                                    <img src="<?= base_url('media/photos/sumpu/' . esc($g)); ?>" class="d-block w-100">
+                                                    <img src="<?= base_url('media/photos/kubuGadang/' . esc($g)); ?>" class="d-block w-100">
                                                 </a>
                                             </div>
                                         <?php $i++;

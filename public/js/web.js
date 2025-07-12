@@ -1266,8 +1266,8 @@ function digitVillage3(iddesa) {
       digitasi.setStyle({
         fillColor: "#fff",
         strokeWeight: 1,
-        strokeColor: "#ffffff",
-        fillOpacity: 0.1,
+        strokeColor: "#f0f0f0",
+        fillOpacity: 0.01,
         clickable: true, // Set clickable to true to enable click event
       });
       digitasi.setMap(map);
@@ -1534,7 +1534,7 @@ function objectMarker(id, lat, lng, status, homestay_status, anim = true) {
 
   let icon;
   if (id.substring(0, 3) === "SUM") {
-    icon = baseUrl + "/media/icon/marker_sumpu.png";
+    icon = baseUrl + "/media/icon/marker_kuga.png";
   } else if (id.substring(0, 2) === "AT") {
     icon = baseUrl + "/media/icon/attraction.png";
     const idattraction = id;
@@ -2084,6 +2084,15 @@ function zoomToSumpuMarkers() {
         console.log("Found marker:", marker); // Debug marker
         map.setCenter(marker.getPosition());
         map.setZoom(16);
+        console.log('ini silek');
+      }
+    } else if(currentPage == 'event') {
+      if (id.substring(0, 2) === "EV") {
+        const marker = markerArray[id];
+        console.log("Found marker:", marker); // Debug marker
+        map.setCenter(marker.getPosition());
+        map.setZoom(32);
+        console.log('ini event');
       }
     } else {
     if (id.substring(0, 3) === "SUM") {
@@ -2091,6 +2100,7 @@ function zoomToSumpuMarkers() {
       console.log("Found marker:", marker); // Debug marker
       map.setCenter(marker.getPosition());
       map.setZoom(16);
+        console.log('ini gak tau apaan');
     }
 
     }
@@ -3954,7 +3964,22 @@ function clearAllAll() {
             objectMarker(data.id, data.lat, data.lng);
         }
     });
-    console.log('halaman silek')
+    console.log('halaman silek') 
+  } else if(currentPage == 'event') {
+    $.ajax({
+        url: baseUrl + '/api/event',
+        type: 'POST',
+        data: {
+            digitasi: 'EV001'
+        },
+        dataType: 'json',
+        success: function (response) {
+            const data = response.data.properties;
+            console.log(data);
+            // objectMarker(data.id, data.lat, data.lng);
+        }
+    });
+    console.log('halaman event') 
   } else {
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
     console.log('halaman bukan silek')
@@ -3984,6 +4009,21 @@ function checkLayer() {
         }
     });
     console.log('halaman silek')
+  } else if(currentPage == 'event') {
+    $.ajax({
+        url: baseUrl + '/api/event',
+        type: 'POST',
+        data: {
+            digitasi: 'EV001'
+        },
+        dataType: 'json',
+        success: function (response) {
+            const data = response.data.properties;
+            console.log(data);
+            objectMarker(data.id, data.lat, data.lng);
+        }
+    });
+    console.log('halaman event')
   } else {
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
     console.log('halaman bukan silek')
@@ -4130,6 +4170,21 @@ function checkObject() {
         }
     });
     console.log('halaman silek')
+  } else if(currentPage == 'event') {
+    $.ajax({
+        url: baseUrl + '/api/event',
+        type: 'POST',
+        data: {
+            digitasi: 'EV001'
+        },
+        dataType: 'json',
+        success: function (response) {
+            const data = response.data.properties;
+            console.log(data);
+            objectMarker(data.id, data.lat, data.lng);
+        }
+    });
+    console.log('halaman event')
   } else {
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
     console.log('halaman bukan silek')
@@ -4157,36 +4212,43 @@ function checkObject() {
     clearAllAll();
     findAll("at");
     $("#table-at").show();
+    console.log('attraction checked')
   }
   if (document.getElementById("check-oho").checked) {
     clearAllAll();
     findAll("ho");
     $("#table-ho").show();
+    console.log('homestay checked')
   }
   if (document.getElementById("check-ocp").checked) {
     clearAllAll();
     findAll("cp");
     $("#table-cp").show();
+    console.log('culinary place checked')
   }
   if (document.getElementById("check-osp").checked) {
     clearAllAll();
     findAll("sp");
     $("#table-sp").show();
+    console.log('checked')
   }
   if (document.getElementById("check-owp").checked) {
     clearAllAll();
     findAll("wp");
     $("#table-wp").show();
+    console.log('checked')
   }
   if (document.getElementById("check-oev").checked) {
     clearAllAll();
     findAll("ev");
     $("#table-ev").show();
+    console.log('checked')
   }
   if (document.getElementById("check-ofc").checked) {
     clearAllAll();
     findAll("fc");
     $("#table-fc").show();
+    console.log('checked')
   }
 
   // Atur bound ke objek yang ditemukan
@@ -4329,6 +4391,21 @@ function clickLayer() {
         }
     });
     console.log('halaman silek')
+  } else if(currentPage == 'event') {
+    $.ajax({
+        url: baseUrl + '/api/attraction',
+        type: 'POST',
+        data: {
+            digitasi: 'EV001'
+        },
+        dataType: 'json',
+        success: function (response) {
+            const data = response.data.properties;
+            console.log(data);
+            objectMarker(data.id, data.lat, data.lng);
+        }
+    });
+    console.log('halaman event')
   } else {
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
     console.log('halaman bukan silek')
@@ -4804,17 +4881,17 @@ function objectMarkerExplore(
     digitTraditional(idtraditional);
   } else if (id.substring(0, 2) === "EV") {
     if (status === "1") {
-      icon = baseUrl + "/media/icon/marker_rg.png";
+      icon = baseUrl + "/media/icon/event.png";
     } else {
-      icon = baseUrl + "/media/icon/marker_rg.png";
+      icon = baseUrl + "/media/icon/event.png";
     }
     const idevent = id;
     digitEvent(idevent);
   } else if (id.substring(0, 2) === "FC") {
     if (status === "1") {
-      icon = baseUrl + "/media/icon/marker_rg.png";
+      icon = baseUrl + "/media/icon/facility.png";
     } else {
-      icon = baseUrl + "/media/icon/marker_rg.png";
+      icon = baseUrl + "/media/icon/facility.png";
     }
     const idfc = id;
     digitFacility(idfc);
@@ -6708,7 +6785,7 @@ function objectOptions() {
         console.error("AJAX request failed:", status, error);
       },
     });
-  } else if (activityType == "attraction" || activityType == "facility") {
+  } else if (activityType == "attraction") {
     $("#object").empty();
     $.ajax({
       url: baseUrl + "/api/" + activityType,
@@ -6718,11 +6795,7 @@ function objectOptions() {
           let data = response.data;
           for (let i in data) {
             let item = data[i];
-            if (item.category == "1") {
-              categoryname = "Group";
-            } else if (item.category == "2") {
-              categoryname = "Individu";
-            }
+            
             let object =
               // '<option value="' + item.id + '">' + item.name + ' - ' + categoryname + ' - Rp' + item.price + '</option>';
               '<option value="' +
@@ -6731,8 +6804,34 @@ function objectOptions() {
               item.name +
               " - Rp" +
               item.price +
-              " - " +
-              categoryname +
+              "</option>";
+            $("#object").append(object);
+          }
+        } else {
+          console.error("Invalid or missing data structure in AJAX response");
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("AJAX request failed:", status, error);
+      },
+    });
+  } else if (activityType == "facility") {
+    $("#object").empty();
+    $.ajax({
+      url: baseUrl + "/api/" + activityType,
+      dataType: "json",
+      success: function (response) {
+        if (response && response.data) {
+          let data = response.data;
+          for (let i in data) {
+            let item = data[i];
+            
+            let object =
+              // '<option value="' + item.id + '">' + item.name + ' - ' + categoryname + ' - Rp' + item.price + '</option>';
+              '<option value="' +
+              item.id +
+              '">' +
+              item.name +
               "</option>";
             $("#object").append(object);
           }
@@ -7730,6 +7829,12 @@ function initMap6() {
     digitSilekLanyah();
 }
 
+function initMapEvent() {
+    initMap();
+    digitEvent();
+
+}
+
 function digitSilekLanyah() {
     const digitasi = new google.maps.Data();
     $.ajax({
@@ -7748,6 +7853,30 @@ function digitSilekLanyah() {
                 strokeWeight:0.8,
                 strokeColor:'#FF0000',
                 fillOpacity: 0.2,
+                clickable: false
+            });
+            digitasi.setMap(map);
+        }
+    });
+}
+function digitEvent() {
+    const digitasi = new google.maps.Data();
+    $.ajax({
+        url: baseUrl + '/api/event',
+        type: 'POST',
+        data: {
+            digitasi: 'EV001'
+        },
+        dataType: 'json',
+        success: function (response) {
+            const data = response.data;
+            console.log(data);
+            digitasi.addGeoJson(data);
+            digitasi.setStyle({
+                fillColor:'#000',
+                strokeWeight:0.8,
+                strokeColor:'#F0F0F0',
+                fillOpacity: 0.01,
                 clickable: false
             });
             digitasi.setMap(map);

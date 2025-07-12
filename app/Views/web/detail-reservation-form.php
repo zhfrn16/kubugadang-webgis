@@ -321,7 +321,7 @@ if ($detail['total_people'] < 11) {
                                         <tr>
                                             <td><?= esc($i++); ?></td>
                                             <td><?= esc(date('j F Y', strtotime($dtb['date']))); ?></td>
-                                            <td>[<?= esc($dtb['name']); ?>]  <br> <?= esc($dtb['unit_name']); ?></td>
+                                            <td>[<?= esc($dtb['name']); ?>] <br> <?= esc($dtb['unit_name']); ?></td>
                                             <td style="text-align: center;"><?= esc($dtb['unit_guest_number']); ?></td>
                                             <td><?= esc($dtb['unit_guest_number'] * $calculatePrice); ?></td>
                                             <?php if ($addhome) : ?>
@@ -496,7 +496,7 @@ if ($detail['total_people'] < 11) {
                                                             <li>Account number: <?= esc($item['bank_account_number']); ?></li>
                                                             <li>In the name of: <?= esc($item['bank_account_holder']); ?></li>
                                                         </ul>
-                                                        <img src="<?= base_url('media/photos/sumpu/' . esc($item['qr_url'])); ?>" style="max-width:200px; max-height:200px; object-fit: cover;" class="me-2"> <!-- Gambar QR Code -->
+                                                        <img src="<?= base_url('media/photos/kubuGadang/' . esc($item['qr_url'])); ?>" style="max-width:200px; max-height:200px; object-fit: cover;" class="me-2"> <!-- Gambar QR Code -->
                                                     <?php endforeach; ?>
                                                 <?php endif; ?>
                                             </div>
