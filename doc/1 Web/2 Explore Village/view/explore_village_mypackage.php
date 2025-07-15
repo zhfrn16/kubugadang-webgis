@@ -50,17 +50,17 @@
                                             <tr onclick="window.location='<?= base_url('web/package/') . $package['data']['id']; ?>';" style="cursor: pointer;">
                                                 <td colspan="2" style="padding: 1rem;">
                                                     <div class="d-flex align-items-center">
-                                                    <?php
-                // Tentukan URL foto default
-                $defaultPhotoUrl = base_url('media/photos/package/default.jpg');
-                
-                // Periksa apakah foto tersedia atau tidak
-                $imageUrl = !empty($package['data']['gallery'][0]) && file_exists('media/photos/package/' . esc($package['data']['gallery'][0]))
-                    ? base_url('media/photos/package/' . esc($package['data']['gallery'][0])) // Gunakan foto utama jika tersedia
-                    : $defaultPhotoUrl; // Gunakan foto default jika tidak tersedia
-                ?>
+                                                        <?php
+                                                        // Tentukan URL foto default
+                                                        $defaultPhotoUrl = base_url('media/photos/package/default.jpg');
 
-<img src="<?= $imageUrl; ?>" alt="<?= $package['title']; ?>" style="width: 50px; height: 50px; object-fit: cover; margin-right: 20px;">
+                                                        // Periksa apakah foto tersedia atau tidak
+                                                        $imageUrl = !empty($package['data']['gallery'][0]) && file_exists('media/photos/package/' . esc($package['data']['gallery'][0]))
+                                                            ? base_url('media/photos/package/' . esc($package['data']['gallery'][0])) // Gunakan foto utama jika tersedia
+                                                            : $defaultPhotoUrl; // Gunakan foto default jika tidak tersedia
+                                                        ?>
+
+                                                        <img src="<?= $imageUrl; ?>" alt="<?= $package['title']; ?>" style="width: 50px; height: 50px; object-fit: cover; margin-right: 20px;">
                                                         <div>
                                                             <!-- <h6><?= $package['title']; ?> <br>Check In:<?= $package['check_in']; ?></h6> -->
                                                             <h6 style="margin: 0px;"><?= $package['title']; ?></h6>
@@ -128,7 +128,7 @@
                                                                 function addStartingPoint() {
                                                                     // Tambahkan marker untuk titik 0 dengan gambar dari folder Anda
                                                                     var image = {
-                                                                        url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                                                        url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                                                         scaledSize: new google.maps.Size(50, 50) // Sesuaikan dengan ukuran gambar Anda
                                                                     };
 
@@ -186,7 +186,7 @@
 
                                                                     // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                                                     var image = {
-                                                                        url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                                                        url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                                                         scaledSize: new google.maps.Size(50, 50) // Sesuaikan dengan ukuran gambar Anda
                                                                     };
 

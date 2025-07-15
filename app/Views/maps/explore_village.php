@@ -104,7 +104,7 @@
 <section class="section">
     <div class="row">
 
-    <div class="col-md-4 col-12">
+        <div class="col-md-4 col-12">
             <div class="row">
                 <!--popular-->
                 <div class="col-12" id="list-object-col">
@@ -183,10 +183,9 @@
                                                                 ?>
                                                             </ul>
 
-                                                            
+
 
                                                             <script>
-
                                                                 routeArray = [];
                                                                 markerArray = [];
 
@@ -197,7 +196,7 @@
                                                                 function addStartingPoint() {
                                                                     // Tambahkan marker untuk titik 0 dengan gambar dari folder Anda
                                                                     var image = {
-                                                                        url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                                                        url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                                                         scaledSize: new google.maps.Size(60, 60) // Sesuaikan dengan ukuran gambar Anda
                                                                     };
 
@@ -297,7 +296,7 @@
                                                                     let currentButton2 = document.getElementById('btn-day-dropdown-<?= $day['day'], $package['data']['id']; ?>');
                                                                     currentButton2.style.backgroundColor = 'white';
                                                                     currentButton2.style.color = '#435ebe';
-                                                                    
+
                                                                     <?php $loop = 0; ?>
                                                                     // initMap();
                                                                     clearRadius();
@@ -312,7 +311,7 @@
 
                                                                     // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                                                     let image = {
-                                                                        url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                                                        url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                                                         scaledSize: new google.maps.Size(60, 60) // Sesuaikan dengan ukuran gambar Anda
                                                                     };
 
@@ -370,7 +369,7 @@
                                                                             });
                                                                             let directionsRenderer;
 
-                                                                            
+
 
 
                                                                             let start = new google.maps.LatLng(startLat, startLng);
@@ -448,7 +447,7 @@
 
 
                                                                     // Change the color of the clicked button
-                                                                    
+
                                                                     let currentButton = document.getElementById('btn-day-<?= $day['day'], $package['data']['id']; ?>');
                                                                     currentButton.style.fontWeight = 'bold';
                                                                     currentButton.style.backgroundColor = 'white';
@@ -456,12 +455,10 @@
                                                                     let currentButton2 = document.getElementById('btn-day-dropdown-<?= $day['day'], $package['data']['id']; ?>');
                                                                     currentButton2.style.backgroundColor = 'white';
                                                                     currentButton2.style.color = '#435ebe';
-                                                                    
+
 
 
                                                                 }
-
-                                                              
                                                             </script>
 
 

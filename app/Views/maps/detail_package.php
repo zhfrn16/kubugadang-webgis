@@ -201,7 +201,7 @@
                                         clearRadius();
                                         clearRoute();
                                         clearMarker();
-                                        
+
                                         buttons.forEach(function(button) {
                                             button.style.backgroundColor = ''; // reset to default background color
                                             button.style.color = ''; // reset to default text color
@@ -233,7 +233,7 @@
 
                                         // // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                         // var image = {
-                                        //     url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                        //     url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                         //     scaledSize: new google.maps.Size(50, 50) // Sesuaikan dengan ukuran gambar Anda
                                         // };
 

@@ -144,7 +144,7 @@ $edit = in_array('edit', $uri);
                                     </div>
                                 </div><br>
                                 <div class="col-md-12">
-                                    <p>*Only service fees will be included in the package price. Non-service is not.</p>
+                                    <!-- <p>*Only service fees will be included in the package price. Non-service is not.</p> -->
                                 </div>
                             </div>
                             <div class="modal-footer">

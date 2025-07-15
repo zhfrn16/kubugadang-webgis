@@ -10,10 +10,10 @@
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col-md-auto">
-                        <h4 class="card-title">Google Maps</h4>
+                            <h4 class="card-title">Google Maps</h4>
                             <div class="col-12 d-flex align-items-center gap-1">
-                               <!-- Checkbox 1 -->
-                               <div class="form-check" style="font-size: 14px;">
+                                <!-- Checkbox 1 -->
+                                <div class="form-check" style="font-size: 14px;">
                                     <input class="form-check-input" type="checkbox" id="check-label" value="check-label" onchange="checkLabel()">
                                     <label class="form-check-label" for="check-label">Labels</label>
                                 </div>&nbsp;
@@ -63,15 +63,15 @@
                                             <tr onclick="window.location='<?= base_url('web/package/') . $package['data']['id']; ?>';" style="cursor: pointer;">
                                                 <td colspan="2" style="padding: 1rem;">
                                                     <div class="d-flex align-items-center">
-                                                        <?php if(isset($package['data']['gallery'][0]) && !empty($package['data']['gallery'][0])): ?>
+                                                        <?php if (isset($package['data']['gallery'][0]) && !empty($package['data']['gallery'][0])): ?>
                                                             <img src="<?= base_url('media/photos/package/' . esc($package['data']['gallery'][0])); ?>" alt="<?= $package['title']; ?>" style="width: 50px; height: 50px; object-fit:cover; margin-right: 20px;">
                                                         <?php else: ?>
                                                             <img src="<?= base_url('media/photos/logo_kuga.jpg'); ?>" alt="No Image" style="width: 50px; height: 50px; object-fit:cover; margin-right: 20px;">
                                                         <?php endif ?>
-                                                        
+
                                                         <div>
                                                             <h6><?= $package['title']; ?></h6>
-                                                            <h6><?= 'Rp' . number_format(esc($package['price']), 0, ',', '.') ; ?></h6>
+                                                            <h6><?= 'Rp' . number_format(esc($package['price']), 0, ',', '.'); ?></h6>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -117,10 +117,9 @@
                                                                 ?>
                                                             </ul>
 
-                                                            
+
 
                                                             <script>
-
                                                                 routeArray = [];
                                                                 markerArray = [];
 
@@ -131,7 +130,7 @@
                                                                 function addStartingPoint() {
                                                                     // Tambahkan marker untuk titik 0 dengan gambar dari folder Anda
                                                                     var image = {
-                                                                        url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                                                        url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                                                         scaledSize: new google.maps.Size(60, 60) // Sesuaikan dengan ukuran gambar Anda
                                                                     };
 
@@ -195,9 +194,9 @@
                                                                     routeBetweenObjects(-0.4761815168531753, 100.43223933779609, lat1, lng1);
                                                                 }
 
-                                                                
 
-                                                                    digitVillage3();
+
+                                                                digitVillage3();
                                                             </script>
 
                                                             <script>
@@ -256,7 +255,7 @@
 
                                                                     // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                                                     let image = {
-                                                                        url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                                                        url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                                                         scaledSize: new google.maps.Size(60, 60) // Sesuaikan dengan ukuran gambar Anda
                                                                     };
 
@@ -312,7 +311,7 @@
                                                                             });
                                                                             let directionsRenderer;
 
-                                                                            
+
 
 
                                                                             let start = new google.maps.LatLng(startLat, startLng);
@@ -406,8 +405,6 @@
 
 
                                                                 }
-
-                                                              
                                                             </script>
 
 

@@ -167,7 +167,7 @@
                                                                 function addStartingPoint() {
                                                                     // Tambahkan marker untuk titik 0 dengan gambar dari folder Anda
                                                                     var image = {
-                                                                        url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                                                        url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                                                         scaledSize: new google.maps.Size(50, 50) // Sesuaikan dengan ukuran gambar Anda
                                                                     };
 
@@ -225,7 +225,7 @@
 
                                                                     // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                                                     var image = {
-                                                                        url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                                                        url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                                                         scaledSize: new google.maps.Size(50, 50) // Sesuaikan dengan ukuran gambar Anda
                                                                     };
 
@@ -336,7 +336,7 @@
 
                                 </table>
                             </div>
-                           
+
                         </div>
 
                     </div>

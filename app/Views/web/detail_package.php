@@ -215,9 +215,9 @@
                         </div>
                         <div class="col-6 text-end">
                             <?php if (logged_in()) : ?>
-                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addReviewModal">
-                                        <i class="fa fa-plus"></i> Add Review
-                                    </button>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addReviewModal">
+                                    <i class="fa fa-plus"></i> Add Review
+                                </button>
                             <?php else : ?>
                                 <button type="button" class="btn btn-primary btn-sm" onclick="redirectToLogin()">
                                     <i class="fa fa-plus"></i> Add Review
@@ -295,14 +295,14 @@
                                                         </div>
                                                     </div>
                                                     <style>
-                                                        #edit-star-rating<?= esc($review['id']) ?> .fa-star {
+                                                        #edit-star-rating<?= esc($review['id']) ?>.fa-star {
                                                             cursor: pointer;
                                                             font-size: 2rem;
                                                             color: #ccc;
                                                         }
 
-                                                        #edit-star-rating<?= esc($review['id']) ?> .fa-star.selected,
-                                                        #edit-star-rating<?= esc($review['id']) ?> .fa-star.hovered {
+                                                        #edit-star-rating<?= esc($review['id']) ?>.fa-star.selected,
+                                                        #edit-star-rating<?= esc($review['id']) ?>.fa-star.hovered {
                                                             color: orange;
                                                         }
                                                     </style>
@@ -513,7 +513,7 @@
 
                                         // // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                         // var image = {
-                                        //     url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                        //     url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                         //     scaledSize: new google.maps.Size(50, 50) // Sesuaikan dengan ukuran gambar Anda
                                         // };
 

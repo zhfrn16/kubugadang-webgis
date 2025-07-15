@@ -118,7 +118,7 @@ $uri3 = $uri[3] ?? '';
                 </ul>
             </div>
         </div>
-        <a href="https://wa.me/+6289519771656" target="_blank" rel="noopener noreferrer">
+        <a href="https://wa.me/+6289524275056" target="_blank" rel="noopener noreferrer">
             <img width="48" height="48" src="https://img.icons8.com/color/48/whatsapp--v1.png" alt="Chat via WhatsApp" title="Chat via WhatsApp to us" style="position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px;">
         </a>
 
