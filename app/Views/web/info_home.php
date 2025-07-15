@@ -105,20 +105,20 @@
                                     nameprovv = "Sumatera_Barat";
                                     digitKabKota(nameprovv);
 
-                                    for (let k = 1; k < 15; k++) {
+                                    for (let k = 1; k < 3; k++) {
                                         const idkec = k;
                                         digitKec(idkec);
                                     }
 
-                                    for (let d = 1; d < 3; d++) {
+                                    for (let d = 1; d < 9; d++) {
                                         const iddesa = d;
                                         digitNagari1(iddesa);
                                     }
 
-                                    for (let d = 3; d < 5; d++) {
-                                        const iddesa = d;
-                                        digitNagari1(iddesa);
-                                    }
+                                    // for (let d = 3; d < 5; d++) {
+                                    //     const iddesa = d;
+                                    //     digitNagari1(iddesa);
+                                    // }
 
                                     digitVillage1();
                                 </script>
