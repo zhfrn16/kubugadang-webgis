@@ -1166,7 +1166,7 @@ function digitVillage1zoom(iddesa) {
   const digitasi = new google.maps.Data();
   const infoWindow = new google.maps.InfoWindow();
 
-  digitasiValue = "map-v1r2";
+  digitasiValue = "map-v1r3";
 
   $.ajax({
     url: baseUrl + "media/map/kubugadang/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
@@ -1184,7 +1184,7 @@ function digitVillage1zoom(iddesa) {
         clickable: true, // Set clickable to true to enable click event
         index: 6, // Set clickable to true to enable click event
       });
-      map.setZoom(14);
+      map.setZoom(20);
       digitasi.setMap(map);
 
       digitVillage1Layers.push(digitasi);
@@ -1192,10 +1192,11 @@ function digitVillage1zoom(iddesa) {
       // Event listener for click
       digitasi.addListener("click", function (event) {
         const Name = event.feature.getProperty("DESA");
+        conso
         console.log(Name);
 
         // Set label for the clicked feature using InfoWindow
-        infoWindow.setContent("NAGARI " + Name);
+        infoWindow.setContent("DESA " + Name);
         infoWindow.setPosition(event.latLng);
         infoWindow.open(map);
       });
@@ -1210,7 +1211,7 @@ function digitVillage1(iddesa) {
   const digitasi = new google.maps.Data();
   const infoWindow = new google.maps.InfoWindow();
 
-  digitasiValue = "map-v1r2";
+  digitasiValue = "map-v1r3";
 
   $.ajax({
     url: baseUrl + "media/map/kubugadang/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
@@ -1236,10 +1237,11 @@ function digitVillage1(iddesa) {
       // Event listener for click
       digitasi.addListener("click", function (event) {
         const Name = event.feature.getProperty("DESA");
+        console.log(event.feature)
         console.log(Name);
 
         // Set label for the clicked feature using InfoWindow
-        infoWindow.setContent("NAGARI " + Name);
+        infoWindow.setContent("DESA " + Name);
         infoWindow.setPosition(event.latLng);
         infoWindow.open(map);
       });
@@ -1253,7 +1255,7 @@ function digitVillage3(iddesa) {
   const digitasi = new google.maps.Data();
   const infoWindow = new google.maps.InfoWindow();
 
-  digitasiValue = "map-v1r2";
+  digitasiValue = "map-v1r3";
 
   $.ajax({
     url: baseUrl + "media/map/kubugadang/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
@@ -1278,7 +1280,7 @@ function digitVillage3(iddesa) {
         console.log(Name);
 
         // Set label for the clicked feature using InfoWindow
-        infoWindow.setContent("NAGARI " + Name);
+        infoWindow.setContent("DESA " + Name);
         infoWindow.setPosition(event.latLng);
         infoWindow.open(map);
       });
@@ -2083,7 +2085,7 @@ function zoomToSumpuMarkers() {
         const marker = markerArray[id];
         console.log("Found marker:", marker); // Debug marker
         map.setCenter(marker.getPosition());
-        map.setZoom(16);
+        map.setZoom(24);
         console.log('ini silek');
       }
     } else if(currentPage == 'event') {
@@ -2172,6 +2174,7 @@ function objectInfoWindow(id) {
           "/web/attraction/" +
           aid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2302,6 +2305,7 @@ function objectInfoWindow(id) {
           "/web/facility/" +
           aid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2318,6 +2322,7 @@ function objectInfoWindow(id) {
       dataType: "json",
       success: function (response) {
         let data = response.data;
+        let aid = data.id;
         let hoid = data.id;
         let name = data.name;
         let lat = data.lat;
@@ -2350,6 +2355,7 @@ function objectInfoWindow(id) {
           "/web/homestay/" +
           hoid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
         console.log(currentUrl);
         if (currentUrl.includes(id)) {
@@ -2370,6 +2376,7 @@ function objectInfoWindow(id) {
       dataType: "json",
       success: function (response) {
         let data = response.data;
+        let aid = data.id;
         let cpid = data.id;
         let name = data.name;
         let lat = data.lat;
@@ -2401,6 +2408,7 @@ function objectInfoWindow(id) {
           "/web/culinaryPlace/" +
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2417,6 +2425,7 @@ function objectInfoWindow(id) {
       dataType: "json",
       success: function (response) {
         let data = response.data;
+        let aid = data.id;
         let cpid = data.id;
         let name = data.name;
         let lat = data.lat;
@@ -2448,6 +2457,7 @@ function objectInfoWindow(id) {
           "/web/traditionalHouse/" +
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2464,6 +2474,7 @@ function objectInfoWindow(id) {
       dataType: "json",
       success: function (response) {
         let data = response.data;
+        let aid = data.id;
         let cpid = data.id;
         let name = data.name;
         let lat = data.lat;
@@ -2495,6 +2506,7 @@ function objectInfoWindow(id) {
           "/web/homestay/" +
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2542,6 +2554,7 @@ function objectInfoWindow(id) {
           "/web/souvenirPlace/" +
           spid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2589,6 +2602,7 @@ function objectInfoWindow(id) {
           "/web/worshipPlace/" +
           wpid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2663,6 +2677,7 @@ function objectInfoWindowRoute(id) {
           "/web/attraction/" +
           aid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2793,6 +2808,7 @@ function objectInfoWindowRoute(id) {
           "/web/facility/" +
           aid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2841,6 +2857,7 @@ function objectInfoWindowRoute(id) {
           "/web/homestay/" +
           hoid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
         console.log(currentUrl);
         if (currentUrl.includes(id)) {
@@ -2892,6 +2909,7 @@ function objectInfoWindowRoute(id) {
           "/web/culinaryPlace/" +
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2939,6 +2957,7 @@ function objectInfoWindowRoute(id) {
           "/web/traditionalHouse/" +
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2986,6 +3005,7 @@ function objectInfoWindowRoute(id) {
           "/web/homestay/" +
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -3033,6 +3053,7 @@ function objectInfoWindowRoute(id) {
           "/web/souvenirPlace/" +
           spid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -3080,6 +3101,7 @@ function objectInfoWindowRoute(id) {
           "/web/worshipPlace/" +
           wpid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -3656,6 +3678,7 @@ function objectInfoWindowMobile(id) {
           "/web/homestay/" +
           hoid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -4930,7 +4953,7 @@ function objectMarkerExplore(
 
 function zoomToMarker(marker) {
   if (marker) {
-    map.setZoom(15); // Set the zoom level to a higher value (you can adjust this)
+    map.setZoom(24); // Set the zoom level to a higher value (you can adjust this)
     map.setCenter(marker.getPosition()); // Center the map to the marker's position
   }
 }
