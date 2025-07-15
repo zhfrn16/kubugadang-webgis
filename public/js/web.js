@@ -573,12 +573,12 @@ function getIdProvince() {
       nameprov = mynameprov.replace(/\s/g, "_"); // Menghilangkan spasi dari string
       digitKabKota(nameprov);
 
-      for (let k = 1; k < 15; k++) {
+      for (let k = 1; k < 3; k++) {
         const idkec = k;
         digitKec(idkec);
       }
 
-      for (let d = 1; d < 3; d++) {
+      for (let d = 1; d < 9; d++) {
         const iddesa = d;
         digitNagari1(iddesa);
       }
@@ -701,7 +701,7 @@ function digitKec(idkec) {
     digitasiValue = "C" + idkec;
   }
   $.ajax({
-    url: baseUrl + "media/map/output_folder/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
+    url: baseUrl + "media/map/kotapadangpanjang/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
     type: "GET",
     dataType: "json",
     success: function (response) {
@@ -723,11 +723,11 @@ function digitKec(idkec) {
 
       // Event listener for click
       digitasi.addListener("click", function (event) {
-        const Name = event.feature.getProperty("NAMOBJ");
+        const Name = event.feature.getProperty("name");
         console.log(Name);
 
         // Set label for the clicked feature using InfoWindow
-        infoWindow.setContent("KECAMATAN " + Name);
+        infoWindow.setContent("Kecamatan " + Name);
         infoWindow.setPosition(event.latLng);
         infoWindow.open(map);
       });
@@ -748,7 +748,7 @@ function digitNagari1(iddesa) {
     digitasiValue = "V" + iddesa;
   }
   $.ajax({
-    url: baseUrl + "media/map/kubugadang/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
+    url: baseUrl + "media/map/padangpanjangtimur/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
     type: "GET",
     dataType: "json",
     success: function (response) {
@@ -770,11 +770,11 @@ function digitNagari1(iddesa) {
 
       // Event listener for click
       digitasi.addListener("click", function (event) {
-        const Name = event.feature.getProperty("DESA");
+        const Name = event.feature.getProperty("name");
         console.log(Name);
 
         // Set label for the clicked feature using InfoWindow
-        infoWindow.setContent("NAGARI " + Name);
+        infoWindow.setContent("Kelurahan " + Name);
         infoWindow.setPosition(event.latLng);
         infoWindow.open(map);
       });
@@ -795,7 +795,7 @@ function digitNagari2(iddesa) {
     digitasiValue = "V" + iddesa;
   }
   $.ajax({
-    url: baseUrl + "media/map/output_folder3/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
+    url: baseUrl + "media/map/padangpanjangtimur/" + digitasiValue + ".geojson", // Ubah sesuai dengan path file Anda
     type: "GET",
     dataType: "json",
     success: function (response) {
@@ -4096,7 +4096,7 @@ function checkLayer() {
   if (document.getElementById("check-odi").checked) {
     clearAllAll();
     clearDigitKec();
-    for (let k = 1; k < 15; k++) {
+    for (let k = 1; k < 3; k++) {
       const idkec = k;
       digitKec(idkec);
     }
@@ -4461,20 +4461,20 @@ function clickLayer() {
   nameprovv = "Sumatera_Barat";
   digitKabKota(nameprovv);
 
-  for (let k = 1; k < 15; k++) {
+  for (let k = 1; k < 3; k++) {
     const idkec = k;
     digitKec(idkec);
   }
 
-  for (let d = 1; d < 3; d++) {
+  for (let d = 1; d < 9; d++) {
     const iddesa = d;
     digitNagari1(iddesa);
   }
 
-  for (let d = 3; d < 5; d++) {
-    const iddesa = d;
-    digitNagari1(iddesa);
-  }
+  // for (let d = 3; d < 5; d++) {
+  //   const iddesa = d;
+  //   digitNagari1(iddesa);
+  // }
 
   // digitVillage1();
 
