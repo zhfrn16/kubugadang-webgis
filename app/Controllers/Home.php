@@ -97,8 +97,7 @@ class Home extends BaseController
             [
                 'url' => 'batik 2.jpg',
                 'title' => 'Minang Batik',
-                'description' => 'Minang batik is one of the flagship products of the Kubu Gadang Tourism Village, which helps promote the richness of Minangkabau culture and the creative economy.<br>
-Minang batik, particularly that produced in Kubu Gadang, has been showcased at various events, including the World Islamic Entrepreneur Summit (WIES) in collaboration with Minang Kayo and Batik Rang Minang.',
+                'description' => 'Minang batik is one of the flagship products of the Kubu Gadang Tourism Village, which helps promote the richness of Minangkabau culture and the creative economy. Minang batik, particularly that produced in Kubu Gadang, has been showcased at various events, including the World Islamic Entrepreneur Summit (WIES) in collaboration with Minang Kayo and Batik Rang Minang.',
 ],
 [
     'url' => 'baju saisuak cewek.jpg',
