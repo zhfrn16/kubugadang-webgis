@@ -158,6 +158,9 @@ class Servicepackage extends ResourcePresenter
         $requestData = [
             'id' => $id,
             'name' => $request['name'],
+            'category' => $request['category'],
+            'min_capacity' => $request['min_capacity'],
+            'price' => $request['price'],
         ];
 
         foreach ($requestData as $key => $value) {
@@ -169,7 +172,8 @@ class Servicepackage extends ResourcePresenter
         $updateSP = $this->servicePackageModel->update_servicePackage($id, $requestData);
 
         if ($updateSP) {
-            return redirect()->back();
+            // return redirect()->back();
+            return redirect()->to(base_url('dashboard/servicepackage'));
         } else {
             return redirect()->back()->withInput();
         }
