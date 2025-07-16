@@ -3966,7 +3966,7 @@ function checkExplore() {
   $("#list-rec-col").hide();
 }
 
-function clearAllAll() {
+function clearAllAll(log) {
   clearMarker();
   clearRadius();
   clearRoute();
@@ -4007,6 +4007,7 @@ function clearAllAll() {
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
     console.log('halaman bukan silek')
   }
+  if(log) console.log(log);
 }
 
 function checkLayer() {
@@ -4169,6 +4170,44 @@ function clearDigitVillage1() {
   digitVillage1Layers = [];
 }
 
+function setupCheckboxListener() {
+  const checks = [
+  { id: "check-oat", code: "at", table: "#table-at", log: "attraction checked" },
+  { id: "check-oho", code: "ho", table: "#table-ho", log: "homestay checked" },
+  { id: "check-ocp", code: "cp", table: "#table-cp", log: "culinary place checked" },
+  { id: "check-osp", code: "sp", table: "#table-sp", log: "souvenir place checked" },
+  { id: "check-owp", code: "wp", table: "#table-wp", log: "worship place checked" },
+  { id: "check-oev", code: "ev", table: "#table-ev", log: "event checked" },
+  { id: "check-ofc", code: "fc", table: "#table-fc", log: "facility checked" },
+];
+  let debounceTimer;
+
+  checks.forEach(({ id }) => {
+    document.getElementById(id).addEventListener("change", () => {
+      console.log(`Checkbox ${id} changed`);
+
+      clearTimeout(debounceTimer);
+
+      debounceTimer = setTimeout(() => {
+        clearAllAll("ClearAllAll log: " + id + " checked");
+
+        checks.forEach(({ id, code, table, log }) => {
+          if (document.getElementById(id).checked) {
+            findAll(code);
+            $(table).show();
+            console.log(log);
+          }
+        });
+      }, 1000);
+    });
+  });
+}
+
+$(document).ready(function () {
+  setupCheckboxListener();
+  checkObject(); // untuk eksekusi awal
+});
+
 function checkObject() {
   // Bersihkan peta dan tabel
   clearRadius();
@@ -4212,74 +4251,24 @@ function checkObject() {
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
     console.log('halaman bukan silek')
   }
+
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
 
   // Sembunyikan semua tabel
-  $("#table-lsa").empty().hide();
-  $("#table-at").empty().hide();
-  $("#table-th").empty().hide();
-  $("#table-ho").empty().hide();
-  $("#table-cp").empty().hide();
-  $("#table-sp").empty().hide();
-  $("#table-wp").empty().hide();
-  $("#table-ev").empty().hide();
-  $("#table-fc").empty().hide();
+  [
+    "#table-lsa", "#table-at", "#table-th", "#table-ho", "#table-cp",
+    "#table-sp", "#table-wp", "#table-ev", "#table-fc"
+  ].forEach(sel => $(sel).empty().hide());
 
-  // Koordinat posisi default (misal pusat peta)
-  let pos = new google.maps.LatLng(currentLat, currentLng);
-
-  // Periksa status setiap checkbox
-
-  if (document.getElementById("check-oat").checked) {
-    clearAllAll();
-    findAll("at");
-    $("#table-at").show();
-    console.log('attraction checked')
-  }
-  if (document.getElementById("check-oho").checked) {
-    clearAllAll();
-    findAll("ho");
-    $("#table-ho").show();
-    console.log('homestay checked')
-  }
-  if (document.getElementById("check-ocp").checked) {
-    clearAllAll();
-    findAll("cp");
-    $("#table-cp").show();
-    console.log('culinary place checked')
-  }
-  if (document.getElementById("check-osp").checked) {
-    clearAllAll();
-    findAll("sp");
-    $("#table-sp").show();
-    console.log('checked')
-  }
-  if (document.getElementById("check-owp").checked) {
-    clearAllAll();
-    findAll("wp");
-    $("#table-wp").show();
-    console.log('checked')
-  }
-  if (document.getElementById("check-oev").checked) {
-    clearAllAll();
-    findAll("ev");
-    $("#table-ev").show();
-    console.log('checked')
-  }
-  if (document.getElementById("check-ofc").checked) {
-    clearAllAll();
-    findAll("fc");
-    $("#table-fc").show();
-    console.log('checked')
-  }
-
-  // Atur bound ke objek yang ditemukan
-  boundToObject();
-
-  // Tampilkan kolom hasil pencarian
+  // Atur tampilan hasil pencarian
   $("#result-explore-col").show();
   $("#list-rec-col").hide();
+
+  // Atur map ke koordinat default
+  const pos = new google.maps.LatLng(currentLat, currentLng);
+  map.setCenter(pos); // atau map.panTo(pos);
+  boundToObject();
 }
 
 function clickExplore() {
