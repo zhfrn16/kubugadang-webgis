@@ -98,13 +98,13 @@ class Home extends BaseController
                 'url' => 'batik 2.jpg',
                 'title' => 'Minang Batik',
                 'description' => 'Minang batik is one of the flagship products of the Kubu Gadang Tourism Village, which helps promote the richness of Minangkabau culture and the creative economy. Minang batik, particularly that produced in Kubu Gadang, has been showcased at various events, including the World Islamic Entrepreneur Summit (WIES) in collaboration with Minang Kayo and Batik Rang Minang.',
-],
-[
-    'url' => 'baju saisuak cewek.jpg',
-    'title' => 'Saiusak Attire',
-    'description' => 'The saisuak attire in Kubu Gadang Tourism Village is a traditional Minangkabau attire that is a major attraction in cultural preservation efforts. "Saisuak" itself means "olden days" or "long ago." The Kubu Gadang community has a unique tradition of wearing saisuak, a family heirloom, some dating back to the 1960s. This event, such as a saisuak fashion show, is held to introduce and recall the way Minangkabau women dressed in the past and foster a love of cultural traditions among the younger generation.',
-],
-[
+            ],
+            [
+                'url' => 'baju saisuak cewek.jpg',
+                'title' => 'Saiusak Attire',
+                'description' => 'The saisuak attire in Kubu Gadang Tourism Village is a traditional Minangkabau attire that is a major attraction in cultural preservation efforts. "Saisuak" itself means "olden days" or "long ago." The Kubu Gadang community has a unique tradition of wearing saisuak, a family heirloom, some dating back to the 1960s. This event, such as a saisuak fashion show, is held to introduce and recall the way Minangkabau women dressed in the past and foster a love of cultural traditions among the younger generation.',
+            ],
+            [
                 'url' => 'miniatur rumah gdang.jpg',
                 'title' => 'Rumah Gadang Miniature',
                 'description' => 'In Kubu Gadang Village, there are several interesting souvenir options. Among them are miniature wooden traditional houses, a product of the tourist village. These miniatures closely mimic the architecture of the traditional Rumah Gadang, and tourists can also learn how to make them.',

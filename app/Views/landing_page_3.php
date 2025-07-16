@@ -326,16 +326,17 @@
             <div class="row g-0 flex-column-reverse flex-lg-row" style="height: 100%;">
                 <div class="col-lg-6 p-0 wow fadeIn" data-wow-delay="0.1s">
                     <div class="card">
-                        <div class="header-bg h-100 d-flex flex-column justify-content-center p-5" style="background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(media/photos/1750260443_ee5465b04d4f6fa53e03.jpg) center center no-repeat; background-size: cover;">
+                        <div class="header-bg h-100 d-flex flex-column justify-content-center p-5" style="background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(media/photos/desakuga3.jpg) center center no-repeat; background-size: cover;">
                             <h2 class="display-6 text-light mb-2">
                                 Welcome to
                             </h2>
                             <h1 class="display-4 text-light mb-5">
                                 <?= $village['name']; ?>
                             </h1>
+                            <h3 class="display-9 text-light mb-1"> -Your Hometown In West Sumatera-</h3>
                             <div class="d-flex align-items-center pt-4 animated slideInDown">
                                 <a href="/web" class="btn btn-primary py-sm-3 px-3 px-sm-5 me-5" style="font-size: 20px;">Explore</a>
-                                <button type="button" class="btn-play" data-bs-toggle="modal" data-src="<?= base_url('media/videos/videokuga.mp4'); ?>" data-bs-target="#videoModal">
+                                <button type="button" class="btn-play" data-bs-toggle="modal" data-src="<?= base_url('media/videos/video_kuga.MOV'); ?>" data-bs-target="#videoModal">
                                     <span></span>
                                 </button>
                                 <h6 class="text-white m-0 ms-4 d-none d-sm-block" style="font-size: 20px;">Watch Video</h6>
@@ -492,7 +493,7 @@
                             <a class="btn btn-outline-light btn-social" href="https://www.youtube.com/@Desawisatakubugadang"><i class="fab fa-youtube"></i></a>
                         </div>
                     </div>
-                    
+
 
                     <div class="col-lg-3 col-md-6">
                         <h5 class="text-light mb-4">Links</h5>
@@ -509,7 +510,7 @@
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Shandyka Tribuana Putra</a>, All
+                        &copy; <a class="border-bottom" href="#">Muhammad Hadi Zahfran</a>, All
                         Right Reserved.
                     </div>
                 </div>
