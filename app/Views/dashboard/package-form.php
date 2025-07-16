@@ -179,7 +179,7 @@ $edit = in_array('edit', $uri);
                                     </div>
                                 </div><br>
                                 <div class="col-md-12">
-                                    <p>*Only service fees will be included in the package price. Non-service is not.</p>
+                                    <!-- <p>*Only service fees will be included in the package price. Non-service is not.</p> -->
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -325,7 +325,7 @@ $edit = in_array('edit', $uri);
 
                                                 // // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                                 // var image = {
-                                                //     url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                                //     url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                                 //     scaledSize: new google.maps.Size(50, 50) // Sesuaikan dengan ukuran gambar Anda
                                                 // };
 
@@ -535,10 +535,10 @@ $edit = in_array('edit', $uri);
                                     <?php endforeach; ?>
                                 </div>
 
-                    </div>
-                </div>
-                <script>
-                    initMap(-0.4761815168531753, 100.43223933779609);
+                            </div>
+                        </div>
+                        <script>
+                            initMap(-0.4761815168531753, 100.43223933779609);
 
                             window.onload = function() {
                                 try {

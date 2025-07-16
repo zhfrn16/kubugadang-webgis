@@ -192,7 +192,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s',);
                         <div class="modal-body">
                             <div class="card-header">
                                 <?php @csrf_field(); ?>
-                                 <div class="row g-4">
+                                <div class="row g-4">
                                     <div class="col-md-12">
                                         <div class="row g-4">
                                             <div class="col-md-12">
@@ -226,7 +226,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s',);
                                     </div>
                                 </div><br>
                                 <div class="col-md-12">
-                                    <p>*Only service fees will be included in the package price. Non-service is not.</p>
+                                    <!-- <p>*Only service fees will be included in the package price. Non-service is not.</p> -->
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -486,7 +486,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s',);
 
                     <?php if (isset($day)) : ?>
                         <?php foreach ($day as $item => $key) : ?>
-                            
+
                             <div class="table-responsive">
                                 <div class="table-wrapper">
 
@@ -506,7 +506,7 @@ $datenow = $dateTime->format('Y-m-d H:i:s',);
                                                         <input type="hidden" name="description" value="<?= esc($key['description']); ?>">
                                                         <input type="hidden" name="_method" value="DELETE">
                                                         <?php if ($key['status'] == '0') : ?>
-                                                            <button disabled type="submit"  class="btn btn-outline-danger btn-sm" onclick="return confirm('apakah anda yakin?');"><i class="fa fa-times"></i></button>
+                                                            <button disabled type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('apakah anda yakin?');"><i class="fa fa-times"></i></button>
                                                         <?php else : ?>
                                                             <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('apakah anda yakin?');"><i class="fa fa-times"></i></button>
                                                         <?php endif; ?>
@@ -648,9 +648,9 @@ $datenow = $dateTime->format('Y-m-d H:i:s',);
                                                                                 <input type="hidden" name="status" value="<?= esc($value['status']); ?>">
                                                                                 <input type="hidden" name="_method" value="DELETE">
                                                                                 <?php if ($value['status_created'] == "0") : ?>
-                                                                                <button disabled type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-times"></i></button>
+                                                                                    <button disabled type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-times"></i></button>
                                                                                 <?php else : ?>
-                                                                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-times"></i></button>
+                                                                                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-times"></i></button>
                                                                                 <?php endif; ?>
                                                                             </form>
                                                                         </div>
@@ -694,9 +694,9 @@ $datenow = $dateTime->format('Y-m-d H:i:s',);
                                                                                 <input type="hidden" name="status" value="<?= esc($value['status']); ?>">
                                                                                 <input type="hidden" name="_method" value="DELETE">
                                                                                 <?php if ($value['status_created'] == "0") : ?>
-                                                                                <button disabled type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-times"></i></button>
+                                                                                    <button disabled type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-times"></i></button>
                                                                                 <?php else : ?>
-                                                                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-times"></i></button>
+                                                                                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-times"></i></button>
                                                                                 <?php endif; ?>
                                                                             </form>
                                                                         </div>

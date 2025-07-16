@@ -1604,7 +1604,7 @@ function objectMarkerRoute(id, lat, lng, anim = true) {
 
   let icon;
   if (id.substring(0, 3) === "SUM") {
-    icon = baseUrl + "/media/icon/marker_sumpu.png";
+    icon = baseUrl + "/media/icon/marker_kuga.png";
   } else if (id.substring(0, 2) === "AT") {
     if (
       id.substring(0, 5) === "AT004" ||
@@ -1612,7 +1612,7 @@ function objectMarkerRoute(id, lat, lng, anim = true) {
       id.substring(0, 5) === "AT008" ||
       id.substring(0, 5) === "AT013"
     ) {
-      icon = baseUrl + "/media/icon/water.png";
+      icon = baseUrl + "/media/icon/attraction.png";
     } else {
       icon = baseUrl + "/media/icon/attraction.png";
     }
@@ -1755,7 +1755,7 @@ function objectMarkerRouteMobile(id, lat, lng, anim = true) {
 
   let icon;
   if (id.substring(0, 3) === "SUM") {
-    icon = baseUrl + "/media/icon/marker_sumpu.png";
+    icon = baseUrl + "/media/icon/marker_kuga.png";
   } else if (id.substring(0, 2) === "AT") {
     icon = baseUrl + "/media/icon/attraction.png";
     const idattraction = id;

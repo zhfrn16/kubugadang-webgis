@@ -10,7 +10,7 @@
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col-md-auto">
-                        <h4 class="card-title">Google Maps</h4>
+                            <h4 class="card-title">Google Maps</h4>
                             <div class="col-12 d-flex align-items-center gap-1">
                                 <!-- Checkbox 1 -->
                                 <div class="form-check" style="font-size: 14px;">
@@ -136,14 +136,14 @@
                                                             </ul>
 
                                                             <script>
-                                                                 routeArray = [];
-                                                                  markerArray = [];
+                                                                routeArray = [];
+                                                                markerArray = [];
 
                                                                 // Menambahkan titik 0 dan rute dari titik 0 ke aktivitas 1
                                                                 function addStartingPoint() {
                                                                     // Tambahkan marker untuk titik 0 dengan gambar dari folder Anda
                                                                     var image = {
-                                                                        url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                                                        url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                                                         scaledSize: new google.maps.Size(60, 60) // Sesuaikan dengan ukuran gambar Anda
                                                                     };
 
@@ -271,7 +271,7 @@
 
                                                                     // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                                                     var image = {
-                                                                        url: baseUrl + "/media/icon/marker_sumpu.png", // Ganti dengan URL gambar Anda
+                                                                        url: baseUrl + "/media/icon/marker_kuga.png", // Ganti dengan URL gambar Anda
                                                                         scaledSize: new google.maps.Size(60, 60) // Sesuaikan dengan ukuran gambar Anda
                                                                     };
 
@@ -309,7 +309,7 @@
 
                                                                     // Gabungkan konten utama dan tombol dalam satu variabel
                                                                     let content = `<div style="max-width:200px;max-height:300px;" class="text-center">
-                                                                                        <p class="fw-bold fs-6"><?=$titleMarker;?></p>
+                                                                                        <p class="fw-bold fs-6"><?= $titleMarker; ?></p>
                                                                                         <div class="text-center">
                                                                                             <a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(${startLat}, ${startLng})">
                                                                                                 <i class="fa-solid fa-road"></i>
