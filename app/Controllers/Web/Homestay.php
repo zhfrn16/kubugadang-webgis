@@ -148,7 +148,8 @@ class Homestay extends ResourcePresenter
         // }
 
         $review = $datareview;
-        $rating = $datarating;
+        // $rating = $datarating;
+        $rating = $this->homestayReviewModel->getAverageRatingPerPackage($id);
 
         $data = [
             'title' => $homestay['name'],

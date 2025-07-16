@@ -32,6 +32,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col table-responsive">
+
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
@@ -62,7 +63,20 @@
                                                 echo 'Rp ' . number_format(esc($price), 0, ',', '.');
                                             ?>
                                             </td>
-                                    </tr>                              
+                                    </tr>     
+                                    <tr>
+                                        <td class="fw-bold">Rating</td>
+                                         <td>
+                                            <div class="rating text-center">
+                                                <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                                    <?php if ($i <= $rating) : ?>
+                                                        <i name="rating" class="fas fa-star"></i>
+                                                    <?php else : ?>
+                                                        <i name="rating" class="far fa-star"></i>
+                                                    <?php endif; ?>
+                                                <?php endfor; ?>
+                                            </div> 
+                                         </td>                                                                           
                                 </tbody>
                             </table>
                         </div>
