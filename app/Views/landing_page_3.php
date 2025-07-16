@@ -397,69 +397,36 @@
         </div>
         <!-- Video Modal End -->
 
-        <!-- Award Start -->
-        <div class="container-xxl bg-primary facts my-5 py-5 wow fadeInUp" data-wow-delay="0.1s" id="award">
-            <div class="container py-5">
-                <div class="row g-4">
-                    <center style="display: flex; justify-content: center;">
-                        <div class="col-md-12 col-lg-6 text-center wow fadeIn" data-wow-delay="0.1s">
-                            <img src="media/photos/landing-page/trophy.png" alt="" style="filter: invert(100%); max-width: 4em" class="mb-3">
-                            <p class="text-white mb-0">WON</p>
-                            <h1 class="text-white mb-2">
-                                1<sup>st</sup>
-                            </h1>
-                            <p class="text-white mb-0">Developing Tourist Village Category</p>
-                            <p class="text-white mb-0">ADWI 2022</p>
-                        </div>
-                        <div class="col-md-6 col-lg-6 text-center">
-                            <img src="media/photos/landing-page/rumah-gadang.png" alt="" style="filter: invert(100%); max-width: 5em">
-                            <h1 class="text-white mb-2" data-toggle="counter-up">3</h1>
-                            <p class="text-white mb-0">Unique Atraction</p>
-                        </div>
-                    </center>
-
-                    <!-- <div class="col-md-6 col-lg-6 text-center wow fadeIn" data-wow-delay="0.3s">
-                    <img src="media/photos/landing-page/rumah-gadang.png" alt="" style="filter: invert(100%); max-width: 5em">
-                    <h1 class="text-white mb-2" data-toggle="counter-up">70</h1>
-                    <p class="text-white mb-0">Rumah Gadang</p>
-                </div> -->
+    <!-- Award Start -->
+    <div class="container-xxl bg-primary facts my-5 py-5 wow fadeInUp" data-wow-delay="0.1s" id="award">
+        <div class="container py-5">
+            <div class="row g-4">
+                <div class="col-md-3 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <img src="media/photos/landing-page/trophy.png" alt="" style="filter: invert(100%); max-width: 4em" class="mb-3">
+                    <p class="text-white mb-0">Desa Terbaik Di Sumbar</p>
+                    <p class="text-white mb-0">GIPI AWARD 2021</p>
+                </div>
+                <div class="col-md-3 col-lg-3 text-center wow fadeIn" data-wow-delay="0.2s">
+                    <img src="media/photos/landing-page/trophy.png" alt="" style="filter: invert(100%); max-width: 4em" class="mb-3">
+                    <p class="text-white mb-0">Desa Wisata</p>
+                    <p class="text-white mb-0">Berkelanjutan</p>
+                </div>
+                <div class="col-md-3 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
+                    <img src="media/photos/landing-page/trophy.png" alt="" style="filter: invert(100%); max-width: 4em" class="mb-3">
+                    <h1 class="text-white mb-2">100</h1>
+                    <p class="text-white mb-0">Besar</p>
+                    <p class="text-white mb-0">ADWI</p>
+                </div>
+                <div class="col-md-3 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
+                    <img src="media/photos/landing-page/trophy.png" alt="" style="filter: invert(100%); max-width: 4em" class="mb-3">
+                    <p class="text-white mb-0">Top</p>
+                    <h1 class="text-white mb-2">8</h1>
+                    <p class="text-white mb-0">Desa Wisata Termaju</p>
                 </div>
             </div>
         </div>
-        <!-- Award End -->
-
-        <!--  CHSE Start  -->
-        <div class="container-xxl btn-primary py-5 wow fadeInUp" data-wow-delay="0.1s" id="award">
-            <div class="container-fluid text-center mt-3">
-                <div class="row text-white">
-                    <div class="col-6 col-sm-6 col-md-3 col-lg-3 container-strech mb-3">
-                        <div class="mask-group-1 d-flex flex-row align-items-center justify-content-evenly text-center">
-                            <strong class="">CLEANLINESS</strong>
-                            <img class="" src="https://chse.kemenparekraf.go.id/themes/chse-front/assets/landing/img/icons/clean.png">
-                        </div>
-                    </div>
-                    <div class="col-6 col-sm-6 col-md-3 col-lg-3 container-strech mb-3">
-                        <div class="mask-group-2 d-flex flex-row align-items-center justify-content-evenly text-center">
-                            <strong class="">HEALTH</strong>
-                            <img class="" src="https://chse.kemenparekraf.go.id/themes/chse-front/assets/landing/img/icons/health.png">
-                        </div>
-                    </div>
-                    <div class="col-6 col-sm-6 col-md-3 col-lg-3 container-strech mb-3">
-                        <div class="mask-group-3 d-flex flex-row align-items-center justify-content-evenly text-center">
-                            <strong class="">SAFETY</strong>
-                            <img class="" src="https://chse.kemenparekraf.go.id/themes/chse-front/assets/landing/img/icons/safety.png">
-                        </div>
-                    </div>
-                    <div class="col-6 col-sm-6 col-md-3 col-lg-3 container-strech mb-3">
-                        <div class="mask-group-1 d-flex flex-row align-items-center justify-content-space text-center">
-                            <strong class="">ENVIRONMENT SUSTAINABILITY</strong>
-                            <img class="" src="https://chse.kemenparekraf.go.id/themes/chse-front/assets/landing/img/icons/env.png">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--  CHSE End  -->
+    </div>
+    <!-- Award End -->
     <?php else: ?>
         <div class="container-fluid bg-dark p-0 mb-5" id="home">
             <div class="card">
