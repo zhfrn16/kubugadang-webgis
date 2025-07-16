@@ -49,6 +49,9 @@ class Auth extends ResourceController
             $groupModel->addUserToGroup($userId, $group->id);
         }
 
+        // Set Myth Auth message block for successful registration
+        session()->setFlashdata('message', lang('Auth.registerSuccess'));
+
         // Redirect to login page after registration (like Myth Auth)
         return $this->response->redirect(base_url('login'));
     }
