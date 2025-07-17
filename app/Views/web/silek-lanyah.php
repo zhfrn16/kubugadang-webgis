@@ -108,8 +108,8 @@
                     </div>
                 </div>
             </div>
-            <!-- Nearby section -->
-            <?= $this->include('web/layouts/track'); ?>
+                <!-- Nearby section -->
+                <?= $this->include('web/layouts/explore'); ?>
         </div>
     </div>
 </section>

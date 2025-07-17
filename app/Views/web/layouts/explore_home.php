@@ -23,7 +23,7 @@
                             <label for="check-cp">Culinary Place</label>
                         </div>
                     </div>
-                                        <div class="form-check">
+                    <div class="form-check">
                         <div class="checkbox">
                             <input type="checkbox" id="check-sp" class="form-check-input" checked>
                             <label for="check-sp">Souvenir Place</label>
