@@ -36,6 +36,18 @@
                             <label for="check-wp">Worship Place</label>
                         </div>
                     </div>
+                    <div class="form-check">
+                        <div class="checkbox">
+                            <input type="checkbox" id="check-ev" class="form-check-input">
+                            <label for="check-wp">Events</label>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <div class="checkbox">
+                            <input type="checkbox" id="check-fc" class="form-check-input">
+                            <label for="check-wp">Facility</label>
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -2194,8 +2194,8 @@ function objectInfoWindow(id) {
         let evid = data.id;
         let name = data.name;
         let type = data.type;
-        let lat = data.lat;
-        let lng = data.lng;
+        // let lat = data.lat;
+        // let lng = data.lng;
         let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
@@ -2212,17 +2212,11 @@ function objectInfoWindow(id) {
           "</div>";
         contentButton =
           '<div class="text-center">' +
-          '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
-          lat +
-          ", " +
-          lng +
-          ')"><i class="fa-solid fa-road"></i></a>' +
           '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
           baseUrl +
           "/web/event/" +
           evid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ evid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2328,7 +2322,6 @@ function objectInfoWindow(id) {
       dataType: "json",
       success: function (response) {
         let data = response.data;
-        let aid = data.id;
         let hoid = data.id;
         let name = data.name;
         let lat = data.lat;
@@ -2361,7 +2354,7 @@ function objectInfoWindow(id) {
           "/web/homestay/" +
           hoid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ hoid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
         console.log(currentUrl);
         if (currentUrl.includes(id)) {
@@ -2382,7 +2375,6 @@ function objectInfoWindow(id) {
       dataType: "json",
       success: function (response) {
         let data = response.data;
-        let aid = data.id;
         let cpid = data.id;
         let name = data.name;
         let lat = data.lat;
@@ -2414,7 +2406,7 @@ function objectInfoWindow(id) {
           "/web/culinaryPlace/" +
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ cpid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2431,7 +2423,6 @@ function objectInfoWindow(id) {
       dataType: "json",
       success: function (response) {
         let data = response.data;
-        let aid = data.id;
         let cpid = data.id;
         let name = data.name;
         let lat = data.lat;
@@ -2463,7 +2454,7 @@ function objectInfoWindow(id) {
           "/web/traditionalHouse/" +
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ cpid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2480,7 +2471,6 @@ function objectInfoWindow(id) {
       dataType: "json",
       success: function (response) {
         let data = response.data;
-        let aid = data.id;
         let cpid = data.id;
         let name = data.name;
         let lat = data.lat;
@@ -2512,7 +2502,7 @@ function objectInfoWindow(id) {
           "/web/homestay/" +
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ cpid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2560,7 +2550,7 @@ function objectInfoWindow(id) {
           "/web/souvenirPlace/" +
           spid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ spid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -3855,13 +3845,15 @@ function openTrack(id, lat, lng) {
 // open nearby search section
 function openNearby(id, lat, lng) {
   $("#list-at-col").hide();
-  $("#check-nearby-col").show();
+  $("#check-explore-col").show();
+  console.log("Open Nearby with ID:", id);
 
   currentLat = lat;
   currentLng = lng;
   let pos = new google.maps.LatLng(currentLat, currentLng);
   map.panTo(pos);
 
+  console.log(document.getElementById("inputRadiusNearby"));
   document
     .getElementById("inputRadiusNearby")
     .setAttribute(
@@ -3887,6 +3879,84 @@ function closeExplore() {
   $("#list-object-col").show();
   $("#list-rec-col").show();
   $("#result-explore-col").hide();
+}
+
+// Search Result Object Around
+function checkNearby(id) {
+  clearRadius();
+  clearRoute();
+  clearMarker();
+  clearUser();
+  destinationMarker.setMap(null);
+  google.maps.event.clearListeners(map, "click");
+  console.log("checkNearby id: " + id);
+
+  objectMarker(id, currentLat, currentLng, false);
+
+ $("#table-lsa").empty();
+  $("#table-at").empty();
+  $("#table-th").empty();
+  $("#table-ho").empty();
+  $("#table-cp").empty();
+  $("#table-sp").empty();
+  $("#table-wp").empty();
+  $("#table-ev").empty();
+  $("#table-fc").empty();
+
+  $("#table-lsa").hide();
+  $("#table-at").hide();
+  $("#table-th").hide();
+  $("#table-ho").hide();
+  $("#table-cp").hide();
+  $("#table-sp").hide();
+  $("#table-wp").hide();
+  $("#table-ev").hide();
+  $("#table-fc").hide();
+
+  let radiusValue =
+    parseFloat(document.getElementById("inputRadiusNearby").value) * 100;
+
+  // const checkLSA = document.getElementById("check-lsa").checked;
+  // const checkTH = document.getElementById("check-th").checked;
+  const checkHO = document.getElementById("check-ho").checked;
+  const checkCP = document.getElementById("check-cp").checked;
+  const checkSP = document.getElementById("check-sp").checked;
+  const checkWP = document.getElementById("check-wp").checked;
+  const checkEV = document.getElementById("check-ev").checked;
+  const checkFC = document.getElementById("check-fc").checked;
+
+  if (!checkHO && !checkCP && !checkSP && !checkWP) {
+    document.getElementById("radiusValueNearby").innerHTML = "0 m";
+    document.getElementById("inputRadiusNearby").value = 0;
+    return Swal.fire("Please choose one object");
+  }
+
+  if (checkHO) {
+    findExplore("ho", radiusValue);
+    $("#table-ho").show();
+  }
+  if (checkCP) {
+    findExplore("cp", radiusValue);
+    $("#table-cp").show();
+  }
+  if (checkSP) {
+    findExplore("sp", radiusValue);
+    $("#table-sp").show();
+  }
+  if (checkWP) {
+    findExplore("wp", radiusValue);
+    $("#table-wp").show();
+  }
+  if (checkEV) {
+    findExplore("ev", radiusValue);
+    $("#table-ev").show();
+  }
+  if (checkFC) {
+    findExplore("fc", radiusValue);
+    $("#table-fc").show();
+  }
+  drawRadius(new google.maps.LatLng(currentLat, currentLng), radiusValue);
+  $("#result-nearby-col").show();
 }
 
 function checkExplore() {
@@ -4176,44 +4246,6 @@ function clearDigitVillage1() {
   digitVillage1Layers = [];
 }
 
-function setupCheckboxListener() {
-  const checks = [
-  { id: "check-oat", code: "at", table: "#table-at", log: "attraction checked" },
-  { id: "check-oho", code: "ho", table: "#table-ho", log: "homestay checked" },
-  { id: "check-ocp", code: "cp", table: "#table-cp", log: "culinary place checked" },
-  { id: "check-osp", code: "sp", table: "#table-sp", log: "souvenir place checked" },
-  { id: "check-owp", code: "wp", table: "#table-wp", log: "worship place checked" },
-  { id: "check-oev", code: "ev", table: "#table-ev", log: "event checked" },
-  { id: "check-ofc", code: "fc", table: "#table-fc", log: "facility checked" },
-];
-  let debounceTimer;
-
-  checks.forEach(({ id }) => {
-    document.getElementById(id).addEventListener("change", () => {
-      console.log(`Checkbox ${id} changed`);
-
-      clearTimeout(debounceTimer);
-
-      debounceTimer = setTimeout(() => {
-        clearAllAll("ClearAllAll log: " + id + " checked");
-
-        checks.forEach(({ id, code, table, log }) => {
-          if (document.getElementById(id).checked) {
-            findAll(code);
-            $(table).show();
-            console.log(log);
-          }
-        });
-      }, 1000);
-    });
-  });
-}
-
-$(document).ready(function () {
-  setupCheckboxListener();
-  checkObject(); // untuk eksekusi awal
-});
-
 function checkObject() {
   // Bersihkan peta dan tabel
   clearRadius();
@@ -4257,24 +4289,64 @@ function checkObject() {
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
     console.log('halaman bukan silek')
   }
-
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
 
   // Sembunyikan semua tabel
-  [
-    "#table-lsa", "#table-at", "#table-th", "#table-ho", "#table-cp",
-    "#table-sp", "#table-wp", "#table-ev", "#table-fc"
-  ].forEach(sel => $(sel).empty().hide());
+  $("#table-lsa").empty().hide();
+  $("#table-at").empty().hide();
+  $("#table-th").empty().hide();
+  $("#table-ho").empty().hide();
+  $("#table-cp").empty().hide();
+  $("#table-sp").empty().hide();
+  $("#table-wp").empty().hide();
+  $("#table-ev").empty().hide();
+  $("#table-fc").empty().hide();
 
-  // Atur tampilan hasil pencarian
+  // Koordinat posisi default (misal pusat peta)
+  let pos = new google.maps.LatLng(currentLat, currentLng);
+
+  // Periksa status setiap checkbox
+let debounceTimer;
+
+const checks = [
+  { id: "check-oat", code: "at", table: "#table-at", log: "attraction checked" },
+  { id: "check-oho", code: "ho", table: "#table-ho", log: "homestay checked" },
+  { id: "check-ocp", code: "cp", table: "#table-cp", log: "culinary place checked" },
+  { id: "check-osp", code: "sp", table: "#table-sp", log: "souvenir place checked" },
+  { id: "check-owp", code: "wp", table: "#table-wp", log: "worship place checked" },
+  { id: "check-oev", code: "ev", table: "#table-ev", log: "event checked" },
+  { id: "check-ofc", code: "fc", table: "#table-fc", log: "facility checked" },
+];
+
+// Tambahkan listener ke semua checkbox
+checks.forEach(({ id }) => {
+  document.getElementById(id).addEventListener("change", () => {
+    console.log(`Checkbox ${id} changed`);
+    // Reset timer setiap ada perubahan
+    clearTimeout(debounceTimer);
+
+    debounceTimer = setTimeout(() => {
+      // Setelah 2 detik tanpa perubahan
+      clearAllAll("ClearAllAll log: "+id + " checked");
+
+      checks.forEach(({ id, code, table, log }) => {
+        if (document.getElementById(id).checked) {
+          findAll(code);
+          $(table).show();
+          console.log(log);
+        }
+      });
+    }, 2000); // delay 2 detik
+  });
+});
+
+  // Atur bound ke objek yang ditemukan
+  boundToObject();
+
+  // Tampilkan kolom hasil pencarian
   $("#result-explore-col").show();
   $("#list-rec-col").hide();
-
-  // Atur map ke koordinat default
-  const pos = new google.maps.LatLng(currentLat, currentLng);
-  map.setCenter(pos); // atau map.panTo(pos);
-  boundToObject();
 }
 
 function clickExplore() {
@@ -4953,113 +5025,7 @@ function zoomToMarker(marker) {
   }
 }
 
-// Search Result Object Around
-function checkNearby(id) {
-  clearRadius();
-  clearRoute();
-  clearMarker();
-  clearUser();
-  destinationMarker.setMap(null);
-  google.maps.event.clearListeners(map, "click");
 
-  objectMarker(id, currentLat, currentLng, false);
-
-  $("#table-F0001").empty();
-  $("#table-F0002").empty();
-  $("#table-F0003").empty();
-  $("#table-F0004").empty();
-  $("#table-F0005").empty();
-  $("#table-F0006").empty();
-  $("#table-F0007").empty();
-  $("#table-F0008").empty();
-  $("#table-F0009").empty();
-  $("#table-F0010").empty();
-
-  $("#table-F0001").hide();
-  $("#table-F0002").hide();
-  $("#table-F0003").hide();
-  $("#table-F0004").hide();
-  $("#table-F0005").hide();
-  $("#table-F0006").hide();
-  $("#table-F0007").hide();
-  $("#table-F0008").hide();
-  $("#table-F0009").hide();
-  $("#table-F0010").hide();
-
-  let radiusValue =
-    parseFloat(document.getElementById("inputRadiusNearby").value) * 100;
-
-  const checkCP = document.getElementById("F0001").checked;
-  const checkGA = document.getElementById("F0002").checked;
-  const checkOF = document.getElementById("F0003").checked;
-  const checkPA = document.getElementById("F0004").checked;
-  const checkPB = document.getElementById("F0005").checked;
-  const checkSA = document.getElementById("F0006").checked;
-  const checkSP = document.getElementById("F0007").checked;
-  const checkTH = document.getElementById("F0008").checked;
-  const checkVT = document.getElementById("F0009").checked;
-  const checkWP = document.getElementById("F0010").checked;
-
-  if (
-    !checkCP &&
-    !checkGA &&
-    !checkOF &&
-    !checkPA &&
-    !checkPB &&
-    !checkSA &&
-    !checkSP &&
-    !checkTH &&
-    !checkVT &&
-    !checkWP
-  ) {
-    document.getElementById("radiusValueNearby").innerHTML = "0 m";
-    document.getElementById("inputRadiusNearby").value = 0;
-    return Swal.fire("Please choose one facility!");
-  }
-
-  if (checkCP) {
-    findNearby("F0001", radiusValue);
-    $("#table-F0001").show();
-  }
-  if (checkGA) {
-    findNearby("F0002", radiusValue);
-    $("#table-F0002").show();
-  }
-  if (checkOF) {
-    findNearby("F0003", radiusValue);
-    $("#table-F0003").show();
-  }
-  if (checkPA) {
-    findNearby("F0004", radiusValue);
-    $("#table-F0004").show();
-  }
-  if (checkPB) {
-    findNearby("F0005", radiusValue);
-    $("#table-F0005").show();
-  }
-  if (checkSA) {
-    findNearby("F0006", radiusValue);
-    $("#table-F0006").show();
-  }
-  if (checkSP) {
-    findNearby("F0007", radiusValue);
-    $("#table-F0007").show();
-  }
-  if (checkTH) {
-    findNearby("F0008", radiusValue);
-    $("#table-F0008").show();
-  }
-  if (checkVT) {
-    findNearby("F0009", radiusValue);
-    $("#table-F0009").show();
-  }
-  if (checkWP) {
-    findNearby("F0010", radiusValue);
-    $("#table-F0010").show();
-  }
-  drawRadius(new google.maps.LatLng(currentLat, currentLng), radiusValue);
-  $("#result-nearby-col").show();
-}
 
 // Check facility along tracking
 function checkTrack(id) {
