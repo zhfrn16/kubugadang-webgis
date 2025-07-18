@@ -7840,6 +7840,8 @@ function digitSilekLanyah() {
                 clickable: false
             });
             digitasi.setMap(map);
+            map.setZoom(18);
+            
         }
     });
 }

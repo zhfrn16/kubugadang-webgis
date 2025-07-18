@@ -24,16 +24,16 @@
                         <?php if (!in_groups(['admin']) && !in_groups(['master'])) : ?>
                             <div class="btn-group mb-1">
                                 <div class="card mb-0">
-                                    <div class="card-body py-3 px-4">
-                                        <div class="d-flex align-items-center">
+                                    <!-- <div class="card-body py-3 px-4"> -->
+                                    <!-- <div class="d-flex align-items-center"> -->
 
-                                            <a href="<?= base_url('web/cart') ?>" class="btn btn-transparent me-3 position-relative" style="color: #000;padding: 0.7rem;margin-right: 0rem!important;">
-                                                <i class="fas fa-shopping-cart"></i>
+                                    <!-- <a href="<?= base_url('web/cart') ?>" class="btn btn-transparent me-3 position-relative" style="color: #000;padding: 0.7rem;margin-right: 0rem!important;">
+                                                <i class="fas fa-shopping-cart"></i> -->
 
-                                            </a>
+                                    <!-- </a> -->
 
-                                        </div>
-                                    </div>
+                                    <!-- </div> -->
+                                    <!-- </div> -->
 
                                 </div>
 

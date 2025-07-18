@@ -86,13 +86,13 @@ $uri3 = $uri[3] ?? '';
                     </li>
 
 
-                    <?php if (logged_in() && !in_groups(['admin']) && !in_groups(['master'])) : ?>
+                    <!-- <?php if (logged_in() && !in_groups(['admin']) && !in_groups(['master'])) : ?>
                         <li class="sidebar-item <?= ($uri1 == 'reservation') || ($uri1 == 'detailreservation') ? 'active' : '' ?>">
                             <a href="<?= base_url('/web/reservation'); ?>" class="sidebar-link">
                                 <i class="fa-solid fa-calendar"></i><span>My Reservation</span>
                             </a>
                         </li>
-                    <?php endif; ?>
+                    <?php endif; ?> -->
 
 
 
