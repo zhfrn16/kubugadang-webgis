@@ -2112,14 +2112,47 @@ function zoomToSumpuMarkers() {
 
   for (const id in markerArray) {
     if(currentPage == 'silek') {
+      clearMarker();
+      clearRadius();
+        $.ajax({
+          url: baseUrl + '/api/attraction',
+          type: 'POST',
+          data: {
+              digitasi: 'AT001'
+          },
+          dataType: 'json',
+          success: function (response) {
+              const data = response.data.properties;
+              console.log(data);
+              objectMarker(data.id, data.lat, data.lng);
+              boundToObject();
+          }
+      });
       if (id.substring(0, 2) === "AT") {
         const marker = markerArray[id];
         console.log("Found marker:", marker); // Debug marker
         map.setCenter(marker.getPosition());
-        map.setZoom(24);
+        map.setZoom(32);
         console.log('ini silek');
       }
     } else if(currentPage == 'event') {
+    clearMarker();
+    clearRadius();
+      $.ajax({
+        url: baseUrl + '/api/event',
+        type: 'POST',
+        data: {
+            digitasi: 'EV001'
+        },
+        dataType: 'json',
+        success: function (response) {
+            const data = response.data.properties;
+            console.log(data);
+            objectMarker(data.id, data.lat, data.lng);
+            boundToObject();
+            
+        }
+      });
       if (id.substring(0, 2) === "EV") {
         const marker = markerArray[id];
         console.log("Found marker:", marker); // Debug marker
@@ -2129,6 +2162,10 @@ function zoomToSumpuMarkers() {
       }
     } else {
     if (id.substring(0, 3) === "SUM") {
+       clearMarker();
+       clearRadius();
+      objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+      boundToObject();
       const marker = markerArray[id];
       console.log("Found marker:", marker); // Debug marker
       map.setCenter(marker.getPosition());
@@ -2138,8 +2175,7 @@ function zoomToSumpuMarkers() {
 
     }
   }
-  // objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
-  // boundToObject();
+ 
 }
 
 // Display info window for loaded object

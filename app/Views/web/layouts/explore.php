@@ -38,7 +38,7 @@
                     <div class="form-check">
                         <div class="checkbox">
                             <input type="checkbox" id="check-ev" class="form-check-input">
-                            <label for="check-wp">Events</label>
+                            <label for="check-ev">Events</label>
                         </div>
                     </div>
                     <div class="form-check">

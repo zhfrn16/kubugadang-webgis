@@ -397,6 +397,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->post('traditionalHouse/findAll', 'TraditionalHouse::findAll');
     $routes->post('souvenirPlace/findAll', 'SouvenirPlace::findAll');
     $routes->post('event/findAll', 'Event::findAll');
+    $routes->post('event/findByRadius', 'Event::findByRadius');
     $routes->post('facility/findAll', 'Facility::findAll');
     $routes->post('culinaryPlace/findByRadius', 'CulinaryPlace::findByRadius');
     $routes->resource('traditionalHouse');
