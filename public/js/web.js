@@ -27,6 +27,7 @@ let digitNagari1Layers = [];
 let digitVillage1Layers = [];
 let isLabelChecked = false;
 let isTerrainChecked = false;
+let digitasiLayers = []; // Global array
 let currentPage = null;
 let bounds = new google.maps.LatLngBounds();
 let selectedShape,
@@ -1253,6 +1254,7 @@ function digitVillage1(iddesa) {
 }
 function digitVillage3(iddesa) {
   const digitasi = new google.maps.Data();
+  digitasiLayers.push(digitasi); // simpan ke array global
   const infoWindow = new google.maps.InfoWindow();
 
   digitasiValue = "map-v1r3";
@@ -1265,12 +1267,14 @@ function digitVillage3(iddesa) {
       const data = response; // Jika file .geojson diakses langsung melalui URL
 
       digitasi.addGeoJson(data);
-      digitasi.setStyle({
-        fillColor: "#fff",
-        strokeWeight: 1,
-        strokeColor: "#f0f0f0",
-        fillOpacity: 0.01,
-        clickable: true, // Set clickable to true to enable click event
+      digitasi.setStyle(function(feature) {
+        return {
+          fillColor: feature.getProperty("fillColor") || "#fff",
+          strokeWeight: feature.getProperty("strokeWeight") || 1,
+          strokeColor: feature.getProperty("strokeColor") || "#f0f0f0",
+          fillOpacity: feature.getProperty("fillOpacity") || 0.01,
+          clickable: feature.getProperty("customClickable") !== false, // default true
+        };
       });
       digitasi.setMap(map);
 
@@ -1335,6 +1339,7 @@ function clearRadius() {
     circleArray[i].setMap(null);
   }
   circleArray = [];
+  clearMarker();
 }
 
 // Remove any marker shown
@@ -1343,6 +1348,7 @@ function clearMarker() {
     markerArray[i].setMap(null);
   }
   markerArray = {};
+  console.log(markerArray);
 }
 
 // Get user's current position
@@ -1406,6 +1412,16 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.open(map);
 }
 
+function setAllDigitasiClickable(flag) {
+  digitasiLayers.forEach((layer) => {
+    layer.forEach(function(feature) {
+      feature.setProperty("customClickable", flag);
+    });
+    // Refresh style biar perubahan property terlihat
+    layer.setStyle(layer.getStyle());
+  });
+}
+
 // User set position on map
 function manualPosition() {
   clearRadius();
@@ -1423,6 +1439,7 @@ function manualPosition() {
   if (userLat == 0 && userLng == 0) {
     Swal.fire("Click on Map");
   }
+  setAllDigitasiClickable(false); 
   map.addListener("click", (mapsMouseEvent) => {
     infoWindow.close();
     pos = mapsMouseEvent.latLng;
@@ -1529,9 +1546,23 @@ function routeBetweenObjects(startLat, startLng, endLat, endLng) {
 // Display tourism attraction digitizing
 
 // Display marker for loaded object
-function objectMarker(id, lat, lng, status, homestay_status, anim = true) {
+function objectMarker(id, lat, lng, status, anim = true) {
   google.maps.event.clearListeners(map, "click");
   let pos = new google.maps.LatLng(lat, lng);
+
+  // Remove all markers from map if markerArray is empty
+  if (Object.keys(markerArray).length === 0) {
+    // If markerArray is empty, remove any lingering marker from the map
+    // This is a safeguard in case markers persist visually
+    // (You may want to clear all markers from the map here)
+    // For safety, iterate over all markers and remove from map
+    for (const key in markerArray) {
+      if (markerArray[key]) {
+        markerArray[key].setMap(null);
+      }
+    }
+  }
+
   let marker = new google.maps.Marker();
 
   let icon;
@@ -2275,7 +2306,7 @@ function objectInfoWindow(id) {
       dataType: "json",
       success: function (response) {
         let data = response.data;
-        let aid = data.id;
+        let fcid = data.id;
         let name = data.name;
         let lat = data.lat;
         let lng = data.lng;
@@ -2303,14 +2334,14 @@ function objectInfoWindow(id) {
           '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
           baseUrl +
           "/web/facility/" +
-          aid +
+          fcid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ fcid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
           infoWindow.setContent(content);
-          infoWindow.open(map, markerArray[aid]);
+          infoWindow.open(map, markerArray[fcid]);
         } else {
           infoWindow.setContent(content + contentButton);
         }
@@ -2598,7 +2629,7 @@ function objectInfoWindow(id) {
           "/web/worshipPlace/" +
           wpid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ wpid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2716,6 +2747,12 @@ function objectInfoWindowRoute(id) {
           "/web/event/" +
           evid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
+          baseUrl +
+          "/web/event/" +
+          evid +
+          '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ evid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2774,7 +2811,7 @@ function objectInfoWindowRoute(id) {
       dataType: "json",
       success: function (response) {
         let data = response.data;
-        let aid = data.id;
+        let fcid = data.id;
         let name = data.name;
         let lat = data.lat;
         let lng = data.lng;
@@ -2802,14 +2839,14 @@ function objectInfoWindowRoute(id) {
           '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
           baseUrl +
           "/web/facility/" +
-          aid +
+          fcid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ fcid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
           infoWindow.setContent(content);
-          infoWindow.open(map, markerArray[aid]);
+          infoWindow.open(map, markerArray[fcid]);
         } else {
           infoWindow.setContent(content + contentButton);
         }
@@ -2853,7 +2890,7 @@ function objectInfoWindowRoute(id) {
           "/web/homestay/" +
           hoid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ hoid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
         console.log(currentUrl);
         if (currentUrl.includes(id)) {
@@ -2905,7 +2942,7 @@ function objectInfoWindowRoute(id) {
           "/web/culinaryPlace/" +
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ cpid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2953,7 +2990,7 @@ function objectInfoWindowRoute(id) {
           "/web/traditionalHouse/" +
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ cpid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -3001,7 +3038,7 @@ function objectInfoWindowRoute(id) {
           "/web/homestay/" +
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ cpid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -3049,7 +3086,7 @@ function objectInfoWindowRoute(id) {
           "/web/souvenirPlace/" +
           spid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ spid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -3097,7 +3134,7 @@ function objectInfoWindowRoute(id) {
           "/web/worshipPlace/" +
           wpid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ wpid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -3674,7 +3711,7 @@ function objectInfoWindowMobile(id) {
           "/web/homestay/" +
           hoid +
           '><i class="fa-solid fa-info"></i></a>' +
-          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ aid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ hoid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -3753,6 +3790,8 @@ function drawRadius(position, radius) {
 
 // Update radiusValue on search by radius
 function updateRadius(postfix) {
+  console.log("Update radius with postfix:", postfix);
+  console.log(document.getElementById("radiusValue" + postfix).innerHTML)
   document.getElementById("radiusValue" + postfix).innerHTML =
     document.getElementById("inputRadius" + postfix).value * 100 + " m";
 }
@@ -3825,6 +3864,11 @@ function closeNearby() {
   $("#result-nearby-col").hide();
   $("#list-at-col").show();
   $("#list-ev-col").show();
+    $("#check-explore-col").hide();
+  $("#list-object-col").show();
+  $("#list-rec-col").show();
+  $("#result-explore-col").hide();
+  clearRadius();
 }
 
 // open nearby search section
@@ -3852,8 +3896,13 @@ function openNearby(id, lat, lng) {
   currentLng = lng;
   let pos = new google.maps.LatLng(currentLat, currentLng);
   map.panTo(pos);
-
+  clearRadius();
+  objectMarker(id, lat, lng);
   console.log(document.getElementById("inputRadiusNearby"));
+  if( document.getElementById("inputRadiusNearby")) {
+    document.getElementById("inputRadiusNearby").value = 0;
+    document.getElementById("radiusValueNearby").innerHTML = "0 m";
+  }
   document
     .getElementById("inputRadiusNearby")
     .setAttribute(
@@ -3868,6 +3917,7 @@ function openExplore() {
   $("#list-rec-col").hide();
   $("#result-explore-col").hide();
   $("#check-explore-col").show();
+  $("#list-at-col").hide();
 
   document
     .getElementById("inputRadiusNearby")
@@ -3879,6 +3929,8 @@ function closeExplore() {
   $("#list-object-col").show();
   $("#list-rec-col").show();
   $("#result-explore-col").hide();
+  $("#list-at-col").show();
+  clearRadius();
 }
 
 // Search Result Object Around
@@ -4246,6 +4298,45 @@ function clearDigitVillage1() {
   digitVillage1Layers = [];
 }
 
+function setupCheckboxListener() {
+  const checks = [
+  { id: "check-oat", code: "at", table: "#table-at", log: "attraction checked" },
+  { id: "check-oho", code: "ho", table: "#table-ho", log: "homestay checked" },
+  { id: "check-ocp", code: "cp", table: "#table-cp", log: "culinary place checked" },
+  { id: "check-osp", code: "sp", table: "#table-sp", log: "souvenir place checked" },
+  { id: "check-owp", code: "wp", table: "#table-wp", log: "worship place checked" },
+  { id: "check-oev", code: "ev", table: "#table-ev", log: "event checked" },
+  { id: "check-ofc", code: "fc", table: "#table-fc", log: "facility checked" },
+];
+  let debounceTimer;
+
+  checks.forEach(({ id }) => {
+    document.getElementById(id).addEventListener("change", () => {
+      console.log(`Checkbox ${id} changed`);
+
+      clearTimeout(debounceTimer);
+
+      debounceTimer = setTimeout(() => {
+        clearAllAll("ClearAllAll log: " + id + " checked");
+        clearMarker(); // Ensure previous markers are removed
+
+        checks.forEach(({ id, code, table, log }) => {
+          if (document.getElementById(id).checked) {
+            findAll(code);
+            $(table).show();
+            console.log(log);
+          }
+        });
+      }, 2000);
+    });
+  });
+}
+
+$(document).ready(function () {
+  setupCheckboxListener();
+  checkObject(); // untuk eksekusi awal
+});
+
 function checkObject() {
   // Bersihkan peta dan tabel
   clearRadius();
@@ -4293,60 +4384,20 @@ function checkObject() {
   google.maps.event.clearListeners(map, "click");
 
   // Sembunyikan semua tabel
-  $("#table-lsa").empty().hide();
-  $("#table-at").empty().hide();
-  $("#table-th").empty().hide();
-  $("#table-ho").empty().hide();
-  $("#table-cp").empty().hide();
-  $("#table-sp").empty().hide();
-  $("#table-wp").empty().hide();
-  $("#table-ev").empty().hide();
-  $("#table-fc").empty().hide();
-
-  // Koordinat posisi default (misal pusat peta)
-  let pos = new google.maps.LatLng(currentLat, currentLng);
-
-  // Periksa status setiap checkbox
-let debounceTimer;
-
-const checks = [
-  { id: "check-oat", code: "at", table: "#table-at", log: "attraction checked" },
-  { id: "check-oho", code: "ho", table: "#table-ho", log: "homestay checked" },
-  { id: "check-ocp", code: "cp", table: "#table-cp", log: "culinary place checked" },
-  { id: "check-osp", code: "sp", table: "#table-sp", log: "souvenir place checked" },
-  { id: "check-owp", code: "wp", table: "#table-wp", log: "worship place checked" },
-  { id: "check-oev", code: "ev", table: "#table-ev", log: "event checked" },
-  { id: "check-ofc", code: "fc", table: "#table-fc", log: "facility checked" },
-];
-
-// Tambahkan listener ke semua checkbox
-checks.forEach(({ id }) => {
-  document.getElementById(id).addEventListener("change", () => {
-    console.log(`Checkbox ${id} changed`);
-    // Reset timer setiap ada perubahan
-    clearTimeout(debounceTimer);
-
-    debounceTimer = setTimeout(() => {
-      // Setelah 2 detik tanpa perubahan
-      clearAllAll("ClearAllAll log: "+id + " checked");
-
-      checks.forEach(({ id, code, table, log }) => {
-        if (document.getElementById(id).checked) {
-          findAll(code);
-          $(table).show();
-          console.log(log);
-        }
-      });
-    }, 2000); // delay 2 detik
-  });
-});
-
-  // Atur bound ke objek yang ditemukan
-  boundToObject();
-
-  // Tampilkan kolom hasil pencarian
+  [
+    "#table-lsa", "#table-at", "#table-th", "#table-ho", "#table-cp",
+    "#table-sp", "#table-wp", "#table-ev", "#table-fc"
+  ].forEach(sel => $(sel).empty().hide());
+  
+  // Atur tampilan hasil pencarian
   $("#result-explore-col").show();
   $("#list-rec-col").hide();
+
+  // Atur map ke koordinat default
+  console.log("Current Lat:", currentLat, "Current Lng:", currentLng);
+  const pos = new google.maps.LatLng(currentLat, currentLng);
+  map.setCenter(pos); // atau map.panTo(pos);
+  boundToObject();
 }
 
 function clickExplore() {
@@ -7840,8 +7891,6 @@ function digitSilekLanyah() {
                 clickable: false
             });
             digitasi.setMap(map);
-            map.setZoom(18);
-            
         }
     });
 }
