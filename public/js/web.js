@@ -2225,8 +2225,8 @@ function objectInfoWindow(id) {
         let evid = data.id;
         let name = data.name;
         let type = data.type;
-        // let lat = data.lat;
-        // let lng = data.lng;
+        let lat = data.lat;
+        let lng = data.lng;
         let price = data.price == 0 ? "Free" : formatter.format(data.price);
 
         content =
@@ -2243,11 +2243,17 @@ function objectInfoWindow(id) {
           "</div>";
         contentButton =
           '<div class="text-center">' +
-          '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
+          '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
+          lat +
+          ", " +
+          lng +
+          ')"><i class="fa-solid fa-road"></i></a>' +
+                    '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
           baseUrl +
           "/web/event/" +
           evid +
           '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ evid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -3866,6 +3872,7 @@ function closeNearby() {
   $("#list-ev-col").show();
     $("#check-explore-col").hide();
   $("#list-object-col").show();
+  $("#list-rg-col").show();
   $("#list-rec-col").show();
   $("#result-explore-col").hide();
   clearRadius();
@@ -3890,6 +3897,7 @@ function openTrack(id, lat, lng) {
 function openNearby(id, lat, lng) {
   $("#list-at-col").hide();
   $("#check-explore-col").show();
+  $("#list-rg-col").hide();
   console.log("Open Nearby with ID:", id);
 
   currentLat = lat;
@@ -3918,6 +3926,8 @@ function openExplore() {
   $("#result-explore-col").hide();
   $("#check-explore-col").show();
   $("#list-at-col").hide();
+  
+  $("#list-rg-col").hide();
 
   document
     .getElementById("inputRadiusNearby")
@@ -3930,6 +3940,7 @@ function closeExplore() {
   $("#list-rec-col").show();
   $("#result-explore-col").hide();
   $("#list-at-col").show();
+  $("#list-rg-col").show();
   clearRadius();
 }
 

@@ -49,6 +49,8 @@
 
         <div class="col-md-5 col-12">
             <div class="row">
+                                <!-- Nearby section -->
+                <?= $this->include('web/layouts/explore'); ?>
                 <!--Home-->
                 <div class="col-12" id="list-at-col">
                     <div class="card">
@@ -103,13 +105,18 @@
                                     <span class="material-icons" style="font-size: 1.5rem; vertical-align: bottom">info</span> More Info
                                 </button>
                             </div>
+                            <div class="d-grid gap-2 pt-2">
+                                <a title="Around You" class="btn icon btn-outline-primary mx-1" onclick="openExplore()">
+                                    <i class="fa-solid fa-compass me-3"></i>Search object around you?
+                                </a>
+                            </div>
+                            
 
                         </div>
                     </div>
                 </div>
             </div>
-                <!-- Nearby section -->
-                <?= $this->include('web/layouts/explore'); ?>
+
         </div>
     </div>
 </section>
@@ -134,6 +141,8 @@
     $('#check-nearby-col').hide();
     $('#result-track-col').hide();
     $('#result-nearby-col').hide();
+    $('#check-explore-col').hide();
+    $('#result-explore-col').hide();
 
     currentPage = 'silek';
 </script>

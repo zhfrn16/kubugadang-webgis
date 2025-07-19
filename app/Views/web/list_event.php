@@ -72,7 +72,7 @@
             </div>
 
             <!-- Nearby section -->
-            <?= $this->include('web/layouts/nearby'); ?>
+            <?= $this->include('web/layouts/explore'); ?>
         </div>
     </div>
     </div>
@@ -86,10 +86,8 @@
 <?= $this->section('javascript') ?>
 <script>
     $('#direction-row').hide();
-    $('#check-track-col').hide();
-    $('#check-nearby-col').hide();
-    $('#result-track-col').hide();
-    $('#result-nearby-col').hide();
+    $('#result-explore-col').hide();
+    $("#check-explore-col").hide();
 
     currentPage = 'event';
 </script>
