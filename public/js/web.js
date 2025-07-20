@@ -4365,7 +4365,7 @@ function setupCheckboxListener() {
 
       debounceTimer = setTimeout(() => {
         clearAllAll("ClearAllAll log: " + id + " checked");
-        clearMarker(); // Ensure previous markers are removed
+        // clearMarker(); // Ensure previous markers are removed
 
         checks.forEach(({ id, code, table, log }) => {
           if (document.getElementById(id).checked) {
