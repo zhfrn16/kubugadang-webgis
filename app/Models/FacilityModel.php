@@ -91,7 +91,6 @@ class FacilityModel extends Model
 
     public function get_facility_by_radius($data = null)
     {
-        $type = (string)$data['ftype2'];
         $radius = (int)$data['radius'] / 1000;
         $lat = $data['lat'];
         $long = $data['long'];
@@ -102,9 +101,7 @@ class FacilityModel extends Model
         $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.type_id";
         $query = $this->db->table($this->table)
             ->select("{$columns}, {$coords}, {$distance} as distance")
-            ->where('type_id', $type)
             // ->orderBy('name', 'ASC')
-            ->join('facility_type', 'facility.type_id = facility_type.id')
             ->having(['distance <=' => $radius])
             ->get();
         return $query;

@@ -54,6 +54,25 @@ class EventModel extends Model
         return $query;
     }
 
+       public function get_event_by_radius($data = null)
+    {
+        $radius = (int)$data['radius'] / 1000;
+        $lat = $data['lat'];
+        $long = $data['long'];
+        $distance = "(6371 * acos(cos(radians({$lat})) * cos(radians(ST_Y(ST_CENTROID({$this->table}.geom)))) 
+                    * cos(radians(ST_X(ST_CENTROID({$this->table}.geom))) - radians({$long})) 
+                    + sin(radians({$lat}))* sin(radians(ST_Y(ST_CENTROID({$this->table}.geom))))))";
+        $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.type, {$this->table}.event_start, {$this->table}.event_end, {$this->table}.description,
+                        {$this->table}.price,{$this->table}.contact_person,{$this->table}.video_url";
+        $query = $this->db->table($this->table)
+            ->select("{$columns}, {$coords}, {$distance} as distance")
+            // ->orderBy('name', 'ASC')]
+            ->having(['distance <=' => $radius])
+            ->get();
+        return $query;
+    }
+
     public function get_new_id()
     {
         // $lastId = $this->db->table($this->table)->select('id')->orderBy('id', 'ASC')->get()->getLastRow('array');
