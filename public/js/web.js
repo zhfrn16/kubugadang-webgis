@@ -2104,79 +2104,83 @@ function howToReachSumpu() {
 }
 
 function zoomToSumpuMarkers() {
-  // clearAirplaneMarkers();
-  // clearCarMarkers();
-  clearOverlay();
-  console.log("zoomToSumpuMarkers triggered"); // Debug
-  console.log("markerArray:", markerArray); // Debugging marker array
-
-  for (const id in markerArray) {
-    if(currentPage == 'silek') {
-      clearMarker();
-      clearRadius();
-        $.ajax({
-          url: baseUrl + '/api/attraction',
-          type: 'POST',
-          data: {
-              digitasi: 'AT001'
-          },
-          dataType: 'json',
-          success: function (response) {
-              const data = response.data.properties;
-              console.log(data);
-              objectMarker(data.id, data.lat, data.lng);
-              boundToObject();
-          }
-      });
-      if (id.substring(0, 2) === "AT") {
-        const marker = markerArray[id];
-        console.log("Found marker:", marker); // Debug marker
-        map.setCenter(marker.getPosition());
-        map.setZoom(32);
-        console.log('ini silek');
-      }
-    } else if(currentPage == 'event') {
+  clearOverlay(); // clear dulu di awal
     clearMarker();
     clearRadius();
-      $.ajax({
-        url: baseUrl + '/api/event',
-        type: 'POST',
-        data: {
-            digitasi: 'EV001'
-        },
-        dataType: 'json',
-        success: function (response) {
-            const data = response.data.properties;
-            console.log(data);
-            objectMarker(data.id, data.lat, data.lng);
-            boundToObject();
-            
-        }
-      });
-      if (id.substring(0, 2) === "EV") {
-        const marker = markerArray[id];
-        console.log("Found marker:", marker); // Debug marker
-        map.setCenter(marker.getPosition());
-        map.setZoom(32);
-        console.log('ini event');
-      }
-    } else {
-    if (id.substring(0, 3) === "SUM") {
-       clearMarker();
-       clearRadius();
-      objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
-      boundToObject();
-      const marker = markerArray[id];
-      console.log("Found marker:", marker); // Debug marker
-      map.setCenter(marker.getPosition());
-      map.setZoom(16);
-        console.log('ini gak tau apaan');
-    }
+  console.log("zoomToVillageMarkers triggered");
+  console.log("markerArray:", markerArray);
 
+  if (currentPage === 'silek') {
+
+    $.ajax({
+      url: baseUrl + '/api/attraction',
+      type: 'POST',
+      data: { digitasi: 'AT001' },
+      dataType: 'json',
+      success: function (response) {
+        const data = response.data.properties;
+        console.log(data);
+        objectMarker(data.id, data.lat, data.lng);
+        boundToObject();
+
+        // Temukan marker AT dan set center
+        for (const id in markerArray) {
+          if (id.startsWith("AT")) {
+            const marker = markerArray[id];
+            console.log("Found marker:", marker);
+            map.setCenter(marker.getPosition());
+            map.setZoom(32);
+            console.log('ini silek');
+            break; // berhenti di marker pertama yang cocok
+          }
+        }
+      }
+    });
+
+  } else if (currentPage === 'event') {
+
+    $.ajax({
+      url: baseUrl + '/api/event',
+      type: 'POST',
+      data: { digitasi: 'EV001' },
+      dataType: 'json',
+      success: function (response) {
+        const data = response.data.properties;
+        console.log(data);
+        objectMarker(data.id, data.lat, data.lng);
+        boundToObject();
+
+        for (const id in markerArray) {
+          if (id.startsWith("EV")) {
+            const marker = markerArray[id];
+            console.log("Found marker:", marker);
+            map.setCenter(marker.getPosition());
+            map.setZoom(32);
+            console.log('ini event');
+            break;
+          }
+        }
+      }
+    });
+
+  } else {
+
+    objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+    boundToObject();
+
+    for (const id in markerArray) {
+      if (id.startsWith("SUM")) {
+        const marker = markerArray[id];
+        console.log("Found marker:", marker);
+        map.setCenter(marker.getPosition());
+        map.setZoom(16);
+        console.log('ini gak tau apaan');
+        break;
+      }
     }
   }
- 
 }
+
 
 // Display info window for loaded object
 function objectInfoWindow(id) {
@@ -4477,12 +4481,12 @@ function clickExplore() {
   clearCarMarkers();
   $("#list-object-col").hide();
 
-  const checkOLSA = document.getElementById("check-olsa");
-  checkOLSA.checked = true;
+  // const checkOLSA = document.getElementById("check-olsa");
+  // checkOLSA.checked = true;
   const checkOAT = document.getElementById("check-oat");
   checkOAT.checked = true;
-  const checkOTH = document.getElementById("check-oth");
-  checkOTH.checked = true;
+  // const checkOTH = document.getElementById("check-oth");
+  // checkOTH.checked = true;
   const checkOHO = document.getElementById("check-oho");
   checkOHO.checked = true;
   const checkOCP = document.getElementById("check-ocp");
@@ -4524,10 +4528,10 @@ function clickExplore() {
   map.panTo(pos);
 
   // let categories = ["lsa", "at", "th"];
-  let categories = ["lsa", "at", "th", "ho", "cp", "sp", "wp", "ev", "fc"];
+  let categories = ["at", "ho", "cp", "sp", "wp", "ev", "fc"];
   let promises = categories.map((category) => findAll(category));
 
-  digitVillage1zoom();
+  // digitVillage1zoom();
   // map.setZoom(16);
 
   Promise.all(promises).then(() => {
@@ -4664,7 +4668,7 @@ function clickLayer() {
 
   // digitVillage1();
 
-  digitVillage1zoom();
+  // digitVillage1zoom();
   // map.setZoom(16);
 
   Promise.all(promises).then(() => {
