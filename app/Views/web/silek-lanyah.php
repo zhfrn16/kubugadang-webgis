@@ -49,8 +49,6 @@
 
         <div class="col-md-5 col-12">
             <div class="row">
-                                <!-- Nearby section -->
-                <?= $this->include('web/layouts/explore'); ?>
                 <!--Home-->
                 <div class="col-12" id="list-at-col">
                     <div class="card">
@@ -115,6 +113,9 @@
                         </div>
                     </div>
                 </div>
+                
+                                <!-- Nearby section -->
+                <?= $this->include('web/layouts/explore'); ?>
             </div>
 
         </div>
