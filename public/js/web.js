@@ -124,11 +124,18 @@ function initMapLP(lat = -0.5242972, lng = 100.492333, mobile = false) {
 }
 
 // Initialize and add the map
-function initMap(lat = -0.47580795, lng = 100.43229867) {
+function initMap(lat = -0.47600810421990053, lng = 100.43176709270662) {
+  if(currentPage === "silek") {
+    lat = -0.47600810421990053;
+    lng = 100.43176709270662;
+  } else if(currentPage === "event") {
+    lat = -0.47600810421990053;
+    lng = 100.43176709270662;
+  }
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
   map = new google.maps.Map(document.getElementById("googlemaps"), {
-    zoom: 16,
+    zoom: 19,
     center: center,
     mapTypeId: "satellite",
   });
@@ -3796,8 +3803,17 @@ function boundToObject() {
     }
     map.fitBounds(bounds, 0);
   } else {
-    let pos = new google.maps.LatLng(-0.4761815168531753, 100.43223933779609);
-    map.panTo(pos);
+    
+    if(currentPage === "silek") {
+      let pos = new google.maps.LatLng(-0.47600810421990053, 100.43176709270662);
+      map.panTo(pos);
+    } else if(currentPage === "event") {
+      let pos = new google.maps.LatLng(-0.47600810421990053, 100.43176709270662);
+      map.panTo(pos);
+    } else {
+      let pos = new google.maps.LatLng(-0.4761815168531753, 100.43223933779609);
+      map.panTo(pos);
+    }
   }
 }
 
@@ -4178,7 +4194,7 @@ function clearAllAll(log) {
         success: function (response) {
             const data = response.data.properties;
             console.log(data);
-            // objectMarker(data.id, data.lat, data.lng);
+            objectMarker(data.id, data.lat, data.lng);
         }
     });
     console.log('halaman event') 
@@ -7990,6 +8006,6 @@ function digitEvent() {
                 clickable: false
             });
             digitasi.setMap(map);
-        }
-    });
 }
+        });
+      }
