@@ -4355,6 +4355,8 @@ function setupCheckboxListener() {
   { id: "check-oev", code: "ev", table: "#table-ev", log: "event checked" },
   { id: "check-ofc", code: "fc", table: "#table-fc", log: "facility checked" },
 ];
+
+
   let debounceTimer;
 
   checks.forEach(({ id }) => {
@@ -4367,21 +4369,38 @@ function setupCheckboxListener() {
         clearAllAll("ClearAllAll log: " + id + " checked");
         clearMarker(); // Ensure previous markers are removed
 
+        let anyChecked = false;
+
         checks.forEach(({ id, code, table, log }) => {
           if (document.getElementById(id).checked) {
+            anyChecked = true;
             findAll(code);
             $(table).show();
             console.log(log);
+          } else {
+            $(table).hide();
+            console.log(`${log} unchecked`);
           }
         });
+
+        if (!anyChecked) {
+          // Semua checkbox tidak dicentang
+          $("#list-rec-col").show();
+          $("#result-explore-col").hide();
+          console.log("Semua checkbox tidak dicentang");
+        } else {
+          $("#list-rec-col").hide(); // sembunyikan kalau ada yang dicentang
+          $("#result-explore-col").show(); // sembunyikan kalau ada yang dicentang
+        }
       }, 2000);
     });
   });
 }
-
+let dontHideListRecCol = true;
 $(document).ready(function () {
   setupCheckboxListener();
   checkObject(); // untuk eksekusi awal
+  dontHideListRecCol = false; // Inisialisasi variabel
 });
 
 function checkObject() {
@@ -4437,8 +4456,10 @@ function checkObject() {
   ].forEach(sel => $(sel).empty().hide());
   
   // Atur tampilan hasil pencarian
-  $("#result-explore-col").show();
-  $("#list-rec-col").hide();
+  if(!dontHideListRecCol ) {
+    $("#result-explore-col").show();
+    $("#list-rec-col").hide();
+  }
 
   // Atur map ke koordinat default
   console.log("Current Lat:", currentLat, "Current Lng:", currentLng);
