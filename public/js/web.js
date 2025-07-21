@@ -4024,7 +4024,7 @@ function checkNearby(id) {
   const checkEV = document.getElementById("check-ev").checked;
   const checkFC = document.getElementById("check-fc").checked;
 
-  if (!checkHO && !checkCP && !checkSP && !checkWP) {
+  if (!checkHO && !checkCP && !checkSP && !checkWP && !checkEV && !checkFC) {
     document.getElementById("radiusValueNearby").innerHTML = "0 m";
     document.getElementById("inputRadiusNearby").value = 0;
     return Swal.fire("Please choose one object");
@@ -4105,7 +4105,7 @@ function checkExplore() {
   const checkEV = document.getElementById("check-ev").checked;
   const checkFC = document.getElementById("check-fc").checked;
 
-  if (!checkHO && !checkCP && !checkSP && !checkWP) {
+  if (!checkHO && !checkCP && !checkSP && !checkWP && !checkEV && !checkFC) {
     document.getElementById("radiusValueNearby").innerHTML = "0 m";
     document.getElementById("inputRadiusNearby").value = 0;
     return Swal.fire("Please choose one object");
@@ -4365,7 +4365,7 @@ function setupCheckboxListener() {
 
       debounceTimer = setTimeout(() => {
         clearAllAll("ClearAllAll log: " + id + " checked");
-        // clearMarker(); // Ensure previous markers are removed
+        clearMarker(); // Ensure previous markers are removed
 
         checks.forEach(({ id, code, table, log }) => {
           if (document.getElementById(id).checked) {
