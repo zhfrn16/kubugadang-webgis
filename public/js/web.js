@@ -3794,7 +3794,7 @@ function boundToObject() {
     for (i in markerArray) {
       bounds.extend(markerArray[i].getPosition());
     }
-    map.fitBounds(bounds, 80);
+    map.fitBounds(bounds, 0);
   } else {
     let pos = new google.maps.LatLng(-0.4761815168531753, 100.43223933779609);
     map.panTo(pos);
@@ -4701,6 +4701,7 @@ function findAll(category) {
       success: function (response) {
         displayExploreResult(category, response);
         boundToObject();
+        console.log("Explore attraction data:", response);
       },
     });
   } else if (category === "th") {
@@ -4734,6 +4735,7 @@ function findAll(category) {
       success: function (response) {
         displayExploreResult(category, response);
         boundToObject();
+        console.log("Explore culinary place data:", response);
       },
     });
   } else if (category === "sp") {
@@ -4745,6 +4747,7 @@ function findAll(category) {
       success: function (response) {
         displayExploreResult(category, response);
         boundToObject();
+        console.log("Explore souvenir place data:", response);
       },
     });
   } else if (category === "wp") {
