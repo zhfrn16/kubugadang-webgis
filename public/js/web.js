@@ -3801,7 +3801,7 @@ function boundToObject() {
     for (i in markerArray) {
       bounds.extend(markerArray[i].getPosition());
     }
-    map.fitBounds(bounds, 0);
+    map.fitBounds(bounds, 20);
   } else {
     
     if(currentPage === "silek") {
