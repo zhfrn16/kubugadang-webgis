@@ -8,12 +8,12 @@
     <div class="page-title">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <?php if (isset($data2)) : ?>
+                <!-- <?php if (isset($data2)) : ?>
                     <?php foreach ($data2 as $item) : ?>
                         <h4><?= esc($item['name']); ?></h4>
                     <?php endforeach; ?>
-                <?php endif; ?>
-                <!-- <h4>Desa Wisata Kubu Gadang</h4> -->
+                <?php endif; ?> -->
+                <h4>Kubu Gadang</h4>
                 <h6>Tourism Village</h6>
             </div>
 
