@@ -1341,12 +1341,14 @@ function clearRoute() {
 // }
 
 // Remove any radius shown
-function clearRadius() {
+function clearRadius(option = null) {
   for (i in circleArray) {
     circleArray[i].setMap(null);
   }
   circleArray = [];
-  clearMarker();
+  if(!option == "position") {
+    clearMarker();
+  }
 }
 
 // Remove any marker shown
@@ -1360,7 +1362,7 @@ function clearMarker() {
 
 // Get user's current position
 function currentPosition() {
-  clearRadius();
+  clearRadius('position');
   clearRoute();
   clearAirplaneMarkers();
   clearCarMarkers();
@@ -1431,7 +1433,7 @@ function setAllDigitasiClickable(flag) {
 
 // User set position on map
 function manualPosition() {
-  clearRadius();
+  clearRadius('position');
   clearRoute();
   clearDigitNeg();
   clearDigitProv();
@@ -3953,6 +3955,7 @@ function openTrack(id, lat, lng) {
 function openNearby(id, lat, lng) {
   $("#list-at-col").hide();
   $("#check-explore-col").show();
+  $("#result-explore-col").show();
   $("#list-rg-col").hide();
   console.log("Open Nearby with ID:", id);
 
@@ -4555,6 +4558,11 @@ function clickExplore() {
     $("#result-explore-col").show();
     $("#list-rec-col").hide();
     $("#check-explore-col").hide();
+        [
+    "#table-lsa", "#table-at", "#table-th", "#table-ho", "#table-cp",
+    "#table-sp", "#table-wp", "#table-ev", "#table-fc"
+  ].forEach(sel => $(sel).show());
+
   });
 }
 
