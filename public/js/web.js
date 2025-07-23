@@ -2112,10 +2112,9 @@ function howToReachSumpu() {
   map.setZoom(6);
 }
 
-function zoomToSumpuMarkers() {
+function zoomToVillageMarkers() {
   clearOverlay(); // clear dulu di awal
-    clearMarker();
-    clearRadius();
+  clearRadius();
   console.log("zoomToVillageMarkers triggered");
   console.log("markerArray:", markerArray);
 
