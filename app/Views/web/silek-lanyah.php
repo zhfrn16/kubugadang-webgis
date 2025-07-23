@@ -106,8 +106,9 @@
                         </div>
                     </div>
                 </div>
-                
-                                <!-- Nearby section -->
+                <!-- Direction section -->
+                <?= $this->include('web/layouts/direction'); ?>
+                <!-- Nearby section -->
                 <?= $this->include('web/layouts/explore'); ?>
             </div>
 
@@ -119,6 +120,13 @@
 
 <?= $this->section('javascript') ?>
 <script>
+    function initMap6() {
+        const data = <?= json_encode($location) ?>;
+        console.log(data);
+        initMap(data.lat, data.lng);
+        digitEvent(data);
+        
+}
     const myModal = document.getElementById('videoModal');
     const videoSrc = document.getElementById('video-play').getAttribute('data-src');
 
