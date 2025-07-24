@@ -14,7 +14,7 @@
                 <div class="card-header">
                     <h4 class="card-title text-center">Worship Place Information</h4>
                     <div class="col-auto">
-                        <a href="<?= base_url('dashboard/worshipplace/edit'); ?>/<?= esc($data['id']); ?>" class="btn btn-primary float-end"><i class="fa-solid fa-pencil me-3"></i>Edit</a>
+                        <a href="<?= base_url('dashboard/worshipplace/'.esc($data['id']).'/edit'); ?>" class="btn btn-primary float-end"><i class="fa-solid fa-pencil me-3"></i>Edit</a>
                     </div>
                 </div>
                 <div class="card-body">

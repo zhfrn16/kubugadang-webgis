@@ -181,11 +181,14 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers\Web', 'filter' => '
     $routes->get('package', 'Dashboard::package');
     $routes->get('facility', 'Dashboard::facility');
     $routes->get('souvenirplace', 'Dashboard::souvenirplace');
+    $routes->resource('souvenirplace', ['controller' => 'SouvenirPlace']);
     $routes->get('worshipplace', 'Dashboard::worshipplace');
     $routes->resource('worshipplace', ['controller' => 'WorshipPlace']);
     $routes->get('culinaryplace', 'Dashboard::culinaryplace');
+    $routes->resource('culinaryplace', ['controller' => 'CulinaryPlace']);
     $routes->get('traditionalhouse', 'Dashboard::traditionalhouse');
     $routes->get('servicepackage', 'Dashboard::servicepackage');
+    $routes->resource('servicepackage', ['controller' => 'Servicepackage']);
     $routes->post('package/updatecustom/(:any)', 'Package::updatecustom/$1');
     $routes->get('facilitytype', 'Dashboard::facilitytype');
     $routes->get('packagetype', 'Dashboard::packagetype');
