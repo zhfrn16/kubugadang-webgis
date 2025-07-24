@@ -125,12 +125,15 @@ function initMapLP(lat = -0.5242972, lng = 100.492333, mobile = false) {
 
 // Initialize and add the map
 function initMap(lat = -0.47600810421990053, lng = 100.43176709270662) {
-  if(currentPage === "silek") {
+  if(currentPage == 'silek') {
     lat = -0.47600810421990053;
     lng = 100.43176709270662;
-  } else if(currentPage === "event") {
+  } else if(currentPage == 'event') {
     lat = -0.47600810421990053;
     lng = 100.43176709270662;
+  } else if(currentPage == 'explore') {
+    lat = -0.4727311390292266 ;
+    lng = 100.43103295308126 ;
   }
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
@@ -400,7 +403,7 @@ function initMap7(lat = -0.4761815168531753, lng = 100.43223933779609) {
 //   });
 // }
 
-function initMap4(lat = -0.4761815168531753, lng = 100.43223933779609) {
+function initMap4(lat = -0.4727311390292266, lng = 100.43103295308126) {
   directionsService = new google.maps.DirectionsService();
   const center = new google.maps.LatLng(lat, lng);
   map = new google.maps.Map(document.getElementById("googlemaps"), {
@@ -1390,7 +1393,10 @@ function currentPosition() {
             pos.lat +
             "<br>long: " +
             pos.lng +
-            "</p>"
+            "</p>" +
+          '<div class="text-center">' +
+        '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openExplore()"><i class="fa-solid fa-compass"></i></a>' +
+          "</div>"
         );
         userInfoWindow.open(map, userMarker);
         map.setCenter(pos);
@@ -1465,7 +1471,10 @@ function manualPosition() {
         pos.lat().toFixed(8) +
         "<br>long: " +
         pos.lng().toFixed(8) +
-        "</p>"
+        "</p>" +
+        '<div class="text-center">' +
+        '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openExplore()"><i class="fa-solid fa-compass"></i></a>' +
+          "</div>"
     );
     userInfoWindow.open(map, userMarker);
 
@@ -1909,6 +1918,9 @@ function howToReachSumpu() {
         }
     });
     console.log('halaman silek')
+  } else if(currentPage == 'explore') {
+    objectMarker("SUM01", -0.4727311390292266 , 100.43103295308126 );
+    console.log('halaman explore')
   } else {
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
     console.log('halaman bukan silek')
@@ -2118,7 +2130,7 @@ function zoomToVillageMarkers() {
   console.log("zoomToVillageMarkers triggered");
   console.log("markerArray:", markerArray);
 
-  if (currentPage === 'silek') {
+  if (currentPage == 'silek') {
 
     $.ajax({
       url: baseUrl + '/api/attraction',
@@ -2145,7 +2157,7 @@ function zoomToVillageMarkers() {
       }
     });
 
-  } else if (currentPage === 'event') {
+  } else if (currentPage == 'event') {
 
     $.ajax({
       url: baseUrl + '/api/event',
@@ -2171,6 +2183,21 @@ function zoomToVillageMarkers() {
       }
     });
 
+  } else if (currentPage == 'explore') {
+
+    objectMarker("SUM01", -0.4727311390292266 , 100.43103295308126);
+    boundToObject();
+
+    for (const id in markerArray) {
+      if (id.startsWith("SUM")) {
+        const marker = markerArray[id];
+        console.log("Found marker:", marker);
+        map.setCenter(marker.getPosition());
+        map.setZoom(16);
+        console.log('ini gak tau apaan');
+        break;
+      }
+    }
   } else {
 
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
@@ -3805,11 +3832,14 @@ function boundToObject() {
     map.fitBounds(bounds, 20);
   } else {
     
-    if(currentPage === "silek") {
+    if(currentPage == 'silek') {
       let pos = new google.maps.LatLng(-0.47600810421990053, 100.43176709270662);
       map.panTo(pos);
-    } else if(currentPage === "event") {
+    } else if(currentPage == 'event') {
       let pos = new google.maps.LatLng(-0.47600810421990053, 100.43176709270662);
+      map.panTo(pos);
+    } else if(currentPage == 'explore') {
+      let pos = new google.maps.LatLng(-0.4727311390292266, 100.43103295308126);
       map.panTo(pos);
     } else {
       let pos = new google.maps.LatLng(-0.4761815168531753, 100.43223933779609);
@@ -4200,6 +4230,9 @@ function clearAllAll(log) {
         }
     });
     console.log('halaman event') 
+  } else if(currentPage == 'explore') {
+    objectMarker("SUM01", -0.4727311390292266 , 100.43103295308126 );
+    console.log('halaman explore')
   } else {
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
     console.log('halaman bukan silek')
@@ -4245,6 +4278,9 @@ function checkLayer() {
         }
     });
     console.log('halaman event')
+  } else if (currentPage == 'explore') {
+    objectMarker("SUM01", -0.4727311390292266 , 100.43103295308126 );
+    console.log('halaman explore')
   } else {
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
     console.log('halaman bukan silek')
@@ -4464,6 +4500,9 @@ function checkObject() {
         }
     });
     console.log('halaman event')
+  } else if (currentPage == 'explore') {
+    objectMarker("SUM01", -0.4727311390292266, 100.43103295308126);
+    console.log('halaman explore')
   } else {
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
     console.log('halaman bukan silek')
@@ -4541,8 +4580,13 @@ function clickExplore() {
 
   destinationMarker.setMap(null);
   google.maps.event.clearListeners(map, "click");
-
-  let pos = new google.maps.LatLng(-0.4761815168531753, 100.43223933779609);
+  let pos;
+  if(currentPage == 'explore') {
+    pos = new google.maps.LatLng(-0.4727311390292266, 100.43103295308126);
+    console.log('halaman explore')
+  } else {
+  pos = new google.maps.LatLng(-0.4761815168531753, 100.43223933779609);
+  }
   map.panTo(pos);
 
   // let categories = ["lsa", "at", "th"];
@@ -4629,7 +4673,7 @@ function clickLayer() {
     console.log('halaman silek')
   } else if(currentPage == 'event') {
     $.ajax({
-        url: baseUrl + '/api/attraction',
+        url: baseUrl + '/api/event',
         type: 'POST',
         data: {
             digitasi: 'EV001'
@@ -4642,7 +4686,10 @@ function clickLayer() {
         }
     });
     console.log('halaman event')
-  } else {
+  } else if (currentPage == 'explore') {
+    objectMarker("SUM01", -0.4727311390292266 , 100.43103295308126 );
+    console.log('halaman explore')
+  }  else {
     objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
     console.log('halaman bukan silek')
   }

@@ -48,7 +48,7 @@
                                     // clearRadius();
                                     // clearRoute();
                                     // explorePackage();
-                                    // objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+                                    // objectMarker("SUM01", -0.4727311390292266, 100.43103295308126);
                                 </script>
                                 <table class="table table-hover mb-0 table-lg">
                                     <thead>
@@ -123,7 +123,7 @@
                                                                 routeArray = [];
                                                                 markerArray = [];
 
-                                                                objectMarker("SUM01", -0.4761815168531753, 100.43223933779609);
+                                                                objectMarker("SUM01", -0.4727311390292266, 100.43103295308126);
 
 
                                                                 // Menambahkan titik 0 dan rute dari titik 0 ke aktivitas 1
@@ -136,8 +136,8 @@
 
                                                                     var marker = new google.maps.Marker({
                                                                         position: {
-                                                                            lat: -0.4761815168531753,
-                                                                            lng: 100.43223933779609
+                                                                            lat: -0.4727311390292266,
+                                                                            lng: 100.43103295308126
                                                                         },
                                                                         map: map,
                                                                         icon: image,
@@ -149,8 +149,8 @@
                                                                     //     content: '<div style="line-height:1.35;font-weight:bold;overflow:hidden;white-space:nowrap;">Gerbang Desa</div>'
                                                                     // });
 
-                                                                    var startLat = -0.4761815168531753;
-                                                                    var startLng = 100.43223933779609;
+                                                                    var startLat = -0.4727311390292266;
+                                                                    var startLng = 100.43103295308126;
 
                                                                     // // Tambahkan infowindow untuk titik awal
                                                                     // let infowindow = new google.maps.InfoWindow({
@@ -191,7 +191,7 @@
                                                                     <?php endforeach; ?>
 
                                                                     // Tambahkan rute dari titik 0 ke aktivitas 1
-                                                                    routeBetweenObjects(-0.4761815168531753, 100.43223933779609, lat1, lng1);
+                                                                    routeBetweenObjects(-0.4727311390292266, 100.43103295308126, lat1, lng1);
                                                                 }
 
 
@@ -250,8 +250,8 @@
                                                                     map.setZoom(15);
 
                                                                     // Inisialisasi koordinat titik awal (gerbang desa)
-                                                                    let startLat = -0.4761815168531753;
-                                                                    let startLng = 100.43223933779609;
+                                                                    let startLat = -0.4727311390292266;
+                                                                    let startLng = 100.43103295308126;
 
                                                                     // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                                                     let image = {
@@ -483,6 +483,7 @@
 
 <?= $this->section('javascript') ?>
 <script>
+    currentPage = "explore";
     $('#direction-row').hide();
     $('#check-explore-col').hide();
     $('#result-explore-col').hide();
