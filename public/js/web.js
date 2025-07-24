@@ -2467,6 +2467,7 @@ function objectInfoWindow(id) {
           hoid +
           '><i class="fa-solid fa-info"></i></a>' +
           '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ hoid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a href="https://wa.me/+6289524275056" title="Book Now" class="btn icon btn-outline-primary mx-1" id="bookNowWindow"><i class="fa-solid fa-phone"></i></a>' +
           "</div>";
         console.log(currentUrl);
         if (currentUrl.includes(id)) {
@@ -2615,6 +2616,7 @@ function objectInfoWindow(id) {
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
           '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ cpid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a href="https://wa.me/+6289524275056" title="Book Now" class="btn icon btn-outline-primary mx-1" id="bookNowWindow"><i class="fa-solid fa-phone"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -2972,6 +2974,7 @@ function objectInfoWindowRoute(id) {
           hoid +
           '><i class="fa-solid fa-info"></i></a>' +
           '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ hoid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a href="https://wa.me/+6289524275056" title="Book Now" class="btn icon btn-outline-primary mx-1" id="bookNowWindow"><i class="fa-solid fa-phone"></i></a>' +
           "</div>";
         console.log(currentUrl);
         if (currentUrl.includes(id)) {
@@ -3120,6 +3123,7 @@ function objectInfoWindowRoute(id) {
           cpid +
           '><i class="fa-solid fa-info"></i></a>' +
           '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ cpid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          '<a href="https://wa.me/+6289524275056" title="Book Now" class="btn icon btn-outline-primary mx-1" id="bookNowWindow"><i class="fa-solid fa-phone"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -3793,6 +3797,8 @@ function objectInfoWindowMobile(id) {
           hoid +
           '><i class="fa-solid fa-info"></i></a>' +
           '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ hoid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          
+          '<a href="https://wa.me/+6289524275056" title="Book Now" class="btn icon btn-outline-primary mx-1" id="bookNowWindow"><i class="fa-solid fa-phone"></i></a>' +
           "</div>";
 
         if (currentUrl.includes(id)) {
@@ -5070,6 +5076,7 @@ function displayExploreResult(category, response) {
     $("#data-" + category).append(noDataRow);
   } else {
     // Populate table with data
+    const bookNow =  (item) =>'<a href=""https://wa.me/+6289524275056" title="Book Now" class="btn-sm icon btn-success"><i class="fa-solid fa-phone"></i></a>';
     for (let i in data) {
       let item = data[i];
       let row =
@@ -5077,10 +5084,11 @@ function displayExploreResult(category, response) {
         "<td>" +
         item.name +
         "</td>" +
-        "<td>" +
+        "<td class='d-flex gap-2'>" +
         '<a title="Location" class="btn-sm icon btn-primary" onclick="focusObject(`' +
         item.id +
         '`);"><i class="fa-solid fa-map-location-dot"></i></a>' +
+          (category === "ho" ? bookNow(item) : "") +
         "</td>" +
         "</tr>";
       $("#data-" + category).append(row);
