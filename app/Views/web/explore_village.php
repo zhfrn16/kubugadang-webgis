@@ -82,7 +82,7 @@
                                                     <div class="btn-group">
                                                         <?php foreach ($package['day'] as $day) : ?>
                                                             <!-- <button type="button" class="btn btn-primary btn-sm" aria-expanded="false" onclick="add<?= $day['day'], $package['data']['id']; ?>();">Day <?= $day['day']; ?></button> -->
-                                                            <button id="btn-day-<?= $day['day'], $package['data']['id']; ?>" type="button" class="btn btn-primary btn-sm day-route-btn" aria-expanded="false" onclick="add<?= $day['day'], $package['data']['id']; ?>(); addStartingPoint();">Day <?= $day['day']; ?></button>
+                                                            <button id="btn-day-<?= $day['day'], $package['data']['id']; ?>" type="button" class="btn btn-primary btn-sm day-route-btn" aria-expanded="false" onclick="add<?= $day['day'], $package['data']['id']; ?>();">Day <?= $day['day']; ?></button>
                                                             <button id="btn-day-dropdown-<?= $day['day'], $package['data']['id']; ?>" type="button" class="btn btn-primary dropdown-toggle day-route-btn dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
                                                                 <span class="visually-hidden">Toggle Dropdown</span>
                                                             </button>
@@ -299,7 +299,7 @@
                                                                         $lng_now = isset($object['lng']) ? esc($object['lng']) : '';
                                                                         $objectid = isset($object['object_id']) ? esc($object['object_id']) : '';
                                                                     ?>
-                                                                        objectMarkerRoute("<?= $objectid; ?>", <?= $lat_now; ?>, <?= $lng_now; ?>, true, <?= $loop; ?>);
+                                                                        objectMarkerRouteNumber("<?= $objectid; ?>", <?= $lat_now; ?>, <?= $lng_now; ?>, true, <?= $loop; ?>);
 
                                                                         <?php if ($loop === 1) { ?>
 
