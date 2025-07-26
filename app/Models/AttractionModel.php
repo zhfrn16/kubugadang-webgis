@@ -131,7 +131,7 @@ class AttractionModel extends Model
 
     public function get_geoJson($id = null)
     {
-        $geoJson = "ST_AsGeoJSON({$this->table}.geom_area) AS geoJson";
+        $geoJson = "ST_AsGeoJSON({$this->table}.geom) AS geoJson";
         $query = $this->db->table($this->table)
             ->select("{$geoJson}")
             ->where('id', $id)
@@ -141,9 +141,9 @@ class AttractionModel extends Model
 
     public function get_attraction2_by_id($id = null)
     {
-        $coords = "ST_Y(ST_Centroid({$this->table}.geom_area)) AS lat, ST_X(ST_Centroid({$this->table}.geom_area)) AS lng";
+        $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
         $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.type,{$this->table}.price,{$this->table}.description,{$this->table}.video_url";
-        $geoJson = "ST_AsGeoJSON({$this->table}.geom_area) AS geoJson";
+        $geoJson = "ST_AsGeoJSON({$this->table}.geom) AS geoJson";
         $query = $this->db->table($this->table)
             ->select("{$columns}, {$coords}, {$geoJson}")
             ->where('id', $id)
@@ -190,7 +190,7 @@ class AttractionModel extends Model
     public function update_geom($id = null, $geom = null)
     {
         $query = $this->db->table($this->table)
-            ->set('geom_area', "ST_GeomFromText('{$geom}')", false)
+            ->set('geom', "ST_GeomFromText('{$geom}')", false)
             ->where('id', $id)
             ->update();
         return $query;

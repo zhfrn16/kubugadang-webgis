@@ -6112,69 +6112,71 @@ function initDrawingManager(edit = false) {
     },
     map: map,
   };
+
   drawingManager.setOptions(drawingManagerOpts);
-  let newShape;
 
-  if (!edit) {
-    google.maps.event.addListener(
-      drawingManager,
-      "overlaycomplete",
-      function (event) {
-        drawingManager.setOptions({
-          drawingControl: false,
-          drawingMode: null,
-        });
-        newShape = event.overlay;
-        newShape.type = event.type;
-        setSelection(newShape);
-        saveSelection(newShape);
+  // Fungsi untuk handle shape baru
+  function handleNewShape(shape, type = "polygon") {
+    shape.type = type;
+    setSelection(shape);
+    saveSelection(shape);
 
-        google.maps.event.addListener(newShape, "click", function () {
-          setSelection(newShape);
-        });
-        google.maps.event.addListener(newShape.getPath(), "insert_at", () => {
-          saveSelection(newShape);
-        });
-        google.maps.event.addListener(newShape.getPath(), "remove_at", () => {
-          saveSelection(newShape);
-        });
-        google.maps.event.addListener(newShape.getPath(), "set_at", () => {
-          saveSelection(newShape);
-        });
-      }
-    );
-  } else {
+    google.maps.event.addListener(shape, "click", () => {
+      setSelection(shape);
+    });
+
+    const path = shape.getPath();
+    ["insert_at", "remove_at", "set_at"].forEach(eventName => {
+      google.maps.event.addListener(path, eventName, () => {
+        saveSelection(shape);
+      });
+    });
+  }
+
+  // Fungsi listener overlaycomplete
+  function enableOverlayCompleteListener() {
+    google.maps.event.addListener(drawingManager, "overlaycomplete", event => {
+      drawingManager.setOptions({
+        drawingControl: false,
+        drawingMode: null,
+      });
+      handleNewShape(event.overlay, event.type);
+    });
+  }
+
+  if (edit) {
     drawingManager.setOptions({
       drawingControl: false,
       drawingMode: null,
     });
 
-    newShape = drawGeom();
-    newShape.type = "polygon";
-    setSelection(newShape);
-    saveSelection(newShape);
+    const existingShape = drawGeom();
+    if (existingShape) {
+      handleNewShape(existingShape);
+    }
 
-    google.maps.event.addListener(newShape, "click", function () {
-      setSelection(newShape);
-    });
-    google.maps.event.addListener(newShape.getPath(), "insert_at", () => {
-      saveSelection(newShape);
-    });
-    google.maps.event.addListener(newShape.getPath(), "remove_at", () => {
-      saveSelection(newShape);
-    });
-    google.maps.event.addListener(newShape.getPath(), "set_at", () => {
-      saveSelection(newShape);
-    });
+    // Tetap memungkinkan menggambar ulang jika user delete
+    enableOverlayCompleteListener();
+  } else {
+    enableOverlayCompleteListener();
   }
 
+  // Clear selection saat klik di luar polygon
   google.maps.event.addListener(map, "click", clearSelection);
-  google.maps.event.addDomListener(
-    document.getElementById("clear-drawing"),
-    "click",
-    deleteSelectedShape
-  );
+
+  // Clear drawing saat klik tombol clear
+  const clearBtn = document.getElementById("clear-drawing");
+  if (clearBtn) {
+    google.maps.event.addDomListener(clearBtn, "click", () => {
+      deleteSelectedShape();
+      drawingManager.setOptions({
+        drawingControl: true,
+        drawingMode: google.maps.drawing.OverlayType.POLYGON,
+      });
+    });
+  }
 }
+
 
 // Get geoJSON of selected shape on map
 function saveSelection(shape) {
@@ -6248,6 +6250,7 @@ function drawGeom() {
     polygon.setMap(map);
     return polygon;
   }
+  return null;
 }
 // Delete selected Users
 function deleteUsers(id = null, username = null, csrfToken = null) {
