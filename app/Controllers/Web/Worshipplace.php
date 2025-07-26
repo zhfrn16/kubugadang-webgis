@@ -8,7 +8,7 @@ use App\Models\GalleryWorshipPlaceModel;
 use CodeIgniter\RESTful\ResourcePresenter;
 use CodeIgniter\Files\File;
 
-class WorshipPlace extends ResourcePresenter
+class Worshipplace extends ResourcePresenter
 {
     protected $worshipPlaceModel;
     protected $galleryWorshipPlaceModel;

@@ -181,11 +181,11 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers\Web', 'filter' => '
     $routes->get('package', 'Dashboard::package');
     $routes->get('facility', 'Dashboard::facility');
     $routes->get('souvenirplace', 'Dashboard::souvenirplace');
-    $routes->resource('souvenirplace', ['controller' => 'SouvenirPlace']);
+    $routes->resource('souvenirplace', ['controller' => 'Souvenirplace']);
     $routes->get('worshipplace', 'Dashboard::worshipplace');
-    $routes->resource('worshipplace', ['controller' => 'WorshipPlace']);
+    $routes->resource('worshipplace', ['controller' => 'Worshipplace']);
     $routes->get('culinaryplace', 'Dashboard::culinaryplace');
-    $routes->resource('culinaryplace', ['controller' => 'CulinaryPlace']);
+    $routes->resource('culinaryplace', ['controller' => 'Culinaryplace']);
     $routes->get('traditionalhouse', 'Dashboard::traditionalhouse');
     $routes->get('servicepackage', 'Dashboard::servicepackage');
     $routes->resource('servicepackage', ['controller' => 'Servicepackage']);
@@ -233,6 +233,7 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers\Web', 'filter' => '
     $routes->presenter('culinaryplace');
     $routes->presenter('traditionalhouse');
     $routes->presenter('worshipplace');
+    $routes->put('worshipplace/update/(:any)', 'Worshipplace::update/$1');
     $routes->presenter('souvenirplace');
     $routes->presenter('packageday');
 
@@ -273,9 +274,9 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers\Web', 'filter' => '
     $routes->post('facility/deleteobject/(:any)', 'Facility::deleteobject/$1');
     $routes->post('facilitytype/deleteobject/(:any)', 'FacilityType::deleteobject/$1');
     $routes->post('event/deleteobject/(:any)', 'event::deleteobject/$1');
-    $routes->post('worshipPlace/deleteobject/(:any)', 'WorshipPlace::deleteobject/$1');
-    $routes->post('souvenirPlace/deleteobject/(:any)', 'SouvenirPlace::deleteobject/$1');
-    $routes->post('culinaryPlace/deleteobject/(:any)', 'CulinaryPlace::deleteobject/$1');
+    $routes->post('worshipPlace/deleteobject/(:any)', 'Worshipplace::deleteobject/$1');
+    $routes->post('souvenirPlace/deleteobject/(:any)', 'Souvenirplace::deleteobject/$1');
+    $routes->post('culinaryPlace/deleteobject/(:any)', 'Culinaryplace::deleteobject/$1');
     $routes->post('attraction/deleteobject/(:any)', 'Attraction::deleteobject/$1');
 });
 
@@ -327,10 +328,10 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->post('rumah', 'Homestay::getData');
     $routes->post('home', 'Homestay::getData');
     $routes->post('attraction', 'Attraction::getData');
-    $routes->post('culinary', 'CulinaryPlace::getData');
+    $routes->post('culinary', 'Culinaryplace::getData');
     $routes->post('traditional', 'TraditionalHouse::getData');
-    $routes->post('souvenir', 'SouvenirPlace::getData');
-    $routes->post('worship', 'WorshipPlace::getData');
+    $routes->post('souvenir', 'Souvenirplace::getData');
+    $routes->post('worship', 'Worshipplace::getData');
     $routes->post('facility', 'Facility::getData');
     $routes->post('event', 'Event::getData');
     $routes->post('facilitytype', 'FacilityType::getData');
@@ -391,27 +392,27 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->get('attractionCT', 'Attraction::attractionCT');
     $routes->get('attractionET', 'Attraction::attractionET');
     $routes->post('attractionlsa/findByRadius', 'Attraction::findByRadiuslsa');
-    $routes->post('culinaryPlace/findAll', 'CulinaryPlace::findAll');
-    $routes->post('worshipPlace/findAll', 'WorshipPlace::findAll');
+    $routes->post('culinaryPlace/findAll', 'Culinaryplace::findAll');
+    $routes->post('worshipPlace/findAll', 'Worshipplace::findAll');
     $routes->post('attraction/findAll', 'Attraction::findAll');
     $routes->get('attraction/findAll', 'Attraction::findAll');
     $routes->post('attractionlsa/findlsaAll', 'Attraction::findlsaAll');
     $routes->post('homestay/findAll', 'Homestay::findAll');
     $routes->post('traditionalHouse/findAll', 'TraditionalHouse::findAll');
-    $routes->post('souvenirPlace/findAll', 'SouvenirPlace::findAll');
+    $routes->post('souvenirPlace/findAll', 'Souvenirplace::findAll');
     $routes->post('event/findAll', 'Event::findAll');
     $routes->post('event/findByRadius', 'Event::findByRadius');
     $routes->post('facility/findAll', 'Facility::findAll');
-    $routes->post('culinaryPlace/findByRadius', 'CulinaryPlace::findByRadius');
+    $routes->post('culinaryPlace/findByRadius', 'Culinaryplace::findByRadius');
     $routes->resource('traditionalHouse');
     $routes->presenter('traditionalhouse');
     $routes->post('traditionalHouse/findByRadius', 'TraditionalHouse::findByRadius');
     $routes->resource('souvenirPlace');
     $routes->presenter('souvenirplace');
-    $routes->post('souvenirPlace/findByRadius', 'SouvenirPlace::findByRadius');
+    $routes->post('souvenirPlace/findByRadius', 'Souvenirplace::findByRadius');
     $routes->resource('worshipPlace');
     $routes->presenter('worshipplace');
-    $routes->post('worshipPlace/findByRadius', 'WorshipPlace::findByRadius');
+    $routes->post('worshipPlace/findByRadius', 'Worshipplace::findByRadius');
 });
 
 /*
