@@ -17,7 +17,7 @@
                             <h4 class="card-title text-center">Service Package Information</h4>
                         </div>
                         <div class="col-auto">
-                            <a href="<?= base_url('dashboard/servicepackage/edit'); ?>/<?= esc($data['id']); ?>" class="btn btn-primary float-end"><i class="fa-solid fa-pencil me-3"></i>Edit</a>
+                            <a href="<?= base_url('dashboard/servicepackage/' . esc($data['id']) . '/edit'); ?>" class="btn btn-primary float-end"><i class="fa-solid fa-pencil me-3"></i>Edit</a>
                         </div>
                     </div>
                 </div>
@@ -29,23 +29,23 @@
                                     <tr>
                                         <td class="fw-bold">Name</td>
                                         <td><?= esc($data['name']); ?></td>
-                                    </tr>                         
+                                    </tr>
                                     <tr>
                                         <td class="fw-bold">Category</td>
                                         <?php if ($data['category'] == 1) : ?>
-                                        <td>Group</td>
+                                            <td>Group</td>
                                         <?php elseif ($data['category'] == 2) : ?>
-                                        <td>Individu</td>
+                                            <td>Individu</td>
                                         <?php endif; ?>
-                                    </tr>      
+                                    </tr>
                                     <tr>
                                         <td class="fw-bold">Min Capacity</td>
                                         <td><?= esc($data['min_capacity']); ?></td>
-                                    </tr>                               
+                                    </tr>
                                     <tr>
                                         <td class="fw-bold">Price</td>
                                         <td><?= esc($data['price']); ?></td>
-                                    </tr>                               
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

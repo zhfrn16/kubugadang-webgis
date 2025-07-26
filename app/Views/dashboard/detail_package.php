@@ -199,8 +199,8 @@
                                         map.setZoom(15);
 
                                         // Inisialisasi koordinat titik awal (gerbang desa)
-                                        var startLat = -0.4761815168531753;
-                                        var startLng = 100.43223933779609;
+                                        var startLat = -0.4727311390292266;
+                                        var startLng = 100.43103295308126;
 
                                         // // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                         // var image = {
@@ -224,8 +224,8 @@
                                             title: 'Village Gate'
                                         });
 
-                                        var startLat = -0.4761815168531753;
-                                        var startLng = 100.43223933779609;
+                                        var startLat = -0.4727311390292266;
+                                        var startLng = 100.43103295308126;
 
                                         // // Tambahkan infowindow untuk titik awal
                                         // let infowindow = new google.maps.InfoWindow({
@@ -383,7 +383,7 @@
                                                 <li>
                                                     <button
                                                         type="button"
-                                                        onclick="routeBetweenObjects(-0.4761815168531753,100.43223933779609,<?= esc($firstActivity['lat']); ?>,<?= esc($firstActivity['lng']); ?>); addOnly<?= esc($d['day']), esc($d['package_id']); ?>();" class="btn btn-outline-primary">
+                                                        onclick="routeBetweenObjects(-0.4727311390292266,100.43103295308126,<?= esc($firstActivity['lat']); ?>,<?= esc($firstActivity['lng']); ?>); addOnly<?= esc($d['day']), esc($d['package_id']); ?>();" class="btn btn-outline-primary">
                                                         <i class="fa fa-road"></i> Titik 0 ke 1
                                                     </button>
                                                 </li>
@@ -417,7 +417,7 @@
                     </div>
                 </div>
                 <script>
-                    initMap(-0.4761815168531753, 100.43223933779609);
+                    initMap(-0.4727311390292266, 100.43103295308126);
 
                     window.onload = function() {
                         try {

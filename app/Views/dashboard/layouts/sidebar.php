@@ -56,9 +56,9 @@ $uri3 = $uri[3] ?? '';
                             <a href="" class="sidebar-link">
                                 <i class="fa-brands fa-pagelines"></i><span>Manage Village</span>
                             </a>
-                            <ul class="submenu <?= ($uri1 == 'sumpu' || $uri1 == 'announcement') ? 'active' : '' ?>">
+                            <ul class="submenu <?= ($uri1 == 'kubugadang' || $uri1 == 'announcement') ? 'active' : '' ?>">
                                 <!-- List Package -->
-                                <li class="submenu-item <?= ($uri1 == 'sumpu') ? 'active' : '' ?>" id="pa-list">
+                                <li class="submenu-item <?= ($uri1 == 'kubugadang') ? 'active' : '' ?>" id="pa-list">
                                     <a href="<?= base_url('dashboard/kubugadang'); ?>"><i class="fa-brands fa-pagelines"></i> Data Village</a>
                                 </li>
                                 <!-- List Package type-->
