@@ -27,6 +27,12 @@
                             <label for="check-sp">Souvenir Place</label>
                         </div>
                     </div>
+                    <div class="form-check">
+                        <div class="checkbox">
+                            <input type="checkbox" id="check-ot" class="form-check-input">
+                            <label for="check-ot">Object Tourism</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-6 col-12" style="padding: 0px;">
                     <div class="form-check">
@@ -83,6 +89,8 @@
                 <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-cp">
                 </table>
                 <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-sp">
+                </table>
+                <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-ot">
                 </table>
                 <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-wp">
                 </table>

@@ -67,6 +67,7 @@ $routes->group('web', ['namespace' => 'App\Controllers\Web'], function ($routes)
     $routes->get('detailpackage/(:any)', 'Package::detailpackage/$1', ['filter' => 'login']);
 
     $routes->presenter('attraction');
+    $routes->presenter('objecttourism');
     $routes->presenter('event');
     $routes->presenter('package');
     $routes->presenter('kubugadang');
@@ -177,6 +178,7 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers\Web', 'filter' => '
     $routes->get('announcement', 'Dashboard::announcement');
     $routes->get('users', 'Dashboard::users');
     $routes->get('attraction', 'Dashboard::attraction');
+    $routes->get('objecttourism', 'Dashboard::objecttourism');
     $routes->get('event', 'Dashboard::event');
     $routes->get('package', 'Dashboard::package');
     $routes->get('facility', 'Dashboard::facility');
@@ -227,6 +229,7 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers\Web', 'filter' => '
     $routes->resource('users');
     $routes->presenter('kubugadang');
     $routes->presenter('attraction');
+    $routes->presenter('objecttourism');
     $routes->presenter('event');
     $routes->presenter('package');
     $routes->presenter('facility');
@@ -333,7 +336,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->post('souvenir', 'Souvenirplace::getData');
     $routes->post('worship', 'Worshipplace::getData');
     $routes->post('facility', 'Facility::getData');
-    $routes->post('event', 'Event::getData');
+    $routes->post('objecttourism', 'Objecttourism::getData');
     $routes->post('facilitytype', 'FacilityType::getData');
 
     // $routes->get('mypackageMobile', 'Explore::exploremypackageMobile');
@@ -386,7 +389,9 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->resource('facilitytype');
     $routes->presenter('facilitytype');
     $routes->resource('culinaryPlace');
-    $routes->presenter('culinaryplace');
+    $routes->resource('culinaryPlace');
+    $routes->presenter('objecttourism');
+    $routes->presenter('objecttourism');
     $routes->get('attractionLSA', 'Attraction::attractionLSA');
     $routes->get('attractionNT', 'Attraction::attractionNT');
     $routes->get('attractionCT', 'Attraction::attractionCT');
@@ -394,6 +399,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->post('attractionlsa/findByRadius', 'Attraction::findByRadiuslsa');
     $routes->post('culinaryPlace/findAll', 'Culinaryplace::findAll');
     $routes->post('worshipPlace/findAll', 'Worshipplace::findAll');
+    $routes->post('objecttourism/findAll', 'Objecttourism::findAll');
     $routes->post('attraction/findAll', 'Attraction::findAll');
     $routes->get('attraction/findAll', 'Attraction::findAll');
     $routes->post('attractionlsa/findlsaAll', 'Attraction::findlsaAll');
@@ -413,6 +419,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->resource('worshipPlace');
     $routes->presenter('worshipplace');
     $routes->post('worshipPlace/findByRadius', 'Worshipplace::findByRadius');
+    $routes->post('objecttourism/findByRadius', 'Objecttourism::findByRadius');
 });
 
 /*

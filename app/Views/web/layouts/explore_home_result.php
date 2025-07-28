@@ -1,4 +1,3 @@
-
 <!-- Search result nearby -->
 <div class="col-12" id="result-explore-col">
     <div class="card">
@@ -18,6 +17,8 @@
                 <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-cp">
                 </table>
                 <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-sp">
+                </table>
+                <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-ot">
                 </table>
                 <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-wp">
                 </table>

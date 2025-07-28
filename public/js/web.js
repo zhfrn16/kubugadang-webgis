@@ -1033,6 +1033,31 @@ function digitSouvenir(idsouvenir) {
   });
   // console.log(digitasi);
 }
+function digitobjecttourism(idobjecttourism) {
+  const digitasi = new google.maps.Data();
+
+  $.ajax({
+    url: baseUrl + "/api/objecttourism",
+    type: "POST",
+    data: {
+      digitasi: idobjecttourism,
+    },
+    dataType: "json",
+    success: function (response) {
+      const data = response.data;
+      digitasi.addGeoJson(data);
+      digitasi.setStyle({
+        fillColor: "#f5670f",
+        strokeWeight: 0.3,
+        strokeColor: "#ffffff",
+        fillOpacity: 0.4,
+      });
+      digitasi.setMap(map);
+      digitasiArray[idobjecttourism] = digitasi;
+    },
+  });
+  // console.log(digitasi);
+}
 
 function digitWorship(idworship) {
   const digitasi = new google.maps.Data();
@@ -2628,6 +2653,54 @@ function objectInfoWindow(id) {
         }
       },
     });
+  } else if (id.substring(0, 2) === "OT") {
+    $.ajax({
+      url: baseUrl + "/api/objecttourism/" + id,
+      dataType: "json",
+      success: function (response) {
+        let data = response.data;
+        let otid = data.id;
+        let name = data.name;
+        let lat = data.lat;
+        let lng = data.lng;
+        let contact = data.contact_person;
+        let address = data.address;
+
+        content =
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
+          '<p class="fw-bold fs-6">' +
+          name +
+          "</p>" +
+          '<p><i class="fa-solid fa-address-book"></i> ' +
+          contact +
+          "</p>" +
+          '<p><i class="fa-solid fa-map-pin"></i> ' +
+          address +
+          "</p>" +
+          "</div>";
+        contentButton =
+          '<div class="text-center">' +
+          '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
+          lat +
+          ", " +
+          lng +
+          ')"><i class="fa-solid fa-road"></i></a>' +
+          '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
+          baseUrl +
+          "/web/objecttourism/" +
+          otid +
+          '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ otid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          "</div>";
+
+        if (currentUrl.includes(id)) {
+          infoWindow.setContent(content);
+          infoWindow.open(map, markerArray[otid]);
+        } else {
+          infoWindow.setContent(content + contentButton);
+        }
+      },
+    });
   } else if (id.substring(0, 2) === "SP") {
     $.ajax({
       url: baseUrl + "/api/souvenirPlace/" + id,
@@ -3183,6 +3256,54 @@ function objectInfoWindowRoute(id) {
         }
       },
     });
+  } else if (id.substring(0, 2) === "OT") {
+    $.ajax({
+      url: baseUrl + "/api/objecttourism/" + id,
+      dataType: "json",
+      success: function (response) {
+        let data = response.data;
+        let otid = data.id;
+        let name = data.name;
+        let lat = data.lat;
+        let lng = data.lng;
+        let contact = data.contact_person;
+        let address = data.address;
+
+        content =
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
+          '<p class="fw-bold fs-6">' +
+          name +
+          "</p>" +
+          '<p><i class="fa-solid fa-address-book"></i> ' +
+          contact +
+          "</p>" +
+          '<p><i class="fa-solid fa-map-pin"></i> ' +
+          address +
+          "</p>" +
+          "</div>";
+        contentButton =
+          '<div class="text-center">' +
+          '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
+          lat +
+          ", " +
+          lng +
+          ')"><i class="fa-solid fa-road"></i></a>' +
+          '<a title="Info" class="btn icon btn-outline-primary mx-1" target="_blank" id="infoInfoWindow" href=' +
+          baseUrl +
+          "/web/objecttourism/" +
+          otid +
+          '><i class="fa-solid fa-info"></i></a>' +
+          '<a title="Nearby" class="btn icon btn-outline-primary mx-1" id="nearbyInfoWindow" onclick="openNearby(`'+ otid +'`,'+ lat +','+ lng +')"><i class="fa-solid fa-compass"></i></a>' +
+          "</div>";
+
+        if (currentUrl.includes(id)) {
+          infoWindow.setContent(content);
+          infoWindow.open(map, markerArray[otid]);
+        } else {
+          infoWindow.setContent(content + contentButton);
+        }
+      },
+    });
   } else if (id.substring(0, 2) === "WP") {
     $.ajax({
       url: baseUrl + "/api/worshipPlace/" + id,
@@ -3574,6 +3695,48 @@ function objectInfoWindowRouteMobile(id) {
         if (currentUrl.includes(id)) {
           infoWindow.setContent(content);
           infoWindow.open(map, markerArray[cpid]);
+        } else {
+          infoWindow.setContent(content + contentButton);
+        }
+      },
+    });
+  } else if (id.substring(0, 2) === "OT") {
+    $.ajax({
+      url: baseUrl + "/api/objecttourism/" + id,
+      dataType: "json",
+      success: function (response) {
+        let data = response.data;
+        let otid = data.id;
+        let name = data.name;
+        let lat = data.lat;
+        let lng = data.lng;
+        let contact = data.contact_person;
+        let address = data.address;
+
+        content =
+          '<div style="max-width:200px;max-height:300px;" class="text-center">' +
+          '<p class="fw-bold fs-6">' +
+          name +
+          "</p>" +
+          '<p><i class="fa-solid fa-address-book"></i> ' +
+          contact +
+          "</p>" +
+          '<p><i class="fa-solid fa-map-pin"></i> ' +
+          address +
+          "</p>" +
+          "</div>";
+        contentButton =
+          '<div class="text-center">' +
+          '<a title="Route" class="btn icon btn-outline-primary mx-1" id="routeInfoWindow" onclick="routeTo(' +
+          lat +
+          ", " +
+          lng +
+          ')"><i class="fa-solid fa-road"></i></a>' +
+          "</div>";
+
+        if (currentUrl.includes(id)) {
+          infoWindow.setContent(content);
+          infoWindow.open(map, markerArray[otid]);
         } else {
           infoWindow.setContent(content + contentButton);
         }
@@ -4057,6 +4220,7 @@ function checkNearby(id) {
   $("#table-ho").empty();
   $("#table-cp").empty();
   $("#table-sp").empty();
+  $("#table-ot").empty();
   $("#table-wp").empty();
   $("#table-ev").empty();
   $("#table-fc").empty();
@@ -4067,6 +4231,7 @@ function checkNearby(id) {
   $("#table-ho").hide();
   $("#table-cp").hide();
   $("#table-sp").hide();
+  $("#table-ot").hide();
   $("#table-wp").hide();
   $("#table-ev").hide();
   $("#table-fc").hide();
@@ -4079,11 +4244,12 @@ function checkNearby(id) {
   const checkHO = document.getElementById("check-ho").checked;
   const checkCP = document.getElementById("check-cp").checked;
   const checkSP = document.getElementById("check-sp").checked;
+  const checkOT = document.getElementById("check-ot").checked;
   const checkWP = document.getElementById("check-wp").checked;
   const checkEV = document.getElementById("check-ev").checked;
   const checkFC = document.getElementById("check-fc").checked;
 
-  if (!checkHO && !checkCP && !checkSP && !checkWP && !checkEV && !checkFC) {
+  if (!checkHO && !checkCP && !checkSP && !checkWP && !checkEV && !checkFC && !checkOT) {
     document.getElementById("radiusValueNearby").innerHTML = "0 m";
     document.getElementById("inputRadiusNearby").value = 0;
     return Swal.fire("Please choose one object");
@@ -4100,6 +4266,10 @@ function checkNearby(id) {
   if (checkSP) {
     findExplore("sp", radiusValue);
     $("#table-sp").show();
+  }
+  if (checkOT) {
+    findExplore("ot", radiusValue);
+    $("#table-ot").show();
   }
   if (checkWP) {
     findExplore("wp", radiusValue);
@@ -4136,6 +4306,7 @@ function checkExplore() {
   $("#table-ho").empty();
   $("#table-cp").empty();
   $("#table-sp").empty();
+  $("#table-ot").empty();
   $("#table-wp").empty();
   $("#table-ev").empty();
   $("#table-fc").empty();
@@ -4146,6 +4317,7 @@ function checkExplore() {
   $("#table-ho").hide();
   $("#table-cp").hide();
   $("#table-sp").hide();
+  $("#table-ot").hide();
   $("#table-wp").hide();
   $("#table-ev").hide();
   $("#table-fc").hide();
@@ -4160,6 +4332,7 @@ function checkExplore() {
   const checkHO = document.getElementById("check-ho").checked;
   const checkCP = document.getElementById("check-cp").checked;
   const checkSP = document.getElementById("check-sp").checked;
+  const checkOT = document.getElementById("check-ot").checked;
   const checkWP = document.getElementById("check-wp").checked;
   const checkEV = document.getElementById("check-ev").checked;
   const checkFC = document.getElementById("check-fc").checked;
@@ -4181,6 +4354,10 @@ function checkExplore() {
   if (checkSP) {
     findExplore("sp", radiusValue);
     $("#table-sp").show();
+  }
+  if (checkOT) {
+    findExplore("ot", radiusValue);
+    $("#table-ot").show();
   }
   if (checkWP) {
     findExplore("wp", radiusValue);
@@ -4416,6 +4593,7 @@ function setupCheckboxListener() {
   { id: "check-oho", code: "ho", table: "#table-ho", log: "homestay checked" },
   { id: "check-ocp", code: "cp", table: "#table-cp", log: "culinary place checked" },
   { id: "check-osp", code: "sp", table: "#table-sp", log: "souvenir place checked" },
+  { id: "check-oot", code: "ot", table: "#table-ot", log: "object tourism checked" },
   { id: "check-owp", code: "wp", table: "#table-wp", log: "worship place checked" },
   { id: "check-oev", code: "ev", table: "#table-ev", log: "event checked" },
   { id: "check-ofc", code: "fc", table: "#table-fc", log: "facility checked" },
@@ -4432,7 +4610,7 @@ function setupCheckboxListener() {
 
       debounceTimer = setTimeout(() => {
         clearAllAll("ClearAllAll log: " + id + " checked");
-        clearMarker(); // Ensure previous markers are removed
+        // clearMarker(); // Ensure previous markers are removed
 
         let anyChecked = false;
 
@@ -4520,7 +4698,7 @@ function checkObject() {
   // Sembunyikan semua tabel
   [
     "#table-lsa", "#table-at", "#table-th", "#table-ho", "#table-cp",
-    "#table-sp", "#table-wp", "#table-ev", "#table-fc"
+    "#table-sp", "#table-ot", "#table-wp", "#table-ev", "#table-fc"
   ].forEach(sel => $(sel).empty().hide());
   
   // Atur tampilan hasil pencarian
@@ -4597,7 +4775,7 @@ function clickExplore() {
   map.panTo(pos);
 
   // let categories = ["lsa", "at", "th"];
-  let categories = ["at", "ho", "cp", "sp", "wp", "ev", "fc"];
+  let categories = ["at", "ho", "cp", "sp", "ot", "wp", "ev", "fc"];
   let promises = categories.map((category) => findAll(category));
 
   // digitVillage1zoom();
@@ -4610,7 +4788,7 @@ function clickExplore() {
     $("#check-explore-col").hide();
         [
     "#table-lsa", "#table-at", "#table-th", "#table-ho", "#table-cp",
-    "#table-sp", "#table-wp", "#table-ev", "#table-fc"
+    "#table-sp", "#table-ot", "#table-wp", "#table-ev", "#table-fc"
   ].forEach(sel => $(sel).show());
 
   });
@@ -4815,6 +4993,18 @@ function findAll(category) {
         console.log("Explore culinary place data:", response);
       },
     });
+  } else if (category === "ot") {
+    $.ajax({
+      url: baseUrl + "/api/objecttourism/findAll",
+      type: "POST",
+      data: {},
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+        boundToObject();
+        console.log("Explore object tourism place data:", response);
+      },
+    });
   } else if (category === "sp") {
     $.ajax({
       url: baseUrl + "/api/souvenirPlace/findAll",
@@ -4911,6 +5101,20 @@ function findExplore(category, radius) {
   } else if (category === "ho") {
     $.ajax({
       url: baseUrl + "/api/homestay/findByRadius",
+      type: "POST",
+      data: {
+        lat: currentLat,
+        long: currentLng,
+        radius: radius,
+      },
+      dataType: "json",
+      success: function (response) {
+        displayExploreResult(category, response);
+      },
+    });
+  } else if (category === "ot") {
+    $.ajax({
+      url: baseUrl + "/api/objecttourism/findByRadius",
       type: "POST",
       data: {
         lat: currentLat,
@@ -5047,6 +5251,8 @@ function displayExploreResult(category, response) {
     headerName = "Homestay";
   } else if (category === "sp") {
     headerName = "Souvenir Place";
+  } else if (category === "ot") {
+    headerName = "Object Tourism";
   } else if (category === "wp") {
     headerName = "Worship Place";
   } else if (category === "ev") {
@@ -5182,6 +5388,14 @@ function objectMarkerExplore(
     }
     const idevent = id;
     digitEvent(idevent);
+  } else if (id.substring(0, 2) === "OT") {
+    if (status === "1") {
+      icon = baseUrl + "/media/icon/gazebo.png";
+    } else {
+      icon = baseUrl + "/media/icon/gazebo.png";
+    }
+    const idobjecttourism = id;
+    digitobjecttourism(idobjecttourism);
   } else if (id.substring(0, 2) === "FC") {
     if (status === "1") {
       icon = baseUrl + "/media/icon/facility.png";
@@ -5657,6 +5871,10 @@ function getLegend() {
       name: "Souvenir Place",
       icon: baseUrl + "/media/icon/souvenir.png",
     },
+    ot: {
+      name: "Object Tourism",
+      icon: baseUrl + "/media/icon/gazebo.png",
+    },
     wp: {
       name: "Worship Place",
       icon: baseUrl + "/media/icon/worship.png",
@@ -5728,6 +5946,10 @@ function getLegendMobile() {
     sp: {
       name: "Souvenir Place",
       icon: baseUrl + "/media/icon/souvenir.png",
+    },
+    ot: {
+      name: "Object Tourism",
+      icon: baseUrl + "/media/icon/gazebo.png",
     },
     wp: {
       name: "Worship Place",
@@ -5912,6 +6134,7 @@ function showMapExplore(category = null) {
     wp: baseUrl + "/api/worshipPlace",
     ho: baseUrl + "/api/homestay",
     sp: baseUrl + "/api/souvenirPlace",
+    ot: baseUrl + "/api/objecttourism",
     at: baseUrl + "/api/attraction",
     ev: baseUrl + "/api/event",
     fc: baseUrl + "/api/facility",
@@ -6000,6 +6223,8 @@ function showMap(id = null) {
     URI = baseUrl + "/api/homestay";
   } else if (id == "sp") {
     URI = baseUrl + "/api/souvenirPlace";
+  } else if (id == "ot") {
+    URI = baseUrl + "/api/objecttourism";
   } else if (id == "wp") {
     URI = baseUrl + "/api/worshipPlace";
   } else if (id == "ev") {
@@ -6343,6 +6568,9 @@ function deleteObjectOld(id = null, name = null, user = false) {
   } else if (id.substring(0, 2) === "SP") {
     content = "Souvenir Place";
     apiUri = "souvenirPlace/";
+  } else if (id.substring(0, 2) === "OT") {
+    content = "Souvenir Place";
+    apiUri = "objecttourism/";
   } else if (id.substring(0, 1) === "S") {
     content = "Service Package";
     apiUri = "servicepackage/";
@@ -6447,6 +6675,9 @@ function deleteObject(id = null, name = null, user = false) {
   } else if (id.substring(0, 2) === "SP") {
     content = "Souvenir Place";
     apiUri = "souvenirPlace/";
+  } else if (id.substring(0, 2) === "OT") {
+    content = "Souvenir Place";
+    apiUri = "objecttourism/";
   } else if (id.substring(0, 1) === "S") {
     content = "Service Package";
     apiUri = "servicepackage/";
@@ -6917,6 +7148,8 @@ function objectOptions() {
     activityType = "traditionalHouse";
   } else if (selectedActivity === "SP") {
     activityType = "souvenirPlace";
+  } else if (selectedActivity === "OT") {
+    activityType = "objecttourism";
   } else if (selectedActivity === "WO") {
     activityType = "worshipPlace";
   } else if (selectedActivity === "FC") {

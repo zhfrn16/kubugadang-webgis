@@ -154,6 +154,12 @@
             </li>
             <li>
                 <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="check-oot" value="sp" onchange="checkObject()">
+                    <label class="form-check-label" for="check-oot">Object Tourism</label>
+                </div>
+            </li>
+            <li>
+                <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="check-owp" value="wp" onchange="checkObject()">
                     <label class="form-check-label" for="check-owp">Worship Places</label>
                 </div>

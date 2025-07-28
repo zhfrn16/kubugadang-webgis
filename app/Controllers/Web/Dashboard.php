@@ -72,6 +72,20 @@ class Dashboard extends BaseController
         ];
         return view('dashboard/analytics', $data);
     }
+    public function objecttourism()
+    {
+        $objectTourismModel = new \App\Models\ObjectTourismModel();
+        $contents = $objectTourismModel->get_list_object_tourism()->getResultArray();
+        $contents2 = $this->KubuGadangModel->get_desa_wisata_info()->getResultArray();
+
+        $data = [
+            'title' => 'Manage Object Tourism',
+            'manage' => 'Object Tourism',
+            'data' => $contents,
+            'data2' => $contents2,
+        ];
+        return view('dashboard/manage-page', $data);
+    }
 
 
     // public function gtp()
