@@ -125,15 +125,21 @@
         echo '<div class="btn-group mx-1">        
         <button style="height:2.8rem"  class="btn btn-primary" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View All Objects" onclick="clickExplore()">Object</button>
         <button style="height:2.8rem" class="btn btn-primary dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="visually-hidden">Toggle Dropdown</span>
+        <span class="visually-hidden">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu p-2">        
-            <li>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="check-oat" value="at" onchange="checkObject()">
-                    <label class="form-check-label" for="check-oat">Attraction</label>
-                </div>
-            </li>
+        <li>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="check-oot" value="sp" onchange="checkObject()">
+                <label class="form-check-label" for="check-oot">Object Tourism</label>
+            </div>
+        </li>
+        <li>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="check-oat" value="at" onchange="checkObject()">
+                <label class="form-check-label" for="check-oat">Attraction</label>
+            </div>
+        </li>
             <li>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="check-oho" value="ho" onchange="checkObject()">
@@ -150,12 +156,6 @@
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="check-osp" value="sp" onchange="checkObject()">
                     <label class="form-check-label" for="check-osp">Souvenir Places</label>
-                </div>
-            </li>
-            <li>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="check-oot" value="sp" onchange="checkObject()">
-                    <label class="form-check-label" for="check-oot">Object Tourism</label>
                 </div>
             </li>
             <li>

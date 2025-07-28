@@ -44,6 +44,10 @@ $edit = in_array('edit', $uri);
                                 <input type="text" id="name" class="form-control" name="name" placeholder="Object Tourism Name" value="<?= ($edit) ? $data['name'] : old('name'); ?>" required autocomplete="off">
                             </div>
                             <div class="form-group mb-4">
+                                <label for="category" class="mb-2">Category</label>
+                                <input type="text" id="category" class="form-control" name="category" placeholder="Category" value="<?= ($edit) ? $data['category'] : old('category'); ?>" required autocomplete="off">
+                            </div>
+                            <div class="form-group mb-4">
                                 <label for="price" class="mb-2">Price</label>
                                 <div class="input-group">
                                     <span class="input-group-text">Rp </span>
@@ -168,7 +172,7 @@ $edit = in_array('edit', $uri);
     });
 
     <?php if ($edit && $data['video_url'] != null) : ?>
-        vidPond.addFile(`<?= base_url('media/videos/' . $data['video_url']); ?>`)
+        vidPond.addFile(`<?= base_url($data['video_url']); ?>`)
     <?php endif; ?>
     vidPond.setOptions({
         server: '/upload/video'

@@ -12,6 +12,12 @@
 
                     <div class="form-check">
                         <div class="checkbox">
+                            <input type="checkbox" id="check-ot" class="form-check-input" checked>
+                            <label for="check-ot">Object Tourism</label>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <div class="checkbox">
                             <input type="checkbox" id="check-ho" class="form-check-input" checked>
                             <label for="check-ho">Homestay</label>
                         </div>
@@ -29,29 +35,23 @@
                             <label for="check-sp">Souvenir Place</label>
                         </div>
                     </div>
-                    <div class="form-check">
-                        <div class="checkbox">
-                            <input type="checkbox" id="check-ot" class="form-check-input" checked>
-                            <label for="check-ot">Object Tourism</label>
-                        </div>
-                    </div>
                 </div>
                 <div class="col-md-6 col-12" style="padding: 0px;">
                     <div class="form-check">
                         <div class="checkbox">
-                            <input type="checkbox" id="check-wp" class="form-check-input">
+                            <input type="checkbox" id="check-wp" class="form-check-input" checked>
                             <label for="check-wp">Worship Place</label>
                         </div>
                     </div>
                     <div class="form-check">
                         <div class="checkbox">
-                            <input type="checkbox" id="check-ev" class="form-check-input">
+                            <input type="checkbox" id="check-ev" class="form-check-input" checked>
                             <label for="check-wp">Events</label>
                         </div>
                     </div>
                     <div class="form-check">
                         <div class="checkbox">
-                            <input type="checkbox" id="check-fc" class="form-check-input">
+                            <input type="checkbox" id="check-fc" class="form-check-input" checked>
                             <label for="check-wp">Facility</label>
                         </div>
                     </div>

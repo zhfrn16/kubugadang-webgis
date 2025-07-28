@@ -6,6 +6,8 @@
         </div>
         <div class="card-body">
             <div class="table-responsive overflow-auto" id="table-result-nearby">
+                <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-ot">
+                </table>
                 <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-lsa">
                 </table>
                 <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-at">
@@ -17,8 +19,6 @@
                 <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-cp">
                 </table>
                 <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-sp">
-                </table>
-                <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-ot">
                 </table>
                 <table class="table table-hover mb-md-5 mb-3 table-lg" id="table-wp">
                 </table>

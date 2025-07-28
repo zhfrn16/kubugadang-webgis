@@ -208,6 +208,8 @@ class Attraction extends ResourcePresenter
     {
         $request = $this->request->getPost();
 
+        dd($request);
+
         $id = $request['id'];
         $array1 = array('id' => $id);
         $deleteAT = $this->attractionModel->where($array1)->delete();

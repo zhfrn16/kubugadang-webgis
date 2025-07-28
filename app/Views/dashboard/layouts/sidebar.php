@@ -116,7 +116,7 @@ $uri3 = $uri[3] ?? '';
                         </li>
                         <li class="sidebar-item has-sub">
                             <a href="" class="sidebar-link">
-                                <i class="fa-solid fa-square-poll-horizontal"></i><span>Manage Facility</span>
+                                <i class="fa-solid fa-building"></i><span>Manage Facility</span>
                             </a>
                             <ul class="submenu <?= ($uri1 == 'facility' || $uri1 == 'facilitytype') ? 'active' : '' ?>">
                                 <!-- Facility -->
@@ -128,6 +128,12 @@ $uri3 = $uri[3] ?? '';
                                     <a href="<?= base_url('dashboard/facilitytype'); ?>"><i class="fa-solid fa-puzzle-piece"></i> Facility Type</a>
                                 </li>
                             </ul>
+                        </li>
+
+                        <li class="sidebar-item <?= ($uri1 == 'objecttourism') ? 'active' : '' ?>">
+                            <a href="<?= base_url('dashboard/objecttourism'); ?>" class="sidebar-link">
+                                <i class="fa-solid fa-torii-gate"></i><span>Manage Object Tourism</span>
+                            </a>
                         </li>
 
                         <li class="sidebar-item <?= ($uri1 == 'homestay') ? 'active' : '' ?>">

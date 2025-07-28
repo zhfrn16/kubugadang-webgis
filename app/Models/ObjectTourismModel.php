@@ -77,7 +77,7 @@ class ObjectTourismModel extends Model
             $id = 'OT001';
         } else {
             $count = (int)substr($lastId['id'], 3);
-            $id = sprintf('AT%03d', $count + 1);
+            $id = sprintf('OT%03d', $count + 1);
         }
         return $id;
     }
@@ -147,6 +147,23 @@ class ObjectTourismModel extends Model
         $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.price,{$this->table}.open,{$this->table}.close,{$this->table}.description,{$this->table}.video_url";
         $query = $this->db->table($this->table)
             ->select("{$columns}, {$coords}")
+            ->get();
+        return $query;
+    }
+
+    public function get_object_tourism_by_radius($data = null)
+    {
+        $radius = (int)$data['radius'] / 1000;
+        $lat = $data['lat'];
+        $long = $data['long'];
+        $distance = "(6371 * acos(cos(radians({$lat})) * cos(radians(ST_Y(ST_CENTROID({$this->table}.geom)))) 
+                    * cos(radians(ST_X(ST_CENTROID({$this->table}.geom))) - radians({$long})) 
+                    + sin(radians({$lat}))* sin(radians(ST_Y(ST_CENTROID({$this->table}.geom))))))";
+        $coords = "ST_Y(ST_Centroid({$this->table}.geom)) AS lat, ST_X(ST_Centroid({$this->table}.geom)) AS lng";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.price,{$this->table}.open,{$this->table}.close,{$this->table}.description,{$this->table}.video_url";
+        $query = $this->db->table($this->table)
+            ->select("{$columns}, {$coords}, {$distance} as distance")
+            ->having(['distance <=' => $radius])
             ->get();
         return $query;
     }

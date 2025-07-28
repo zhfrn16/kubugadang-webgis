@@ -30,6 +30,11 @@
                                         <td class="fw-bold">Name</td>
                                         <td><?= esc($data['name']); ?></td>
                                     </tr>
+
+                                    <tr>
+                                        <td class="fw-bold">Category</td>
+                                        <td><?= esc($data['category']); ?></td>
+                                    </tr>
                                     <tr>
                                         <td class="fw-bold">Price</td>
                                         <td><?= 'Rp ' . number_format(esc($data['price']), 0, ',', '.'); ?></td>

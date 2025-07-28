@@ -1,24 +1,132 @@
-<!-- web/detail_objecttourism.php -->
-<?= $this->extend('web/layouts/main') ?>
+<?= $this->extend('web/layouts/main'); ?>
+
 <?= $this->section('content') ?>
-<div class="container mt-4">
-    <h2><?= esc($data['name']) ?></h2>
-    <div class="mb-3">
-        <strong>Category:</strong> <?= esc($data['category']) ?><br>
-        <strong>Price:</strong> <?= esc($data['price']) ?><br>
-        <strong>Open:</strong> <?= esc($data['open']) ?> - <strong>Close:</strong> <?= esc($data['close']) ?><br>
-        <strong>Min Capacity:</strong> <?= esc($data['min_capacity']) ?><br>
-    </div>
-    <div class="mb-3">
-        <strong>Description:</strong>
-        <p><?= esc($data['description']) ?></p>
-    </div>
-    <?php if (!empty($data['video_url'])): ?>
-        <div class="mb-3">
-            <strong>Video:</strong><br>
-            <iframe width="560" height="315" src="<?= esc($data['video_url']) ?>" frameborder="0" allowfullscreen></iframe>
+
+<section class="section">
+    <div class="row">
+        <script>
+            currentUrl = '<?= current_url(); ?>';
+        </script>
+
+        <!-- Object Tourism Detail Information -->
+        <div class="col-md-7 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="card-title text-center">Object Tourism Information</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col table-responsive">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bold">Name</td>
+                                        <td><?= esc($data['name']); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Category</td>
+                                        <td><?= esc($data['category']); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Price</td>
+                                        <td><?= 'Rp ' . number_format(esc($data['price']), 0, ',', '.'); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Open</td>
+                                        <td><?= esc($data['open']); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Close</td>
+                                        <td><?= esc($data['close']); ?></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p class="fw-bold">Description</p>
+                            <div>
+                                <?php print $data['description']; ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="video-play" class="btn-play btn btn-outline-primary" data-bs-toggle="modal" data-src="<?= base_url(esc($data['video_url'])) ?>" data-bs-target="#videoModal" <?= (empty($data['video_url'])) ? 'disabled' : ''; ?>>
+                        <span class="material-icons" style="font-size: 1.5rem; vertical-align: bottom">play_circle</span> Play Video
+                    </button>
+
+                    <div class="modal fade text-left" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel17">Video</h4>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <i data-feather="x"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="ratio ratio-16x9">
+                                        <video src="" class="embed-responsive-item" id="video" controls>Sorry, your browser doesn't support embedded videos</video>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Close</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Object Media -->
+            <?= $this->include('web/layouts/our_gallery'); ?>
+
         </div>
-    <?php endif; ?>
-    <a href="<?= base_url('/') ?>" class="btn btn-secondary">Back</a>
-</div>
+
+        <div class="col-md-5 col-12">
+            <!-- Object Location on Map -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Google Maps</h5>
+                </div>
+                <?php if (isset($data['id']) && $data['id'] == 'O0001') : ?>
+                    <?= $this->include('web/layouts/map-body-2'); ?>
+                <?php else : ?>
+                    <?= $this->include('web/layouts/map-body-3'); ?>
+                <?php endif; ?>
+                <script>
+                    <?php if (isset($data['lat']) && isset($data['lng'])): ?>
+                        initMap(<?= esc($data['lat']); ?>, <?= esc($data['lng']); ?>)
+                        objectMarker("<?= esc($data['id']); ?>", <?= esc($data['lat']); ?>, <?= esc($data['lng']); ?>);
+                    <?php endif; ?>
+                </script>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<?= $this->endSection() ?>
+
+<?= $this->section('javascript') ?>
+<script>
+    const myModal = document.getElementById('videoModal');
+    const videoSrc = document.getElementById('video-play').getAttribute('data-src');
+
+    myModal.addEventListener('shown.bs.modal', () => {
+        document.getElementById('video').setAttribute('src', videoSrc);
+    });
+    myModal.addEventListener('hide.bs.modal', () => {
+        document.getElementById('video').setAttribute('src', '');
+    });
+</script>
 <?= $this->endSection() ?>

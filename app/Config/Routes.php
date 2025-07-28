@@ -273,6 +273,7 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers\Web', 'filter' => '
     $routes->post('package/deleteobject/(:any)', 'Package::deleteobject/$1');
     $routes->post('packagetype/deleteobject/(:any)', 'PackageType::deleteobject/$1');
     $routes->post('homestay/deleteobject/(:any)', 'Homestay::deleteobject/$1');
+    $routes->post('objecttourism/deleteobject/(:any)', 'Objecttourism::deleteobject/$1');
     $routes->post('servicepackage/deleteobject/(:any)', 'Servicepackage::deleteobject/$1');
     $routes->post('facility/deleteobject/(:any)', 'Facility::deleteobject/$1');
     $routes->post('facilitytype/deleteobject/(:any)', 'FacilityType::deleteobject/$1');

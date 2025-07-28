@@ -2663,19 +2663,21 @@ function objectInfoWindow(id) {
         let name = data.name;
         let lat = data.lat;
         let lng = data.lng;
-        let contact = data.contact_person;
-        let address = data.address;
+        // Format open and close time to hh:mm only
+        let open = data.open ? data.open.substring(0, 5) : "";
+        let close = data.close ? data.close.substring(0, 5) : "";
+        let category = data.category;
 
         content =
           '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
           "</p>" +
-          '<p><i class="fa-solid fa-address-book"></i> ' +
-          contact +
+          '<p><i class="fa-solid fa-building"></i> ' +
+          category +
           "</p>" +
-          '<p><i class="fa-solid fa-map-pin"></i> ' +
-          address +
+          '<i class="fa-solid fa-clock"></i> ' +
+          open + '-' + close +
           "</p>" +
           "</div>";
         contentButton =
@@ -3266,19 +3268,21 @@ function objectInfoWindowRoute(id) {
         let name = data.name;
         let lat = data.lat;
         let lng = data.lng;
-        let contact = data.contact_person;
-        let address = data.address;
+        // Format open and close time to hh:mm only
+        let open = data.open ? data.open.substring(0, 5) : "";
+        let close = data.close ? data.close.substring(0, 5) : "";
+        let category = data.category;
 
         content =
           '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
           "</p>" +
-          '<p><i class="fa-solid fa-address-book"></i> ' +
-          contact +
+          '<p><i class="fa-solid fa-building"></i> ' +
+          category +
           "</p>" +
-          '<p><i class="fa-solid fa-map-pin"></i> ' +
-          address +
+          '<i class="fa-solid fa-clock"></i> ' +
+          open + '-' + close +
           "</p>" +
           "</div>";
         contentButton =
@@ -3710,19 +3714,21 @@ function objectInfoWindowRouteMobile(id) {
         let name = data.name;
         let lat = data.lat;
         let lng = data.lng;
-        let contact = data.contact_person;
-        let address = data.address;
+        // Format open and close time to hh:mm only
+        let open = data.open ? data.open.substring(0, 5) : "";
+        let close = data.close ? data.close.substring(0, 5) : "";
+        let category = data.category;
 
         content =
           '<div style="max-width:200px;max-height:300px;" class="text-center">' +
           '<p class="fw-bold fs-6">' +
           name +
           "</p>" +
-          '<p><i class="fa-solid fa-address-book"></i> ' +
-          contact +
+          '<p><i class="fa-solid fa-building"></i> ' +
+          category +
           "</p>" +
-          '<p><i class="fa-solid fa-map-pin"></i> ' +
-          address +
+          '<i class="fa-solid fa-clock"></i> ' +
+          open + '-' + close +
           "</p>" +
           "</div>";
         contentButton =
@@ -6676,7 +6682,7 @@ function deleteObject(id = null, name = null, user = false) {
     content = "Souvenir Place";
     apiUri = "souvenirPlace/";
   } else if (id.substring(0, 2) === "OT") {
-    content = "Souvenir Place";
+    content = "Object Tourism";
     apiUri = "objecttourism/";
   } else if (id.substring(0, 1) === "S") {
     content = "Service Package";
