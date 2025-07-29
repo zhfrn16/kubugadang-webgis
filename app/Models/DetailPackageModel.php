@@ -58,6 +58,7 @@ class DetailPackageModel extends Model
         $attractionModel = new AttractionModel();
         $eventModel = new EventModel();
         $homestayModel = new HomestayModel();
+        $objectTourismModel = new ObjectTourismModel();
 
         $culinaryData = $culinaryPlaceModel->select('package_id, day, activity, activity_type, object_id, detail_package.status, detail_package.description, name')
             ->join('detail_package', 'detail_package.object_id=culinary_place.id')
@@ -89,6 +90,11 @@ class DetailPackageModel extends Model
             ->where('detail_package.package_id', $package_id)
             ->get()->getResultArray();
 
+        $objectTourismData = $objectTourismModel->select('package_id, day, activity, price, object_id, detail_package.status, detail_package.description, name')
+            ->join('detail_package', 'detail_package.object_id=objecttourism.id')
+            ->where('detail_package.package_id', $package_id)
+            ->get()->getResultArray();
+
         $eventData = $eventModel->select('package_id, day, activity, object_id, detail_package.status, activity_type, detail_package.description, name')
             ->join('detail_package', 'detail_package.object_id=event.id')
             ->where('detail_package.package_id', $package_id)
@@ -100,7 +106,7 @@ class DetailPackageModel extends Model
             ->get()->getResultArray();
 
         // Gabungkan hasil dari kedua model
-        $combinedData = array_merge($culinaryData, $traditionalData, $souvenirData, $worshipData, $facilityData, $attractionData, $eventData, $homestayData);
+        $combinedData = array_merge($culinaryData, $traditionalData, $souvenirData, $worshipData, $facilityData, $attractionData, $eventData, $homestayData, $objectTourismData);
 
         usort($combinedData, function ($a, $b) {
             $dayComparison = $a['day'] - $b['day']; // Bandingkan secara numerik berdasarkan 'day'
@@ -125,6 +131,7 @@ class DetailPackageModel extends Model
         $attractionModel = new AttractionModel();
         $eventModel = new EventModel();
         $homestayModel = new HomestayModel();
+        $objectTourismModel = new ObjectTourismModel();
 
         $culinaryData = $culinaryPlaceModel->select('package_id, day, activity, activity_type, object_id, detail_package.status, detail_package.description, name, geom, ST_Y(ST_Centroid(geom)) AS lat, ST_X(ST_Centroid(geom)) AS lng')
             ->join('detail_package', 'detail_package.object_id=culinary_place.id')
@@ -166,8 +173,13 @@ class DetailPackageModel extends Model
             ->where('detail_package.package_id', $package_id)
             ->get()->getResultArray();
 
+        $objectTourismData = $objectTourismModel->select('package_id, day, activity, activity_type, object_id, detail_package.status, detail_package.description, name, geom, ST_Y(ST_Centroid(geom)) AS lat, ST_X(ST_Centroid(geom)) AS lng')
+            ->join('detail_package', 'detail_package.object_id=object_tourism.id')
+            ->where('detail_package.package_id', $package_id)
+            ->get()->getResultArray();
+
         // Gabungkan hasil dari kedua model
-        $combinedData = array_merge($culinaryData, $souvenirData, $worshipData, $facilityData, $attractionData, $eventData, $homestayData);
+        $combinedData = array_merge($culinaryData, $souvenirData, $worshipData, $facilityData, $attractionData, $eventData, $homestayData, $objectTourismData);
 
         usort($combinedData, function ($a, $b) {
             $dayComparison = $a['day'] - $b['day']; // Bandingkan secara numerik berdasarkan 'day'
