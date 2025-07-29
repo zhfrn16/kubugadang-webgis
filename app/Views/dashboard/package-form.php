@@ -202,58 +202,57 @@ $edit = in_array('edit', $uri);
                     <h4 class="card-title text-center"><?= $title; ?></h4>
                 </div>
                 <div class="card-body">
-                    <form id="packageForm" class="form form-vertical" action="<?= ($data['custom'] == 1) ? base_url('dashboard/package/updatecustom/') . $data['id'] : (($edit) ? base_url('dashboard/package/update/') . $data['id'] : base_url('dashboard/package')); ?>" method="post" enctype="multipart/form-data">
-                        <div class="form-body">
-                            <div class="form-group mb-4">
-                                <label for="name" class="mb-2">Package Name</label>
-                                <input type="text" id="name" class="form-control" name="name" placeholder="Package Name" value="<?= ($edit) ? $data['name'] : old('name'); ?>" required autocomplete="off">
-                            </div>
-                            <fieldset class="form-group mb-4">
-                                <label for="type" class="mb-2">Package Type</label>
-                                <select class="form-select" id="type" name="type">
-                                    <?php foreach ($type as $t) : ?>
-                                        <?php if ($edit) : ?>
-                                            <option value="<?= esc($t['id']); ?>" <?= (esc($data['type_id']) == esc($t['id'])) ? 'selected' : ''; ?>><?= esc($t['type_name']); ?></option>
-                                        <?php else : ?>
-                                            <option value="<?= esc($t['id']); ?>"><?= esc($t['type_name']); ?></option>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-                                </select>
-                            </fieldset>
-                            <div class="form-group mb-4">
-                                <label for="price" class="mb-2">Price</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">Rp </span>
-                                    <input type="text" id="price" class="form-control" name="price" placeholder="Price" aria-label="Price" aria-describedby="price" value="<?= ($edit) ? $data['price'] : old('price'); ?>">
-                                </div>
-                            </div>
-                            <div class="form-group mb-4">
-                                <label for="min_capacity" class="mb-2">Minimal Capacity</label>
-                                <input type="number" min="1" id="min_capacity" class="form-control" name="min_capacity" placeholder="Minimal Capacity" value="<?= ($edit) ? $data['min_capacity'] : old('min_capacity'); ?>" autocomplete="off" required>
-                            </div>
-                            <div class="form-group mb-4">
-                                <label for="contact_person" class="mb-2">Contact Person</label>
-                                <input type="tel" id="contact_person" class="form-control" name="contact_person" placeholder="Contact Person" value="<?= ($edit) ? $data['contact_person'] : old('contact_person'); ?>" autocomplete="off">
-                            </div>
-                            <div class="form-group mb-4">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea class="form-control" id="description" name="description" rows="4"><?= ($edit) ? $data['description'] : old('description'); ?></textarea>
-                            </div>
-                            <div class="form-group mb-4">
-                                <label for="gallery" class="form-label">Gallery</label>
-                                <input class="form-control" accept="image/*" type="file" name="gallery[]" id="gallery" multiple>
-                            </div>
-                            <div class="form-group mb-4">
-                                <label for="video" class="form-label">Video</label>
-                                <input class="form-control" accept="video/*, .mkv" type="file" name="video" id="video">
-                            </div>
-                            <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
-                            <?php if (($edit)) : ?>
-                                <button type="submit" class="btn btn-primary me-1 mb-1">Save Change</button>
-                            <?php else : ?>
-                                <button type="submit" class="btn btn-primary me-1 mb-1">Save</button>
-                            <?php endif; ?>
+                    <div class="form-body">
+                        <div class="form-group mb-4">
+                            <label for="name" class="mb-2">Package Name</label>
+                            <input type="text" id="name" class="form-control" name="name" placeholder="Package Name" value="<?= ($edit) ? $data['name'] : old('name'); ?>" required autocomplete="off">
                         </div>
+                        <fieldset class="form-group mb-4">
+                            <label for="type" class="mb-2">Package Type</label>
+                            <select class="form-select" id="type" name="type">
+                                <?php foreach ($type as $t) : ?>
+                                    <?php if ($edit) : ?>
+                                        <option value="<?= esc($t['id']); ?>" <?= (esc($data['type_id']) == esc($t['id'])) ? 'selected' : ''; ?>><?= esc($t['type_name']); ?></option>
+                                    <?php else : ?>
+                                        <option value="<?= esc($t['id']); ?>"><?= esc($t['type_name']); ?></option>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
+                        </fieldset>
+                        <div class="form-group mb-4">
+                            <label for="price" class="mb-2">Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp </span>
+                                <input type="text" id="price" class="form-control" name="price" placeholder="Price" aria-label="Price" aria-describedby="price" value="<?= ($edit) ? $data['price'] : old('price'); ?>">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="min_capacity" class="mb-2">Minimal Capacity</label>
+                            <input type="number" min="1" id="min_capacity" class="form-control" name="min_capacity" placeholder="Minimal Capacity" value="<?= ($edit) ? $data['min_capacity'] : old('min_capacity'); ?>" autocomplete="off" required>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="contact_person" class="mb-2">Contact Person</label>
+                            <input type="tel" id="contact_person" class="form-control" name="contact_person" placeholder="Contact Person" value="<?= ($edit) ? $data['contact_person'] : old('contact_person'); ?>" autocomplete="off">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4"><?= ($edit) ? $data['description'] : old('description'); ?></textarea>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="gallery" class="form-label">Gallery</label>
+                            <input class="form-control" accept="image/*" type="file" name="gallery[]" id="gallery" multiple>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="video" class="form-label">Video</label>
+                            <input class="form-control" accept="video/*, .mkv" type="file" name="video" id="video">
+                        </div>
+                        <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                        <?php if (($edit)) : ?>
+                            <button type="submit" class="btn btn-primary me-1 mb-1">Save Change</button>
+                        <?php else : ?>
+                            <button type="submit" class="btn btn-primary me-1 mb-1">Save</button>
+                        <?php endif; ?>
+                    </div>
                     </form>
 
                     <br />
@@ -739,8 +738,8 @@ $edit = in_array('edit', $uri);
                                                                         <select class="form-select" name="activity_type" id="activity_type" required onchange="objectOptions()">
                                                                             <option value="" selected>Select Type</option>
                                                                             <option value="A">Attraction</option>
-                                                                            <!-- <option value="TH">Traditional House</option> -->
-                                                                            <!-- <option value="HO">Homestay</option> -->
+                                                                            <option value="OT">Object Tourism</option>
+                                                                            <option value="HO">Homestay</option>
                                                                             <!-- <option value="EV">Event</option> -->
                                                                             <option value="CP">Culinary Place</option>
                                                                             <option value="SP">Souvenir Place</option>

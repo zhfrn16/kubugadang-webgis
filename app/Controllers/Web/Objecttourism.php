@@ -44,6 +44,7 @@ class Objecttourism extends ResourcePresenter
         }
         $object['gallery'] = $galleries;
 
+
         $data = [
             'title' => $object['name'],
             'data' => $object,
@@ -60,13 +61,12 @@ class Objecttourism extends ResourcePresenter
     public function create()
     {
         $request = $this->request->getPost();
-
         $id = $this->objectTourismModel->get_new_id();
 
         $requestData = [
             'id' => $id,
             'name' => $request['name'],
-            'price' => $request['price'],
+            'price' => intval($request['price']),
             'category' => $request['category'],
             'open' => $request['open'],
             'close' => $request['close'],
@@ -74,10 +74,13 @@ class Objecttourism extends ResourcePresenter
             'video_url' => $request['video_url'] ?? null,
         ];
         foreach ($requestData as $key => $value) {
-            if (empty($value)) {
+            if ($key !== 'price' && empty($value)) {
                 unset($requestData[$key]);
             }
         }
+
+        // dd($request, $requestData);
+
 
         $geom = $request['multipolygon'];
 
@@ -145,15 +148,16 @@ class Objecttourism extends ResourcePresenter
         $requestData = [
             'id' => $id,
             'name' => $request['name'],
-            'price' => $request['price'],
+            'price' => intval($request['price']),
             'category' => $request['category'],
             'open' => $request['open'],
             'close' => $request['close'],
             'description' => $request['description'],
             'video_url' => $request['video_url'] ?? null,
         ];
+
         foreach ($requestData as $key => $value) {
-            if (empty($value)) {
+            if ($key !== 'price' && empty($value)) {
                 unset($requestData[$key]);
             }
         }

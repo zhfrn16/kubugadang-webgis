@@ -342,8 +342,8 @@ $edit = in_array('edit', $uri);
                                                         <select class="form-select" name="activity_type" id="activity_type" required onchange="objectOptions()">
                                                             <option value="" selected>Select Type</option>
                                                             <option value="A">Attraction</option>
-                                                            <!-- <option value="TH">Traditional House</option> -->
-                                                            <!-- <option value="HO">Homestay</option> -->
+                                                            <option value="OT">Object Tourism</option>
+                                                            <option value="HO">Homestay</option>
                                                             <!-- <option value="EV">Event</option> -->
                                                             <option value="CP">Culinary Place</option>
                                                             <option value="SP">Souvenir Place</option>

@@ -96,7 +96,7 @@ class ObjectTourismModel extends Model
     public function update_object_tourism($id = null, $objectTourism = null)
     {
         foreach ($objectTourism as $key => $value) {
-            if (empty($value)) {
+            if (empty($value) && $key !== 'price') {
                 unset($objectTourism[$key]);
             }
         }

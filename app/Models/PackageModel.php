@@ -10,7 +10,7 @@ class PackageModel extends Model
     protected $table = 'package';
     protected $primaryKey = 'id';
     protected $returnType = 'array';
-    protected $allowedFields    = ['id', 'name', 'type_id', 'min_capacity', 'price', 'contact_person', 'description', 'video_url', 'custom', 'status'];
+    protected $allowedFields    = ['id', 'name', 'type_id', 'min_capacity', 'price', 'contact_person', 'description', 'video_url', 'status'];
 
     // Dates
     protected $useTimestamps = true;
@@ -26,13 +26,12 @@ class PackageModel extends Model
 
     public function get_list_package()
     {
-        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.price,{$this->table}.contact_person,{$this->table}.description,{$this->table}.video_url,{$this->table}.min_capacity,{$this->table}.custom";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.price,{$this->table}.contact_person,{$this->table}.description,{$this->table}.video_url,{$this->table}.min_capacity";
         $query = $this->db->table($this->table)
             ->select("{$columns}")
             ->join('package_type', 'package.type_id = package_type.id')
             ->select('package_type.type_name')
             ->where('package.status', '1')
-            ->orderBy('package.custom', 'ASC')
             ->orderBy('package.id', 'ASC')
             ->get();
         return $query;
@@ -41,14 +40,12 @@ class PackageModel extends Model
     public function get_list_package_explore()
     {
         // $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.price,{$this->table}.contact_person,{$this->table}.description,{$this->table}.video_url,{$this->table}.min_capacity,{$this->table}.custom";
-        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.price,{$this->table}.contact_person,{$this->table}.description,{$this->table}.min_capacity,{$this->table}.custom";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.price,{$this->table}.contact_person,{$this->table}.description";
         $query = $this->db->table($this->table)
             ->select("{$columns},type_name")
             ->join('package_type', 'package.type_id = package_type.id')
             ->select('package_type.type_name')
-            ->where('package.custom', '0')
             ->where('package.status', '1')
-            ->orderBy('package.custom', 'ASC')
             ->orderBy('package.id', 'DESC')
             ->get();
         return $query;
@@ -86,45 +83,42 @@ class PackageModel extends Model
 
 
     public function get_list_package_default()
-    {      
+    {
         $query = $this->db->table('package p')
-            ->select('p.id, p.name, p.type_id, p.price, p.contact_person, p.description, p.video_url, p.min_capacity, p.custom, pt.type_name, COUNT(pd.day) AS days')
+            ->select('p.id, p.name, p.type_id, p.price, p.contact_person, p.description, p.video_url, p.min_capacity, pt.type_name, COUNT(pd.day) AS days')
             ->join('package_type pt', 'p.type_id = pt.id')
             ->join('package_day pd', 'p.id = pd.package_id')
-            ->where('p.custom <>', '1')
             ->where('p.status', '1')
             ->orderby('p.id', 'DESC')
             ->orderby('p.name', 'ASC')
-            ->groupBy('p.id, p.name, p.type_id, p.price, p.contact_person, p.description, p.video_url, p.min_capacity, p.custom, pt.type_name')
+            ->groupBy('p.id, p.name, p.type_id, p.price, p.contact_person, p.description, p.video_url, p.min_capacity, pt.type_name')
             ->get();
         return $query;
     }
-    
+
 
     public function get_list_package_default_mobile()
-    {      
+    {
         $query = $this->db->table('package p')
-            ->select('p.id, p.name, p.type_id, p.price, p.contact_person, p.description, p.video_url, p.min_capacity, p.custom, pt.type_name, COUNT(pd.day) AS days')
+            ->select('p.id, p.name, p.type_id, p.price, p.contact_person, p.description, p.video_url, p.min_capacity, pt.type_name, COUNT(pd.day) AS days')
             ->join('package_type pt', 'p.type_id = pt.id')
             ->join('package_day pd', 'p.id = pd.package_id')
-            ->where('p.custom <>', '1')
             ->where('p.status', '1')
             ->orderby('p.id', 'DESC')
             ->orderby('p.name', 'ASC')
-            ->groupBy('p.id, p.name, p.type_id, p.price, p.contact_person, p.description, p.video_url, p.min_capacity, p.custom, pt.type_name')
+            ->groupBy('p.id, p.name, p.type_id, p.price, p.contact_person, p.description, p.video_url, p.min_capacity, pt.type_name')
             ->get();
         return $query;
     }
 
-   
+
     public function get_list_package_distinct()
     {
-        $columns = "{$this->table}.id, {$this->table}.name, {$this->table}.type_id, {$this->table}.price, {$this->table}.contact_person, {$this->table}.description, {$this->table}.video_url, {$this->table}.min_capacity, {$this->table}.custom";
+        $columns = "{$this->table}.id, {$this->table}.name, {$this->table}.type_id, {$this->table}.price, {$this->table}.contact_person, {$this->table}.description, {$this->table}.video_url, {$this->table}.min_capacity";
         $query = $this->db->table($this->table)
             ->select("MAX(package_day.day) AS days, {$columns}, package_type.type_name")
             ->join('package_type', 'package.type_id = package_type.id')
             ->join('package_day', 'package.id = package_day.package_id')
-            ->where('package.custom <>', '1')
             ->groupBy('package.id')
             ->get();
         return $query;
@@ -133,24 +127,24 @@ class PackageModel extends Model
 
 
     public function get_package_by_id_custom($id = null)
-    {      
+    {
         $query = $this->db->table('package p')
-            ->select('p.id, p.name, p.type_id, p.price, p.contact_person, p.description, p.video_url, p.min_capacity, p.custom, pt.type_name, COUNT(pd.day) AS days')
+            ->select('p.id, p.name, p.type_id, p.price, p.contact_person, p.description, p.video_url, p.min_capacity,  pt.type_name, COUNT(pd.day) AS days')
             ->join('package_type pt', 'p.type_id = pt.id')
             ->join('package_day pd', 'p.id = pd.package_id')
             ->where('p.id', $id)
-            ->groupBy('p.id, p.name, p.type_id, p.price, p.contact_person, p.description, p.video_url, p.min_capacity, p.custom, pt.type_name')
+            ->groupBy('p.id, p.name, p.type_id, p.price, p.contact_person, p.description, p.video_url, p.min_capacity,, pt.type_name')
             ->get();
         return $query;
     }
 
     public function get_package_by_id($id = null)
     {
-        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.type_id,{$this->table}.price,{$this->table}.contact_person,{$this->table}.description,{$this->table}.video_url,{$this->table}.min_capacity,{$this->table}.custom";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.type_id,{$this->table}.price,{$this->table}.contact_person,{$this->table}.description,{$this->table}.video_url,{$this->table}.min_capacity";
         $query = $this->db->table($this->table)
             ->select("{$columns}")
             ->where('package.id', $id)
-            ->join('package_type', 'package.type_id = package_type.id')           
+            ->join('package_type', 'package.type_id = package_type.id')
             ->select('package_type.type_name')
             ->get();
         return $query;
@@ -158,7 +152,7 @@ class PackageModel extends Model
 
     public function get_package_by_name($name = null)
     {
-        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.price,{$this->table}.contact_person,{$this->table}.description,{$this->table}.video_url,{$this->table}.min_capacity,{$this->table}.custom";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.price,{$this->table}.contact_person,{$this->table}.description,{$this->table}.video_url,{$this->table}.min_capacity";
         $query = $this->db->table($this->table)
             ->select("{$columns}")
             ->like("{$this->table}.name", $name)
@@ -168,7 +162,7 @@ class PackageModel extends Model
 
     public function get_package_by_type($type = null)
     {
-        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.price,{$this->table}.contact_person,{$this->table}.description,{$this->table}.video_url,{$this->table}.min_capacity,{$this->table}.custom";
+        $columns = "{$this->table}.id,{$this->table}.name,{$this->table}.price,{$this->table}.contact_person,{$this->table}.description,{$this->table}.video_url,{$this->table}.min_capacity";
         $query = $this->db->table($this->table)
             ->select("{$columns}")
             ->like("{$this->table}.type_id", $type)
@@ -192,7 +186,7 @@ class PackageModel extends Model
     public function add_new_package($requestData = null)
     {
         $insert = $this->db->table($this->table)
-            ->insert($requestData);        
+            ->insert($requestData);
         return $insert;
     }
 
@@ -224,7 +218,4 @@ class PackageModel extends Model
             return false;
         }
     }
-
-
-  
 }

@@ -4595,6 +4595,7 @@ function clearDigitVillage1() {
 
 function setupCheckboxListener() {
   const checks = [
+  { id: "check-oot", code: "ot", table: "#table-ot", log: "objecttourism checked" },
   { id: "check-oat", code: "at", table: "#table-at", log: "attraction checked" },
   { id: "check-oho", code: "ho", table: "#table-ho", log: "homestay checked" },
   { id: "check-ocp", code: "cp", table: "#table-cp", log: "culinary place checked" },
@@ -4733,8 +4734,8 @@ function clickExplore() {
   // checkOLSA.checked = true;
   const checkOAT = document.getElementById("check-oat");
   checkOAT.checked = true;
-  // const checkOTH = document.getElementById("check-oth");
-  // checkOTH.checked = true;
+  const checkOOT = document.getElementById("check-oot");
+  checkOOT.checked = true;
   const checkOHO = document.getElementById("check-oho");
   checkOHO.checked = true;
   const checkOCP = document.getElementById("check-ocp");
@@ -7152,6 +7153,11 @@ function objectOptions() {
     activityType = "culinaryPlace";
   } else if (selectedActivity === "TH") {
     activityType = "traditionalHouse";
+  } else if (selectedActivity === "OT") {
+    activityType = "objecttourism";
+  }
+    else if (selectedActivity === "HO") {
+    activityType = "homestay";
   } else if (selectedActivity === "SP") {
     activityType = "souvenirPlace";
   } else if (selectedActivity === "OT") {
@@ -7204,8 +7210,7 @@ function objectOptions() {
               '<option value="' +
               item.id +
               '">' +
-              item.name +
-              " - Rp0</option>";
+              item.name ;
             $("#object").append(object);
           }
         } else {
@@ -7216,7 +7221,7 @@ function objectOptions() {
         console.error("AJAX request failed:", status, error);
       },
     });
-  } else if (activityType == "attraction") {
+  } else if (activityType == "attraction" || activityType == "objecttourism" || activityType == "homestay") {
     $("#object").empty();
     $.ajax({
       url: baseUrl + "/api/" + activityType,

@@ -51,7 +51,7 @@ $edit = in_array('edit', $uri);
                                 <label for="price" class="mb-2">Price</label>
                                 <div class="input-group">
                                     <span class="input-group-text">Rp </span>
-                                    <input type="number" id="price" class="form-control" name="price" placeholder="Price" aria-label="Price" aria-describedby="price" value="<?= ($edit) ? $data['price'] : old('price'); ?>">
+                                    <input type="text" id="price" class="form-control" name="price" placeholder="Price" aria-label="Price" aria-describedby="price" value="<?= ($edit) ? $data['price'] : old('price'); ?>" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                 </div>
                             </div>
                             <div class="form-group mb-4">
