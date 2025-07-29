@@ -319,8 +319,8 @@ $edit = in_array('edit', $uri);
                                                 map.setZoom(15);
 
                                                 // Inisialisasi koordinat titik awal (gerbang desa)
-                                                var startLat = -0.4761815168531753;
-                                                var startLng = 100.43223933779609;
+                                                var startLat = -0.472731139029226;
+                                                var startLng = 100.43103295308126;
 
                                                 // // Tambahkan marker untuk titik awal dengan gambar dari folder Anda
                                                 // var image = {
@@ -344,8 +344,8 @@ $edit = in_array('edit', $uri);
                                                     title: 'Village Gate'
                                                 });
 
-                                                var startLat = -0.4761815168531753;
-                                                var startLng = 100.43223933779609;
+                                                var startLat = -0.472731139029226;
+                                                var startLng = 100.43103295308126;
 
                                                 // // Tambahkan infowindow untuk titik awal
                                                 // let infowindow = new google.maps.InfoWindow({
@@ -503,7 +503,7 @@ $edit = in_array('edit', $uri);
                                                         <li>
                                                             <button
                                                                 type="button"
-                                                                onclick="routeBetweenObjects(-0.4761815168531753,100.43223933779609,<?= esc($firstActivity['lat']); ?>,<?= esc($firstActivity['lng']); ?>); addOnly<?= esc($d['day']), esc($d['package_id']); ?>();" class="btn btn-outline-primary">
+                                                                onclick="routeBetweenObjects(-0.472731139029226,100.43103295308126,<?= esc($firstActivity['lat']); ?>,<?= esc($firstActivity['lng']); ?>); addOnly<?= esc($d['day']), esc($d['package_id']); ?>();" class="btn btn-outline-primary">
                                                                 <i class="fa fa-road"></i> Titik 0 ke 1
                                                             </button>
                                                         </li>
@@ -537,7 +537,7 @@ $edit = in_array('edit', $uri);
                             </div>
                         </div>
                         <script>
-                            initMap(-0.4761815168531753, 100.43223933779609);
+                            initMap(-0.472731139029226, 100.43103295308126);
 
                             window.onload = function() {
                                 try {
