@@ -1,5 +1,4 @@
-# Desa Wisata Kampuang Minang Nagari Sumpu
-
+# Desa Wisata Kubu Gadang
 ## Todo?
 
 - Get repository `Download as ZIP`
@@ -15,8 +14,8 @@
 
 | Username     | Password    |
 | ------------ | ----------- |
-| `adminsumpu` | `1234567`   |
-| `wulan`      | `wisudades` |
+| `adminkuga` | `1234567`   |
+
 
 Template Route at `\App\Config\Route.php`
 Template Controller at `\app\Controller\Home.php`
